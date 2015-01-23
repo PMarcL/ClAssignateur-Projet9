@@ -21,22 +21,15 @@ public class FileDemandeTest {
 	private static final int NOMBRE_PARTICIPANT_3 = 12;
 	
 	private FileDemande fileDemande;
-	private FileDemande fileDemandeTroisElement;
 
 	@Before
 	public void creerFileDemande(){
 		fileDemande = new FileDemande();
-		
-		fileDemandeTroisElement = new FileDemande();
-		fileDemandeTroisElement.Ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT);
-		fileDemandeTroisElement.Ajouter(DATE_DEBUT_2, DATE_FIN_2, NOMBRE_PARTICIPANT_2);
-		fileDemandeTroisElement.Ajouter(DATE_DEBUT_3, DATE_FIN_3, NOMBRE_PARTICIPANT_3);
 	}
 	
 	@Test
 	public void fileDemandeEstInitialementVide(){
 		boolean fileEstVide = fileDemande.Taille() == 0;
-		
 		assertTrue(fileEstVide);
 	}
 	
@@ -73,6 +66,11 @@ public class FileDemandeTest {
 	
 	@Test
 	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSorti(){
+		FileDemande fileDemandeTroisElement = new FileDemande();
+		fileDemandeTroisElement.Ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT);
+		fileDemandeTroisElement.Ajouter(DATE_DEBUT_2, DATE_FIN_2, NOMBRE_PARTICIPANT_2);
+		fileDemandeTroisElement.Ajouter(DATE_DEBUT_3, DATE_FIN_3, NOMBRE_PARTICIPANT_3);
+		
 		Demande premierElementEnlever = fileDemandeTroisElement.Retirer();
 		Demande deuxiemeElementEnlever = fileDemandeTroisElement.Retirer();
 		Demande troisiemeElementEnlever = fileDemandeTroisElement.Retirer();

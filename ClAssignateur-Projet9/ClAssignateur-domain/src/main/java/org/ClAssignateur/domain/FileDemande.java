@@ -14,9 +14,9 @@ public class FileDemande {
 	}
 
 	public void Ajouter(Date dateDebut, Date dateFin, int nombreParticipant) {
-		Demande demandeAjoute = new Demande(dateDebut, dateFin, nombreParticipant);
+		Demande demandeAjoutee = new Demande(dateDebut, dateFin, nombreParticipant);
 		
-		this._file.offer(demandeAjoute);
+		this._file.offer(demandeAjoutee);
 	}
 
 	public void Vider() {

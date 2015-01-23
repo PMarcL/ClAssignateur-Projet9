@@ -14,6 +14,7 @@ public class DemandeTest {
 	private static final Date DATE_FIN = new Date(2015,07,1, 12,30,0);
 	private static final int NOMBRE_PARTICIPANT = 10;
 	private static final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
+	
 	private Demande demande;
 	
 	@Before
@@ -24,21 +25,18 @@ public class DemandeTest {
 	@Test
 	public void DemandePossedeIntialementLeChampsDebutCommeDefiniDansLeConstructeur(){
 		Date dateDebut = demande.GetDebut();
-		
 		assertEquals(DATE_DEBUT, dateDebut);
 	}
 	
 	@Test
 	public void DemandePossedeIntialementLeChampsFinCommeDefiniDansLeConstructeur(){
 		Date dateFin = demande.GetFin();
-		
 		assertEquals(DATE_FIN, dateFin);
 	}
 	
 	@Test
 	public void DemandePossedeIntialementLeChampsNbParticipantCommeDefiniDansLeConstructeur(){
 		int nbParticipant = demande.GetNbParticipant();
-		
 		assertEquals(NOMBRE_PARTICIPANT, nbParticipant);
 	}
 	
