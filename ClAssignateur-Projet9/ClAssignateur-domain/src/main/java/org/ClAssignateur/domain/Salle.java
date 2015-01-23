@@ -2,19 +2,19 @@ package org.ClAssignateur.domain;
 
 public class Salle {
 
-	private String local;
-	private int capacite;
+	private String _local;
+	private int _capacite;
 
 	public Salle(String local, int capacite) {
-		this.local = local;
-		this.capacite = capacite;
+		this._local = local;
+		this._capacite = capacite;
 	}
 
 	public String GetLocal() {
-		return this.local;
+		return this._local;
 	}
 
 	public int GetCapacite() {
-		return this.capacite;
+		return this._capacite;
 	}
 }
