@@ -23,4 +23,8 @@ public class FileDemande {
 		this._file.clear();
 	}
 
+	public Demande Retirer() {
+		return this._file.poll();
+	}
+
 }
