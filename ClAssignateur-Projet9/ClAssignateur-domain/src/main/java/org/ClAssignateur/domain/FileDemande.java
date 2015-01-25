@@ -13,8 +13,8 @@ public class FileDemande {
 		return this._file.size();
 	}
 
-	public void Ajouter(Date dateDebut, Date dateFin, int nombreParticipant) {
-		Demande demandeAjoutee = new Demande(dateDebut, dateFin, nombreParticipant);
+	public void Ajouter(Date dateDebut, Date dateFin, int nombreParticipant, Organisateur organisateur) {
+		Demande demandeAjoutee = new Demande(dateDebut, dateFin, nombreParticipant, organisateur);
 		
 		this._file.offer(demandeAjoutee);
 	}

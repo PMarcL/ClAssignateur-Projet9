@@ -7,12 +7,12 @@ import java.util.Date;
 public class Demande {
 	private static final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
 	
-	
 	private Date _debut;
 	private Date _fin;
 	private int _nbParticipant;
+	private Organisateur _organisateur;
 	
-	public Demande(Date debut, Date fin, int nombreParticipant) {
+	public Demande(Date debut, Date fin, int nombreParticipant, Organisateur organisateur) {
 		if(!debut.before(fin))
 			throw new RangeException((short) 1, "La date de début doit être inférieur à la date de fin.");
 		
@@ -22,6 +22,7 @@ public class Demande {
 		this._debut = debut;
 		this._fin = fin;
 		this._nbParticipant = nombreParticipant;
+		this._organisateur = organisateur;
 	}
 
 	public Date GetDebut() {
@@ -34,6 +35,10 @@ public class Demande {
 
 	public int GetNbParticipant() {
 		return this._nbParticipant;
+	}
+
+	public Organisateur GetOrganisateur() {
+		return this._organisateur;
 	}
 
 }
