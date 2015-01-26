@@ -7,24 +7,24 @@ import java.util.Date;
 
 public class FileDemande {
 
-	private Queue<Demande> _file = new LinkedList<Demande>();
+	private Queue<Demande> file = new LinkedList<Demande>();
 
 	public int taille() {
-		return this._file.size();
+		return this.file.size();
 	}
 
 	public void ajouter(Date dateDebut, Date dateFin, int nombreParticipant, Organisateur organisateur) {
 		Demande demandeAjoutee = new Demande(dateDebut, dateFin, nombreParticipant, organisateur);
 		
-		this._file.offer(demandeAjoutee);
+		this.file.offer(demandeAjoutee);
 	}
 
 	public void vider() {
-		this._file.clear();
+		this.file.clear();
 	}
 
 	public Demande retirer() {
-		return this._file.poll();
+		return this.file.poll();
 	}
 
 }
