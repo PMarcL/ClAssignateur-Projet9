@@ -25,25 +25,25 @@ public class DemandeTest {
 	
 	@Test
 	public void DemandePossedeIntialementLeChampsDebutCommeDefiniDansLeConstructeur(){
-		Date dateDebut = demande.GetDebut();
+		Date dateDebut = demande.getDebut();
 		assertEquals(DATE_DEBUT, dateDebut);
 	}
 	
 	@Test
 	public void DemandePossedeIntialementLeChampsFinCommeDefiniDansLeConstructeur(){
-		Date dateFin = demande.GetFin();
+		Date dateFin = demande.getFin();
 		assertEquals(DATE_FIN, dateFin);
 	}
 	
 	@Test
 	public void DemandePossedeIntialementLeChampsNbParticipantCommeDefiniDansLeConstructeur(){
-		int nbParticipant = demande.GetNbParticipant();
+		int nbParticipant = demande.getNbParticipant();
 		assertEquals(NOMBRE_PARTICIPANT, nbParticipant);
 	}
 	
 	@Test
 	public void DemandePossedeIntialementLeChampsOrganisateurCommeDefiniDansLeConstructeur(){
-		Organisateur organisateur = demande.GetOrganisateur();
+		Organisateur organisateur = demande.getOrganisateur();
 		assertEquals(ORGANISATEUR, organisateur);
 	}
 	

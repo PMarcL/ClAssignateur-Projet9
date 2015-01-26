@@ -30,16 +30,16 @@ public class FileDemandeTest {
 	
 	@Test
 	public void fileDemandeEstInitialementVide(){
-		boolean fileEstVide = fileDemande.Taille() == 0;
+		boolean fileEstVide = fileDemande.taille() == 0;
 		assertTrue(fileEstVide);
 	}
 	
 	@Test
 	public void lorsqueOnAjouteUneDemandeAFileDemandeSaTailleAugmenteDeUn(){
-		int tailleInitiale = fileDemande.Taille();
-		fileDemande.Ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		int tailleInitiale = fileDemande.taille();
+		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
 		
-		int tailleDeLaFile = fileDemande.Taille();
+		int tailleDeLaFile = fileDemande.taille();
 		int tailleDesiree = tailleInitiale+1;
 		
 		assertEquals(tailleDesiree,  tailleDeLaFile);
@@ -47,20 +47,20 @@ public class FileDemandeTest {
 	
 	@Test
 	public void lorsqueOnVideLaFileElleDevientVide(){
-		fileDemande.Ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
 		
-		fileDemande.Vider();
-		boolean fileEstVide = fileDemande.Taille() == 0;
+		fileDemande.vider();
+		boolean fileEstVide = fileDemande.taille() == 0;
 		
 		assertTrue(fileEstVide);
 	}
 	
 	@Test
 	public void lorsqueOnAjouteUnElementEtQuOnLEnleveFileDemandeDevientVide(){
-		fileDemande.Ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
 		
-		fileDemande.Retirer();
-		boolean fileEstVide = fileDemande.Taille() == 0;
+		fileDemande.retirer();
+		boolean fileEstVide = fileDemande.taille() == 0;
 		
 		assertTrue(fileEstVide);
 	}
@@ -68,23 +68,23 @@ public class FileDemandeTest {
 	@Test
 	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSorti(){
 		FileDemande fileDemandeTroisElement = new FileDemande();
-		fileDemandeTroisElement.Ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
-		fileDemandeTroisElement.Ajouter(DATE_DEBUT_2, DATE_FIN_2, NOMBRE_PARTICIPANT_2, ORGANISATEUR);
-		fileDemandeTroisElement.Ajouter(DATE_DEBUT_3, DATE_FIN_3, NOMBRE_PARTICIPANT_3, ORGANISATEUR);
+		fileDemandeTroisElement.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		fileDemandeTroisElement.ajouter(DATE_DEBUT_2, DATE_FIN_2, NOMBRE_PARTICIPANT_2, ORGANISATEUR);
+		fileDemandeTroisElement.ajouter(DATE_DEBUT_3, DATE_FIN_3, NOMBRE_PARTICIPANT_3, ORGANISATEUR);
 		
-		Demande premierElementEnlever = fileDemandeTroisElement.Retirer();
-		Demande deuxiemeElementEnlever = fileDemandeTroisElement.Retirer();
-		Demande troisiemeElementEnlever = fileDemandeTroisElement.Retirer();
+		Demande premierElementEnlever = fileDemandeTroisElement.retirer();
+		Demande deuxiemeElementEnlever = fileDemandeTroisElement.retirer();
+		Demande troisiemeElementEnlever = fileDemandeTroisElement.retirer();
 		
-		assertEquals(DATE_DEBUT, premierElementEnlever.GetDebut());
-		assertEquals(DATE_FIN, premierElementEnlever.GetFin());
-		assertEquals(NOMBRE_PARTICIPANT, premierElementEnlever.GetNbParticipant());
-		assertEquals(DATE_DEBUT_2, deuxiemeElementEnlever.GetDebut());
-		assertEquals(DATE_FIN_2, deuxiemeElementEnlever.GetFin());
-		assertEquals(NOMBRE_PARTICIPANT_2, deuxiemeElementEnlever.GetNbParticipant());
-		assertEquals(DATE_DEBUT_3, troisiemeElementEnlever.GetDebut());
-		assertEquals(DATE_FIN_3, troisiemeElementEnlever.GetFin());
-		assertEquals(NOMBRE_PARTICIPANT_3, troisiemeElementEnlever.GetNbParticipant());
+		assertEquals(DATE_DEBUT, premierElementEnlever.getDebut());
+		assertEquals(DATE_FIN, premierElementEnlever.getFin());
+		assertEquals(NOMBRE_PARTICIPANT, premierElementEnlever.getNbParticipant());
+		assertEquals(DATE_DEBUT_2, deuxiemeElementEnlever.getDebut());
+		assertEquals(DATE_FIN_2, deuxiemeElementEnlever.getFin());
+		assertEquals(NOMBRE_PARTICIPANT_2, deuxiemeElementEnlever.getNbParticipant());
+		assertEquals(DATE_DEBUT_3, troisiemeElementEnlever.getDebut());
+		assertEquals(DATE_FIN_3, troisiemeElementEnlever.getFin());
+		assertEquals(NOMBRE_PARTICIPANT_3, troisiemeElementEnlever.getNbParticipant());
 	}
 
 }
