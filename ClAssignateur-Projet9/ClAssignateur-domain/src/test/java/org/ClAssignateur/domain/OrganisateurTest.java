@@ -9,15 +9,17 @@ public class OrganisateurTest {
 	private final String UN_NOM_QUELCONQUE = "John Doe";
 	private final String UN_NOM_VIDE = "";
 
+	private Organisateur organisateurATester;
+
 	@Test
 	public void unNouvelOrganisateurQuandCreeConnaitSonNom() {
-		Organisateur organisateurATester = new Organisateur(UN_NOM_QUELCONQUE);
-		assertEquals(UN_NOM_QUELCONQUE, organisateurATester.GetNom());
+		organisateurATester = new Organisateur(UN_NOM_QUELCONQUE);
+		assertEquals(UN_NOM_QUELCONQUE, organisateurATester.getNom());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void unNouvelOrganisateurQuandCreeNePeutAvoirUnNomVide() {
-		Organisateur organisateurATester = new Organisateur(UN_NOM_VIDE);
+		organisateurATester = new Organisateur(UN_NOM_VIDE);
 	}
 
 }

@@ -12,7 +12,7 @@ public class Organisateur {
 		this.nom = nom;
 	}
 
-	public String GetNom() {
+	public String getNom() {
 		return this.nom;
 	}
 

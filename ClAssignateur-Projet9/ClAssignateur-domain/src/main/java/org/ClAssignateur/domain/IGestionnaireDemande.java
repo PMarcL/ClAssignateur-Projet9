@@ -4,10 +4,10 @@ import java.util.Date;
 
 public interface IGestionnaireDemande {
 
-	public void SetFrequence(int frequence);
+	public void setFrequence(int frequence);
 
-	public void SetLimite(int limite);
+	public void setLimite(int limite);
 
-	public void AjouterDemande(Date debut, Date fin, int nbParticipants,
+	public void ajouterDemande(Date debut, Date fin, int nbParticipants,
 			String organisateur);
 }
