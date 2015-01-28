@@ -23,7 +23,12 @@ public class Salle {
 	}
 
 	public boolean estDisponible(Demande demandeAVerifier) {
-		// TODO
+		if (reservations.isEmpty())
+			return true;
+		for (Demande reservation : reservations) {
+			if (demandeAVerifier.estEnConflitAvec(reservation))
+				return false;
+		}
 		return true;
 	}
 
@@ -32,7 +37,7 @@ public class Salle {
 	}
 
 	public void enleverReservation(Demande reservationAEnlever) {
-		// TODO
+		reservations.remove(reservationAEnlever);
 	}
 
 }
