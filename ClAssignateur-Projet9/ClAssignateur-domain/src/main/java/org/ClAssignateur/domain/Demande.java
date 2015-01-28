@@ -3,7 +3,6 @@ package org.ClAssignateur.domain;
 import java.util.Calendar;
 
 import org.w3c.dom.ranges.RangeException;
-import java.util.Date;
 
 public class Demande {
 	private static final int NOMBRE_PARTICIPANTS_MINIMUM = 0;

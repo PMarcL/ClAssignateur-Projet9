@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import org.w3c.dom.ranges.RangeException;
 import org.junit.Before;
-import java.util.Date;
 import org.junit.Test;
 
 public class DemandeTest {
