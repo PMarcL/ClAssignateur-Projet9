@@ -13,6 +13,8 @@ public class DemandeTest {
 
 	private static final Calendar DATE_DEBUT = creerDate(2015,07,1, 12,29,0);
 	private static final Calendar DATE_FIN = creerDate(2015,07,1, 12,30,0);
+	private static final Calendar DATE_DEBUT_ULTERIEUR = creerDate(2015,8,1, 12,29,0);
+	private static final Calendar DATE_FIN_ULTERIEUR = creerDate(2015,8,1, 12,30,0);
 	private static final Organisateur ORGANISATEUR = new Organisateur("Simon");
 	private static final int NOMBRE_PARTICIPANT = 10;
 	private static final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
@@ -67,5 +69,59 @@ public class DemandeTest {
 	@Test(expected = RangeException.class)
 	public void DemandeDoitAvoirUneNombreDeParticipantsStrictementSuperieurAuNombreDeParticipantMinimum(){
 		new Demande(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT_INCORRECTE, ORGANISATEUR);
+	}
+	
+	@Test
+	public void uneDemandeEstEnConflitAvecElleMeme(){
+		boolean estEnConflit = demande.estEnConflitAvec(demande);
+		assertTrue(estEnConflit);
+	}
+	
+	@Test
+	public void uneDemandeEstEnConflitAvecUneDemandeAyantLaMemeHeureDeDebutQueSonHeureDeFin(){
+		Demande demandeEnConflit = new Demande(DATE_FIN,DATE_DEBUT_ULTERIEUR, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		boolean estEnConflit = demande.estEnConflitAvec(demandeEnConflit);
+		assertTrue(estEnConflit);
+	}
+	
+	@Test
+	public void uneDemandeEstEnConflitAvecUneDemandeAyantLaMemeHeureDeFinQueSonHeureDeDebut(){
+		Demande demandeEnConflit = new Demande(DATE_FIN,DATE_DEBUT_ULTERIEUR, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		boolean estEnConflit = demandeEnConflit.estEnConflitAvec(demande);
+		assertTrue(estEnConflit);
+	}
+	
+	@Test
+	public void uneDemandeNEstPasEnConflitAvecUneDemandeQuiSeDerouleApresElle(){
+		Demande demandeSansConflit = new Demande(DATE_DEBUT_ULTERIEUR, DATE_FIN_ULTERIEUR, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		boolean estEnConflit = demande.estEnConflitAvec(demandeSansConflit);
+		assertFalse(estEnConflit);
+	}
+	
+	@Test
+	public void uneDemandeNEstPasEnConflitAvecUneDemandeQuiSeDerouleAvantElle(){
+		Demande demandeSansConflit = new Demande(DATE_DEBUT_ULTERIEUR, DATE_FIN_ULTERIEUR, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		boolean estEnConflit = demandeSansConflit.estEnConflitAvec(demande);
+		assertFalse(estEnConflit);
+	}
+	
+	@Test
+	public void uneDemandeEstEnConflitAvecUneDemandeQuiLaChevaucheEtQuiTermineApresElle(){
+		Demande premiereDemandeEnConflit = new Demande(DATE_DEBUT, DATE_DEBUT_ULTERIEUR, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		Demande deuxiemeDemandeEnConflit = new Demande(DATE_FIN, DATE_FIN_ULTERIEUR, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		
+		boolean estEnConflit = premiereDemandeEnConflit.estEnConflitAvec(deuxiemeDemandeEnConflit);
+		
+		assertTrue(estEnConflit);
+	}
+	
+	@Test
+	public void uneDemandeEstEnConflitAvecUneDemandeQuiLaChevaucheEtQuiTermineAvantElle(){
+		Demande premiereDemandeEnConflit = new Demande(DATE_DEBUT, DATE_DEBUT_ULTERIEUR, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		Demande deuxiemeDemandeEnConflit = new Demande(DATE_FIN, DATE_FIN_ULTERIEUR, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		
+		boolean estEnConflit = deuxiemeDemandeEnConflit.estEnConflitAvec(premiereDemandeEnConflit);
+		
+		assertTrue(estEnConflit);
 	}
 }

@@ -42,4 +42,11 @@ public class Demande {
 		return this.organisateur;
 	}
 
+	public boolean estEnConflitAvec(Demande demandeAVerifier) {
+		boolean finEstAvantDebut = this.getFin().before(demandeAVerifier.getDebut());
+		boolean debutEstApresFin = this.getDebut().after(demandeAVerifier.getFin());
+		
+		return !(finEstAvantDebut || debutEstApresFin);
+	}
+
 }
