@@ -8,6 +8,8 @@ import org.ClAssignateur.domain.FileDemande;
 
 public class FileDemandeTest {
 
+	private static final int TAILLE_INITIALE_VOULUE = 0;
+	
 	private static final Date DATE_DEBUT = new Date(2015,07,1, 12,29,0);
 	private static final Date DATE_FIN = new Date(2015,07,1, 12,30,0);
 	private static final Organisateur ORGANISATEUR = new Organisateur("Simon");
@@ -30,8 +32,23 @@ public class FileDemandeTest {
 	
 	@Test
 	public void fileDemandeEstInitialementVide(){
-		boolean fileEstVide = fileDemande.taille() == 0;
+		boolean fileEstVide = fileDemande.estVide();
 		assertTrue(fileEstVide);
+	}
+	
+	@Test
+	public void filePossedeInitalementTailleZero(){
+		int tailleInitiale = fileDemande.taille();
+		assertEquals(TAILLE_INITIALE_VOULUE,  tailleInitiale);
+	}
+	
+	@Test 
+	public void lorsqueOnAjouteUneDemandeAFileDemandeLaFileNestPlusVide(){
+		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
+		
+		boolean fileEstVide = fileDemande.estVide();
+		
+		assertFalse(fileEstVide);
 	}
 	
 	@Test
@@ -50,7 +67,7 @@ public class FileDemandeTest {
 		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
 		
 		fileDemande.vider();
-		boolean fileEstVide = fileDemande.taille() == 0;
+		boolean fileEstVide = fileDemande.estVide();
 		
 		assertTrue(fileEstVide);
 	}
@@ -60,7 +77,7 @@ public class FileDemandeTest {
 		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
 		
 		fileDemande.retirer();
-		boolean fileEstVide = fileDemande.taille() == 0;
+		boolean fileEstVide = fileDemande.estVide();
 		
 		assertTrue(fileEstVide);
 	}

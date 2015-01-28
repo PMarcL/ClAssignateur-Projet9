@@ -12,6 +12,10 @@ public class FileDemande {
 	public int taille() {
 		return this.file.size();
 	}
+	
+	public boolean estVide(){
+		return this.file.isEmpty();
+	}
 
 	public void ajouter(Date dateDebut, Date dateFin, int nombreParticipant, Organisateur organisateur) {
 		Demande demandeAjoutee = new Demande(dateDebut, dateFin, nombreParticipant, organisateur);
