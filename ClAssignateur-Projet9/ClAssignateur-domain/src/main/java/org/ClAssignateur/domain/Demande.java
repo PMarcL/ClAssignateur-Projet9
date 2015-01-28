@@ -1,35 +1,36 @@
 package org.ClAssignateur.domain;
 
-import org.w3c.dom.ranges.RangeException;
+import java.util.Calendar;
 
+import org.w3c.dom.ranges.RangeException;
 import java.util.Date;
 
 public class Demande {
 	private static final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
 	
-	private Date debut;
-	private Date fin;
+	private Calendar debut;
+	private Calendar fin;
 	private int nbParticipant;
 	private Organisateur organisateur;
 	
-	public Demande(Date debut, Date fin, int nombreParticipant, Organisateur organisateur) {
-		if(!debut.before(fin))
+	public Demande(Calendar dateDebut, Calendar dateFin, int nombreParticipant, Organisateur organisateur) {
+		if(!dateDebut.before(dateFin))
 			throw new RangeException((short) 1, "La date de début doit être inférieur à la date de fin.");
 		
 		if(nombreParticipant <= NOMBRE_PARTICIPANTS_MINIMUM)
 			throw new RangeException((short) NOMBRE_PARTICIPANTS_MINIMUM, "Le nombre de participants doit être supérieur au minimum de participants requis.");
 		
-		this.debut = debut;
-		this.fin = fin;
+		this.debut = dateDebut;
+		this.fin = dateFin;
 		this.nbParticipant = nombreParticipant;
 		this.organisateur = organisateur;
 	}
 
-	public Date getDebut() {
+	public Calendar getDebut() {
 		return this.debut;
 	}
 
-	public Date getFin() {
+	public Calendar getFin() {
 		return this.fin;
 	}
 

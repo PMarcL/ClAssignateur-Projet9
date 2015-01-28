@@ -1,7 +1,8 @@
 package org.ClAssignateur.domain;
 
-import java.util.LinkedList;
+import java.util.Calendar;
 
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Date;
 
@@ -17,7 +18,7 @@ public class FileDemande {
 		return this.file.isEmpty();
 	}
 
-	public void ajouter(Date dateDebut, Date dateFin, int nombreParticipant, Organisateur organisateur) {
+	public void ajouter(Calendar dateDebut, Calendar dateFin, int nombreParticipant, Organisateur organisateur) {
 		Demande demandeAjoutee = new Demande(dateDebut, dateFin, nombreParticipant, organisateur);
 		
 		this.file.offer(demandeAjoutee);

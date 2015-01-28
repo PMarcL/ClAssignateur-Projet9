@@ -1,6 +1,9 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
+
+import java.util.Calendar;
+
 import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,21 +13,27 @@ public class FileDemandeTest {
 
 	private static final int TAILLE_INITIALE_VOULUE = 0;
 	
-	private static final Date DATE_DEBUT = new Date(2015,07,1, 12,29,0);
-	private static final Date DATE_FIN = new Date(2015,07,1, 12,30,0);
+	private static final Calendar DATE_DEBUT = creerDate(2015,07,1, 12,29,0);
+	private static final Calendar DATE_FIN = creerDate(2015,07,1, 12,30,0);
 	private static final Organisateur ORGANISATEUR = new Organisateur("Simon");
 	private static final int NOMBRE_PARTICIPANT = 10;
 	
-	private static final Date DATE_DEBUT_2 = new Date(2015,07,3, 12,29,0);
-	private static final Date DATE_FIN_2 = new Date(2015,07,4, 12,30,0);
+	private static final Calendar DATE_DEBUT_2 = creerDate(2015,07,3, 12,29,0);
+	private static final Calendar DATE_FIN_2 = creerDate(2015,07,4, 12,30,0);
 	private static final int NOMBRE_PARTICIPANT_2 = 11;
 	
-	private static final Date DATE_DEBUT_3 = new Date(2015,07,2, 12,29,0);
-	private static final Date DATE_FIN_3 = new Date(2015,07,3, 12,30,0);
+	private static final Calendar DATE_DEBUT_3 = creerDate(2015,07,2, 12,29,0);
+	private static final Calendar DATE_FIN_3 = creerDate(2015,07,3, 12,30,0);
 	private static final int NOMBRE_PARTICIPANT_3 = 12;
 	
 	private FileDemande fileDemande;
 
+	public static Calendar creerDate(int annee, int mois, int jour, int heure,int minute, int seconde) {
+	    Calendar date = Calendar.getInstance();
+	    date.set(annee, mois, jour, heure, minute, seconde);
+	    return date;
+	}
+	
 	@Before
 	public void creerFileDemande(){
 		fileDemande = new FileDemande();

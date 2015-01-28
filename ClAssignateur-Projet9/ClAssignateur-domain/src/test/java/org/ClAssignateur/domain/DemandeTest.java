@@ -2,21 +2,28 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 
-import org.w3c.dom.ranges.RangeException;
+import java.util.Calendar;
 
+import org.w3c.dom.ranges.RangeException;
 import org.junit.Before;
 import java.util.Date;
 import org.junit.Test;
 
 public class DemandeTest {
 
-	private static final Date DATE_DEBUT = new Date(2015,07,1, 12,29,0);
-	private static final Date DATE_FIN = new Date(2015,07,1, 12,30,0);
+	private static final Calendar DATE_DEBUT = creerDate(2015,07,1, 12,29,0);
+	private static final Calendar DATE_FIN = creerDate(2015,07,1, 12,30,0);
 	private static final Organisateur ORGANISATEUR = new Organisateur("Simon");
 	private static final int NOMBRE_PARTICIPANT = 10;
 	private static final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
 	
 	private Demande demande;
+	
+	public static Calendar creerDate(int annee, int mois, int jour, int heure,int minute, int seconde) {
+	    Calendar date = Calendar.getInstance();
+	    date.set(annee, mois, jour, heure, minute, seconde);
+	    return date;
+	}
 	
 	@Before
 	public void creerLaDemande(){
@@ -25,13 +32,13 @@ public class DemandeTest {
 	
 	@Test
 	public void DemandePossedeIntialementLeChampsDebutCommeDefiniDansLeConstructeur(){
-		Date dateDebut = demande.getDebut();
+		Calendar dateDebut = demande.getDebut();
 		assertEquals(DATE_DEBUT, dateDebut);
 	}
 	
 	@Test
 	public void DemandePossedeIntialementLeChampsFinCommeDefiniDansLeConstructeur(){
-		Date dateFin = demande.getFin();
+		Calendar dateFin = demande.getFin();
 		assertEquals(DATE_FIN, dateFin);
 	}
 	
