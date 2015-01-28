@@ -2,8 +2,8 @@
 Projet fait dans le cadre du cours GLO-4002
 
 Fait par:
--Michaël Blanchet
--Pierre-Marc Levasseur
+Michaël Blanchet
+Pierre-Marc Levasseur
 -Simon B. Robert
 -Pascal Labbé
 -Sébastion Reader
