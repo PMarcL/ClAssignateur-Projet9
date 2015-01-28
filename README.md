@@ -2,13 +2,13 @@
 Projet fait dans le cadre du cours GLO-4002
 
 Fait par:
-  -Michaël Blanchet
-  -Pierre-Marc Levasseur
-  -Simon B. Robert
-  -Pascal Labbé
-  -Sébastion Reader
-  -Pier-Alex Côté-Sarrazin
-  -Margot Beugniot
+-Michaël Blanchet
+-Pierre-Marc Levasseur
+-Simon B. Robert
+-Pascal Labbé
+-Sébastion Reader
+-Pier-Alex Côté-Sarrazin
+-Margot Beugniot
 
 DOD:
 
