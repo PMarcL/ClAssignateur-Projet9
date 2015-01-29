@@ -1,20 +1,19 @@
 package org.ClAssignateur.domain;
 
+import java.util.Calendar;
 import org.w3c.dom.ranges.RangeException;
-
-import java.util.Date;
 
 public class Demande {
 	private static final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
 
-	private Date debut;
-	private Date fin;
+	private Calendar debut;
+	private Calendar fin;
 	private int nbParticipant;
-	private Organisateur organisateur;
+	private String organisateur;
 
-	public Demande(Date debut, Date fin, int nombreParticipant,
-			Organisateur organisateur) {
-		if (!debut.before(fin))
+	public Demande(Calendar dateDebut, Calendar dateFin, int nombreParticipant,
+			String organisateur) {
+		if (!dateDebut.before(dateFin))
 			throw new RangeException((short) 1,
 					"La date de début doit être inférieur à la date de fin.");
 
@@ -23,17 +22,17 @@ public class Demande {
 					(short) NOMBRE_PARTICIPANTS_MINIMUM,
 					"Le nombre de participants doit être supérieur au minimum de participants requis.");
 
-		this.debut = debut;
-		this.fin = fin;
+		this.debut = dateDebut;
+		this.fin = dateFin;
 		this.nbParticipant = nombreParticipant;
 		this.organisateur = organisateur;
 	}
 
-	public Date getDebut() {
+	public Calendar getDebut() {
 		return this.debut;
 	}
 
-	public Date getFin() {
+	public Calendar getFin() {
 		return this.fin;
 	}
 
@@ -41,14 +40,17 @@ public class Demande {
 		return this.nbParticipant;
 	}
 
-	public Organisateur getOrganisateur() {
+	public String getOrganisateur() {
 		return this.organisateur;
 	}
 
-	public boolean estEnConflitAvec(Demande demande) {
-		if (demande == this)
-			return true;
-		return false;
+	public boolean estEnConflitAvec(Demande demandeAVerifier) {
+		boolean finEstAvantDebut = this.getFin().before(
+				demandeAVerifier.getDebut());
+		boolean debutEstApresFin = this.getDebut().after(
+				demandeAVerifier.getFin());
+
+		return !(finEstAvantDebut || debutEstApresFin);
 	}
 
 }
