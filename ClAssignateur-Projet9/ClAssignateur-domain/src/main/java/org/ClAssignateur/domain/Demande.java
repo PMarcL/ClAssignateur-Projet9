@@ -5,8 +5,8 @@ import org.w3c.dom.ranges.RangeException;
 
 public class Demande {
 	private static final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
-	private static final int PRIORITE_MINIMAL = 1;
-	private static final int PRIORITE_MAXIMALE = 5;
+	public static final int PRIORITE_MINIMAL = 1;
+	public static final int PRIORITE_MAXIMALE = 5;
 
 	private Calendar debut;
 	private Calendar fin;
