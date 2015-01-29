@@ -2,7 +2,7 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,15 +11,20 @@ import org.ClAssignateur.domain.Demande;
 
 public class SalleTest {
 
-	private final Demande DEMANDE_TEST = new Demande(new Date(1985, 4, 12, 10,
-			45, 0), new Date(1985, 4, 12, 11, 30, 0), 100, new Organisateur(
-			"P-M"));
-	private final Demande DEMANDE_TEST2 = new Demande(new Date(1985, 4, 13, 10,
-			45, 0), new Date(1985, 4, 13, 11, 30, 0), 100, new Organisateur(
-			"P-M"));
+	private final Demande DEMANDE_TEST = new Demande(creerDate(2015, 01, 28,
+			11, 0, 0), creerDate(2015, 01, 28, 12, 0, 0), 100, "P-M");
+	private final Demande DEMANDE_TEST2 = new Demande(creerDate(2015, 02, 28,
+			11, 0, 0), creerDate(2015, 02, 28, 12, 0, 0), 100, "P-M");
 	private Salle salle;
 	private final String NOM_TEST = "nomSalle";
 	private final int CAPACITE_TEST = 100;
+
+	public static Calendar creerDate(int annee, int mois, int jour, int heure,
+			int minute, int seconde) {
+		Calendar date = Calendar.getInstance();
+		date.set(annee, mois, jour, heure, minute, seconde);
+		return date;
+	}
 
 	@Before
 	public void initialisation() {
