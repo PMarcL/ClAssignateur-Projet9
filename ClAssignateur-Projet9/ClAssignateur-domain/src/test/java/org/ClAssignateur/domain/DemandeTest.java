@@ -18,6 +18,10 @@ public class DemandeTest {
 	private static final String ORGANISATEUR = "Simon";
 	private static final int NOMBRE_PARTICIPANT = 10;
 	private static final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
+	private static final int PRIORITE_INITIALE = 1;
+	private static final int PRIORITE_CONSTRUCTEUR = 2;
+	private static final int PRIORITE_INCORRECT_INF = 0;
+	private static final int PRIORITE_INCORRECT_SUP = 6;
 
 	private Demande demande;
 
@@ -56,6 +60,32 @@ public class DemandeTest {
 	public void DemandePossedeIntialementLeChampsOrganisateurCommeDefiniDansLeConstructeur() {
 		String organisateur = demande.getOrganisateur();
 		assertEquals(ORGANISATEUR, organisateur);
+	}
+
+	@Test
+	public void DemandePossedeIntialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
+		Demande demandeAvecPriorite = new Demande(DATE_DEBUT, DATE_FIN,
+				NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_CONSTRUCTEUR);
+		int priorite = demandeAvecPriorite.getPriorite();
+		assertEquals(PRIORITE_CONSTRUCTEUR, priorite);
+	}
+
+	@Test(expected = RangeException.class)
+	public void DemandeLanceUneExceptionSiLaPrioriteEstInferieurALaLimiteInferieur() {
+		new Demande(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR,
+				PRIORITE_INCORRECT_INF);
+	}
+
+	@Test(expected = RangeException.class)
+	public void DemandeLanceUneExceptionSiLaPrioriteEstSuperieurALaLimiteSuperieur() {
+		new Demande(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR,
+				PRIORITE_INCORRECT_SUP);
+	}
+
+	@Test
+	public void DemandePossedeIntialementLeChampsPrioriteALaValeurInitiale() {
+		int priorite = demande.getPriorite();
+		assertEquals(PRIORITE_INITIALE, priorite);
 	}
 
 	@Test(expected = RangeException.class)
