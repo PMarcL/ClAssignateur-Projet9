@@ -33,6 +33,8 @@ public class Salle {
 	}
 
 	public void placerReservation(Demande nouvelleReservation) {
+		if (estDisponible(nouvelleReservation) == false)
+			throw new IllegalArgumentException("La salle est déjà réservée à cette date.");
 		reservations.add(nouvelleReservation);
 	}
 
