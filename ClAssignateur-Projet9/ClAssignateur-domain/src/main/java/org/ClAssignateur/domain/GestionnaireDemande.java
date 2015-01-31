@@ -1,8 +1,14 @@
 package org.ClAssignateur.domain;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class GestionnaireDemande {
+
+	public GestionnaireDemande() {
+		// ProcessusAssignation procAssignation = new
+		// ProcessusAssignation(this);
+		// procAssignation.demarrer();
+	}
 
 	public void setFrequence(int frequence) {
 	}
@@ -11,13 +17,9 @@ public class GestionnaireDemande {
 
 	}
 
-	public void ajouterDemande(Date dateDebut, Date dateFin,
+	public void ajouterDemande(Calendar dateDebut, Calendar dateFin,
 			int nbParticipants, String nomOrganisation) {
 
-	}
-
-	public int getFrequence() {
-		return 0;
 	}
 
 	public void verifierConditionAssignation() {

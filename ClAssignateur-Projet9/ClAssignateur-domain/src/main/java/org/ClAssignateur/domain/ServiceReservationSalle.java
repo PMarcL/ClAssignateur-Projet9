@@ -1,21 +1,26 @@
 package org.ClAssignateur.domain;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class ServiceReservationSalle {
-	public void setFrequence(GestionnaireDemande monGestionnaireDemande,
-			int frequence) {
-		monGestionnaireDemande.setFrequence(frequence);
+
+	private GestionnaireDemande gestionnaireDemande;
+
+	public ServiceReservationSalle(GestionnaireDemande gestDemande) {
+		this.gestionnaireDemande = gestDemande;
 	}
 
-	public void setLimite(GestionnaireDemande monGestionnaireDemande, int limite) {
-		monGestionnaireDemande.setLimite(limite);
+	public void setFrequence(int frequence) {
+		this.gestionnaireDemande.setFrequence(frequence);
 	}
 
-	public void ajouterDemande(GestionnaireDemande monGestionnaireDemande,
-			Date dateDebut, Date dateFin, int nbParticipants,
-			String nomOrganisation) {
-		monGestionnaireDemande.ajouterDemande(dateDebut, dateFin,
+	public void setLimite(int limite) {
+		this.gestionnaireDemande.setLimite(limite);
+	}
+
+	public void ajouterDemande(Calendar dateDebut, Calendar dateFin,
+			int nbParticipants, String nomOrganisation) {
+		this.gestionnaireDemande.ajouterDemande(dateDebut, dateFin,
 				nbParticipants, nomOrganisation);
 	}
 
