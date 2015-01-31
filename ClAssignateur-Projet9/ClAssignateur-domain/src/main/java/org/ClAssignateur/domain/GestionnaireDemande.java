@@ -15,4 +15,12 @@ public class GestionnaireDemande {
 			int nbParticipants, String nomOrganisation) {
 
 	}
+
+	public int getFrequence() {
+		return 0;
+	}
+
+	public void verifierConditionAssignation() {
+
+	}
 }
