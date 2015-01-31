@@ -1,28 +1,50 @@
 package org.ClAssignateur.domain;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
+import org.junit.*;
+
 import static org.mockito.Mockito.*;
+
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.runner.RunWith;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceReservationSalleTest {
+	
+	int frequence = 3;
+	int limite = 5;
+	Date dateDebut;
+    Date dateFin;
+    int nbParticipants;
+    String nomOrganisation;
+     
 	@Mock
 	    private GestionnaireDemande monGestionnaireDemande;
 
 	@Test
-	public void QuandJeSetLaFrequenceAlorsElleEstModifiee(){
+	public void QuandJeSetLaFrequenceAlorsElleDoitEtreModifieeParLeGestionnaire(){
 		ServiceReservationSalle monServiceReservation = new ServiceReservationSalle();
-		int frequence;
+			
+		monServiceReservation.setFrequence(monGestionnaireDemande, frequence);
 		
-		monServiceReservation.setFrequence(frequence);
-		
-		verify(monGestionnaireDemande, times(1)).setFrequence(frequence);
+		verify(monGestionnaireDemande).setFrequence(frequence);
 	}	
 	
+	@Test
+	public void QuandJeSetLaLimiteAlorsElleDoitEtreModifieeParLeGestionnaire(){
+		ServiceReservationSalle monServiceReservation = new ServiceReservationSalle();
+		
+		monServiceReservation.setLimite(monGestionnaireDemande, limite);
+		
+		verify(monGestionnaireDemande).setLimite(limite);	
+	}
+	
+	@Test
+	public void QuandJAjouteDemandeAlorsElleDoitEtreAjouteeAuGestionnaire(){
+        ServiceReservationSalle monServiceReservation = new ServiceReservationSalle();
+		
+		monServiceReservation.ajouterDemande(monGestionnaireDemande, dateDebut, dateFin, nbParticipants, nomOrganisation);
+		
+		verify(monGestionnaireDemande).ajouterDemande(dateDebut, dateFin, nbParticipants, nomOrganisation);	
+	}	
 }
