@@ -15,10 +15,10 @@ public class ServiceReservationSalleTest {
 	private final int NOMBRE_PARTICIPANTS = 8;
 	private final String NOM_ORGANISATEUR = "John Dow";
 
-	private GestionnaireDemande gestionnaireDemandeMock;
+	private ProcessusAssignation procAssignationMock;
 	private ServiceReservationSalle serviceReservation;
 
-	public static Calendar creerDate(int annee, int mois, int jour, int heure,
+	private static Calendar creerDate(int annee, int mois, int jour, int heure,
 			int minute, int seconde) {
 		Calendar date = Calendar.getInstance();
 		date.set(annee, mois, jour, heure, minute, seconde);
@@ -27,29 +27,40 @@ public class ServiceReservationSalleTest {
 
 	@Before
 	public void etantDonneUnNouveauServiceReservationSalle() {
-		gestionnaireDemandeMock = mock(GestionnaireDemande.class);
-		serviceReservation = new ServiceReservationSalle(
-				gestionnaireDemandeMock);
+		procAssignationMock = mock(ProcessusAssignation.class);
+		serviceReservation = new ServiceReservationSalle(procAssignationMock);
 	}
 
 	@Test
-	public void quandJeSetLaFrequenceAlorsElleDoitEtreModifieeParLeGestionnaireDemande() {
+	public void quandSetFrequenceAlorsDevraitEtreModifieeDansProcessusAssignation() {
 		serviceReservation.setFrequence(FREQUENCE_QUELCONQUE);
-		verify(gestionnaireDemandeMock).setFrequence(FREQUENCE_QUELCONQUE);
+		verify(procAssignationMock).setFrequence(FREQUENCE_QUELCONQUE);
 	}
 
 	@Test
-	public void quandJeSetLaLimiteAlorsElleDoitEtreModifieeParLeGestionnaireDemande() {
+	public void quandSetLimiteAlorsDevraitEtreModifieeDansAssignateurSalle() {
 		serviceReservation.setLimite(LIMITE_QUELCONQUE);
-		verify(gestionnaireDemandeMock).setLimite(LIMITE_QUELCONQUE);
+		verify(procAssignationMock).setLimite(LIMITE_QUELCONQUE);
 	}
 
 	@Test
-	public void quandJAjouteDemandeAlorsElleDoitEtreAjouteeAuGestionnaireDemande() {
+	public void quandAjouteDemandeAlorsDevraitEtreAjouteeDansAssignateurSalle() {
 		serviceReservation.ajouterDemande(DATE_DEBUT, DATE_FIN,
 				NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
-		verify(gestionnaireDemandeMock).ajouterDemande(DATE_DEBUT, DATE_FIN,
+		verify(procAssignationMock).ajouterDemande(DATE_DEBUT, DATE_FIN,
 				NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
+	}
+
+	@Test
+	public void quandDemarreDevraitDemarrerProcessusAssignation() {
+		serviceReservation.demarrer();
+		verify(procAssignationMock).demarrer();
+	}
+
+	@Test
+	public void quandArreteDevraitArreterProcessusAssignation() {
+		serviceReservation.arreter();
+		verify(procAssignationMock).arreter();
 	}
 
 }

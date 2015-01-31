@@ -4,24 +4,32 @@ import java.util.Calendar;
 
 public class ServiceReservationSalle {
 
-	private GestionnaireDemande gestionnaireDemande;
+	private ProcessusAssignation procAssignation;
 
-	public ServiceReservationSalle(GestionnaireDemande gestDemande) {
-		this.gestionnaireDemande = gestDemande;
+	public ServiceReservationSalle(ProcessusAssignation procAssignation) {
+		this.procAssignation = procAssignation;
 	}
 
 	public void setFrequence(int frequence) {
-		this.gestionnaireDemande.setFrequence(frequence);
+		this.procAssignation.setFrequence(frequence);
 	}
 
 	public void setLimite(int limite) {
-		this.gestionnaireDemande.setLimite(limite);
+		this.procAssignation.setLimite(limite);
 	}
 
 	public void ajouterDemande(Calendar dateDebut, Calendar dateFin,
 			int nbParticipants, String nomOrganisation) {
-		this.gestionnaireDemande.ajouterDemande(dateDebut, dateFin,
-				nbParticipants, nomOrganisation);
+		this.procAssignation.ajouterDemande(dateDebut, dateFin, nbParticipants,
+				nomOrganisation);
+	}
+
+	public void demarrer() {
+		this.procAssignation.demarrer();
+	}
+
+	public void arreter() {
+		this.procAssignation.arreter();
 	}
 
 }
