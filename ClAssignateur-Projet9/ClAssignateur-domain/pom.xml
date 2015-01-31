@@ -19,10 +19,6 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
-<<<<<<< HEAD
-    
-=======
->>>>>>> ca11ef50bbc1d06a1546267c08edbf30364688ff
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
