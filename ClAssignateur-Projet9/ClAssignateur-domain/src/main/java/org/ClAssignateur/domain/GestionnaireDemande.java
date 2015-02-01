@@ -6,4 +6,9 @@ public class GestionnaireDemande {
 		return 0;
 	}
 
+	public void verifierConditionAssignation() {
+		
+		
+	}
+
 }

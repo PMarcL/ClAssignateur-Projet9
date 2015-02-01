@@ -3,11 +3,8 @@ package org.ClAssignateur.domain;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.ClAssignateur.domain.Salle;
-import org.ClAssignateur.domain.Demande;
 
 public class SalleTest {
 
@@ -68,6 +65,12 @@ public class SalleTest {
 		salle.placerReservation(DEMANDE_TEST);
 		salle.enleverReservation(DEMANDE_TEST);
 		assertTrue(salle.estDisponible(DEMANDE_TEST));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void SalleAvecUneReservationNePeutAjouterUneReservationALaMemeDate() {
+		salle.placerReservation(DEMANDE_TEST);
+		salle.placerReservation(DEMANDE_TEST);
 	}
 
 }
