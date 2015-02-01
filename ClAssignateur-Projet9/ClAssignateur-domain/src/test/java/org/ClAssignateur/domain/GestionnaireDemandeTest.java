@@ -9,7 +9,6 @@ public class GestionnaireDemandeTest {
 
 	@Test
 	public void test() {
-		
 	}
 
 }
