@@ -8,6 +8,7 @@ import org.junit.Test;
 
 public class ServiceReservationSalleTest {
 
+	private final int THREAD_TEST_TIMEOUT = 100;
 	private final int FREQUENCE_QUELCONQUE = 3;
 	private final int LIMITE_QUELCONQUE = 5;
 	private final Calendar DATE_DEBUT = creerDate(2015, 1, 31, 14, 55, 34);
@@ -15,7 +16,10 @@ public class ServiceReservationSalleTest {
 	private final int NOMBRE_PARTICIPANTS = 8;
 	private final String NOM_ORGANISATEUR = "John Dow";
 
-	private ProcessusAssignation procAssignationMock;
+	private AssignateurSalle assignSalleMock;
+	private FileDemande fileDemandeMock;
+	private EntrepotSalles entrepotSallesMock;
+
 	private ServiceReservationSalle serviceReservation;
 
 	private static Calendar creerDate(int annee, int mois, int jour, int heure,
@@ -25,42 +29,56 @@ public class ServiceReservationSalleTest {
 		return date;
 	}
 
+	private void demarrerServiceReservation() {
+		serviceReservation.demarrer();
+	}
+
+	private void arreterServiceReservation() {
+		serviceReservation.arreter();
+	}
+
 	@Before
 	public void etantDonneUnNouveauServiceReservationSalle() {
-		procAssignationMock = mock(ProcessusAssignation.class);
-		serviceReservation = new ServiceReservationSalle(procAssignationMock);
+		assignSalleMock = mock(AssignateurSalle.class);
+		fileDemandeMock = mock(FileDemande.class);
+		entrepotSallesMock = mock(EntrepotSalles.class);
+
+		serviceReservation = new ServiceReservationSalle(assignSalleMock,
+				fileDemandeMock, entrepotSallesMock);
 	}
 
 	@Test
-	public void quandSetFrequenceAlorsDevraitEtreModifieeDansProcessusAssignation() {
+	public void quandSetFrequenceDevraitEtreModifieeDansAssignateurSalle() {
 		serviceReservation.setFrequence(FREQUENCE_QUELCONQUE);
-		verify(procAssignationMock).setFrequence(FREQUENCE_QUELCONQUE);
+		verify(assignSalleMock).setFrequence(FREQUENCE_QUELCONQUE);
 	}
 
 	@Test
-	public void quandSetLimiteAlorsDevraitEtreModifieeDansAssignateurSalle() {
+	public void quandSetLimiteDevraitEtreModifieeDansAssignateurSalle() {
 		serviceReservation.setLimite(LIMITE_QUELCONQUE);
-		verify(procAssignationMock).setLimite(LIMITE_QUELCONQUE);
+		verify(assignSalleMock).setLimite(LIMITE_QUELCONQUE);
 	}
 
 	@Test
-	public void quandAjouteDemandeAlorsDevraitEtreAjouteeDansAssignateurSalle() {
+	public void quandAjouteDemandeDevraitEtreDelegueAFileDemande() {
 		serviceReservation.ajouterDemande(DATE_DEBUT, DATE_FIN,
 				NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
-		verify(procAssignationMock).ajouterDemande(DATE_DEBUT, DATE_FIN,
+		verify(fileDemandeMock).ajouter(DATE_DEBUT, DATE_FIN,
 				NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
 	}
 
-	@Test
-	public void quandDemarreDevraitDemarrerProcessusAssignation() {
-		serviceReservation.demarrer();
-		verify(procAssignationMock).demarrer();
+	@Test(timeout = THREAD_TEST_TIMEOUT)
+	public void quandDemarreServiceDevraitDemanderAssignationDesSalles() {
+		demarrerServiceReservation();
+		verify(assignSalleMock, atLeastOnce()).assignerDemandeSalle();
+		arreterServiceReservation();
 	}
 
-	@Test
-	public void quandArreteDevraitArreterProcessusAssignation() {
-		serviceReservation.arreter();
-		verify(procAssignationMock).arreter();
+	@Test(timeout = THREAD_TEST_TIMEOUT)
+	public void quandArretServiceDevraitNePlusDemanderAssignationDesSalles() {
+		demarrerServiceReservation();
+		arreterServiceReservation();
+		verify(assignSalleMock, never()).assignerDemandeSalle();
 	}
 
 }
