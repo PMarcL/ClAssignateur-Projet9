@@ -70,7 +70,8 @@ public class ServiceReservationSalleTest {
 	@Test(timeout = THREAD_TEST_TIMEOUT)
 	public void quandDemarreServiceDevraitDemanderAssignationDesSalles() {
 		demarrerServiceReservation();
-		verify(assignSalleMock, atLeastOnce()).assignerDemandeSalle();
+		verify(assignSalleMock, atLeastOnce()).assignerDemandeSalle(
+				fileDemandeMock, entrepotSallesMock);
 		arreterServiceReservation();
 	}
 
@@ -78,7 +79,8 @@ public class ServiceReservationSalleTest {
 	public void quandArretServiceDevraitNePlusDemanderAssignationDesSalles() {
 		demarrerServiceReservation();
 		arreterServiceReservation();
-		verify(assignSalleMock, never()).assignerDemandeSalle();
+		verify(assignSalleMock, never()).assignerDemandeSalle(fileDemandeMock,
+				entrepotSallesMock);
 	}
 
 }

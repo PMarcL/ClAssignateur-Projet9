@@ -12,7 +12,7 @@ public class ServiceReservationSalle {
 	private class TacheAssignation implements Runnable {
 		public void run() {
 			while (threadEnVie) {
-				assignateurSalle.assignerDemandeSalle();
+				assignateurSalle.assignerDemandeSalle(demandes, salles);
 			}
 		}
 	}
