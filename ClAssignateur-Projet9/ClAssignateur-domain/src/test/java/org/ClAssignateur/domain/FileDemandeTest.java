@@ -85,7 +85,8 @@ public class FileDemandeTest {
 	}
 
 	@Test
-	public void lorsqueOnAjouteUnElementEtQuOnLEnleveFileDemandeDevientVide() {
+	public void lorsqueOnAjouteUnElementEtQuOnLEnleveFileDemandeDevientVide()
+			throws Throwable {
 		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT,
 				ORGANISATEUR);
 
@@ -95,8 +96,14 @@ public class FileDemandeTest {
 		assertTrue(fileEstVide);
 	}
 
+	@Test(expected = Exception.class)
+	public void lorsqueLaFileEstVideRetirerLanceUneException() throws Throwable {
+		fileDemande.retirer();
+	}
+
 	@Test
-	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSorti() {
+	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSortiPourUneMemePriorite()
+			throws Throwable {
 		FileDemande fileDemandeTroisElement = new FileDemande();
 		fileDemandeTroisElement.ajouter(DATE_DEBUT, DATE_FIN,
 				NOMBRE_PARTICIPANT, ORGANISATEUR);
@@ -120,6 +127,35 @@ public class FileDemandeTest {
 		assertEquals(DATE_DEBUT_3, troisiemeElementEnlever.getDebut());
 		assertEquals(DATE_FIN_3, troisiemeElementEnlever.getFin());
 		assertEquals(NOMBRE_PARTICIPANT_3,
+				troisiemeElementEnlever.getNbParticipant());
+	}
+
+	@Test
+	public void fileDemandePrioriseLesDemandesPlusPrioritaire()
+			throws Throwable {
+		FileDemande fileDemandeTroisElement = new FileDemande();
+		fileDemandeTroisElement.ajouter(DATE_DEBUT, DATE_FIN,
+				NOMBRE_PARTICIPANT, ORGANISATEUR, 1);
+		fileDemandeTroisElement.ajouter(DATE_DEBUT_2, DATE_FIN_2,
+				NOMBRE_PARTICIPANT_2, ORGANISATEUR, 2);
+		fileDemandeTroisElement.ajouter(DATE_DEBUT_3, DATE_FIN_3,
+				NOMBRE_PARTICIPANT_3, ORGANISATEUR, 3);
+
+		Demande premierElementEnlever = fileDemandeTroisElement.retirer();
+		Demande deuxiemeElementEnlever = fileDemandeTroisElement.retirer();
+		Demande troisiemeElementEnlever = fileDemandeTroisElement.retirer();
+
+		assertEquals(DATE_DEBUT_3, premierElementEnlever.getDebut());
+		assertEquals(DATE_FIN_3, premierElementEnlever.getFin());
+		assertEquals(NOMBRE_PARTICIPANT_3,
+				premierElementEnlever.getNbParticipant());
+		assertEquals(DATE_DEBUT_2, deuxiemeElementEnlever.getDebut());
+		assertEquals(DATE_FIN_2, deuxiemeElementEnlever.getFin());
+		assertEquals(NOMBRE_PARTICIPANT_2,
+				deuxiemeElementEnlever.getNbParticipant());
+		assertEquals(DATE_DEBUT, troisiemeElementEnlever.getDebut());
+		assertEquals(DATE_FIN, troisiemeElementEnlever.getFin());
+		assertEquals(NOMBRE_PARTICIPANT,
 				troisiemeElementEnlever.getNbParticipant());
 	}
 
