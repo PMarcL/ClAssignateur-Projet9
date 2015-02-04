@@ -8,8 +8,6 @@ import org.junit.Test;
 
 public class ServiceReservationSalleTest {
 
-	private final int THREAD_TEST_TIMEOUT = 100;
-	private final int FREQUENCE_QUELCONQUE = 3;
 	private final int LIMITE_QUELCONQUE = 5;
 	private final Calendar DATE_DEBUT = creerDate(2015, 1, 31, 14, 55, 34);
 	private final Calendar DATE_FIN = creerDate(2015, 1, 31, 15, 30, 49);
@@ -29,14 +27,6 @@ public class ServiceReservationSalleTest {
 		return date;
 	}
 
-	private void demarrerServiceReservation() {
-		serviceReservation.demarrer();
-	}
-
-	private void arreterServiceReservation() {
-		serviceReservation.arreter();
-	}
-
 	@Before
 	public void etantDonneUnNouveauServiceReservationSalle() {
 		assignSalleMock = mock(AssignateurSalle.class);
@@ -45,12 +35,6 @@ public class ServiceReservationSalleTest {
 
 		serviceReservation = new ServiceReservationSalle(assignSalleMock,
 				fileDemandeMock, entrepotSallesMock);
-	}
-
-	@Test
-	public void quandSetFrequenceDevraitEtreModifieeDansAssignateurSalle() {
-		serviceReservation.setFrequence(FREQUENCE_QUELCONQUE);
-		verify(assignSalleMock).setFrequence(FREQUENCE_QUELCONQUE);
 	}
 
 	@Test
@@ -65,22 +49,6 @@ public class ServiceReservationSalleTest {
 				NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
 		verify(fileDemandeMock).ajouter(DATE_DEBUT, DATE_FIN,
 				NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
-	}
-
-	@Test(timeout = THREAD_TEST_TIMEOUT)
-	public void quandDemarreServiceDevraitDemanderAssignationDesSalles() {
-		demarrerServiceReservation();
-		verify(assignSalleMock, atLeastOnce()).assignerDemandeSalle(
-				fileDemandeMock, entrepotSallesMock);
-		arreterServiceReservation();
-	}
-
-	@Test(timeout = THREAD_TEST_TIMEOUT)
-	public void quandArretServiceDevraitNePlusDemanderAssignationDesSalles() {
-		demarrerServiceReservation();
-		arreterServiceReservation();
-		verify(assignSalleMock, never()).assignerDemandeSalle(fileDemandeMock,
-				entrepotSallesMock);
 	}
 
 }
