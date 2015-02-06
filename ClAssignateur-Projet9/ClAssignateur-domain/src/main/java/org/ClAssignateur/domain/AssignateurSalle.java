@@ -23,8 +23,7 @@ public class AssignateurSalle {
 		strategieAssignation.verifierConditionAtteinte(this);
 	}
 
-	public void setStrategieDeclenchementAssignation(
-			IStrategieDeclenchementAssignation strategie) {
+	public void setStrategieDeclenchementAssignation(IStrategieDeclenchementAssignation strategie) {
 		strategieAssignation = strategie;
 	}
 }

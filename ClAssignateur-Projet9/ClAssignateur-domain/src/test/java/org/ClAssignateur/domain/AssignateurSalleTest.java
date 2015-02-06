@@ -11,8 +11,7 @@ public class AssignateurSalleTest {
 
 	@Test
 	public void etantDonneUnAssignateurSalleQuandDemandeAssignerDemandeSalleDevraitVerifierConditionsAssignation() {
-		AssignateurSalle assignSalle = new AssignateurSalle(
-				FREQUENCE_QUELCONQUE, LIMITE_QUELCONQUE);
+		AssignateurSalle assignSalle = new AssignateurSalle(FREQUENCE_QUELCONQUE, LIMITE_QUELCONQUE);
 		IStrategieDeclenchementAssignation strategieMock = mock(IStrategieDeclenchementAssignation.class);
 		assignSalle.setStrategieDeclenchementAssignation(strategieMock);
 

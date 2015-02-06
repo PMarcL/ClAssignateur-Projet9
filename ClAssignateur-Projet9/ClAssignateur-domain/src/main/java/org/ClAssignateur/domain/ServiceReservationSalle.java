@@ -1,18 +1,24 @@
 package org.ClAssignateur.domain;
 
+import java.util.concurrent.Executor;
 import java.util.Calendar;
 
-public class ServiceReservationSalle {
+public class ServiceReservationSalle implements Runnable {
 
 	private AssignateurSalle assignateurSalle;
 	private FileDemande demandes;
 	private EntrepotSalles salles;
+	private Executor executeur;
+	private boolean serviceEnFonction;
 
-	public ServiceReservationSalle(AssignateurSalle assignateurSalle,
-			FileDemande demandes, EntrepotSalles salles) {
+	public ServiceReservationSalle(AssignateurSalle assignateurSalle, FileDemande demandes, EntrepotSalles salles,
+			Executor executeur) {
 		this.assignateurSalle = assignateurSalle;
 		this.demandes = demandes;
 		this.salles = salles;
+		serviceEnFonction = true;
+		this.executeur = executeur;
+		this.executeur.execute(this);
 	}
 
 	public void setFrequence(int frequence) {
@@ -23,10 +29,23 @@ public class ServiceReservationSalle {
 		this.assignateurSalle.setLimite(limite);
 	}
 
-	public void ajouterDemande(Calendar dateDebut, Calendar dateFin,
-			int nbParticipants, String nomOrganisation) {
-		this.demandes.ajouter(dateDebut, dateFin, nbParticipants,
-				nomOrganisation);
+	public void ajouterDemande(Calendar dateDebut, Calendar dateFin, int nbParticipants, String nomOrganisation) {
+		this.demandes.ajouter(dateDebut, dateFin, nbParticipants, nomOrganisation);
+	}
+
+	public void arreterService() {
+		serviceEnFonction = false;
+	}
+
+	public void run() {
+		while (serviceEnFonction) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			assignateurSalle.assignerDemandeSalle(demandes, salles);
+		}
 	}
 
 }
