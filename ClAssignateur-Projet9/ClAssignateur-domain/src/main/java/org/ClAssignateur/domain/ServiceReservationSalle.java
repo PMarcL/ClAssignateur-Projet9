@@ -33,6 +33,10 @@ public class ServiceReservationSalle implements Runnable {
 		this.demandes.ajouter(dateDebut, dateFin, nbParticipants, nomOrganisation);
 	}
 
+	public void ajouterDemande(Demande demande) {
+		this.demandes.ajouter(demande);
+	}
+
 	public void arreterService() {
 		serviceEnFonction = false;
 	}
@@ -42,7 +46,9 @@ public class ServiceReservationSalle implements Runnable {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				arreterService();
+				System.out.println("Erreur d'exécution, le système doit s'arrêter. Message d'erreur:\n"
+						+ e.getMessage());
 			}
 			assignateurSalle.assignerDemandeSalle(demandes, salles);
 		}

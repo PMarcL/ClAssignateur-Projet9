@@ -14,6 +14,7 @@ import org.junit.Test;
 public class ServiceReservationSalleTest {
 
 	private final int LIMITE_QUELCONQUE = 5;
+	private final int FREQUENCE_QUELCONQUE = 3;
 	private final Calendar DATE_DEBUT = creerDate(2015, 1, 31, 14, 55, 34);
 	private final Calendar DATE_FIN = creerDate(2015, 1, 31, 15, 30, 49);
 	private final int NOMBRE_PARTICIPANTS = 8;
@@ -30,6 +31,9 @@ public class ServiceReservationSalleTest {
 
 	@Mock
 	private Executor executeMock;
+
+	@Mock
+	private Demande demandeMock;
 
 	private ServiceReservationSalle serviceReservation;
 
@@ -53,9 +57,21 @@ public class ServiceReservationSalleTest {
 	}
 
 	@Test
+	public void quandSetFrequenceDevraitEtreModifieeDansAssignateurSalle() {
+		serviceReservation.setFrequence(FREQUENCE_QUELCONQUE);
+		verify(assignSalleMock).setFrequence(FREQUENCE_QUELCONQUE);
+	}
+
+	@Test
 	public void quandAjouteDemandeDevraitEtreDelegueAFileDemande() {
 		serviceReservation.ajouterDemande(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
 		verify(fileDemandeMock).ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
+	}
+
+	@Test
+	public void quandAjouteDemandeDejaInstancieeDevraitEtreDelegueAFileDemande() {
+		serviceReservation.ajouterDemande(demandeMock);
+		verify(fileDemandeMock).ajouter(demandeMock);
 	}
 
 	@Test
