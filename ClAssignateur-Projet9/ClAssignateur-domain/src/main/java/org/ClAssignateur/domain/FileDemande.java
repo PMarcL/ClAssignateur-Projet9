@@ -28,11 +28,12 @@ public class FileDemande {
 	}
 
 	public boolean estVide() {
-		return this.taille() == 0;
+		return this.taille()== 0;
 	}
 
 	public void ajouter(Calendar dateDebut, Calendar dateFin,
 			int nombreParticipant, String organisateur) {
+		
 		Demande demandeAjoutee = new Demande(dateDebut, dateFin,
 				nombreParticipant, organisateur);
 
@@ -40,11 +41,7 @@ public class FileDemande {
 				demandeAjoutee);
 	}
 
-	public void ajouter(Calendar dateDebut, Calendar dateFin,
-			int nombreParticipant, String organisateur, int priorite) {
-		Demande demandeAjoutee = new Demande(dateDebut, dateFin,
-				nombreParticipant, organisateur, priorite);
-
+	public void ajouter(Demande demandeAjoutee) {
 		this.getFileSelonPriorite(demandeAjoutee.getPriorite()).offer(
 				demandeAjoutee);
 	}

@@ -25,6 +25,19 @@ public class FileDemandeTest {
 	private static final Calendar DATE_FIN_3 = creerDate(2015, 07, 3, 12, 30, 0);
 	private static final int NOMBRE_PARTICIPANT_3 = 12;
 
+	private static final Demande DEMANDE = new Demande(
+			DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
+	private static final Demande DEMANDE_2 = new Demande(
+			DATE_DEBUT_2, DATE_FIN_2, NOMBRE_PARTICIPANT_2, ORGANISATEUR);
+	private static final Demande DEMANDE_3 = new Demande(
+			DATE_DEBUT_3, DATE_FIN_3, NOMBRE_PARTICIPANT_3, ORGANISATEUR);
+
+	private static final Demande DEMANDE_PRIORITE_FORTE = new Demande(DATE_DEBUT_3,
+			DATE_FIN_3, NOMBRE_PARTICIPANT_3, ORGANISATEUR, 3);
+	private static final Demande DEMANDE_PRIORITE_MOYENNE = new Demande(DATE_DEBUT_2,
+			DATE_FIN_2, NOMBRE_PARTICIPANT_2, ORGANISATEUR, 2);
+	private static final Demande DEMANDE_PRIORITE_FAIBLE = new Demande(DATE_DEBUT,
+			DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR, 1);
 	private FileDemande fileDemande;
 
 	public static Calendar creerDate(int annee, int mois, int jour, int heure,
@@ -53,8 +66,7 @@ public class FileDemandeTest {
 
 	@Test
 	public void lorsqueOnAjouteUneDemandeAFileDemandeLaFileNestPlusVide() {
-		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT,
-				ORGANISATEUR);
+		fileDemande.ajouter(DEMANDE);
 
 		boolean fileEstVide = fileDemande.estVide();
 
@@ -64,9 +76,8 @@ public class FileDemandeTest {
 	@Test
 	public void lorsqueOnAjouteUneDemandeAFileDemandeSaTailleAugmenteDeUn() {
 		int tailleInitiale = fileDemande.taille();
-		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT,
-				ORGANISATEUR);
 
+		fileDemande.ajouter(DEMANDE);
 		int tailleDeLaFile = fileDemande.taille();
 		int tailleDesiree = tailleInitiale + 1;
 
@@ -75,8 +86,7 @@ public class FileDemandeTest {
 
 	@Test
 	public void lorsqueOnVideLaFileElleDevientVide() {
-		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT,
-				ORGANISATEUR);
+		fileDemande.ajouter(DEMANDE);
 
 		fileDemande.vider();
 		boolean fileEstVide = fileDemande.estVide();
@@ -87,8 +97,7 @@ public class FileDemandeTest {
 	@Test
 	public void lorsqueOnAjouteUnElementEtQuOnLEnleveFileDemandeDevientVide()
 			throws Throwable {
-		fileDemande.ajouter(DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT,
-				ORGANISATEUR);
+		fileDemande.ajouter(DEMANDE);
 
 		fileDemande.retirer();
 		boolean fileEstVide = fileDemande.estVide();
@@ -105,58 +114,38 @@ public class FileDemandeTest {
 	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSortiPourUneMemePriorite()
 			throws Throwable {
 		FileDemande fileDemandeTroisElement = new FileDemande();
-		fileDemandeTroisElement.ajouter(DATE_DEBUT, DATE_FIN,
-				NOMBRE_PARTICIPANT, ORGANISATEUR);
-		fileDemandeTroisElement.ajouter(DATE_DEBUT_2, DATE_FIN_2,
-				NOMBRE_PARTICIPANT_2, ORGANISATEUR);
-		fileDemandeTroisElement.ajouter(DATE_DEBUT_3, DATE_FIN_3,
-				NOMBRE_PARTICIPANT_3, ORGANISATEUR);
+
+		fileDemandeTroisElement.ajouter(DEMANDE);
+		fileDemandeTroisElement.ajouter(DEMANDE_2);
+		fileDemandeTroisElement.ajouter(DEMANDE_3);
 
 		Demande premierElementEnlever = fileDemandeTroisElement.retirer();
 		Demande deuxiemeElementEnlever = fileDemandeTroisElement.retirer();
 		Demande troisiemeElementEnlever = fileDemandeTroisElement.retirer();
 
-		assertEquals(DATE_DEBUT, premierElementEnlever.getDebut());
-		assertEquals(DATE_FIN, premierElementEnlever.getFin());
-		assertEquals(NOMBRE_PARTICIPANT,
-				premierElementEnlever.getNbParticipant());
-		assertEquals(DATE_DEBUT_2, deuxiemeElementEnlever.getDebut());
-		assertEquals(DATE_FIN_2, deuxiemeElementEnlever.getFin());
-		assertEquals(NOMBRE_PARTICIPANT_2,
-				deuxiemeElementEnlever.getNbParticipant());
-		assertEquals(DATE_DEBUT_3, troisiemeElementEnlever.getDebut());
-		assertEquals(DATE_FIN_3, troisiemeElementEnlever.getFin());
-		assertEquals(NOMBRE_PARTICIPANT_3,
-				troisiemeElementEnlever.getNbParticipant());
+		assertEquals(DEMANDE, premierElementEnlever);
+		assertEquals(DEMANDE_2, deuxiemeElementEnlever);
+		assertEquals(DEMANDE_3, troisiemeElementEnlever);
 	}
 
 	@Test
 	public void fileDemandePrioriseLesDemandesPlusPrioritaire()
 			throws Throwable {
 		FileDemande fileDemandeTroisElement = new FileDemande();
-		fileDemandeTroisElement.ajouter(DATE_DEBUT, DATE_FIN,
-				NOMBRE_PARTICIPANT, ORGANISATEUR, 1);
-		fileDemandeTroisElement.ajouter(DATE_DEBUT_2, DATE_FIN_2,
-				NOMBRE_PARTICIPANT_2, ORGANISATEUR, 2);
-		fileDemandeTroisElement.ajouter(DATE_DEBUT_3, DATE_FIN_3,
-				NOMBRE_PARTICIPANT_3, ORGANISATEUR, 3);
+
+		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_FAIBLE);
+		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_MOYENNE);
+		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_FORTE);
 
 		Demande premierElementEnlever = fileDemandeTroisElement.retirer();
 		Demande deuxiemeElementEnlever = fileDemandeTroisElement.retirer();
 		Demande troisiemeElementEnlever = fileDemandeTroisElement.retirer();
 
-		assertEquals(DATE_DEBUT_3, premierElementEnlever.getDebut());
-		assertEquals(DATE_FIN_3, premierElementEnlever.getFin());
-		assertEquals(NOMBRE_PARTICIPANT_3,
-				premierElementEnlever.getNbParticipant());
-		assertEquals(DATE_DEBUT_2, deuxiemeElementEnlever.getDebut());
-		assertEquals(DATE_FIN_2, deuxiemeElementEnlever.getFin());
-		assertEquals(NOMBRE_PARTICIPANT_2,
-				deuxiemeElementEnlever.getNbParticipant());
-		assertEquals(DATE_DEBUT, troisiemeElementEnlever.getDebut());
-		assertEquals(DATE_FIN, troisiemeElementEnlever.getFin());
-		assertEquals(NOMBRE_PARTICIPANT,
-				troisiemeElementEnlever.getNbParticipant());
+		assertEquals(DEMANDE_PRIORITE_FORTE, premierElementEnlever);
+		assertEquals(DEMANDE_PRIORITE_MOYENNE, deuxiemeElementEnlever);
+		assertEquals(DEMANDE_PRIORITE_FAIBLE, troisiemeElementEnlever);
 	}
+
+	
 
 }
