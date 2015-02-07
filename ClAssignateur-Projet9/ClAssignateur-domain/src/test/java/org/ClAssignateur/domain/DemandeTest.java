@@ -9,23 +9,22 @@ import org.w3c.dom.ranges.RangeException;
 
 public class DemandeTest {
 
-	private static final Calendar DATE_DEBUT = creerDate(2015, 07, 1, 12, 29, 0);
-	private static final Calendar DATE_FIN = creerDate(2015, 07, 1, 12, 30, 0);
-	private static final Calendar DATE_DEBUT_ULTERIEUR = creerDate(2015, 8, 1,
-			12, 29, 0);
-	private static final Calendar DATE_FIN_ULTERIEUR = creerDate(2015, 8, 1,
-			12, 30, 0);
-	private static final String ORGANISATEUR = "Simon";
-	private static final int NOMBRE_PARTICIPANT = 10;
-	private static final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
-	private static final int PRIORITE_INITIALE = 1;
-	private static final int PRIORITE_CONSTRUCTEUR = 2;
-	private static final int PRIORITE_INCORRECT_INF = 0;
-	private static final int PRIORITE_INCORRECT_SUP = 6;
+	private final Calendar DATE_DEBUT = creerDate(2015, 07, 1, 12, 29, 0);
+	private final Calendar DATE_FIN = creerDate(2015, 07, 1, 12, 30, 0);
+	private final Calendar DATE_DEBUT_ULTERIEUR = creerDate(2015, 8, 1, 12, 29,
+			0);
+	private final Calendar DATE_FIN_ULTERIEUR = creerDate(2015, 8, 1, 12, 30, 0);
+	private final String ORGANISATEUR = "Simon";
+	private final int NOMBRE_PARTICIPANT = 10;
+	private final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
+	private final int PRIORITE_INITIALE = 1;
+	private final int PRIORITE_CONSTRUCTEUR = 2;
+	private final int PRIORITE_INCORRECT_INF = 0;
+	private final int PRIORITE_INCORRECT_SUP = 6;
 
 	private Demande demande;
 
-	public static Calendar creerDate(int annee, int mois, int jour, int heure,
+	private Calendar creerDate(int annee, int mois, int jour, int heure,
 			int minute, int seconde) {
 		Calendar date = Calendar.getInstance();
 		date.set(annee, mois, jour, heure, minute, seconde);
