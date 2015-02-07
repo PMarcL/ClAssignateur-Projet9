@@ -29,13 +29,13 @@ public class ServiceReservationSalleTest {
 		return date;
 	}
 
-	private void demarrerServiceReservation() {
-		serviceReservation.demarrer();
-	}
-
-	private void arreterServiceReservation() {
-		serviceReservation.arreter();
-	}
+	// private void demarrerServiceReservation() {
+	// serviceReservation.demarrer();
+	// }
+	//
+	// private void arreterServiceReservation() {
+	// serviceReservation.arreter();
+	// }
 
 	@Before
 	public void etantDonneUnNouveauServiceReservationSalle() {
@@ -67,20 +67,21 @@ public class ServiceReservationSalleTest {
 				NOMBRE_PARTICIPANTS, NOM_ORGANISATEUR);
 	}
 
-	@Test(timeout = THREAD_TEST_TIMEOUT)
-	public void quandDemarreServiceDevraitDemanderAssignationDesSalles() {
-		demarrerServiceReservation();
-		verify(assignSalleMock, atLeastOnce()).assignerDemandeSalle(
-				fileDemandeMock, entrepotSallesMock);
-		arreterServiceReservation();
-	}
-
-	@Test(timeout = THREAD_TEST_TIMEOUT)
-	public void quandArretServiceDevraitNePlusDemanderAssignationDesSalles() {
-		demarrerServiceReservation();
-		arreterServiceReservation();
-		verify(assignSalleMock, never()).assignerDemandeSalle(fileDemandeMock,
-				entrepotSallesMock);
-	}
+	// @Test(timeout = THREAD_TEST_TIMEOUT)
+	// public void quandDemarreServiceDevraitDemanderAssignationDesSalles() {
+	// demarrerServiceReservation();
+	// verify(assignSalleMock, atLeastOnce()).assignerDemandeSalle(
+	// fileDemandeMock, entrepotSallesMock);
+	// arreterServiceReservation();
+	// }
+	//
+	// @Test(timeout = THREAD_TEST_TIMEOUT)
+	// public void quandArretServiceDevraitNePlusDemanderAssignationDesSalles()
+	// {
+	// demarrerServiceReservation();
+	// arreterServiceReservation();
+	// verify(assignSalleMock, never()).assignerDemandeSalle(fileDemandeMock,
+	// entrepotSallesMock);
+	// }
 
 }

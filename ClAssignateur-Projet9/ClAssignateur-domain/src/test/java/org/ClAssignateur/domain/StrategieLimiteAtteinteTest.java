@@ -14,39 +14,33 @@ public class StrategieLimiteAtteinteTest {
 	private final int LIMITE_NON_ATTEINTE = LIMITE_COURANTE - 1;
 
 	private StrategieLimiteAtteinte strategie;
-	private AssignateurSalle assignateurContexteMock;
+	private IStrategieDeclenchementAssignationContexte contexteMock;
 
 	@Before
 	public void initialement() {
 		strategie = new StrategieLimiteAtteinte();
-		assignateurContexteMock = mock(AssignateurSalle.class);
-		given(assignateurContexteMock.getLimite()).willReturn(LIMITE_COURANTE);
+		contexteMock = mock(IStrategieDeclenchementAssignationContexte.class);
+		given(contexteMock.getLimite()).willReturn(LIMITE_COURANTE);
 	}
 
 	@Test
-	public void quandLimiteDepasseeDevraitAutoriserAssignation() {
-		given(assignateurContexteMock.getNbDemandesAssignationCourantes())
-				.willReturn(LIMITE_DEPASSEE);
-		boolean result = strategie
-				.verifierConditionAtteinte(assignateurContexteMock);
+	public void etantDonneLimiteDepasseeQuandVerifierDevraitAutoriserAssignation() {
+		given(contexteMock.getNbDemandesAssignationCourantes()).willReturn(LIMITE_DEPASSEE);
+		boolean result = strategie.verifierConditionAtteinte(contexteMock);
 		assertTrue(result);
 	}
 
 	@Test
-	public void quandLimiteNonAtteinteDevraitNePasAutoriserAssignation() {
-		given(assignateurContexteMock.getNbDemandesAssignationCourantes())
-				.willReturn(LIMITE_NON_ATTEINTE);
-		boolean result = strategie
-				.verifierConditionAtteinte(assignateurContexteMock);
+	public void etantDonneLimiteNonAtteinteQuandVerifierDevraitNePasAutoriserAssignation() {
+		given(contexteMock.getNbDemandesAssignationCourantes()).willReturn(LIMITE_NON_ATTEINTE);
+		boolean result = strategie.verifierConditionAtteinte(contexteMock);
 		assertFalse(result);
 	}
 
 	@Test
 	public void quandLimiteAtteinteDevraitAutoriserAssignation() {
-		given(assignateurContexteMock.getNbDemandesAssignationCourantes())
-				.willReturn(LIMITE_COURANTE);
-		boolean result = strategie
-				.verifierConditionAtteinte(assignateurContexteMock);
+		given(contexteMock.getNbDemandesAssignationCourantes()).willReturn(LIMITE_COURANTE);
+		boolean result = strategie.verifierConditionAtteinte(contexteMock);
 		assertTrue(result);
 	}
 
