@@ -7,17 +7,17 @@ public class EntrepotSalles {
 
 	List<Salle> salles = new ArrayList<Salle>();
 
-	public boolean EstVide() {
+	public boolean estVide() {
 		return salles.isEmpty();
 	}
 
-	public void Ranger(Salle salle) {
+	public void ranger(Salle salle) {
 		int capacite = salle.getCapacite();
 		int emplacementDeRangement = trouverEmplacementSalleEgaleOuSuperieurProcheACapaciteRecherche(capacite);
 		salles.add(emplacementDeRangement, salle);
 	}
 
-	public Salle ObtenirSalleRepondantADemande(Demande demande) throws AucunesSallesDisponiblesException {
+	public Salle obtenirSalleRepondantADemande(Demande demande) throws AucunesSallesDisponiblesException {
 		int NbParticipants = demande.getNbParticipant();
 		int emplacementDeSallePotable = trouverEmplacementSalleEgaleOuSuperieurProcheACapaciteRecherche(NbParticipants);
 		while (emplacementDeSallePotable < salles.size()) {

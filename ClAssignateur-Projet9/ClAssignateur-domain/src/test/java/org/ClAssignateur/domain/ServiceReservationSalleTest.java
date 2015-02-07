@@ -16,7 +16,7 @@ public class ServiceReservationSalleTest {
 	private final int NOMBRE_PARTICIPANTS = 8;
 	private final String NOM_ORGANISATEUR = "John Dow";
 
-	private AssignateurSalle assignSalleMock;
+	private DeclencheurAssignationSalle assignSalleMock;
 	private FileDemande fileDemandeMock;
 	private EntrepotSalles entrepotSallesMock;
 
@@ -39,7 +39,7 @@ public class ServiceReservationSalleTest {
 
 	@Before
 	public void etantDonneUnNouveauServiceReservationSalle() {
-		assignSalleMock = mock(AssignateurSalle.class);
+		assignSalleMock = mock(DeclencheurAssignationSalle.class);
 		fileDemandeMock = mock(FileDemande.class);
 		entrepotSallesMock = mock(EntrepotSalles.class);
 

@@ -13,12 +13,12 @@ public class StrategieDelaiDepasseTest {
 	private final int FREQUENCE = 5;
 
 	private StrategieDelaiDepasse strategie;
-	private AssignateurSalle contexteMock;
+	private DeclencheurAssignationSalle contexteMock;
 
 	@Before
 	public void initialement() {
 		strategie = new StrategieDelaiDepasse();
-		contexteMock = mock(AssignateurSalle.class);
+		contexteMock = mock(DeclencheurAssignationSalle.class);
 		given(contexteMock.getFrequence()).willReturn(FREQUENCE);
 	}
 

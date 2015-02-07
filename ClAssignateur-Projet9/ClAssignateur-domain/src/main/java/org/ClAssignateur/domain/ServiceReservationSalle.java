@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 public class ServiceReservationSalle {
 
-	private AssignateurSalle assignateurSalle;
+	private DeclencheurAssignationSalle declencheurAssignationSalle;
 	private FileDemande demandes;
 	private EntrepotSalles salles;
 	private boolean threadEnVie;
@@ -12,14 +12,14 @@ public class ServiceReservationSalle {
 	private class TacheAssignation implements Runnable {
 		public void run() {
 			while (threadEnVie) {
-				assignateurSalle.assignerDemandeSalle(demandes, salles);
+				declencheurAssignationSalle.verifierConditionEtAssignerDemandeSalle(demandes, salles);
 			}
 		}
 	}
 
-	public ServiceReservationSalle(AssignateurSalle assignateurSalle,
+	public ServiceReservationSalle(DeclencheurAssignationSalle declencheurAssignationSalle,
 			FileDemande demandes, EntrepotSalles salles) {
-		this.assignateurSalle = assignateurSalle;
+		this.declencheurAssignationSalle = declencheurAssignationSalle;
 		this.demandes = demandes;
 		this.salles = salles;
 
@@ -27,11 +27,11 @@ public class ServiceReservationSalle {
 	}
 
 	public void setFrequence(int frequence) {
-		this.assignateurSalle.setFrequence(frequence);
+		this.declencheurAssignationSalle.setFrequence(frequence);
 	}
 
 	public void setLimite(int limite) {
-		this.assignateurSalle.setLimite(limite);
+		this.declencheurAssignationSalle.setLimite(limite);
 	}
 
 	public void ajouterDemande(Calendar dateDebut, Calendar dateFin,

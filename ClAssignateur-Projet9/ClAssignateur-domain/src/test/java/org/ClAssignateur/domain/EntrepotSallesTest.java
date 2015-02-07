@@ -41,22 +41,22 @@ public class EntrepotSallesTest {
 
 	@Test
 	public void EntrepotSallesEstInitialementVide() {
-		assertTrue(entrepotSalles.EstVide());
+		assertTrue(entrepotSalles.estVide());
 	}
 
 	@Test
 	public void lorsqueOnRangeUneSalleDansEntrepotIlNestPlusVide() {
-		entrepotSalles.Ranger(SALLE_CAPACITE_10);
+		entrepotSalles.ranger(SALLE_CAPACITE_10);
 
-		assertFalse(entrepotSalles.EstVide());
+		assertFalse(entrepotSalles.estVide());
 	}
 
 	@Test
 	public void lorsqueUneSalleDisponibleEstDansLEntrepotOnPeutLObtenir() {
 		try {
-			entrepotSalles.Ranger(SALLE_CAPACITE_10);
+			entrepotSalles.ranger(SALLE_CAPACITE_10);
 
-			Salle salleObtenue = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+			Salle salleObtenue = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
 
 			assertEquals(SALLE_CAPACITE_10, salleObtenue);
 		} catch (AucunesSallesDisponiblesException e) {
@@ -67,13 +67,13 @@ public class EntrepotSallesTest {
 	@Test
 	public void lorsquePlusieursSalleDisponibleSimilaireSontDansLEntrepotOnPeutLesObtenir() {
 		try {
-			entrepotSalles.Ranger(SALLE_CAPACITE_10);
-			entrepotSalles.Ranger(SALLE_CAPACITE_10);
-			entrepotSalles.Ranger(SALLE_CAPACITE_10);
+			entrepotSalles.ranger(SALLE_CAPACITE_10);
+			entrepotSalles.ranger(SALLE_CAPACITE_10);
+			entrepotSalles.ranger(SALLE_CAPACITE_10);
 
-			Salle salleObtenue1 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
-			Salle salleObtenue2 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
-			Salle salleObtenue3 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+			Salle salleObtenue1 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+			Salle salleObtenue2 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+			Salle salleObtenue3 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
 
 			assertEquals(SALLE_CAPACITE_10, salleObtenue1);
 			assertEquals(SALLE_CAPACITE_10, salleObtenue2);
@@ -86,13 +86,13 @@ public class EntrepotSallesTest {
 	@Test
 	public void lorsqueNbImpaireDeSalleDisponiblesSontDansLEntrepotOnPeutLesObtenir() {
 		try {
-			entrepotSalles.Ranger(SALLE_CAPACITE_10);
-			entrepotSalles.Ranger(SALLE_CAPACITE_100);
-			entrepotSalles.Ranger(SALLE_CAPACITE_1000);
+			entrepotSalles.ranger(SALLE_CAPACITE_10);
+			entrepotSalles.ranger(SALLE_CAPACITE_100);
+			entrepotSalles.ranger(SALLE_CAPACITE_1000);
 
-			Salle salleObtenue1 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
-			Salle salleObtenue2 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_100_PARTICIPANTS);
-			Salle salleObtenue3 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_1000_PARTICIPANTS);
+			Salle salleObtenue1 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+			Salle salleObtenue2 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_100_PARTICIPANTS);
+			Salle salleObtenue3 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_1000_PARTICIPANTS);
 
 			assertEquals(SALLE_CAPACITE_10, salleObtenue1);
 			assertEquals(SALLE_CAPACITE_100, salleObtenue2);
@@ -105,15 +105,15 @@ public class EntrepotSallesTest {
 	@Test
 	public void lorsqueNbPaireDeSalleDisponiblesSontDansLEntrepotOnPeutLesObtenir() {
 		try {
-			entrepotSalles.Ranger(SALLE_CAPACITE_1);
-			entrepotSalles.Ranger(SALLE_CAPACITE_10);
-			entrepotSalles.Ranger(SALLE_CAPACITE_100);
-			entrepotSalles.Ranger(SALLE_CAPACITE_1000);
+			entrepotSalles.ranger(SALLE_CAPACITE_1);
+			entrepotSalles.ranger(SALLE_CAPACITE_10);
+			entrepotSalles.ranger(SALLE_CAPACITE_100);
+			entrepotSalles.ranger(SALLE_CAPACITE_1000);
 
-			Salle salleObtenue1 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_1_PARTICIPANTS);
-			Salle salleObtenue2 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
-			Salle salleObtenue3 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_100_PARTICIPANTS);
-			Salle salleObtenue4 = entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_1000_PARTICIPANTS);
+			Salle salleObtenue1 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_1_PARTICIPANTS);
+			Salle salleObtenue2 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+			Salle salleObtenue3 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_100_PARTICIPANTS);
+			Salle salleObtenue4 = entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_1000_PARTICIPANTS);
 
 			assertEquals(SALLE_CAPACITE_1, salleObtenue1);
 			assertEquals(SALLE_CAPACITE_10, salleObtenue2);
@@ -127,11 +127,11 @@ public class EntrepotSallesTest {
 	@Test
 	public void lorsqueOnObtientLaSalleUniqueDeLEntrepotIlDevientVide() {
 		try {
-			entrepotSalles.Ranger(SALLE_CAPACITE_10);
+			entrepotSalles.ranger(SALLE_CAPACITE_10);
 
-			entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+			entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
 
-			assertTrue(entrepotSalles.EstVide());
+			assertTrue(entrepotSalles.estVide());
 		} catch (AucunesSallesDisponiblesException e) {
 			fail("Le test dois avoir touver une salle disponible pour la demande.");
 		}
@@ -141,14 +141,14 @@ public class EntrepotSallesTest {
 	public void lorsqueSeulementUneSalleReserveEstDansLEntrepotIlYAUneExeption()
 			throws AucunesSallesDisponiblesException {
 		SALLE_RESERVE.placerReservation(DEMANDE_10_PARTICIPANTS);
-		entrepotSalles.Ranger(SALLE_RESERVE);
+		entrepotSalles.ranger(SALLE_RESERVE);
 
-		entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+		entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
 	}
 
 	@Test(expected = AucunesSallesDisponiblesException.class)
 	public void lorsqueAucunesSalleDisponibleEstDansLEntrepotIlYAUneExeption() throws AucunesSallesDisponiblesException {
-		entrepotSalles.ObtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
+		entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
 	}
 
 }
