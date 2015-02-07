@@ -1,7 +1,5 @@
 package org.ClAssignateur.domain;
 
-import java.util.Calendar;
-
 public class ServiceReservationSalle {
 
 	private DeclencheurAssignationSalle declencheurAssignationSalle;
@@ -17,8 +15,11 @@ public class ServiceReservationSalle {
 		}
 	}
 
-	public ServiceReservationSalle(DeclencheurAssignationSalle declencheurAssignationSalle,
-			FileDemande demandes, EntrepotSalles salles) {
+	public ServiceReservationSalle(DeclencheurAssignationSalle declencheurAssignationSalle, FileDemande demandes,
+			EntrepotSalles salles) {
+		if (salles.estVide())
+			throw new IllegalArgumentException("L'entrepôt ne contient aucune salle.");
+
 		this.declencheurAssignationSalle = declencheurAssignationSalle;
 		this.demandes = demandes;
 		this.salles = salles;
@@ -34,10 +35,8 @@ public class ServiceReservationSalle {
 		this.declencheurAssignationSalle.setLimite(limite);
 	}
 
-	public void ajouterDemande(Calendar dateDebut, Calendar dateFin,
-			int nbParticipants, String nomOrganisation) {
-		this.demandes.ajouter(dateDebut, dateFin, nbParticipants,
-				nomOrganisation);
+	public void ajouterDemande(Demande demandeAjoutee) {
+		this.demandes.ajouter(demandeAjoutee);
 	}
 
 	public void demarrer() {

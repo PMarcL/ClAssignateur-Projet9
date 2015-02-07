@@ -1,7 +1,6 @@
 package org.ClAssignateur.domain;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -28,22 +27,11 @@ public class FileDemande {
 	}
 
 	public boolean estVide() {
-		return this.taille()== 0;
-	}
-
-	public void ajouter(Calendar dateDebut, Calendar dateFin,
-			int nombreParticipant, String organisateur) {
-		
-		Demande demandeAjoutee = new Demande(dateDebut, dateFin,
-				nombreParticipant, organisateur);
-
-		this.getFileSelonPriorite(demandeAjoutee.getPriorite()).offer(
-				demandeAjoutee);
+		return this.taille() == 0;
 	}
 
 	public void ajouter(Demande demandeAjoutee) {
-		this.getFileSelonPriorite(demandeAjoutee.getPriorite()).offer(
-				demandeAjoutee);
+		this.getFileSelonPriorite(demandeAjoutee.getPriorite()).offer(demandeAjoutee);
 	}
 
 	public void vider() {
