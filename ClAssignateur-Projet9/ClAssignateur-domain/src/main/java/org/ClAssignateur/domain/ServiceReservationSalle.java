@@ -1,30 +1,26 @@
 package org.ClAssignateur.domain;
 
-public class ServiceReservationSalle {
+import java.util.concurrent.Executor;
+
+public class ServiceReservationSalle implements Runnable {
 
 	private DeclencheurAssignationSalle declencheurAssignationSalle;
 	private FileDemande demandes;
 	private EntrepotSalles salles;
-	private boolean threadEnVie;
-
-	private class TacheAssignation implements Runnable {
-		public void run() {
-			while (threadEnVie) {
-				declencheurAssignationSalle.verifierConditionEtAssignerDemandeSalle(demandes, salles);
-			}
-		}
-	}
+	private Executor executeur;
+	private boolean serviceEnFonction;
 
 	public ServiceReservationSalle(DeclencheurAssignationSalle declencheurAssignationSalle, FileDemande demandes,
-			EntrepotSalles salles) {
+			EntrepotSalles salles, Executor executeur) {
 		if (salles.estVide())
 			throw new IllegalArgumentException("L'entrepôt ne contient aucune salle.");
 
 		this.declencheurAssignationSalle = declencheurAssignationSalle;
 		this.demandes = demandes;
 		this.salles = salles;
-
-		threadEnVie = false;
+		serviceEnFonction = true;
+		this.executeur = executeur;
+		this.executeur.execute(this);
 	}
 
 	public void setFrequence(int frequence) {
@@ -39,13 +35,22 @@ public class ServiceReservationSalle {
 		this.demandes.ajouter(demandeAjoutee);
 	}
 
-	public void demarrer() {
-		this.threadEnVie = true;
-		new Thread(new TacheAssignation()).start();
+	public void arreterService() {
+		serviceEnFonction = false;
 	}
 
-	public void arreter() {
-		this.threadEnVie = false;
+	public void run() {
+		while (serviceEnFonction) {
+			declencheurAssignationSalle.verifierConditionEtAssignerDemandeSalle(demandes, salles);
+
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				arreterService();
+				System.out.println("Erreur d'exécution, le système doit s'arrêter. Message d'erreur:\n"
+						+ e.getMessage());
+			}
+		}
 	}
 
 }

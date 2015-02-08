@@ -1,9 +1,10 @@
 package org.ClAssignateur.domain;
 
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
+import org.mockito.Mock;
 import java.util.Calendar;
+import java.util.concurrent.Executor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,9 +20,20 @@ public class ServiceReservationSalleTest {
 	private final boolean ENTREPOT_SALLE_VIDE = true;
 	private final boolean ENTREPOT_SALLE_NON_VIDE = false;
 
+	@Mock
 	private DeclencheurAssignationSalle declencheurAssignMock;
+
+	@Mock
 	private FileDemande fileDemandeMock;
+
+	@Mock
 	private EntrepotSalles entrepotSallesMock;
+
+	@Mock
+	private Executor executeMock;
+
+	@Mock
+	private Demande demandeMock;
 
 	private ServiceReservationSalle serviceReservation;
 
@@ -33,18 +45,40 @@ public class ServiceReservationSalleTest {
 
 	@Before
 	public void etantDonneUnNouveauServiceReservationSalle() {
+
 		declencheurAssignMock = mock(DeclencheurAssignationSalle.class);
 		fileDemandeMock = mock(FileDemande.class);
 		entrepotSallesMock = mock(EntrepotSalles.class);
+		executeMock = mock(Executor.class);
 		given(entrepotSallesMock.estVide()).willReturn(ENTREPOT_SALLE_NON_VIDE);
-
-		serviceReservation = new ServiceReservationSalle(declencheurAssignMock, fileDemandeMock, entrepotSallesMock);
+		serviceReservation = new ServiceReservationSalle(declencheurAssignMock, fileDemandeMock, entrepotSallesMock,
+				executeMock);
 	}
 
 	@Test
 	public void quandSetFrequenceDevraitEtreModifieeDansAssignateurSalle() {
 		serviceReservation.setFrequence(FREQUENCE_QUELCONQUE);
 		verify(declencheurAssignMock).setFrequence(FREQUENCE_QUELCONQUE);
+	}
+
+	@Test
+	public void quandAjouteDemandeDejaInstancieeDevraitEtreDelegueAFileDemande() {
+		serviceReservation.ajouterDemande(demandeMock);
+		verify(fileDemandeMock).ajouter(demandeMock);
+	}
+
+	@Test
+	public void lExecuteurDemarreSonTraitementALaCreationDuService() {
+		verify(executeMock).execute(serviceReservation);
+	}
+
+	@Test
+	public void lorsqueLeSystemeEstEnMarchLesDemandesSontAssignee() throws Exception {
+		(new Thread(serviceReservation)).start();
+		Thread.sleep(100);
+		verify(declencheurAssignMock, atLeast(1)).verifierConditionEtAssignerDemandeSalle(fileDemandeMock,
+				entrepotSallesMock);
+		serviceReservation.arreterService();
 	}
 
 	@Test
@@ -62,7 +96,8 @@ public class ServiceReservationSalleTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void etantDonneEntrepotSalleRecuVideQuandNouveauServiceDevraitEnvoyerException() {
 		given(entrepotSallesMock.estVide()).willReturn(ENTREPOT_SALLE_VIDE);
-		serviceReservation = new ServiceReservationSalle(declencheurAssignMock, fileDemandeMock, entrepotSallesMock);
+		serviceReservation = new ServiceReservationSalle(declencheurAssignMock, fileDemandeMock, entrepotSallesMock,
+				executeMock);
 	}
 
 }

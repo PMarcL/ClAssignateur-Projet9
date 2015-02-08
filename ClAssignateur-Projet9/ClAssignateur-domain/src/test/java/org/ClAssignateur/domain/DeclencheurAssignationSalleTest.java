@@ -2,8 +2,6 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
 
 import java.util.Calendar;
 import org.junit.Before;
