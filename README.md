@@ -13,12 +13,18 @@ Fait par:
 
 Définition de terminé
 
- 1. Le code est uniforme; il respecte le format défini dans la convention de code ci-dessous. 2. Le code respecte le format du formateur choisi ensemble : nomDuFormateur 3. La grande majorité du code (pourcentageADefinir) a été testé.
+ 1. Le code est uniforme; il respecte le format défini dans la convention de code ci-dessous.
+ 2. Le code respecte le format du formateur choisi ensemble
+ 3. La grande majorité du code (environ 90% de code coverage) a été testé.
  4. L’ensemble des tests roule avec succès avec « maven integration test » en ligne de commande.
- 5. Le code ne contient pas de « warning ». 6. Le code ne contient pas de code inutilisé ou code mort.
+ 5. Le code ne contient pas de « warning ».
+ 6. Le code ne contient pas de code inutilisé ou code mort.
  7. Tout ce qui doit être commenté dans le code l’est.
- 8. Tout le code a été « poussé » dans le répertoire git. 9. Une revue de code a été faite par quelqu’un d’autre que son auteur.
-10. Les fonctionnalités sont complètement intégrées au système11. Le déploiement a été un succès.
+ 8. Tout le code a été « poussé » dans le répertoire git.
+ 9. Une revue de code a été faite par quelqu’un d’autre que son auteur.
+10. Les fonctionnalités sont complètement intégrées au système
+11. Le déploiement a été un succès.
+
 
 Convention de code
 

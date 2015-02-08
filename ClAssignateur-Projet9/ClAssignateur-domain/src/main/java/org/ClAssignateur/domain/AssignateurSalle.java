@@ -2,28 +2,23 @@ package org.ClAssignateur.domain;
 
 public class AssignateurSalle {
 
-	private IStrategieDeclenchementAssignation strategieAssignation;
-	private int frequence;
-	private int limite;
-
-	public AssignateurSalle(int frequence, int limite) {
-		this.frequence = frequence;
-		this.limite = limite;
-	}
-
-	public void setFrequence(int frequence) {
-		this.frequence = frequence;
-	}
-
-	public void setLimite(int limite) {
-		this.limite = limite;
-	}
-
 	public void assignerDemandeSalle(FileDemande demandes, EntrepotSalles salles) {
-		strategieAssignation.verifierConditionAtteinte(this);
-	}
+		int nbDemandes = demandes.taille();
+		for (int i = 0; i < nbDemandes; i++) {
+			Demande demandeCourante;
+			try {
+				demandeCourante = demandes.retirer();
+			} catch (Exception e) {
+				return;
+			}
 
-	public void setStrategieDeclenchementAssignation(IStrategieDeclenchementAssignation strategie) {
-		strategieAssignation = strategie;
+			try {
+				Salle salleDisponible = salles.obtenirSalleRepondantADemande(demandeCourante);
+				salleDisponible.placerReservation(demandeCourante);
+				salles.ranger(salleDisponible);
+			} catch (Exception e) {
+				demandes.ajouter(demandeCourante);
+			}
+		}
 	}
 }

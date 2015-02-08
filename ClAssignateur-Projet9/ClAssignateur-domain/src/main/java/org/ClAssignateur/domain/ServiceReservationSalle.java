@@ -1,19 +1,21 @@
 package org.ClAssignateur.domain;
 
 import java.util.concurrent.Executor;
-import java.util.Calendar;
 
 public class ServiceReservationSalle implements Runnable {
 
-	private AssignateurSalle assignateurSalle;
+	private DeclencheurAssignationSalle declencheurAssignationSalle;
 	private FileDemande demandes;
 	private EntrepotSalles salles;
 	private Executor executeur;
 	private boolean serviceEnFonction;
 
-	public ServiceReservationSalle(AssignateurSalle assignateurSalle, FileDemande demandes, EntrepotSalles salles,
-			Executor executeur) {
-		this.assignateurSalle = assignateurSalle;
+	public ServiceReservationSalle(DeclencheurAssignationSalle declencheurAssignationSalle, FileDemande demandes,
+			EntrepotSalles salles, Executor executeur) {
+		if (salles.estVide())
+			throw new IllegalArgumentException("L'entrepôt ne contient aucune salle.");
+
+		this.declencheurAssignationSalle = declencheurAssignationSalle;
 		this.demandes = demandes;
 		this.salles = salles;
 		serviceEnFonction = true;
@@ -22,19 +24,15 @@ public class ServiceReservationSalle implements Runnable {
 	}
 
 	public void setFrequence(int frequence) {
-		this.assignateurSalle.setFrequence(frequence);
+		this.declencheurAssignationSalle.setFrequence(frequence);
 	}
 
 	public void setLimite(int limite) {
-		this.assignateurSalle.setLimite(limite);
+		this.declencheurAssignationSalle.setLimite(limite);
 	}
 
-	public void ajouterDemande(Calendar dateDebut, Calendar dateFin, int nbParticipants, String nomOrganisation) {
-		this.demandes.ajouter(dateDebut, dateFin, nbParticipants, nomOrganisation);
-	}
-
-	public void ajouterDemande(Demande demande) {
-		this.demandes.ajouter(demande);
+	public void ajouterDemande(Demande demandeAjoutee) {
+		this.demandes.ajouter(demandeAjoutee);
 	}
 
 	public void arreterService() {
@@ -50,7 +48,7 @@ public class ServiceReservationSalle implements Runnable {
 				System.out.println("Erreur d'exécution, le système doit s'arrêter. Message d'erreur:\n"
 						+ e.getMessage());
 			}
-			assignateurSalle.assignerDemandeSalle(demandes, salles);
+			declencheurAssignationSalle.verifierConditionEtAssignerDemandeSalle(demandes, salles);
 		}
 	}
 
