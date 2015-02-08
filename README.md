@@ -20,7 +20,7 @@ Statut des scénarios:
 
 Utilisation de la bibliothèque:
  1. Il faut tout d'abord créer un EntrepotSalles pour y ajouter les salles à réserver.
- 2. Il faut ensuite créer une FileDemande qui servira à entreposer les demandes avant qu'elles soient traitées et un DeclencheurAssignationSalle avec une fréquence et une limite pour définir une quantité de demande à recevoir avant de procéder à la réservation.
+ 2. Il faut ensuite créer une FileDemande qui servira à entreposer les demandes avant qu'elles soient traitées et un DeclencheurAssignationSalle avec une fréquence en minutes et une limite pour définir une quantité de demande à recevoir avant de procéder à la réservation.
  3. On peut alors créer un objet de la classe ServiceReservationSalle avec les objet créés précédement et avec une objet qui implémente l'interface Executor. Celui-ci servira à démarrer le traitement lors de la création du Service.
  4. On peut finalement ajouter des demandes avec l'objet ServiceReservationSalle et elle seront traitées périodiquement selon la fréquence et la limite du déclencheur. Cette fréquence ainsi que la limite sont configurable selon les besoins de l'utilisateur via la classe ServiceReservationSalle.
 
