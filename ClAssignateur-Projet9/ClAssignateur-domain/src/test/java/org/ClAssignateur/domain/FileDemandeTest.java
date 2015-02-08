@@ -8,39 +8,37 @@ import org.junit.Test;
 
 public class FileDemandeTest {
 
-	private static final int TAILLE_INITIALE_VOULUE = 0;
+	private final int TAILLE_INITIALE_VOULUE = 0;
 
-	private static final Calendar DATE_DEBUT = creerDate(2015, 07, 1, 12, 29, 0);
-	private static final Calendar DATE_FIN = creerDate(2015, 07, 1, 12, 30, 0);
-	private static final String ORGANISATEUR = "Simon";
-	private static final int NOMBRE_PARTICIPANT = 10;
+	private final Calendar DATE_DEBUT = creerDate(2015, 07, 1, 12, 29, 0);
+	private final Calendar DATE_FIN = creerDate(2015, 07, 1, 12, 30, 0);
+	private final String ORGANISATEUR = "Simon";
+	private final int NOMBRE_PARTICIPANT = 10;
 
-	private static final Calendar DATE_DEBUT_2 = creerDate(2015, 07, 3, 12, 29,
-			0);
-	private static final Calendar DATE_FIN_2 = creerDate(2015, 07, 4, 12, 30, 0);
-	private static final int NOMBRE_PARTICIPANT_2 = 11;
+	private final Calendar DATE_DEBUT_2 = creerDate(2015, 07, 3, 12, 29, 0);
+	private final Calendar DATE_FIN_2 = creerDate(2015, 07, 4, 12, 30, 0);
+	private final int NOMBRE_PARTICIPANT_2 = 11;
 
-	private static final Calendar DATE_DEBUT_3 = creerDate(2015, 07, 2, 12, 29,
-			0);
-	private static final Calendar DATE_FIN_3 = creerDate(2015, 07, 3, 12, 30, 0);
-	private static final int NOMBRE_PARTICIPANT_3 = 12;
+	private final Calendar DATE_DEBUT_3 = creerDate(2015, 07, 2, 12, 29, 0);
+	private final Calendar DATE_FIN_3 = creerDate(2015, 07, 3, 12, 30, 0);
+	private final int NOMBRE_PARTICIPANT_3 = 12;
 
-	private static final Demande DEMANDE = new Demande(
-			DATE_DEBUT, DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR);
-	private static final Demande DEMANDE_2 = new Demande(
-			DATE_DEBUT_2, DATE_FIN_2, NOMBRE_PARTICIPANT_2, ORGANISATEUR);
-	private static final Demande DEMANDE_3 = new Demande(
-			DATE_DEBUT_3, DATE_FIN_3, NOMBRE_PARTICIPANT_3, ORGANISATEUR);
+	private final Demande DEMANDE = new Demande(DATE_DEBUT, DATE_FIN,
+			NOMBRE_PARTICIPANT, ORGANISATEUR);
+	private final Demande DEMANDE_2 = new Demande(DATE_DEBUT_2, DATE_FIN_2,
+			NOMBRE_PARTICIPANT_2, ORGANISATEUR);
+	private final Demande DEMANDE_3 = new Demande(DATE_DEBUT_3, DATE_FIN_3,
+			NOMBRE_PARTICIPANT_3, ORGANISATEUR);
 
-	private static final Demande DEMANDE_PRIORITE_FORTE = new Demande(DATE_DEBUT_3,
+	private final Demande DEMANDE_PRIORITE_FORTE = new Demande(DATE_DEBUT_3,
 			DATE_FIN_3, NOMBRE_PARTICIPANT_3, ORGANISATEUR, 3);
-	private static final Demande DEMANDE_PRIORITE_MOYENNE = new Demande(DATE_DEBUT_2,
+	private final Demande DEMANDE_PRIORITE_MOYENNE = new Demande(DATE_DEBUT_2,
 			DATE_FIN_2, NOMBRE_PARTICIPANT_2, ORGANISATEUR, 2);
-	private static final Demande DEMANDE_PRIORITE_FAIBLE = new Demande(DATE_DEBUT,
+	private final Demande DEMANDE_PRIORITE_FAIBLE = new Demande(DATE_DEBUT,
 			DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR, 1);
 	private FileDemande fileDemande;
 
-	public static Calendar creerDate(int annee, int mois, int jour, int heure,
+	private Calendar creerDate(int annee, int mois, int jour, int heure,
 			int minute, int seconde) {
 		Calendar date = Calendar.getInstance();
 		date.set(annee, mois, jour, heure, minute, seconde);
@@ -145,7 +143,5 @@ public class FileDemandeTest {
 		assertEquals(DEMANDE_PRIORITE_MOYENNE, deuxiemeElementEnlever);
 		assertEquals(DEMANDE_PRIORITE_FAIBLE, troisiemeElementEnlever);
 	}
-
-	
 
 }
