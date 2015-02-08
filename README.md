@@ -7,7 +7,7 @@ Fait par:
 * Pierre-Marc Levasseur ( 111 080 897 )
 * Simon B. Robert
 * Pascal Labbé
-* Sébastion Reader
+* Sébastien Reader
 * Pier-Alex Côté-Sarrazin
 * Margot Beugniot
 
