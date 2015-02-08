@@ -1,5 +1,5 @@
 # ClAssignateur-Projet9
-Projet fait dans le cadre du cours GLO-4002
+Projet fait dans le cadre du cours GLO-4002,
 Équipe 9
 
 Fait par:
