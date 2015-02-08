@@ -21,21 +21,21 @@ Statut des scénarios:
 Utilisation de la bibliothèque:
  1. Il faut tout d'abord créer un EntrepotSalles pour y ajouter les salles à réserver.
  2. Il faut ensuite créer une FileDemande qui servira à entreposer les demandes avant qu'elles soient traitées et un DeclencheurAssignationSalle avec une fréquence en minutes et une limite pour définir une quantité de demande à recevoir avant de procéder à la réservation.
- 3. On peut alors créer un objet de la classe ServiceReservationSalle avec les objet créés précédement et avec une objet qui implémente l'interface Executor. Celui-ci servira à démarrer le traitement lors de la création du Service.
+ 3. On peut alors créer un objet de la classe ServiceReservationSalle avec les objet créés précédement et avec un objet qui implémente l'interface Executor. Celui-ci servira à démarrer le traitement lors de la création du Service.
  4. On peut finalement ajouter des demandes avec l'objet ServiceReservationSalle et elle seront traitées périodiquement selon la fréquence et la limite du déclencheur. Cette fréquence ainsi que la limite sont configurable selon les besoins de l'utilisateur via la classe ServiceReservationSalle.
 
 Définition de terminé
 
  1. Le code est uniforme; il respecte le format défini dans la convention de code ci-dessous.
  2. Le code respecte le format du formateur choisi ensemble
- 3. La grande majorité du code (environ 90% de code coverage) a été testé.
+ 3. La grande majorité du code (au minimum 90% de code coverage) a été testé.
  4. L’ensemble des tests roule avec succès avec « maven integration test » en ligne de commande.
  5. Le code ne contient pas de « warning ».
  6. Le code ne contient pas de code inutilisé ou code mort.
- 7. Tout ce qui doit être commenté dans le code l’est.
+ 7. Le code ne contient pas de commentaires inutiles.
  8. Tout le code a été « poussé » dans le répertoire git.
  9. Une revue de code a été faite par quelqu’un d’autre que son auteur.
-10. Les fonctionnalités sont complètement intégrées au système
+10. Les fonctionnalités sont complètement intégrées au système.
 11. Le déploiement a été un succès.
 
 
