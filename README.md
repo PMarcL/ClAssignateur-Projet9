@@ -1,9 +1,10 @@
 # ClAssignateur-Projet9
 Projet fait dans le cadre du cours GLO-4002
+Équipe 9
 
 Fait par:
 * Michaël Blanchet
-* Pierre-Marc Levasseur
+* Pierre-Marc Levasseur ( 111 080 897 )
 * Simon B. Robert
 * Pascal Labbé
 * Sébastion Reader
