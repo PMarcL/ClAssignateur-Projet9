@@ -41,6 +41,8 @@ public class ServiceReservationSalle implements Runnable {
 
 	public void run() {
 		while (serviceEnFonction) {
+			declencheurAssignationSalle.verifierConditionEtAssignerDemandeSalle(demandes, salles);
+
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -48,7 +50,6 @@ public class ServiceReservationSalle implements Runnable {
 				System.out.println("Erreur d'exécution, le système doit s'arrêter. Message d'erreur:\n"
 						+ e.getMessage());
 			}
-			declencheurAssignationSalle.verifierConditionEtAssignerDemandeSalle(demandes, salles);
 		}
 	}
 

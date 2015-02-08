@@ -5,6 +5,7 @@ public class AssignateurSalle {
 	public void assignerDemandeSalle(FileDemande demandes, EntrepotSalles salles) {
 		int nbDemandes = demandes.taille();
 		for (int i = 0; i < nbDemandes; i++) {
+
 			Demande demandeCourante;
 			try {
 				demandeCourante = demandes.retirer();
