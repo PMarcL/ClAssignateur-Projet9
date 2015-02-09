@@ -6,7 +6,7 @@ Fait par:
 * Michaël Blanchet (111 078 159)
 * Pierre-Marc Levasseur (111 080 897)
 * Simon B. Robert
-* Pascal Labbé
+* Pascal Labbé (111 087 177)
 * Sébastien Reader
 * Pier-Alex Côté-Sarrazin
 * Margot Beugniot (111 110 352)
