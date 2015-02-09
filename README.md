@@ -5,7 +5,7 @@ Projet fait dans le cadre du cours GLO-4002,
 Fait par:
 * Michaël Blanchet (111 078 159)
 * Pierre-Marc Levasseur (111 080 897)
-* Simon B. Robert
+* Simon B. Robert (111 068 713)
 * Pascal Labbé (111 087 177)
 * Sébastien Reader
 * Pier-Alex Côté-Sarrazin (111 045 255)
