@@ -7,7 +7,7 @@ Fait par:
 * Pierre-Marc Levasseur (111 080 897)
 * Simon B. Robert (111 068 713)
 * Pascal Labbé (111 087 177)
-* Sébastien Reader
+* Sébastien Reader (999 165 021)
 * Pier-Alex Côté-Sarrazin (111 045 255)
 * Margot Beugniot (111 110 352)
 
