@@ -8,7 +8,7 @@ Fait par:
 * Simon B. Robert
 * Pascal Labbé (111 087 177)
 * Sébastien Reader
-* Pier-Alex Côté-Sarrazin
+* Pier-Alex Côté-Sarrazin (111 045 255)
 * Margot Beugniot (111 110 352)
 
 Statut des scénarios:
