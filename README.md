@@ -4,12 +4,12 @@ Projet fait dans le cadre du cours GLO-4002,
 
 Fait par:
 * Michaël Blanchet (111 078 159)
-* Pierre-Marc Levasseur ( 111 080 897 )
+* Pierre-Marc Levasseur (111 080 897)
 * Simon B. Robert
 * Pascal Labbé
 * Sébastien Reader
 * Pier-Alex Côté-Sarrazin
-* Margot Beugniot
+* Margot Beugniot (111 110 352)
 
 Statut des scénarios:
 
