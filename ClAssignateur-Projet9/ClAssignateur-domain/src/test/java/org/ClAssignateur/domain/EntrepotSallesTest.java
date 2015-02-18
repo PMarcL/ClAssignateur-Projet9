@@ -1,6 +1,8 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Calendar;
 import org.junit.Before;
@@ -9,15 +11,15 @@ import org.junit.Test;
 public class EntrepotSallesTest {
 	private EntrepotSalles entrepotSalles;
 
-	private static final Salle SALLE_CAPACITE_1 = new Salle("SALLE_CAPACITE_1", 1);
+	private Salle SALLE_CAPACITE_1;
 
-	private static final Salle SALLE_CAPACITE_10 = new Salle("SALLE_CAPACITE_10", 10);
+	private Salle SALLE_CAPACITE_10;
 
-	private static final Salle SALLE_CAPACITE_100 = new Salle("SALLE_CAPACITE_100", 100);
+	private Salle SALLE_CAPACITE_100;
 
-	private static final Salle SALLE_CAPACITE_1000 = new Salle("SALLE_CAPACITE_1000", 1000);
+	private Salle SALLE_CAPACITE_1000;
 
-	private static final Salle SALLE_RESERVE = new Salle("SALLE_RESERVE", 10);
+	private Salle SALLE_RESERVE;
 
 	private static final Calendar DATE_DEBUT = creerDate(2015, 07, 1, 12, 29, 0);
 	private static final Calendar DATE_FIN = creerDate(2015, 07, 1, 12, 30, 0);
@@ -37,6 +39,26 @@ public class EntrepotSallesTest {
 	@Before
 	public void creerEntrepotSalles() {
 		entrepotSalles = new EntrepotSalles();
+
+		SALLE_CAPACITE_1 = mock(Salle.class);
+		when(SALLE_CAPACITE_1.estDisponible(any(Demande.class))).thenReturn(true);
+		when(SALLE_CAPACITE_1.getCapacite()).thenReturn(1);
+
+		SALLE_CAPACITE_10 = mock(Salle.class);
+		when(SALLE_CAPACITE_10.estDisponible(any(Demande.class))).thenReturn(true);
+		when(SALLE_CAPACITE_10.getCapacite()).thenReturn(10);
+
+		SALLE_CAPACITE_100 = mock(Salle.class);
+		when(SALLE_CAPACITE_100.estDisponible(any(Demande.class))).thenReturn(true);
+		when(SALLE_CAPACITE_100.getCapacite()).thenReturn(100);
+
+		SALLE_CAPACITE_1000 = mock(Salle.class);
+		when(SALLE_CAPACITE_1000.estDisponible(any(Demande.class))).thenReturn(true);
+		when(SALLE_CAPACITE_1000.getCapacite()).thenReturn(1000);
+
+		SALLE_RESERVE = mock(Salle.class);
+		when(SALLE_RESERVE.estDisponible(any(Demande.class))).thenReturn(false);
+		when(SALLE_RESERVE.getCapacite()).thenReturn(10);
 	}
 
 	@Test
@@ -140,7 +162,6 @@ public class EntrepotSallesTest {
 	@Test(expected = AucunesSallesDisponiblesException.class)
 	public void lorsqueSeulementUneSalleReserveEstDansLEntrepotIlYAUneExeption()
 			throws AucunesSallesDisponiblesException {
-		SALLE_RESERVE.placerReservation(DEMANDE_10_PARTICIPANTS);
 		entrepotSalles.ranger(SALLE_RESERVE);
 
 		entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_10_PARTICIPANTS);
