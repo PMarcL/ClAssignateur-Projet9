@@ -2,6 +2,8 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Calendar;
 import org.junit.Before;
@@ -20,7 +22,7 @@ public class DeclencheurAssignationSalleTest {
 
 	private IStrategieDeclenchementAssignation strategie;
 	private DeclencheurAssignationSalle declencheurAssignation;
-	private FileDemande fileDemande;
+	private ConteneurDemande fileDemande;
 	private EntrepotSalles entrepotSalles;
 	private AssignateurSalle assignateur;
 
@@ -28,17 +30,19 @@ public class DeclencheurAssignationSalleTest {
 	public void intialement() {
 		strategie = mock(IStrategieDeclenchementAssignation.class);
 		assignateur = mock(AssignateurSalle.class);
-		declencheurAssignation = new DeclencheurAssignationSalle(FREQUENCE_QUELCONQUE, LIMITE_QUELCONQUE, strategie,
-				assignateur);
-		fileDemande = mock(FileDemande.class);
+		declencheurAssignation = new DeclencheurAssignationSalle(
+				FREQUENCE_QUELCONQUE, LIMITE_QUELCONQUE, strategie, assignateur);
+		fileDemande = mock(ConteneurDemandeTriable.class);
 		entrepotSalles = mock(EntrepotSalles.class);
 	}
 
 	@Test
 	public void etantDonneUnNombreQuelconqueDemandesQuandVerificationDemandeeDevraitModifierNombreDemandesCourantes() {
 		given(fileDemande.taille()).willReturn(NOMBRE_DEMANDES);
-		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(fileDemande, entrepotSalles);
-		assertEquals(NOMBRE_DEMANDES, declencheurAssignation.getNbDemandesAssignationCourantes());
+		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(
+				fileDemande, entrepotSalles);
+		assertEquals(NOMBRE_DEMANDES,
+				declencheurAssignation.getNbDemandesAssignationCourantes());
 	}
 
 	private IStrategieDeclenchementAssignationContexte strategieContexteQuelconque() {
@@ -46,28 +50,37 @@ public class DeclencheurAssignationSalleTest {
 	}
 
 	private void autoriserAssignation() {
-		given(strategie.verifierConditionAtteinte(strategieContexteQuelconque())).willReturn(ASSIGNATION_AUTORISE);
+		given(
+				strategie
+						.verifierConditionAtteinte(strategieContexteQuelconque()))
+				.willReturn(ASSIGNATION_AUTORISE);
 	}
 
 	@Test
 	public void etantDonneAssignationAutoriseeQuandVerificationDemandeeDevraitAssignerSalles() {
 		autoriserAssignation();
-		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(fileDemande, entrepotSalles);
+		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(
+				fileDemande, entrepotSalles);
 		verify(assignateur).assignerDemandeSalle(fileDemande, entrepotSalles);
 	}
 
 	private void verifierAssignationPasDeclenche() {
-		verify(assignateur, never()).assignerDemandeSalle(any(FileDemande.class), any(EntrepotSalles.class));
+		verify(assignateur, never()).assignerDemandeSalle(
+				any(ConteneurDemandeTriable.class), any(EntrepotSalles.class));
 	}
 
 	private void refuserAssignation() {
-		given(strategie.verifierConditionAtteinte(strategieContexteQuelconque())).willReturn(ASSIGNATION_REFUSEE);
+		given(
+				strategie
+						.verifierConditionAtteinte(strategieContexteQuelconque()))
+				.willReturn(ASSIGNATION_REFUSEE);
 	}
 
 	@Test
 	public void etantDonneAssignationRefuseeQuandVerificationDemandeeDevraitNePasAssignerSalles() {
 		refuserAssignation();
-		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(fileDemande, entrepotSalles);
+		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(
+				fileDemande, entrepotSalles);
 		verifierAssignationPasDeclenche();
 	}
 
@@ -77,7 +90,8 @@ public class DeclencheurAssignationSalleTest {
 		given(fileDemande.taille()).willReturn(AUCUNE_DEMANDE);
 		autoriserAssignation();
 
-		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(fileDemande, entrepotSalles);
+		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(
+				fileDemande, entrepotSalles);
 
 		verifierAssignationPasDeclenche();
 	}
@@ -87,17 +101,21 @@ public class DeclencheurAssignationSalleTest {
 		given(entrepotSalles.estVide()).willReturn(ENTREPOT_VIDE);
 		autoriserAssignation();
 
-		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(fileDemande, entrepotSalles);
+		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(
+				fileDemande, entrepotSalles);
 
 		verifierAssignationPasDeclenche();
 	}
 
-	private boolean dateDerniereAssignationModifiee(Calendar avantVerification, Calendar apresVerification) {
+	private boolean dateDerniereAssignationModifiee(Calendar avantVerification,
+			Calendar apresVerification) {
 		return apresVerification.compareTo(avantVerification) > 0;
 	}
 
-	public boolean verifierModificationDerniereAssignation() throws InterruptedException {
-		Calendar avantVerification = declencheurAssignation.getDerniereAssignation();
+	public boolean verifierModificationDerniereAssignation()
+			throws InterruptedException {
+		Calendar avantVerification = declencheurAssignation
+				.getDerniereAssignation();
 		Thread.sleep(1);
 		/*
 		 * le sleep sert simplement à insérer un minime décalage entre la
@@ -105,10 +123,13 @@ public class DeclencheurAssignationSalleTest {
 		 * verifierCondition... pour vérifier si la date de dernière assignation
 		 * est modifiée, car les tests s'exécutent trop rapidement.
 		 */
-		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(fileDemande, entrepotSalles);
-		Calendar apresVerification = declencheurAssignation.getDerniereAssignation();
+		declencheurAssignation.verifierConditionEtAssignerDemandeSalle(
+				fileDemande, entrepotSalles);
+		Calendar apresVerification = declencheurAssignation
+				.getDerniereAssignation();
 
-		return dateDerniereAssignationModifiee(avantVerification, apresVerification);
+		return dateDerniereAssignationModifiee(avantVerification,
+				apresVerification);
 	}
 
 	@Test

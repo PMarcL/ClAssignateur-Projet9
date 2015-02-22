@@ -6,7 +6,7 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-public class FileDemandeTest {
+public class ConteneurDemandeTriableTest {
 
 	private final int TAILLE_INITIALE_VOULUE = 0;
 
@@ -36,7 +36,7 @@ public class FileDemandeTest {
 			DATE_FIN_2, NOMBRE_PARTICIPANT_2, ORGANISATEUR, 2);
 	private final Demande DEMANDE_PRIORITE_FAIBLE = new Demande(DATE_DEBUT,
 			DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR, 1);
-	private FileDemande fileDemande;
+	private ConteneurDemandeTriable fileDemande;
 
 	private Calendar creerDate(int annee, int mois, int jour, int heure,
 			int minute, int seconde) {
@@ -47,7 +47,7 @@ public class FileDemandeTest {
 
 	@Before
 	public void creerFileDemande() {
-		fileDemande = new FileDemande();
+		fileDemande = new ConteneurDemandeTriable();
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class FileDemandeTest {
 	@Test
 	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSortiPourUneMemePriorite()
 			throws Throwable {
-		FileDemande fileDemandeTroisElement = new FileDemande();
+		ConteneurDemandeTriable fileDemandeTroisElement = new ConteneurDemandeTriable();
 
 		fileDemandeTroisElement.ajouter(DEMANDE);
 		fileDemandeTroisElement.ajouter(DEMANDE_2);
@@ -129,7 +129,7 @@ public class FileDemandeTest {
 	@Test
 	public void fileDemandePrioriseLesDemandesPlusPrioritaire()
 			throws Throwable {
-		FileDemande fileDemandeTroisElement = new FileDemande();
+		ConteneurDemandeTriable fileDemandeTroisElement = new ConteneurDemandeTriable();
 
 		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_FAIBLE);
 		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_MOYENNE);

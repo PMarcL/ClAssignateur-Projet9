@@ -2,7 +2,8 @@ package org.ClAssignateur.domain;
 
 import java.util.Calendar;
 
-public class DeclencheurAssignationSalle implements IStrategieDeclenchementAssignationContexte {
+public class DeclencheurAssignationSalle implements
+		IStrategieDeclenchementAssignationContexte {
 
 	private IStrategieDeclenchementAssignation strategieDeclenchement;
 	private int frequence;
@@ -12,7 +13,8 @@ public class DeclencheurAssignationSalle implements IStrategieDeclenchementAssig
 	private AssignateurSalle assignateur;
 
 	public DeclencheurAssignationSalle(int frequence, int limite,
-			IStrategieDeclenchementAssignation strategieDeclenchement, AssignateurSalle assignateur) {
+			IStrategieDeclenchementAssignation strategieDeclenchement,
+			AssignateurSalle assignateur) {
 		this.frequence = frequence;
 		this.limite = limite;
 		this.strategieDeclenchement = strategieDeclenchement;
@@ -45,10 +47,12 @@ public class DeclencheurAssignationSalle implements IStrategieDeclenchementAssig
 		return derniereAssignation;
 	}
 
-	public void verifierConditionEtAssignerDemandeSalle(FileDemande demandes, EntrepotSalles salles) {
+	public void verifierConditionEtAssignerDemandeSalle(
+			ConteneurDemande demandes, EntrepotSalles salles) {
 		nbDemandesAssignCourantes = demandes.taille();
 
-		if (strategieDeclenchement.verifierConditionAtteinte((IStrategieDeclenchementAssignationContexte) this)) {
+		if (strategieDeclenchement
+				.verifierConditionAtteinte((IStrategieDeclenchementAssignationContexte) this)) {
 			derniereAssignation = Calendar.getInstance();
 
 			if (demandes.estVide() || salles.estVide())
