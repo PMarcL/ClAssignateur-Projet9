@@ -1,118 +1,96 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
-import java.util.Calendar;
+import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ConteneurDemandeTriableTest {
 
 	private final int TAILLE_INITIALE_VOULUE = 0;
+	private final int PRIORITE_FAIBLE = 1;
+	private final int PRIORITE_MOYENNE = 3;
+	private final int PRIORITE_FORTE = 5;
 
-	private final Calendar DATE_DEBUT = creerDate(2015, 07, 1, 12, 29, 0);
-	private final Calendar DATE_FIN = creerDate(2015, 07, 1, 12, 30, 0);
-	private final String ORGANISATEUR = "Simon";
-	private final int NOMBRE_PARTICIPANT = 10;
+	private Demande DEMANDE = mock(Demande.class);
+	private final Demande DEMANDE_2 = mock(Demande.class);
+	private final Demande DEMANDE_3 = mock(Demande.class);
+	private final Demande DEMANDE_PRIORITE_FORTE = mock(Demande.class);
+	private final Demande DEMANDE_PRIORITE_MOYENNE = mock(Demande.class);
+	private final Demande DEMANDE_PRIORITE_FAIBLE = mock(Demande.class);
 
-	private final Calendar DATE_DEBUT_2 = creerDate(2015, 07, 3, 12, 29, 0);
-	private final Calendar DATE_FIN_2 = creerDate(2015, 07, 4, 12, 30, 0);
-	private final int NOMBRE_PARTICIPANT_2 = 11;
-
-	private final Calendar DATE_DEBUT_3 = creerDate(2015, 07, 2, 12, 29, 0);
-	private final Calendar DATE_FIN_3 = creerDate(2015, 07, 3, 12, 30, 0);
-	private final int NOMBRE_PARTICIPANT_3 = 12;
-
-	private final Demande DEMANDE = new Demande(DATE_DEBUT, DATE_FIN,
-			NOMBRE_PARTICIPANT, ORGANISATEUR);
-	private final Demande DEMANDE_2 = new Demande(DATE_DEBUT_2, DATE_FIN_2,
-			NOMBRE_PARTICIPANT_2, ORGANISATEUR);
-	private final Demande DEMANDE_3 = new Demande(DATE_DEBUT_3, DATE_FIN_3,
-			NOMBRE_PARTICIPANT_3, ORGANISATEUR);
-
-	private final Demande DEMANDE_PRIORITE_FORTE = new Demande(DATE_DEBUT_3,
-			DATE_FIN_3, NOMBRE_PARTICIPANT_3, ORGANISATEUR, 3);
-	private final Demande DEMANDE_PRIORITE_MOYENNE = new Demande(DATE_DEBUT_2,
-			DATE_FIN_2, NOMBRE_PARTICIPANT_2, ORGANISATEUR, 2);
-	private final Demande DEMANDE_PRIORITE_FAIBLE = new Demande(DATE_DEBUT,
-			DATE_FIN, NOMBRE_PARTICIPANT, ORGANISATEUR, 1);
-	private ConteneurDemandeTriable fileDemande;
-
-	private Calendar creerDate(int annee, int mois, int jour, int heure,
-			int minute, int seconde) {
-		Calendar date = Calendar.getInstance();
-		date.set(annee, mois, jour, heure, minute, seconde);
-		return date;
-	}
+	private ConteneurDemandeTriable conteneurDemandeTriable;
 
 	@Before
 	public void creerFileDemande() {
-		fileDemande = new ConteneurDemandeTriable();
+		conteneurDemandeTriable = new ConteneurDemandeTriable();
 	}
 
 	@Test
-	public void fileDemandeEstInitialementVide() {
-		boolean fileEstVide = fileDemande.estVide();
+	public void ConteneurDemandeTriableEstInitialementVide() {
+		boolean fileEstVide = conteneurDemandeTriable.estVide();
 		assertTrue(fileEstVide);
 	}
 
 	@Test
-	public void filePossedeInitalementTailleZero() {
-		int tailleInitiale = fileDemande.taille();
+	public void ConteneurDemandeTriablePossedeInitalementTailleZero() {
+		int tailleInitiale = conteneurDemandeTriable.taille();
 		assertEquals(TAILLE_INITIALE_VOULUE, tailleInitiale);
 	}
 
 	@Test
-	public void lorsqueOnAjouteUneDemandeAFileDemandeLaFileNestPlusVide() {
-		fileDemande.ajouter(DEMANDE);
+	public void lorsqueOnAjouteUneDemandeAConteneurDemandeTriableIlNestPlusVide() {
+		conteneurDemandeTriable.ajouter(DEMANDE);
 
-		boolean fileEstVide = fileDemande.estVide();
+		boolean fileEstVide = conteneurDemandeTriable.estVide();
 
 		assertFalse(fileEstVide);
 	}
 
 	@Test
-	public void lorsqueOnAjouteUneDemandeAFileDemandeSaTailleAugmenteDeUn() {
-		int tailleInitiale = fileDemande.taille();
+	public void lorsqueOnAjouteUneDemandeAConteneurDemandeTriableSaTailleAugmenteDeUn() {
+		int tailleInitiale = conteneurDemandeTriable.taille();
 
-		fileDemande.ajouter(DEMANDE);
-		int tailleDeLaFile = fileDemande.taille();
+		conteneurDemandeTriable.ajouter(DEMANDE);
+		int tailleDeLaFile = conteneurDemandeTriable.taille();
 		int tailleDesiree = tailleInitiale + 1;
 
 		assertEquals(tailleDesiree, tailleDeLaFile);
 	}
 
 	@Test
-	public void lorsqueOnVideLaFileElleDevientVide() {
-		fileDemande.ajouter(DEMANDE);
+	public void lorsqueOnVideConteneurDemandeTriableIlDevientVide() {
+		conteneurDemandeTriable.ajouter(DEMANDE);
 
-		fileDemande.vider();
-		boolean fileEstVide = fileDemande.estVide();
+		conteneurDemandeTriable.vider();
+		boolean fileEstVide = conteneurDemandeTriable.estVide();
 
 		assertTrue(fileEstVide);
 	}
 
 	@Test
-	public void lorsqueOnAjouteUnElementEtQuOnLEnleveFileDemandeDevientVide()
+	public void lorsqueOnAjouteUnElementEtQuOnLEnleveConteneurDemandeTriableDevientVide()
 			throws Throwable {
-		fileDemande.ajouter(DEMANDE);
+		conteneurDemandeTriable.ajouter(DEMANDE);
 
-		fileDemande.retirer();
-		boolean fileEstVide = fileDemande.estVide();
+		conteneurDemandeTriable.retirer();
+		boolean fileEstVide = conteneurDemandeTriable.estVide();
 
 		assertTrue(fileEstVide);
 	}
 
 	@Test(expected = Exception.class)
-	public void lorsqueLaFileEstVideRetirerLanceUneException() throws Throwable {
-		fileDemande.retirer();
+	public void lorsqueLaFileEstVideRetirerLanceUneException() {
+		conteneurDemandeTriable.retirer();
 	}
 
 	@Test
-	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSortiPourUneMemePriorite()
-			throws Throwable {
+	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSortiPourUneMemePriorite() {
 		ConteneurDemandeTriable fileDemandeTroisElement = new ConteneurDemandeTriable();
-
+		configurationDesDemande();
 		fileDemandeTroisElement.ajouter(DEMANDE);
 		fileDemandeTroisElement.ajouter(DEMANDE_2);
 		fileDemandeTroisElement.ajouter(DEMANDE_3);
@@ -130,7 +108,7 @@ public class ConteneurDemandeTriableTest {
 	public void fileDemandePrioriseLesDemandesPlusPrioritaire()
 			throws Throwable {
 		ConteneurDemandeTriable fileDemandeTroisElement = new ConteneurDemandeTriable();
-
+		configurationDesDemandeAvecPriorite();
 		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_FAIBLE);
 		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_MOYENNE);
 		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_FORTE);
@@ -142,6 +120,32 @@ public class ConteneurDemandeTriableTest {
 		assertEquals(DEMANDE_PRIORITE_FORTE, premierElementEnlever);
 		assertEquals(DEMANDE_PRIORITE_MOYENNE, deuxiemeElementEnlever);
 		assertEquals(DEMANDE_PRIORITE_FAIBLE, troisiemeElementEnlever);
+	}
+
+	private void configurationDesDemande() {
+		Date premierTemps = new Date(2010, 1, 1, 1, 1, 0);
+		Date deuxiemeTemps = new Date(2010, 1, 1, 1, 2, 0);
+		Date troisiemeTemps = new Date(2010, 1, 1, 1, 3, 0);
+		willReturn(premierTemps).given(DEMANDE).getMomentDeCreation();
+		willReturn(deuxiemeTemps).given(DEMANDE_2).getMomentDeCreation();
+		willReturn(troisiemeTemps).given(DEMANDE_3).getMomentDeCreation();
+	}
+
+	private void configurationDesDemandeAvecPriorite() {
+		Date premierTemps = new Date(2010, 1, 1, 1, 1, 0);
+		Date deuxiemeTemps = new Date(2010, 1, 1, 1, 2, 0);
+		Date troisiemeTemps = new Date(2010, 1, 1, 1, 3, 0);
+		willReturn(premierTemps).given(DEMANDE_PRIORITE_FAIBLE)
+				.getMomentDeCreation();
+		willReturn(deuxiemeTemps).given(DEMANDE_PRIORITE_MOYENNE)
+				.getMomentDeCreation();
+		willReturn(troisiemeTemps).given(DEMANDE_PRIORITE_FORTE)
+				.getMomentDeCreation();
+		willReturn(PRIORITE_FAIBLE).given(DEMANDE_PRIORITE_FAIBLE)
+				.getPriorite();
+		willReturn(PRIORITE_MOYENNE).given(DEMANDE_PRIORITE_MOYENNE)
+				.getPriorite();
+		willReturn(PRIORITE_FORTE).given(DEMANDE_PRIORITE_FORTE).getPriorite();
 	}
 
 }

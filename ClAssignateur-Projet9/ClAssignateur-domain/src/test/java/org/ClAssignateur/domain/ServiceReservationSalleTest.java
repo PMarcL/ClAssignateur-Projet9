@@ -53,7 +53,7 @@ public class ServiceReservationSalleTest {
 		fileDemandeMock = mock(ConteneurDemandeTriable.class);
 		entrepotSallesMock = mock(EntrepotSalles.class);
 		executeMock = mock(Executor.class);
-		given(entrepotSallesMock.estVide()).willReturn(ENTREPOT_SALLE_NON_VIDE);
+		willReturn(ENTREPOT_SALLE_NON_VIDE).given(entrepotSallesMock).estVide();
 		serviceReservation = new ServiceReservationSalle(declencheurAssignMock,
 				fileDemandeMock, entrepotSallesMock, executeMock);
 	}

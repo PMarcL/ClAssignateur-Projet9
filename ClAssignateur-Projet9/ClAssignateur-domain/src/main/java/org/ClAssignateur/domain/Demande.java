@@ -1,6 +1,7 @@
 package org.ClAssignateur.domain;
 
 import java.util.Calendar;
+import java.util.Date;
 import org.w3c.dom.ranges.RangeException;
 
 public class Demande {
@@ -13,6 +14,7 @@ public class Demande {
 	private int nbParticipant;
 	private String organisateur;
 	private int priorite;
+	public Date momentDeCreation = new Date();
 
 	public Demande(Calendar dateDebut, Calendar dateFin, int nombreParticipant,
 			String organisateur) {
@@ -72,6 +74,11 @@ public class Demande {
 
 	public Calendar getFin() {
 		return this.fin;
+	}
+
+	public Date getMomentDeCreation() {
+		return momentDeCreation;
+
 	}
 
 	public int getNbParticipant() {
