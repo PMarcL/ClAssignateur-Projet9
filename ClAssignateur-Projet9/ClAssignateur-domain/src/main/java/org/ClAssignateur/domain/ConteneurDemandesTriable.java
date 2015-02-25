@@ -2,7 +2,7 @@ package org.ClAssignateur.domain;
 
 import java.util.PriorityQueue;
 
-public class ConteneurDemandeTriable implements ConteneurDemande {
+public class ConteneurDemandesTriable implements ConteneurDemandes {
 
 	private PriorityQueue<Demande> file = new PriorityQueue<Demande>(
 			new ComparateurDeDemande());

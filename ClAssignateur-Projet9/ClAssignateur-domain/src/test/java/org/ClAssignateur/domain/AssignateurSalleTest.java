@@ -32,7 +32,7 @@ public class AssignateurSalleTest {
 
 	private EntrepotSalles entrepotSalles;
 	private AssignateurSalle assignateur;
-	private ConteneurDemandeTriable fileDemandes;
+	private ConteneurDemandesTriable fileDemandes;
 
 	private Calendar creerDate(int annee, int mois, int jour, int heure,
 			int minute, int seconde) {
@@ -45,7 +45,7 @@ public class AssignateurSalleTest {
 	public void initialement() {
 		entrepotSalles = mock(EntrepotSalles.class);
 		assignateur = new AssignateurSalle();
-		fileDemandes = new ConteneurDemandeTriable();
+		fileDemandes = new ConteneurDemandesTriable();
 	}
 
 	@Test

@@ -22,7 +22,7 @@ public class DeclencheurAssignationSalleTest {
 
 	private IStrategieDeclenchementAssignation strategie;
 	private DeclencheurAssignationSalle declencheurAssignation;
-	private ConteneurDemande fileDemande;
+	private ConteneurDemandes fileDemande;
 	private EntrepotSalles entrepotSalles;
 	private AssignateurSalle assignateur;
 
@@ -32,7 +32,7 @@ public class DeclencheurAssignationSalleTest {
 		assignateur = mock(AssignateurSalle.class);
 		declencheurAssignation = new DeclencheurAssignationSalle(
 				FREQUENCE_QUELCONQUE, LIMITE_QUELCONQUE, strategie, assignateur);
-		fileDemande = mock(ConteneurDemandeTriable.class);
+		fileDemande = mock(ConteneurDemandesTriable.class);
 		entrepotSalles = mock(EntrepotSalles.class);
 	}
 
@@ -66,7 +66,7 @@ public class DeclencheurAssignationSalleTest {
 
 	private void verifierAssignationPasDeclenche() {
 		verify(assignateur, never()).assignerDemandeSalle(
-				any(ConteneurDemandeTriable.class), any(EntrepotSalles.class));
+				any(ConteneurDemandesTriable.class), any(EntrepotSalles.class));
 	}
 
 	private void refuserAssignation() {

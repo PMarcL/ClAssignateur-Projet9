@@ -48,7 +48,7 @@ public class DeclencheurAssignationSalle implements
 	}
 
 	public void verifierConditionEtAssignerDemandeSalle(
-			ConteneurDemande demandes, EntrepotSalles salles) {
+			ConteneurDemandes demandes, EntrepotSalles salles) {
 		nbDemandesAssignCourantes = demandes.taille();
 
 		if (strategieDeclenchement

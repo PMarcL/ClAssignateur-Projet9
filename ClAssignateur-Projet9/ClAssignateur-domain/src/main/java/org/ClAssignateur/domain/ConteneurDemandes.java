@@ -1,6 +1,6 @@
 package org.ClAssignateur.domain;
 
-public interface ConteneurDemande {
+public interface ConteneurDemandes {
 
 	public abstract int taille();
 

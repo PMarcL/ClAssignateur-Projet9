@@ -1,9 +1,10 @@
 package org.ClAssignateur.domain;
 
-public class AssignateurSalle {
+import java.util.TimerTask;
 
-	public void assignerDemandeSalle(ConteneurDemande demandes,
-			EntrepotSalles salles) {
+public class AssignateurSalle extends TimerTask {
+
+	public void assignerDemandeSalle(ConteneurDemandes demandes, EntrepotSalles salles) {
 		int nbDemandes = demandes.taille();
 		for (int i = 0; i < nbDemandes; i++) {
 
@@ -15,13 +16,18 @@ public class AssignateurSalle {
 			}
 
 			try {
-				Salle salleDisponible = salles
-						.obtenirSalleRepondantADemande(demandeCourante);
+				Salle salleDisponible = salles.obtenirSalleRepondantADemande(demandeCourante);
 				salleDisponible.placerReservation(demandeCourante);
 				salles.ranger(salleDisponible);
 			} catch (Exception e) {
 				demandes.ajouter(demandeCourante);
 			}
 		}
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+
 	}
 }

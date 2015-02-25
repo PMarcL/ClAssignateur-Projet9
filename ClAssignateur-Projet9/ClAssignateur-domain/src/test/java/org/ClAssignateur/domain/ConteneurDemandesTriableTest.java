@@ -8,7 +8,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ConteneurDemandeTriableTest {
+public class ConteneurDemandesTriableTest {
 
 	private final int TAILLE_INITIALE_VOULUE = 0;
 	private final int PRIORITE_FAIBLE = 1;
@@ -22,11 +22,11 @@ public class ConteneurDemandeTriableTest {
 	private final Demande DEMANDE_PRIORITE_MOYENNE = mock(Demande.class);
 	private final Demande DEMANDE_PRIORITE_FAIBLE = mock(Demande.class);
 
-	private ConteneurDemandeTriable conteneurDemandeTriable;
+	private ConteneurDemandesTriable conteneurDemandeTriable;
 
 	@Before
 	public void creerFileDemande() {
-		conteneurDemandeTriable = new ConteneurDemandeTriable();
+		conteneurDemandeTriable = new ConteneurDemandesTriable();
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class ConteneurDemandeTriableTest {
 
 	@Test
 	public void lorsqueOnEnleveDesElementsLePremierArriveEstLePremierSortiPourUneMemePriorite() {
-		ConteneurDemandeTriable fileDemandeTroisElement = new ConteneurDemandeTriable();
+		ConteneurDemandesTriable fileDemandeTroisElement = new ConteneurDemandesTriable();
 		configurationDesDemande();
 		fileDemandeTroisElement.ajouter(DEMANDE);
 		fileDemandeTroisElement.ajouter(DEMANDE_2);
@@ -107,7 +107,7 @@ public class ConteneurDemandeTriableTest {
 	@Test
 	public void fileDemandePrioriseLesDemandesPlusPrioritaire()
 			throws Throwable {
-		ConteneurDemandeTriable fileDemandeTroisElement = new ConteneurDemandeTriable();
+		ConteneurDemandesTriable fileDemandeTroisElement = new ConteneurDemandesTriable();
 		configurationDesDemandeAvecPriorite();
 		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_FAIBLE);
 		fileDemandeTroisElement.ajouter(DEMANDE_PRIORITE_MOYENNE);
