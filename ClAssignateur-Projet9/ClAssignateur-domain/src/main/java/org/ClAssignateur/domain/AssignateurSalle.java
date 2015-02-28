@@ -1,33 +1,40 @@
 package org.ClAssignateur.domain;
 
+import java.util.Optional;
+
 import java.util.TimerTask;
 
 public class AssignateurSalle extends TimerTask {
 
-	public void assignerDemandeSalle(ConteneurDemandes demandes, EntrepotSalles salles) {
-		int nbDemandes = demandes.taille();
-		for (int i = 0; i < nbDemandes; i++) {
+	private ConteneurDemandes demandes;
+	private EntrepotSalles salles;
 
-			Demande demandeCourante;
-			try {
-				demandeCourante = demandes.retirer();
-			} catch (Exception e) {
-				return;
-			}
+	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles) {
+		this.demandes = demandes;
+		this.salles = salles;
+	}
 
-			try {
-				Salle salleDisponible = salles.obtenirSalleRepondantADemande(demandeCourante);
-				salleDisponible.placerReservation(demandeCourante);
-				salles.ranger(salleDisponible);
-			} catch (Exception e) {
-				demandes.ajouter(demandeCourante);
-			}
-		}
+	public void ajouterDemande(Demande demande) {
+		demandes.ajouterDemande(demande);
+	}
+
+	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
+
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		assignerDemandeSalle();
+	}
 
+	private void assignerDemandeSalle() {
+		for (Demande demandeCourante : demandes) {
+			Optional<Salle> salle = salles.obtenirSalleRepondantDemande(demandeCourante);
+
+			if (salle.isPresent())
+				salle.get().placerReservation(demandeCourante);
+		}
+
+		demandes.vider();
 	}
 }

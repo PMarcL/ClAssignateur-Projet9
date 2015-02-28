@@ -9,27 +9,18 @@ public class ServiceReservationSalle {
 	private final int MILLISECONDES_PAR_MINUTE = 60000;
 
 	private AssignateurSalle assignateurSalle;
-	private ConteneurDemandes demandes;
-	private EntrepotSalles salles;
 	private Timer minuterie;
 	private int frequence;
-	private int limteDemandes;
+	private int limiteDemandes;
 
-	public ServiceReservationSalle(ConteneurDemandes demandes, EntrepotSalles salles, Timer minuterie,
-			AssignateurSalle assignateurSalle) {
+	public ServiceReservationSalle(Timer minuterie, AssignateurSalle assignateurSalle) {
 		this.assignateurSalle = assignateurSalle;
-		this.demandes = demandes;
-		this.salles = salles;
 		this.minuterie = minuterie;
 		this.frequence = FREQUENCE_PAR_DEFAUT;
-		this.limteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
+		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
 
 		long delaiMilliseconde = delaiEnMilisecondes(frequence);
 		this.minuterie.scheduleAtFixedRate(this.assignateurSalle, delaiMilliseconde, delaiMilliseconde);
-	}
-
-	private long delaiEnMilisecondes(int delaiEnMinutes) {
-		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
 	}
 
 	public void setFrequence(int nbMinutes) {
@@ -39,16 +30,21 @@ public class ServiceReservationSalle {
 		minuterie.scheduleAtFixedRate(assignateurSalle, delaiMilisecondes, delaiMilisecondes);
 	}
 
-	// public void setLimite(int limite) {
-	// this.assignateurSalle.setLimite(limite);
-	// }
-
-	public void ajouterDemande(Demande nouvelleDemande) {
-		demandes.ajouter(nouvelleDemande);
+	public void setLimiteDemandesAvantAssignation(int limite) {
+		limiteDemandes = limite;
+		assignerSiNecessaire();
 	}
 
-	// public void arreterService() {
-	// serviceEnFonction = false;
-	// }
+	public void ajouterDemande(Demande nouvelleDemande) {
+		assignateurSalle.ajouterDemande(nouvelleDemande);
+		assignerSiNecessaire();
+	}
 
+	private void assignerSiNecessaire() {
+		assignateurSalle.assignerDemandeSalleSiContientAuMoins(limiteDemandes);
+	}
+
+	private long delaiEnMilisecondes(int delaiEnMinutes) {
+		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
+	}
 }

@@ -1,34 +1,49 @@
 package org.ClAssignateur.domain;
 
+import java.util.Iterator;
+
 import java.util.PriorityQueue;
 
 public class ConteneurDemandesTriable implements ConteneurDemandes {
 
-	private PriorityQueue<Demande> file = new PriorityQueue<Demande>(
-			new ComparateurDeDemande());
+	private PriorityQueue<Demande> file = new PriorityQueue<Demande>(new ComparateurDeDemande());
 
 	@Override
-	public int taille() {
-		return file.size();
+	public boolean contientAuMoins(int nombreDemandes) {
+		// return file.size() >= nombreDemandes;
+
+		return true;
 	}
 
-	@Override
-	public boolean estVide() {
-		return file.isEmpty();
-	}
+	// @Override
+	// public boolean estVide() {
+	// return file.isEmpty();
+	// }
 
 	@Override
-	public void ajouter(Demande demandeAjoutee) {
+	public void ajouterDemande(Demande demandeAjoutee) {
 		file.add(demandeAjoutee);
 	}
 
 	@Override
-	public void vider() {
-		file.clear();
+	public Iterator<Demande> iterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public Demande retirer() {
-		return file.remove();
+	public void vider() {
+		// TODO Auto-generated method stub
+
 	}
+
+	// @Override
+	// public void vider() {
+	// file.clear();
+	// }
+
+	// @Override
+	// public Demande retirer() {
+	// return file.remove();
+	// }
 }
