@@ -18,13 +18,12 @@ public class Salle {
 		return nom;
 	}
 
-	public int getCapacite() {
-		return capacite;
+	public boolean peutAccueillir(int nbParticipants) {
+		return capacite >= nbParticipants;
+
 	}
 
 	public boolean estDisponible(Demande demandeAVerifier) {
-		if (reservations.isEmpty())
-			return true;
 		for (Demande reservation : reservations) {
 			if (demandeAVerifier.estEnConflitAvec(reservation))
 				return false;
@@ -36,10 +35,6 @@ public class Salle {
 		if (estDisponible(nouvelleReservation) == false)
 			throw new IllegalArgumentException("La salle est déjà réservée à cette date.");
 		reservations.add(nouvelleReservation);
-	}
-
-	public void enleverReservation(Demande reservationAEnlever) {
-		reservations.remove(reservationAEnlever);
 	}
 
 }

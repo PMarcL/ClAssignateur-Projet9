@@ -65,14 +65,14 @@ public class AssignateurSalleTest {
 
 	@Test
 	public void etantDonneAucuneSalleRepondantDemandeTrouveeQuandAssignerDemandeSalleDevraitNePasReserverSalle() {
-		Demande demandeSalleNonDisponible = mock(Demande.class);
-		Optional<Salle> salleIndisponible = Optional.empty();
-		ajouterDemande(demandeSalleNonDisponible);
-		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleNonDisponible)).willReturn(salleIndisponible);
+		Demande demandeNePouvantPasEtreAssignee = mock(Demande.class);
+		Optional<Salle> aucuneSalle = Optional.empty();
+		ajouterDemande(demandeNePouvantPasEtreAssignee);
+		given(entrepotSalles.obtenirSalleRepondantDemande(demandeNePouvantPasEtreAssignee)).willReturn(aucuneSalle);
 
 		assignateur.run();
 
-		verify(salleDisponible, never()).placerReservation(demandeSalleNonDisponible);
+		verify(salleDisponible, never()).placerReservation(demandeNePouvantPasEtreAssignee);
 	}
 
 	// @Test
