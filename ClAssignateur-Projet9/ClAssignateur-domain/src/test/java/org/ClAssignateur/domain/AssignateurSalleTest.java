@@ -1,9 +1,8 @@
 package org.ClAssignateur.domain;
 
 import static org.mockito.BDDMockito.*;
-
+import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
-
 import java.util.Iterator;
 import java.util.Optional;
 import org.junit.Before;
@@ -28,6 +27,7 @@ public class AssignateurSalleTest {
 		salleDisponibleOptional = Optional.of(salleDisponible);
 
 		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(salleDisponibleOptional);
+		viderConteneurDemande();
 
 		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles);
 	}
@@ -75,12 +75,31 @@ public class AssignateurSalleTest {
 		verify(salleDisponible, never()).placerReservation(demandeSalleNonDisponible);
 	}
 
-	// @Test
-	// public void quandDemandeAssignationParMinuterieDevraitTenterAssignation()
-	// {
-	// assignateur.run();
-	// verify(conteneurDemandes).vider();
-	// }
+	@Test
+	public void etantDonneNombreDemandesDansConteneurDemandesSuperieurOuEgalALimiteQuandAssignerSiContientAuMoinsUnNombreDeDemandesDevraitAssigner() {
+		final int nombreDemandes = 5;
+		ajouterDemandes(nombreDemandes, demandeSalleDisponible);
+
+		assignateur.assignerDemandeSalleSiContientAuMoins(nombreDemandes);
+
+		verify(entrepotSalles, atLeast(1)).obtenirSalleRepondantDemande(any(Demande.class));
+	}
+
+	@Test
+	public void etantDonneNombreDemandesDansConteneurDemandesInferieurALimiteQuandAssignerSiContientAuMoinsUnNombreDeDemandesDevraitNePasAssigner() {
+		final int nombreDemandes = 5;
+		ajouterDemandes(nombreDemandes, demandeSalleDisponible);
+
+		assignateur.assignerDemandeSalleSiContientAuMoins(nombreDemandes + 1);
+
+		verify(entrepotSalles, never()).obtenirSalleRepondantDemande(any(Demande.class));
+	}
+
+	private void viderConteneurDemande() {
+		Iterator<Demande> iterateur = mock(Iterator.class);
+		given(iterateur.hasNext()).willReturn(false);
+		given(conteneurDemandes.iterator()).willReturn(iterateur);
+	}
 
 	private void ajouterDemande(Demande demande) {
 		final int nombreDemande = 1;
@@ -88,10 +107,13 @@ public class AssignateurSalleTest {
 	}
 
 	private void ajouterDemandes(int nombreDemandes, Demande demande) {
+		final boolean contientAuMoinsNombreDemandes = true;
+
 		Iterator<Demande> iterateur = mock(Iterator.class);
 
 		if (nombreDemandes == 0) {
-			given(iterateur.hasNext()).willReturn(false);
+			viderConteneurDemande();
+			return;
 		} else {
 			Boolean[] reponses = new Boolean[nombreDemandes];
 			for (int i = 0; i < nombreDemandes - 1; i++) {
@@ -103,5 +125,24 @@ public class AssignateurSalleTest {
 		}
 
 		given(conteneurDemandes.iterator()).willReturn(iterateur);
+		given(conteneurDemandes.contientAuMoins(intThat(estInferieurOuEgal(nombreDemandes)))).willReturn(
+				contientAuMoinsNombreDemandes);
+	}
+
+	private EstInferieurOuEgal estInferieurOuEgal(int valeur) {
+		return new EstInferieurOuEgal(valeur);
+	}
+
+	private class EstInferieurOuEgal extends ArgumentMatcher<Integer> {
+
+		private int reference;
+
+		public EstInferieurOuEgal(int reference) {
+			this.reference = reference;
+		}
+
+		public boolean matches(Object valeur) {
+			return ((int) valeur <= reference);
+		}
 	}
 }

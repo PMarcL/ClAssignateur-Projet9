@@ -19,7 +19,8 @@ public class AssignateurSalle extends TimerTask {
 	}
 
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
-
+		if (demandes.contientAuMoins(nombreDemandes))
+			assignerDemandeSalle();
 	}
 
 	@Override
