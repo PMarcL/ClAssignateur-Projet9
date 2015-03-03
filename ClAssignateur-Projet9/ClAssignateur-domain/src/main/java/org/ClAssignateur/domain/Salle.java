@@ -20,21 +20,15 @@ public class Salle {
 
 	public boolean peutAccueillir(int nbParticipants) {
 		return capacite >= nbParticipants;
-
-	}
-
-	public boolean estDisponible(Demande demandeAVerifier) {
-		for (Demande reservation : reservations) {
-			if (demandeAVerifier.estEnConflitAvec(reservation))
-				return false;
-		}
-		return true;
 	}
 
 	public void placerReservation(Demande nouvelleReservation) {
-		if (estDisponible(nouvelleReservation) == false)
-			throw new IllegalArgumentException("La salle est déjà réservée à cette date.");
 		reservations.add(nouvelleReservation);
+	}
+
+	public int getNbReservation() {
+		return reservations.size();
+
 	}
 
 }
