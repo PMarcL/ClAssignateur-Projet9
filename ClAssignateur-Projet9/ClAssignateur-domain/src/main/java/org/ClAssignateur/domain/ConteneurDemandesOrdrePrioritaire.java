@@ -22,8 +22,8 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 
 	@Override
 	public Iterator<Demande> iterator() {
-		Comparator<Demande> parPriorite = (demande1, demande2) -> Integer.compare(demande2.getPriorite(),
-				demande1.getPriorite());
+		Comparator<Demande> parPriorite = ((demande1, demande2) -> (demande2.estPlusPrioritaire(demande1) ? 1
+				: (demande1.estAutantPrioritaire(demande2) ? 0 : -1)));
 
 		return demandes.stream().sorted(parPriorite).iterator();
 	}

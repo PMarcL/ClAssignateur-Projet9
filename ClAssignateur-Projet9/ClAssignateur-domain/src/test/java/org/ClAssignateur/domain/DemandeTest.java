@@ -11,10 +11,8 @@ public class DemandeTest {
 	private final String ORGANISATEUR = "Simon";
 	private final int NOMBRE_PARTICIPANT = 10;
 	private final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
-	private final int PRIORITE_INITIALE = 1;
-	private final int PRIORITE_CONSTRUCTEUR = 2;
-	private final int PRIORITE_INCORRECT_INF = 0;
-	private final int PRIORITE_INCORRECT_SUP = 6;
+	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
+	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
 
 	private Demande demande;
 
@@ -24,42 +22,38 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void DemandePossedeIntialementLeChampsNbParticipantCommeDefiniDansLeConstructeur() {
+	public void demandePossedeIntialementLeChampsNbParticipantCommeDefiniDansLeConstructeur() {
 		int nbParticipant = demande.getNbParticipant();
 		assertEquals(NOMBRE_PARTICIPANT, nbParticipant);
 	}
 
 	@Test
-	public void DemandePossedeIntialementLeChampsOrganisateurCommeDefiniDansLeConstructeur() {
+	public void demandePossedeIntialementLeChampsOrganisateurCommeDefiniDansLeConstructeur() {
 		String organisateur = demande.getOrganisateur();
 		assertEquals(ORGANISATEUR, organisateur);
 	}
 
 	@Test
-	public void DemandePossedeIntialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
-		Demande demandeAvecPriorite = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_CONSTRUCTEUR);
-		int priorite = demandeAvecPriorite.getPriorite();
-		assertEquals(PRIORITE_CONSTRUCTEUR, priorite);
-	}
-
-	@Test(expected = RangeException.class)
-	public void DemandeLanceUneExceptionSiLaPrioriteEstInferieurALaLimiteInferieur() {
-		new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_INCORRECT_INF);
-	}
-
-	@Test(expected = RangeException.class)
-	public void DemandeLanceUneExceptionSiLaPrioriteEstSuperieurALaLimiteSuperieur() {
-		new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_INCORRECT_SUP);
+	public void demandePossedeParDefautPrioriteBasse() {
+		Demande autreDemande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_PAR_DEFAUT);
+		assertTrue(demande.estAutantPrioritaire(autreDemande));
 	}
 
 	@Test
-	public void DemandePossedeIntialementLeChampsPrioriteALaValeurInitiale() {
-		int priorite = demande.getPriorite();
-		assertEquals(PRIORITE_INITIALE, priorite);
+	public void demandePossedeIntialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
+		Demande demandeAvecPriorite = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_MOYENNE);
+
+		assertTrue(demandeAvecPriorite.estAutantPrioritaire(demandeAvecPriorite));
+		assertTrue(demandeAvecPriorite.estPlusPrioritaire(demande));
+	}
+
+	@Test
+	public void demandePossedeIntialementLeChampsPrioriteALaValeurInitiale() {
+		assertTrue(demande.estAutantPrioritaire(demande));
 	}
 
 	@Test(expected = RangeException.class)
-	public void DemandeDoitAvoirUneNombreDeParticipantsStrictementSuperieurAuNombreDeParticipantMinimum() {
+	public void demandeDoitAvoirUneNombreDeParticipantsPositif() {
 		new Demande(NOMBRE_PARTICIPANT_INCORRECTE, ORGANISATEUR);
 	}
 }

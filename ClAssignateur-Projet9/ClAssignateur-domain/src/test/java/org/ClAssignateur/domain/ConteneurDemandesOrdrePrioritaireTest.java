@@ -12,8 +12,8 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 	private final int DEUX_ELEMENTS = 2;
 	private final int NOMBRE_PARTICIPANTS = 5;
 	private final String ORGANISATEUR = "John Doe";
-	private final int PRIORITE_MINIMALE = 1;
-	private final int PRIORITE_MAXIMALE = 5;
+	private final Priorite PRIORITE_BASSE = Priorite.basse();
+	private final Priorite PRIORITE_HAUTE = Priorite.haute();
 
 	private Demande demandeFaiblePriorite;
 	private Demande demandeHautePriorite;
@@ -22,8 +22,8 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 	@Before
 	public void creerConteneurDemandes() {
-		demandeFaiblePriorite = new Demande(NOMBRE_PARTICIPANTS, ORGANISATEUR, PRIORITE_MINIMALE);
-		demandeHautePriorite = new Demande(NOMBRE_PARTICIPANTS, ORGANISATEUR, PRIORITE_MAXIMALE);
+		demandeFaiblePriorite = new Demande(NOMBRE_PARTICIPANTS, ORGANISATEUR, PRIORITE_BASSE);
+		demandeHautePriorite = new Demande(NOMBRE_PARTICIPANTS, ORGANISATEUR, PRIORITE_HAUTE);
 
 		conteneurDemandes = new ConteneurDemandesOrdrePrioritaire();
 	}
@@ -73,13 +73,15 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 	private class EstEnOrdrePrioritaireDecroissant extends ArgumentMatcher<ConteneurDemandesOrdrePrioritaire> {
 
 		public boolean matches(Object conteneurDemandes) {
-			int dernierePriorite = PRIORITE_MAXIMALE;
 
+			Demande derniereDemande = null;
 			for (Demande demandeCourante : (ConteneurDemandesOrdrePrioritaire) conteneurDemandes) {
-				if (dernierePriorite < demandeCourante.getPriorite())
-					return false;
+				if (derniereDemande != null) {
+					if (demandeCourante.estPlusPrioritaire(derniereDemande))
+						return false;
+				}
 
-				dernierePriorite = demandeCourante.getPriorite();
+				derniereDemande = demandeCourante;
 			}
 
 			return true;
