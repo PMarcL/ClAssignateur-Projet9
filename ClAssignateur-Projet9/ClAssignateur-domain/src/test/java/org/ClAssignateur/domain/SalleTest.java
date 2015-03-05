@@ -1,13 +1,13 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
-
+import static org.mockito.BDDMockito.*;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SalleTest {
 
-	private final Demande DEMANDE_AJOUTER = new Demande(100, new Employe());
+	private final Demande DEMANDE_AJOUTER = mock(Demande.class);
 	private final int CAPACITE_INITIALE = 100;
 	private final int NB_PARTICIPANT_INFERIEUR_A_CAPACITE = 50;
 	private final int NB_PARTICIPANT_SUPERIEUR_A_CAPACITE = 150;
@@ -16,6 +16,7 @@ public class SalleTest {
 
 	@Before
 	public void initialisation() {
+		willReturn(CAPACITE_INITIALE).given(DEMANDE_AJOUTER).getNbParticipant();
 		salle = new Salle(CAPACITE_INITIALE);
 	}
 
@@ -39,4 +40,5 @@ public class SalleTest {
 		salle.placerReservation(DEMANDE_AJOUTER);
 		assertEquals(salle.getNbReservation(), 1);
 	}
+
 }

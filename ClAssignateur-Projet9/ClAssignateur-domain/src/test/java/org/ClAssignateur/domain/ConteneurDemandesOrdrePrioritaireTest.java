@@ -1,8 +1,9 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
-
 import org.mockito.ArgumentMatcher;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +15,7 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 	private final Employe ORGANISATEUR = new Employe();
 	private final Priorite PRIORITE_BASSE = Priorite.basse();
 	private final Priorite PRIORITE_HAUTE = Priorite.haute();
+	private final StrategieNotificationFactory STRATEGIE_NOTFICATION_FACTORY = mock(StrategieNotificationFactory.class);
 
 	private Demande demandeFaiblePriorite;
 	private Demande demandeHautePriorite;
@@ -22,8 +24,10 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 	@Before
 	public void creerConteneurDemandes() {
-		demandeFaiblePriorite = new Demande(NOMBRE_PARTICIPANTS, ORGANISATEUR, PRIORITE_BASSE);
-		demandeHautePriorite = new Demande(NOMBRE_PARTICIPANTS, ORGANISATEUR, PRIORITE_HAUTE);
+		demandeFaiblePriorite = new Demande(NOMBRE_PARTICIPANTS, ORGANISATEUR, PRIORITE_BASSE,
+				STRATEGIE_NOTFICATION_FACTORY);
+		demandeHautePriorite = new Demande(NOMBRE_PARTICIPANTS, ORGANISATEUR, PRIORITE_HAUTE,
+				STRATEGIE_NOTFICATION_FACTORY);
 
 		conteneurDemandes = new ConteneurDemandesOrdrePrioritaire();
 	}

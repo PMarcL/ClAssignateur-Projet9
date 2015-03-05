@@ -13,12 +13,14 @@ public class DemandeTest {
 	private final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
 	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
+	private final StrategieNotification strategieNotification = mock(StrategieNotification.class);
+	private final StrategieNotificationFactory strategieNotificationFactory = mock(StrategieNotificationFactory.class);
 
 	private Demande demande;
 
 	@Before
 	public void creerLaDemande() {
-		demande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR);
+		demande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, strategieNotificationFactory);
 	}
 
 	@Test
@@ -35,13 +37,15 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeParDefautPrioriteBasse() {
-		Demande autreDemande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_PAR_DEFAUT);
+		Demande autreDemande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_PAR_DEFAUT,
+				strategieNotificationFactory);
 		assertTrue(demande.estAutantPrioritaire(autreDemande));
 	}
 
 	@Test
 	public void demandePossedeIntialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
-		Demande demandeAvecPriorite = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_MOYENNE);
+		Demande demandeAvecPriorite = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_MOYENNE,
+				strategieNotificationFactory);
 
 		assertTrue(demandeAvecPriorite.estAutantPrioritaire(demandeAvecPriorite));
 		assertTrue(demandeAvecPriorite.estPlusPrioritaire(demande));
@@ -54,18 +58,25 @@ public class DemandeTest {
 
 	@Test(expected = RangeException.class)
 	public void demandeDoitAvoirUneNombreDeParticipantsPositif() {
-		new Demande(NOMBRE_PARTICIPANT_INCORRECTE, ORGANISATEUR);
+		new Demande(NOMBRE_PARTICIPANT_INCORRECTE, ORGANISATEUR, strategieNotificationFactory);
 	}
 
 	@Test
 	public void lorsqueNotifierEchecAlorsNotifierEchecEstAppele() {
-		StrategieNotification strategieNotification = mock(StrategieNotification.class);
-		StrategieNotificationFactory strategieNotificationFactory = mock(StrategieNotificationFactory.class);
 		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
-		Demande demande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, strategieNotificationFactory);
 
 		demande.notifierEchecAssignation();
 
 		verify(strategieNotification).notifierEchecAssignation(ORGANISATEUR);
+	}
+
+	@Test
+	public void lorsqueNotiferSuccessAlorsNotifierSuccessEstAppele() {
+		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
+		Salle salleAssigne = mock(Salle.class);
+
+		demande.notifierAssignation(salleAssigne);
+
+		verify(strategieNotification).notifierAssignation(salleAssigne, ORGANISATEUR);
 	}
 }

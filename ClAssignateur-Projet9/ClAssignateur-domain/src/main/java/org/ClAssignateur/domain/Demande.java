@@ -10,20 +10,14 @@ public class Demande {
 	private Priorite priorite;
 	private StrategieNotificationFactory strategieNotificationFactory;
 
-	public Demande(int nombreParticipant, Employe organisateur) {
-		validerNombreParticipant(nombreParticipant);
-
-		this.nbParticipant = nombreParticipant;
-		this.organisateur = organisateur;
-		this.priorite = Priorite.basse();
-	}
-
-	public Demande(int nombreParticipant, Employe organisateur, Priorite priorite) {
+	public Demande(int nombreParticipant, Employe organisateur, Priorite priorite,
+			StrategieNotificationFactory strategieNotificationFactory) {
 		validerNombreParticipant(nombreParticipant);
 
 		this.nbParticipant = nombreParticipant;
 		this.organisateur = organisateur;
 		this.priorite = priorite;
+		this.strategieNotificationFactory = strategieNotificationFactory;
 	}
 
 	public Demande(int nombreParticipant, Employe organisateur,
@@ -62,5 +56,10 @@ public class Demande {
 	public void notifierEchecAssignation() {
 		StrategieNotification strategieNotification = this.strategieNotificationFactory.creerStrategieNotification();
 		strategieNotification.notifierEchecAssignation(this.getOrganisateur());
+	}
+
+	public void notifierAssignation(Salle salleAssigne) {
+		StrategieNotification strategieNotification = this.strategieNotificationFactory.creerStrategieNotification();
+		strategieNotification.notifierAssignation(salleAssigne, this.getOrganisateur());
 	}
 }
