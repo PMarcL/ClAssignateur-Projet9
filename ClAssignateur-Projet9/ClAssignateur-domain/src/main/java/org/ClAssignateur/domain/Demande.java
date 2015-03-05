@@ -1,17 +1,15 @@
 package org.ClAssignateur.domain;
 
-import java.util.Date;
 import org.w3c.dom.ranges.RangeException;
 
 public class Demande {
-	private static final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
-	public static final int PRIORITE_MINIMAL = 1;
-	public static final int PRIORITE_MAXIMALE = 5;
+	private final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
+	private final int PRIORITE_MINIMAL = 1;
+	private final int PRIORITE_MAXIMALE = 5;
 
 	private int nbParticipant;
 	private String organisateur;
 	private int priorite;
-	public Date momentDeCreation = new Date();
 
 	public Demande(int nombreParticipant, String organisateur) {
 		validerNombreParticipant(nombreParticipant);
@@ -45,11 +43,6 @@ public class Demande {
 		if (nombreParticipant <= NOMBRE_PARTICIPANTS_MINIMUM)
 			throw new RangeException((short) NOMBRE_PARTICIPANTS_MINIMUM,
 					"Le nombre de participants doit être supérieur au minimum de participants requis.");
-	}
-
-	public Date getMomentDeCreation() {
-		return momentDeCreation;
-
 	}
 
 	public int getNbParticipant() {
