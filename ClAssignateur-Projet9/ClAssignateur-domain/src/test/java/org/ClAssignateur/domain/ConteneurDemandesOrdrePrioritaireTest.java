@@ -11,7 +11,7 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 	private final int UN_ELEMENT = 1;
 	private final int DEUX_ELEMENTS = 2;
 	private final int NOMBRE_PARTICIPANTS = 5;
-	private final String ORGANISATEUR = "John Doe";
+	private final Employe ORGANISATEUR = new Employe();
 	private final Priorite PRIORITE_BASSE = Priorite.basse();
 	private final Priorite PRIORITE_HAUTE = Priorite.haute();
 

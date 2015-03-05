@@ -1,14 +1,14 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
-
+import static org.mockito.BDDMockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.ranges.RangeException;
 
 public class DemandeTest {
 
-	private final String ORGANISATEUR = "Simon";
+	private final Employe ORGANISATEUR = new Employe();
 	private final int NOMBRE_PARTICIPANT = 10;
 	private final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
 	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
@@ -29,7 +29,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeIntialementLeChampsOrganisateurCommeDefiniDansLeConstructeur() {
-		String organisateur = demande.getOrganisateur();
+		Employe organisateur = demande.getOrganisateur();
 		assertEquals(ORGANISATEUR, organisateur);
 	}
 
@@ -55,5 +55,17 @@ public class DemandeTest {
 	@Test(expected = RangeException.class)
 	public void demandeDoitAvoirUneNombreDeParticipantsPositif() {
 		new Demande(NOMBRE_PARTICIPANT_INCORRECTE, ORGANISATEUR);
+	}
+
+	@Test
+	public void lorsqueNotifierEchecAlorsNotifierEchecEstAppele() {
+		StrategieNotification strategieNotification = mock(StrategieNotification.class);
+		StrategieNotificationFactory strategieNotificationFactory = mock(StrategieNotificationFactory.class);
+		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
+		Demande demande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, strategieNotificationFactory);
+
+		demande.notifierEchecAssignation();
+
+		verify(strategieNotification).notifierEchecAssignation(ORGANISATEUR);
 	}
 }

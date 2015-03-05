@@ -6,10 +6,11 @@ public class Demande {
 	private final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
 
 	private int nbParticipant;
-	private String organisateur;
+	private Employe organisateur;
 	private Priorite priorite;
+	private StrategieNotificationFactory strategieNotificationFactory;
 
-	public Demande(int nombreParticipant, String organisateur) {
+	public Demande(int nombreParticipant, Employe organisateur) {
 		validerNombreParticipant(nombreParticipant);
 
 		this.nbParticipant = nombreParticipant;
@@ -17,12 +18,22 @@ public class Demande {
 		this.priorite = Priorite.basse();
 	}
 
-	public Demande(int nombreParticipant, String organisateur, Priorite priorite) {
+	public Demande(int nombreParticipant, Employe organisateur, Priorite priorite) {
 		validerNombreParticipant(nombreParticipant);
 
 		this.nbParticipant = nombreParticipant;
 		this.organisateur = organisateur;
 		this.priorite = priorite;
+	}
+
+	public Demande(int nombreParticipant, Employe organisateur,
+			StrategieNotificationFactory strategieNotificationFactory) {
+		validerNombreParticipant(nombreParticipant);
+
+		this.nbParticipant = nombreParticipant;
+		this.organisateur = organisateur;
+		this.priorite = Priorite.basse();
+		this.strategieNotificationFactory = strategieNotificationFactory;
 	}
 
 	private void validerNombreParticipant(int nombreParticipant) {
@@ -35,7 +46,7 @@ public class Demande {
 		return this.nbParticipant;
 	}
 
-	public String getOrganisateur() {
+	public Employe getOrganisateur() {
 		return this.organisateur;
 	}
 
@@ -46,5 +57,10 @@ public class Demande {
 	public boolean estAutantPrioritaire(Demande autreDemande) {
 		return (!this.priorite.estPlusPrioritaire(autreDemande.priorite) && !autreDemande.priorite
 				.estPlusPrioritaire(priorite));
+	}
+
+	public void notifierEchecAssignation() {
+		StrategieNotification strategieNotification = this.strategieNotificationFactory.creerStrategieNotification();
+		strategieNotification.notifierEchecAssignation(this.getOrganisateur());
 	}
 }

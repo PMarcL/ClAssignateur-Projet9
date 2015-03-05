@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class SalleTest {
 
-	private final Demande DEMANDE_AJOUTER = new Demande(100, "P-M");
+	private final Demande DEMANDE_AJOUTER = new Demande(100, new Employe());
 	private final int CAPACITE_INITIALE = 100;
 	private final int NB_PARTICIPANT_INFERIEUR_A_CAPACITE = 50;
 	private final int NB_PARTICIPANT_SUPERIEUR_A_CAPACITE = 150;
