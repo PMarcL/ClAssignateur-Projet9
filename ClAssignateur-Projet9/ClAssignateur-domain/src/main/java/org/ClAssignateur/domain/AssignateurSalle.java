@@ -1,25 +1,41 @@
 package org.ClAssignateur.domain;
 
-public class AssignateurSalle {
+import java.util.Optional;
 
-	public void assignerDemandeSalle(FileDemande demandes, EntrepotSalles salles) {
-		int nbDemandes = demandes.taille();
-		for (int i = 0; i < nbDemandes; i++) {
+import java.util.TimerTask;
 
-			Demande demandeCourante;
-			try {
-				demandeCourante = demandes.retirer();
-			} catch (Exception e) {
-				return;
-			}
+public class AssignateurSalle extends TimerTask {
 
-			try {
-				Salle salleDisponible = salles.obtenirSalleRepondantADemande(demandeCourante);
-				salleDisponible.placerReservation(demandeCourante);
-				salles.ranger(salleDisponible);
-			} catch (Exception e) {
-				demandes.ajouter(demandeCourante);
-			}
+	private ConteneurDemandes demandes;
+	private EntrepotSalles salles;
+
+	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles) {
+		this.demandes = demandes;
+		this.salles = salles;
+	}
+
+	public void ajouterDemande(Demande demande) {
+		demandes.ajouterDemande(demande);
+	}
+
+	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
+		if (demandes.contientAuMoins(nombreDemandes))
+			assignerDemandeSalle();
+	}
+
+	@Override
+	public void run() {
+		assignerDemandeSalle();
+	}
+
+	private void assignerDemandeSalle() {
+		for (Demande demandeCourante : demandes) {
+			Optional<Salle> salle = salles.obtenirSalleRepondantDemande(demandeCourante);
+
+			if (salle.isPresent())
+				salle.get().placerReservation(demandeCourante);
 		}
+
+		demandes.vider();
 	}
 }

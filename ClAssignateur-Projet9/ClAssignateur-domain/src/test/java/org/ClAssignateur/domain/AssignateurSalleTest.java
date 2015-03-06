@@ -1,94 +1,148 @@
 package org.ClAssignateur.domain;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-
-import java.util.Calendar;
+import org.mockito.ArgumentMatcher;
+import org.mockito.InOrder;
+import java.util.Iterator;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 public class AssignateurSalleTest {
 
-	private final Calendar DEMANDE_1_DATE_DEBUT = creerDate(2015, 02, 07, 12, 14, 25);
-	private final Calendar DEMANDE_1_DATE_FIN = creerDate(2015, 02, 07, 13, 30, 30);
-	private final int DEMANDE_1_NOMBRE_PARTICIPANTS = 12;
-	private final String DEMANDE_1_NOM_ORGANISATEUR = "John Dow";
-	private final Demande DEMANDE_1 = new Demande(DEMANDE_1_DATE_DEBUT, DEMANDE_1_DATE_FIN,
-			DEMANDE_1_NOMBRE_PARTICIPANTS, DEMANDE_1_NOM_ORGANISATEUR);
-
-	private final Calendar DEMANDE_2_DATE_DEBUT = creerDate(2015, 02, 07, 15, 38, 42);
-	private final Calendar DEMANDE_2_DATE_FIN = creerDate(2015, 02, 07, 17, 45, 34);
-	private final int DEMANDE_2_NOMBRE_PARTICIPANTS = 24;
-	private final String DEMANDE_2_NOM_ORGANISATEUR = "Joe Bean";
-	private final Demande DEMANDE_2 = new Demande(DEMANDE_2_DATE_DEBUT, DEMANDE_2_DATE_FIN,
-			DEMANDE_2_NOMBRE_PARTICIPANTS, DEMANDE_2_NOM_ORGANISATEUR);
-
+	private ConteneurDemandes conteneurDemandes;
 	private EntrepotSalles entrepotSalles;
-	private AssignateurSalle assignateur;
-	private FileDemande fileDemandes;
+	private Demande demandeSalleDisponible;
+	private Salle salleDisponible;
+	private Optional<Salle> salleDisponibleOptional;
 
-	private Calendar creerDate(int annee, int mois, int jour, int heure, int minute, int seconde) {
-		Calendar date = Calendar.getInstance();
-		date.set(annee, mois, jour, heure, minute, seconde);
-		return date;
-	}
+	private AssignateurSalle assignateur;
 
 	@Before
-	public void initialement() {
+	public void creerAssignateur() {
+		conteneurDemandes = mock(ConteneurDemandes.class);
 		entrepotSalles = mock(EntrepotSalles.class);
-		assignateur = new AssignateurSalle();
-		fileDemandes = new FileDemande();
+		demandeSalleDisponible = mock(Demande.class);
+		salleDisponible = mock(Salle.class);
+		salleDisponibleOptional = Optional.of(salleDisponible);
+
+		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(salleDisponibleOptional);
+		viderConteneurDemande();
+
+		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles);
 	}
 
 	@Test
-	public void quandAssigantionDevraitTenterAssignerChaqueDemande() throws AucunesSallesDisponiblesException {
-		fileDemandes.ajouter(DEMANDE_1);
-		fileDemandes.ajouter(DEMANDE_2);
-
-		assignateur.assignerDemandeSalle(fileDemandes, entrepotSalles);
-
-		verify(entrepotSalles).obtenirSalleRepondantADemande(DEMANDE_1);
-		verify(entrepotSalles).obtenirSalleRepondantADemande(DEMANDE_2);
-	}
-
-	private Salle provoquerReservation() throws AucunesSallesDisponiblesException {
-		fileDemandes.ajouter(DEMANDE_1);
-		Salle salle = mock(Salle.class);
-		given(entrepotSalles.obtenirSalleRepondantADemande(DEMANDE_1)).willReturn(salle);
-		return salle;
+	public void quandAjouterDemandeDevraitAjouterDemandeDansConteneurDemandes() {
+		assignateur.ajouterDemande(demandeSalleDisponible);
+		verify(conteneurDemandes).ajouterDemande(demandeSalleDisponible);
 	}
 
 	@Test
-	public void etantDonneDemandeEtSalleDisponibleQuandAssignationDevraitReserverSalle()
-			throws AucunesSallesDisponiblesException {
-		Salle salle = provoquerReservation();
+	public void quandAppelTacheMinuterieDevraitTenterAssignerChaqueDemandeAvantEffacerDemandes() {
+		final int nombreDemandes = 3;
+		ajouterDemandes(nombreDemandes, demandeSalleDisponible);
 
-		assignateur.assignerDemandeSalle(fileDemandes, entrepotSalles);
+		assignateur.run();
 
-		verify(salle).placerReservation(DEMANDE_1);
-		assertTrue(fileDemandes.estVide());
+		InOrder ordre = inOrder(entrepotSalles, conteneurDemandes);
+		ordre.verify(entrepotSalles, times(nombreDemandes)).obtenirSalleRepondantDemande(demandeSalleDisponible);
+		ordre.verify(conteneurDemandes).vider();
 	}
 
 	@Test
-	public void etantDonneDemandeEtSalleIndisponibleQuandAssignationDevraitRemettreDemandeDansFile()
-			throws AucunesSallesDisponiblesException {
-		fileDemandes.ajouter(DEMANDE_1);
-		willThrow(AucunesSallesDisponiblesException.class).given(entrepotSalles).obtenirSalleRepondantADemande(
-				DEMANDE_1);
+	public void etantDonneSalleRepondantDemandeTrouveeQuandAppelTacheMinuterieDevraitReserverSalle() {
+		ajouterDemande(demandeSalleDisponible);
+		Salle salleDisponible = mock(Salle.class);
+		Optional<Salle> salleDisponibleOptionnelle = Optional.of(salleDisponible);
+		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(
+				salleDisponibleOptionnelle);
 
-		int nombreDemandeAvantAssignation = fileDemandes.taille();
-		assignateur.assignerDemandeSalle(fileDemandes, entrepotSalles);
-		int nombreDemandeApresAssignation = fileDemandes.taille();
+		assignateur.run();
 
-		assertEquals(nombreDemandeAvantAssignation, nombreDemandeApresAssignation);
+		verify(salleDisponible).placerReservation(demandeSalleDisponible);
 	}
 
 	@Test
-	public void etantDonneDemandeEtSalleDisponibleQuandAssignationDevraitSauvegarderSalleDansEntrepot()
-			throws AucunesSallesDisponiblesException {
-		Salle salle = provoquerReservation();
-		assignateur.assignerDemandeSalle(fileDemandes, entrepotSalles);
-		verify(entrepotSalles).ranger(salle);
+	public void etantDonneAucuneSalleRepondantDemandeTrouveeQuandAssignerDemandeSalleDevraitNePasReserverSalle() {
+		Demande demandeNePouvantPasEtreAssignee = mock(Demande.class);
+		Optional<Salle> aucuneSalle = Optional.empty();
+		ajouterDemande(demandeNePouvantPasEtreAssignee);
+		given(entrepotSalles.obtenirSalleRepondantDemande(demandeNePouvantPasEtreAssignee)).willReturn(aucuneSalle);
+
+		assignateur.run();
+
+		verify(salleDisponible, never()).placerReservation(demandeNePouvantPasEtreAssignee);
 	}
 
+	@Test
+	public void etantDonneNombreDemandesDansConteneurDemandesSuperieurOuEgalALimiteQuandAssignerSiContientAuMoinsUnNombreDeDemandesDevraitAssigner() {
+		final int nombreDemandes = 5;
+		ajouterDemandes(nombreDemandes, demandeSalleDisponible);
+
+		assignateur.assignerDemandeSalleSiContientAuMoins(nombreDemandes);
+
+		verify(entrepotSalles, atLeast(1)).obtenirSalleRepondantDemande(any(Demande.class));
+	}
+
+	@Test
+	public void etantDonneNombreDemandesDansConteneurDemandesInferieurALimiteQuandAssignerSiContientAuMoinsUnNombreDeDemandesDevraitNePasAssigner() {
+		final int nombreDemandes = 5;
+		ajouterDemandes(nombreDemandes, demandeSalleDisponible);
+
+		assignateur.assignerDemandeSalleSiContientAuMoins(nombreDemandes + 1);
+
+		verify(entrepotSalles, never()).obtenirSalleRepondantDemande(any(Demande.class));
+	}
+
+	private void viderConteneurDemande() {
+		Iterator<Demande> iterateur = mock(Iterator.class);
+		given(iterateur.hasNext()).willReturn(false);
+		given(conteneurDemandes.iterator()).willReturn(iterateur);
+	}
+
+	private void ajouterDemande(Demande demande) {
+		final int nombreDemande = 1;
+		ajouterDemandes(nombreDemande, demande);
+	}
+
+	private void ajouterDemandes(int nombreDemandes, Demande demande) {
+		final boolean contientAuMoinsNombreDemandes = true;
+
+		Iterator<Demande> iterateur = mock(Iterator.class);
+
+		if (nombreDemandes == 0) {
+			viderConteneurDemande();
+			return;
+		} else {
+			Boolean[] reponses = new Boolean[nombreDemandes];
+			for (int i = 0; i < nombreDemandes - 1; i++) {
+				reponses[i] = true;
+			}
+			reponses[nombreDemandes - 1] = false;
+			given(iterateur.hasNext()).willReturn(true, reponses);
+			given(iterateur.next()).willReturn(demande);
+		}
+
+		given(conteneurDemandes.iterator()).willReturn(iterateur);
+		given(conteneurDemandes.contientAuMoins(intThat(estInferieurOuEgal(nombreDemandes)))).willReturn(
+				contientAuMoinsNombreDemandes);
+	}
+
+	private EstInferieurOuEgal estInferieurOuEgal(int valeur) {
+		return new EstInferieurOuEgal(valeur);
+	}
+
+	private class EstInferieurOuEgal extends ArgumentMatcher<Integer> {
+
+		private int reference;
+
+		public EstInferieurOuEgal(int reference) {
+			this.reference = reference;
+		}
+
+		public boolean matches(Object valeur) {
+			return ((int) valeur <= reference);
+		}
+	}
 }

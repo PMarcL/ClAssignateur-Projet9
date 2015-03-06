@@ -2,75 +2,41 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 
-import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SalleTest {
 
-	private final Demande DEMANDE_TEST = new Demande(creerDate(2015, 01, 28,
-			11, 0, 0), creerDate(2015, 01, 28, 12, 0, 0), 100, "P-M");
-	private final Demande DEMANDE_TEST2 = new Demande(creerDate(2015, 02, 28,
-			11, 0, 0), creerDate(2015, 02, 28, 12, 0, 0), 100, "P-M");
-	private final String NOM_TEST = "nomSalle";
-	private final int CAPACITE_TEST = 100;
+	private final Demande DEMANDE_AJOUTER = new Demande(100, "P-M");
+	private final int CAPACITE_INITIALE = 100;
+	private final int NB_PARTICIPANT_INFERIEUR_A_CAPACITE = 50;
+	private final int NB_PARTICIPANT_SUPERIEUR_A_CAPACITE = 150;
 
 	private Salle salle;
 
-	public static Calendar creerDate(int annee, int mois, int jour, int heure,
-			int minute, int seconde) {
-		Calendar date = Calendar.getInstance();
-		date.set(annee, mois, jour, heure, minute, seconde);
-		return date;
-	}
-
 	@Before
 	public void initialisation() {
-		salle = new Salle(NOM_TEST, CAPACITE_TEST);
+		salle = new Salle(CAPACITE_INITIALE);
 	}
 
 	@Test
-	public void UneNouvelleSalleRetourneSonNom() {
-		String nomRecu = salle.getNom();
-
-		assertEquals(NOM_TEST, nomRecu);
+	public void UneSallePeutAccueillirUnNombreDeParticipantInferieurASaCapacite() {
+		assertTrue(salle.peutAccueillir(NB_PARTICIPANT_INFERIEUR_A_CAPACITE));
 	}
 
 	@Test
-	public void UneNouvelleSalleRetourneSaCapacite() {
-		int capaciteRecu = salle.getCapacite();
-
-		assertEquals(CAPACITE_TEST, capaciteRecu);
+	public void UneSalleNePeutPasAccueillirUnNombreDeParticipantSuperieurASaCapacite() {
+		assertFalse(salle.peutAccueillir(NB_PARTICIPANT_SUPERIEUR_A_CAPACITE));
 	}
 
 	@Test
-	public void UneNouvelleSalleSansReservationEstDisponible() {
-		assertTrue(salle.estDisponible(DEMANDE_TEST));
+	public void UneSalleContientInitialementAucuneReservation() {
+		assertEquals(salle.getNbReservation(), 0);
 	}
 
 	@Test
-	public void UneNouvelleSalleApresReservationNEstPlusDisponibleALaDateDemande() {
-		salle.placerReservation(DEMANDE_TEST);
-		assertFalse(salle.estDisponible(DEMANDE_TEST));
+	public void UneSalleApresReservationContientUneReservation() {
+		salle.placerReservation(DEMANDE_AJOUTER);
+		assertEquals(salle.getNbReservation(), 1);
 	}
-
-	@Test
-	public void SalleAvecUneReservationEstDisponibleAUneAutreDate() {
-		salle.placerReservation(DEMANDE_TEST);
-		assertTrue(salle.estDisponible(DEMANDE_TEST2));
-	}
-
-	@Test
-	public void SalleAvecUneReservationApresRetraitDeLaReservationEstDisponible() {
-		salle.placerReservation(DEMANDE_TEST);
-		salle.enleverReservation(DEMANDE_TEST);
-		assertTrue(salle.estDisponible(DEMANDE_TEST));
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void SalleAvecUneReservationNePeutAjouterUneReservationALaMemeDate() {
-		salle.placerReservation(DEMANDE_TEST);
-		salle.placerReservation(DEMANDE_TEST);
-	}
-
 }
