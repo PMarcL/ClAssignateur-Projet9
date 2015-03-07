@@ -1,47 +1,33 @@
 package org.ClAssignateur.domain;
 
-import org.w3c.dom.ranges.RangeException;
+import java.util.ArrayList;
 
 public class Demande {
-	private final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
 
-	private int nbParticipant;
-	private Employe organisateur;
+	private Groupe groupe;
 	private Priorite priorite;
 	private StrategieNotificationFactory strategieNotificationFactory;
+	private ArrayList<Salle> reservations = new ArrayList<Salle>();
 
-	public Demande(int nombreParticipant, Employe organisateur, Priorite priorite,
-			StrategieNotificationFactory strategieNotificationFactory) {
-		validerNombreParticipant(nombreParticipant);
-
-		this.nbParticipant = nombreParticipant;
-		this.organisateur = organisateur;
+	public Demande(Groupe groupe, Priorite priorite, StrategieNotificationFactory strategieNotificationFactory) {
+		this.groupe = groupe;
 		this.priorite = priorite;
 		this.strategieNotificationFactory = strategieNotificationFactory;
 	}
 
-	public Demande(int nombreParticipant, Employe organisateur,
-			StrategieNotificationFactory strategieNotificationFactory) {
-		validerNombreParticipant(nombreParticipant);
-
-		this.nbParticipant = nombreParticipant;
-		this.organisateur = organisateur;
+	public Demande(Groupe groupe, StrategieNotificationFactory strategieNotificationFactory) {
+		this.groupe = groupe;
 		this.priorite = Priorite.basse();
 		this.strategieNotificationFactory = strategieNotificationFactory;
 	}
 
-	private void validerNombreParticipant(int nombreParticipant) {
-		if (nombreParticipant <= NOMBRE_PARTICIPANTS_MINIMUM)
-			throw new RangeException((short) NOMBRE_PARTICIPANTS_MINIMUM,
-					"Le nombre de participants doit être supérieur au minimum de participants requis.");
+	public Groupe getGroupe() {
+		return this.groupe;
 	}
 
 	public int getNbParticipant() {
-		return this.nbParticipant;
-	}
-
-	public Employe getOrganisateur() {
-		return this.organisateur;
+		int nombreDeParticipant = this.groupe.getNbParticipant();
+		return nombreDeParticipant;
 	}
 
 	public boolean estPlusPrioritaire(Demande autreDemande) {
@@ -53,13 +39,26 @@ public class Demande {
 				.estPlusPrioritaire(priorite));
 	}
 
-	public void notifierEchecAssignation() {
-		StrategieNotification strategieNotification = this.strategieNotificationFactory.creerStrategieNotification();
-		strategieNotification.notifierEchecAssignation(this.getOrganisateur());
+	public void placerReservation(Salle nouvelleReservation) {
+		reservations.add(nouvelleReservation);
+
+		StrategieNotification strategieNotification = strategieNotificationFactory.creerStrategieNotification();
+		MessageNotification message = new MessageNotificationSuccess(nouvelleReservation);
+
+		strategieNotification.notifier(message, groupe.getOrganisateur());
+		strategieNotification.notifier(message, groupe.getResponsable());
 	}
 
-	public void notifierAssignation(Salle salleAssigne) {
-		StrategieNotification strategieNotification = this.strategieNotificationFactory.creerStrategieNotification();
-		strategieNotification.notifierAssignation(salleAssigne, this.getOrganisateur());
+	public int getNbReservation() {
+		return reservations.size();
 	}
+
+	public void signalerAucuneDemandeCorrespondante() {
+		StrategieNotification strategieNotification = strategieNotificationFactory.creerStrategieNotification();
+		MessageNotification message = new MessageNotificationEchec();
+
+		strategieNotification.notifier(message, groupe.getOrganisateur());
+		strategieNotification.notifier(message, groupe.getResponsable());
+	}
+
 }

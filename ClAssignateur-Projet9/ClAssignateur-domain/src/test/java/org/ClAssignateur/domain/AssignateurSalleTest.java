@@ -60,7 +60,7 @@ public class AssignateurSalleTest {
 
 		assignateur.run();
 
-		verify(salleDisponible).placerReservation(demandeSalleDisponible);
+		verify(demandeSalleDisponible).placerReservation(salleDisponible);
 	}
 
 	@Test
@@ -72,7 +72,19 @@ public class AssignateurSalleTest {
 
 		assignateur.run();
 
-		verify(salleDisponible, never()).placerReservation(demandeNePouvantPasEtreAssignee);
+		verify(demandeNePouvantPasEtreAssignee, never()).placerReservation(salleDisponible);
+	}
+
+	@Test
+	public void etantDonneAucuneSalleRepondantDemandeTrouveeQuandAssignerDemandeSalleDevraitSignaleAucuneDemandeCorrespondante() {
+		Demande demandeNePouvantPasEtreAssignee = mock(Demande.class);
+		Optional<Salle> aucuneSalle = Optional.empty();
+		ajouterDemande(demandeNePouvantPasEtreAssignee);
+		given(entrepotSalles.obtenirSalleRepondantDemande(demandeNePouvantPasEtreAssignee)).willReturn(aucuneSalle);
+
+		assignateur.run();
+
+		verify(demandeNePouvantPasEtreAssignee).signalerAucuneDemandeCorrespondante();
 	}
 
 	@Test

@@ -2,15 +2,17 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.ranges.RangeException;
 
 public class DemandeTest {
 
-	private final Employe ORGANISATEUR = new Employe();
-	private final int NOMBRE_PARTICIPANT = 10;
-	private final int NOMBRE_PARTICIPANT_INCORRECTE = 0;
+	private Employe ORGANISATEUR = mock(Employe.class);
+	private Employe RESPONSABLE = mock(Employe.class);
+	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
 	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
 	private final StrategieNotification strategieNotification = mock(StrategieNotification.class);
@@ -20,32 +22,25 @@ public class DemandeTest {
 
 	@Before
 	public void creerLaDemande() {
-		demande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, strategieNotificationFactory);
+		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
+		demande = new Demande(GROUPE, strategieNotificationFactory);
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsNbParticipantCommeDefiniDansLeConstructeur() {
-		int nbParticipant = demande.getNbParticipant();
-		assertEquals(NOMBRE_PARTICIPANT, nbParticipant);
-	}
-
-	@Test
-	public void demandePossedeIntialementLeChampsOrganisateurCommeDefiniDansLeConstructeur() {
-		Employe organisateur = demande.getOrganisateur();
-		assertEquals(ORGANISATEUR, organisateur);
+	public void demandePossedeIntialementLeChampsGroupeCommeDefiniDansLeConstructeur() {
+		Groupe groupe = demande.getGroupe();
+		assertEquals(GROUPE, groupe);
 	}
 
 	@Test
 	public void demandePossedeParDefautPrioriteBasse() {
-		Demande autreDemande = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_PAR_DEFAUT,
-				strategieNotificationFactory);
+		Demande autreDemande = new Demande(GROUPE, PRIORITE_PAR_DEFAUT, strategieNotificationFactory);
 		assertTrue(demande.estAutantPrioritaire(autreDemande));
 	}
 
 	@Test
 	public void demandePossedeIntialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
-		Demande demandeAvecPriorite = new Demande(NOMBRE_PARTICIPANT, ORGANISATEUR, PRIORITE_MOYENNE,
-				strategieNotificationFactory);
+		Demande demandeAvecPriorite = new Demande(GROUPE, PRIORITE_MOYENNE, strategieNotificationFactory);
 
 		assertTrue(demandeAvecPriorite.estAutantPrioritaire(demandeAvecPriorite));
 		assertTrue(demandeAvecPriorite.estPlusPrioritaire(demande));
@@ -56,27 +51,45 @@ public class DemandeTest {
 		assertTrue(demande.estAutantPrioritaire(demande));
 	}
 
-	@Test(expected = RangeException.class)
-	public void demandeDoitAvoirUneNombreDeParticipantsPositif() {
-		new Demande(NOMBRE_PARTICIPANT_INCORRECTE, ORGANISATEUR, strategieNotificationFactory);
+	@Test
+	public void uneDemandeApresReservationContientUneReservation() {
+		Salle SALLE_AJOUTER = new Salle(15);
+		demande.placerReservation(SALLE_AJOUTER);
+		assertEquals(demande.getNbReservation(), 1);
 	}
 
 	@Test
-	public void lorsqueNotifierEchecAlorsNotifierEchecEstAppele() {
-		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
-
-		demande.notifierEchecAssignation();
-
-		verify(strategieNotification).notifierEchecAssignation(ORGANISATEUR);
+	public void UneDemandeContientInitialementAucuneReservation() {
+		assertEquals(demande.getNbReservation(), 0);
 	}
 
 	@Test
-	public void lorsqueNotiferSuccessAlorsNotifierSuccessEstAppele() {
-		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
-		Salle salleAssigne = mock(Salle.class);
+	public void lorsquePlacerReservationAlorsNotifierSuccessOrganisateur() {
+		Salle SALLE_AJOUTER = new Salle(15);
 
-		demande.notifierAssignation(salleAssigne);
+		demande.placerReservation(SALLE_AJOUTER);
 
-		verify(strategieNotification).notifierAssignation(salleAssigne, ORGANISATEUR);
+		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(ORGANISATEUR));
+	}
+
+	@Test
+	public void lorsquePlacerReservationAlorsNotifierSuccessResponsable() {
+		Salle SALLE_AJOUTER = new Salle(15);
+
+		demande.placerReservation(SALLE_AJOUTER);
+
+		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(RESPONSABLE));
+	}
+
+	@Test
+	public void lorsSignalerAucuneSalleCorrespondanteNotifierEchecOrganisateur() {
+		demande.signalerAucuneDemandeCorrespondante();
+		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(ORGANISATEUR));
+	}
+
+	@Test
+	public void lorsSignalerAucuneSalleCorrespondanteNotifierEchecResponsable() {
+		demande.signalerAucuneDemandeCorrespondante();
+		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(RESPONSABLE));
 	}
 }
