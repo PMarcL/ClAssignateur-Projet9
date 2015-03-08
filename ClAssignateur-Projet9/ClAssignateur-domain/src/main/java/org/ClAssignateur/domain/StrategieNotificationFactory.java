@@ -3,6 +3,7 @@ package org.ClAssignateur.domain;
 public class StrategieNotificationFactory {
 
 	public StrategieNotification creerStrategieNotification() {
-		return null;
+		StrategieNotification strategie = new StrategieNotificationCourriel();
+		return strategie;
 	}
 }

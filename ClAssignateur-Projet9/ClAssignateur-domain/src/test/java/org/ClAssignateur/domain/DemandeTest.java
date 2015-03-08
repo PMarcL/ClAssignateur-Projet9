@@ -2,9 +2,10 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,6 +26,7 @@ public class DemandeTest {
 		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
 		demande = new Demande(GROUPE, strategieNotificationFactory);
 	}
+	
 
 	@Test
 	public void demandePossedeIntialementLeChampsGroupeCommeDefiniDansLeConstructeur() {
@@ -53,8 +55,10 @@ public class DemandeTest {
 
 	@Test
 	public void uneDemandeApresReservationContientUneReservation() {
-		Salle SALLE_AJOUTER = new Salle(15);
-		demande.placerReservation(SALLE_AJOUTER);
+		Salle salle = new Salle(15);
+		
+		demande.placerReservation(salle);
+		
 		assertEquals(demande.getNbReservation(), 1);
 	}
 
@@ -65,18 +69,18 @@ public class DemandeTest {
 
 	@Test
 	public void lorsquePlacerReservationAlorsNotifierSuccessOrganisateur() {
-		Salle SALLE_AJOUTER = new Salle(15);
+		Salle salle = new Salle(15);
 
-		demande.placerReservation(SALLE_AJOUTER);
+		demande.placerReservation(salle);
 
 		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(ORGANISATEUR));
 	}
 
 	@Test
 	public void lorsquePlacerReservationAlorsNotifierSuccessResponsable() {
-		Salle SALLE_AJOUTER = new Salle(15);
+		Salle salle = new Salle(15);
 
-		demande.placerReservation(SALLE_AJOUTER);
+		demande.placerReservation(salle);
 
 		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(RESPONSABLE));
 	}
@@ -84,12 +88,14 @@ public class DemandeTest {
 	@Test
 	public void lorsSignalerAucuneSalleCorrespondanteNotifierEchecOrganisateur() {
 		demande.signalerAucuneDemandeCorrespondante();
+		
 		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(ORGANISATEUR));
 	}
 
 	@Test
 	public void lorsSignalerAucuneSalleCorrespondanteNotifierEchecResponsable() {
 		demande.signalerAucuneDemandeCorrespondante();
+		
 		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(RESPONSABLE));
 	}
 }
