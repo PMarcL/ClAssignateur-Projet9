@@ -18,6 +18,10 @@ public class Salle {
 		return nom;
 	}
 
+	public int getCapacite() {
+		return capacite;
+	}
+
 	public boolean peutAccueillir(int nbParticipants) {
 		return capacite >= nbParticipants;
 	}
