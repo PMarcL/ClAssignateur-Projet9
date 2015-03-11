@@ -6,19 +6,19 @@ public class Demande {
 
 	private Groupe groupe;
 	private Priorite priorite;
-	private StrategieNotificationFactory strategieNotificationFactory;
+	private StrategieNotification strategieNotification;
 	private ArrayList<Salle> reservations = new ArrayList<Salle>();
 
-	public Demande(Groupe groupe, Priorite priorite, StrategieNotificationFactory strategieNotificationFactory) {
+	public Demande(Groupe groupe, Priorite priorite, StrategieNotification strategieNotification) {
 		this.groupe = groupe;
 		this.priorite = priorite;
-		this.strategieNotificationFactory = strategieNotificationFactory;
+		this.strategieNotification = strategieNotification;
 	}
 
-	public Demande(Groupe groupe, StrategieNotificationFactory strategieNotificationFactory) {
+	public Demande(Groupe groupe, StrategieNotification strategieNotification) {
 		this.groupe = groupe;
 		this.priorite = Priorite.basse();
-		this.strategieNotificationFactory = strategieNotificationFactory;
+		this.strategieNotification = strategieNotification;
 	}
 
 	public Groupe getGroupe() {
@@ -39,26 +39,26 @@ public class Demande {
 				.estPlusPrioritaire(priorite));
 	}
 
-	public void placerReservation(Salle nouvelleReservation) {
-		reservations.add(nouvelleReservation);
-
-		StrategieNotification strategieNotification = strategieNotificationFactory.creerStrategieNotification();
-		MessageNotification message = new MessageNotificationSuccess(nouvelleReservation);
-
-		strategieNotification.notifier(message, groupe.getOrganisateur());
-		strategieNotification.notifier(message, groupe.getResponsable());
-	}
-
 	public int getNbReservation() {
 		return reservations.size();
 	}
 
+	public void placerReservation(Salle nouvelleReservation) {
+		reservations.add(nouvelleReservation);
+		envoyerNotificationSucces(nouvelleReservation);
+	}
+
 	public void signalerAucuneDemandeCorrespondante() {
-		StrategieNotification strategieNotification = strategieNotificationFactory.creerStrategieNotification();
 		MessageNotification message = new MessageNotificationEchec();
 
 		strategieNotification.notifier(message, groupe.getOrganisateur());
 		strategieNotification.notifier(message, groupe.getResponsable());
 	}
 
+	private void envoyerNotificationSucces(Salle salleReserve) {
+		MessageNotification message = new MessageNotificationSucces(salleReserve);
+
+		strategieNotification.notifier(message, groupe.getOrganisateur());
+		strategieNotification.notifier(message, groupe.getResponsable());
+	}
 }

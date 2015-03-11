@@ -10,20 +10,19 @@ import org.junit.Test;
 
 public class DemandeTest {
 
+	private final int CAPACITE_SALLE = 15;
 	private Employe ORGANISATEUR = mock(Employe.class);
 	private Employe RESPONSABLE = mock(Employe.class);
 	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
 	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
 	private final StrategieNotification strategieNotification = mock(StrategieNotification.class);
-	private final StrategieNotificationFactory strategieNotificationFactory = mock(StrategieNotificationFactory.class);
 
 	private Demande demande;
 
 	@Before
 	public void creerLaDemande() {
-		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
-		demande = new Demande(GROUPE, strategieNotificationFactory);
+		demande = new Demande(GROUPE, strategieNotification);
 	}
 
 	@Test
@@ -34,13 +33,13 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeParDefautPrioriteBasse() {
-		Demande autreDemande = new Demande(GROUPE, PRIORITE_PAR_DEFAUT, strategieNotificationFactory);
+		Demande autreDemande = new Demande(GROUPE, PRIORITE_PAR_DEFAUT, strategieNotification);
 		assertTrue(demande.estAutantPrioritaire(autreDemande));
 	}
 
 	@Test
 	public void demandePossedeIntialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
-		Demande demandeAvecPriorite = new Demande(GROUPE, PRIORITE_MOYENNE, strategieNotificationFactory);
+		Demande demandeAvecPriorite = new Demande(GROUPE, PRIORITE_MOYENNE, strategieNotification);
 
 		assertTrue(demandeAvecPriorite.estAutantPrioritaire(demandeAvecPriorite));
 		assertTrue(demandeAvecPriorite.estPlusPrioritaire(demande));
@@ -53,7 +52,7 @@ public class DemandeTest {
 
 	@Test
 	public void uneDemandeApresReservationContientUneReservation() {
-		Salle SALLE_AJOUTER = new Salle(15);
+		Salle SALLE_AJOUTER = new Salle(CAPACITE_SALLE);
 		demande.placerReservation(SALLE_AJOUTER);
 		assertEquals(demande.getNbReservation(), 1);
 	}
@@ -65,20 +64,20 @@ public class DemandeTest {
 
 	@Test
 	public void lorsquePlacerReservationAlorsNotifierSuccessOrganisateur() {
-		Salle SALLE_AJOUTER = new Salle(15);
+		Salle SALLE_AJOUTER = new Salle(CAPACITE_SALLE);
 
 		demande.placerReservation(SALLE_AJOUTER);
 
-		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(ORGANISATEUR));
+		verify(strategieNotification).notifier(any(MessageNotificationSucces.class), eq(ORGANISATEUR));
 	}
 
 	@Test
 	public void lorsquePlacerReservationAlorsNotifierSuccessResponsable() {
-		Salle SALLE_AJOUTER = new Salle(15);
+		Salle SALLE_AJOUTER = new Salle(CAPACITE_SALLE);
 
 		demande.placerReservation(SALLE_AJOUTER);
 
-		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(RESPONSABLE));
+		verify(strategieNotification).notifier(any(MessageNotificationSucces.class), eq(RESPONSABLE));
 	}
 
 	@Test
