@@ -2,9 +2,10 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,7 +54,9 @@ public class DemandeTest {
 	@Test
 	public void uneDemandeApresReservationContientUneReservation() {
 		Salle SALLE_AJOUTER = new Salle(CAPACITE_SALLE);
+
 		demande.placerReservation(SALLE_AJOUTER);
+
 		assertEquals(demande.getNbReservation(), 1);
 	}
 
@@ -83,12 +86,14 @@ public class DemandeTest {
 	@Test
 	public void lorsSignalerAucuneSalleCorrespondanteNotifierEchecOrganisateur() {
 		demande.signalerAucuneDemandeCorrespondante();
+
 		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(ORGANISATEUR));
 	}
 
 	@Test
 	public void lorsSignalerAucuneSalleCorrespondanteNotifierEchecResponsable() {
 		demande.signalerAucuneDemandeCorrespondante();
+
 		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(RESPONSABLE));
 	}
 }
