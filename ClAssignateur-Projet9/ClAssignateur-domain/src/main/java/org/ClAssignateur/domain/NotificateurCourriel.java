@@ -1,6 +1,6 @@
 package org.ClAssignateur.domain;
 
-public class StrategieNotificationCourriel implements StrategieNotification {
+public class NotificateurCourriel implements Notificateur {
 	
 	public void notifier(MessageNotification message, Employe destinataire){
 		System.out.println("Courriel envoyé à "+destinataire.getCourriel()+".");

@@ -3,7 +3,6 @@ package org.ClAssignateur.domain;
 import static org.junit.Assert.*;
 import org.mockito.ArgumentMatcher;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +24,6 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 	public void creerConteneurDemandes() {
 		demandeFaiblePriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_BASSE);
 		demandeHautePriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_HAUTE);
-
 		conteneurDemandes = new ConteneurDemandesOrdrePrioritaire();
 	}
 

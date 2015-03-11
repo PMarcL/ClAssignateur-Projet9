@@ -1,10 +1,13 @@
 package org.ClAssignateur.domain;
 
+import java.util.ArrayList;
+
 public class Demande {
 
 	private Groupe groupe;
 	private Priorite priorite;
 	private String titre;
+	private ArrayList<Salle> reservations = new ArrayList<Salle>();
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
 		this.groupe = groupe;
@@ -43,6 +46,22 @@ public class Demande {
 	public boolean equals(Demande demande) {
 		return this.titre.equals(demande.getTitre()) && this.groupe.equals(demande.getGroupe())
 				&& this.aLeMemeNiveauDePriorite(demande);
+	}
+
+	public int getNbReservation() {
+		return reservations.size();
+	}
+
+	public Employe getOrganisateur() {
+		return this.getGroupe().getOrganisateur();
+	}
+
+	public Employe getResponsable() {
+		return this.getGroupe().getResponsable();
+	}
+
+	public void placerReservation(Salle nouvelleReservation) {
+		reservations.add(nouvelleReservation);
 	}
 
 }

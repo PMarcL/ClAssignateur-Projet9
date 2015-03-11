@@ -1,5 +1,5 @@
 package org.ClAssignateur.domain;
 
-public interface StrategieNotification {
+public interface Notificateur {
 	public void notifier(MessageNotification message, Employe destinataire);
 }

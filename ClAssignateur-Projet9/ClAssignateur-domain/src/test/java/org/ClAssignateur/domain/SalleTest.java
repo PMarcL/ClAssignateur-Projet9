@@ -1,7 +1,6 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
 import org.junit.Before;
 import org.junit.Test;
 
