@@ -6,19 +6,16 @@ public class Demande {
 
 	private Groupe groupe;
 	private Priorite priorite;
-	private StrategieNotification strategieNotification;
 	private ArrayList<Salle> reservations = new ArrayList<Salle>();
 
-	public Demande(Groupe groupe, Priorite priorite, StrategieNotification strategieNotification) {
+	public Demande(Groupe groupe, Priorite priorite) {
 		this.groupe = groupe;
 		this.priorite = priorite;
-		this.strategieNotification = strategieNotification;
 	}
 
-	public Demande(Groupe groupe, StrategieNotification strategieNotification) {
+	public Demande(Groupe groupe) {
 		this.groupe = groupe;
 		this.priorite = Priorite.basse();
-		this.strategieNotification = strategieNotification;
 	}
 
 	public Groupe getGroupe() {
@@ -43,22 +40,16 @@ public class Demande {
 		return reservations.size();
 	}
 
+	public Employe getOrganisateur() {
+		return this.getGroupe().getOrganisateur();
+	}
+
+	public Employe getResponsable() {
+		return this.getGroupe().getResponsable();
+	}
+
 	public void placerReservation(Salle nouvelleReservation) {
 		reservations.add(nouvelleReservation);
-		envoyerNotificationSucces(nouvelleReservation);
 	}
 
-	public void signalerAucuneDemandeCorrespondante() {
-		MessageNotification message = new MessageNotificationEchec();
-
-		strategieNotification.notifier(message, groupe.getOrganisateur());
-		strategieNotification.notifier(message, groupe.getResponsable());
-	}
-
-	private void envoyerNotificationSucces(Salle salleReserve) {
-		MessageNotification message = new MessageNotificationSucces(salleReserve);
-
-		strategieNotification.notifier(message, groupe.getOrganisateur());
-		strategieNotification.notifier(message, groupe.getResponsable());
-	}
 }

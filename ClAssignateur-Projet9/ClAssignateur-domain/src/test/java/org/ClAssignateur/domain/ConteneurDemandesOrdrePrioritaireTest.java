@@ -14,7 +14,6 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 	private final Groupe GROUPE = mock(Groupe.class);
 	private final Priorite PRIORITE_BASSE = Priorite.basse();
 	private final Priorite PRIORITE_HAUTE = Priorite.haute();
-	private final StrategieNotification STRATEGIE_NOTFICATION = mock(StrategieNotification.class);
 
 	private Demande demandeFaiblePriorite;
 	private Demande demandeHautePriorite;
@@ -23,8 +22,8 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 	@Before
 	public void creerConteneurDemandes() {
-		demandeFaiblePriorite = new Demande(GROUPE, PRIORITE_BASSE, STRATEGIE_NOTFICATION);
-		demandeHautePriorite = new Demande(GROUPE, PRIORITE_HAUTE, STRATEGIE_NOTFICATION);
+		demandeFaiblePriorite = new Demande(GROUPE, PRIORITE_BASSE);
+		demandeHautePriorite = new Demande(GROUPE, PRIORITE_HAUTE);
 
 		conteneurDemandes = new ConteneurDemandesOrdrePrioritaire();
 	}
