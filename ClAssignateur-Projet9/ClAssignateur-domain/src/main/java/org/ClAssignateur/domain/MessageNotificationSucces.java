@@ -1,10 +1,10 @@
 package org.ClAssignateur.domain;
 
-public class MessageNotificationSuccess implements MessageNotification {
+public class MessageNotificationSucces implements MessageNotification {
 
 	private final Salle salle;
 
-	public MessageNotificationSuccess(Salle salle) {
+	public MessageNotificationSucces(Salle salle) {
 		this.salle = salle;
 	}
 

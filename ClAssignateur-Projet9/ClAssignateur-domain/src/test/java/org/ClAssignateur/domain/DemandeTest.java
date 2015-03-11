@@ -73,7 +73,7 @@ public class DemandeTest {
 
 		demande.placerReservation(salle);
 
-		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(ORGANISATEUR));
+		verify(strategieNotification).notifier(any(MessageNotificationSucces.class), eq(ORGANISATEUR));
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class DemandeTest {
 
 		demande.placerReservation(salle);
 
-		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(RESPONSABLE));
+		verify(strategieNotification).notifier(any(MessageNotificationSucces.class), eq(RESPONSABLE));
 	}
 
 	@Test

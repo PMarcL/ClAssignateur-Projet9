@@ -43,7 +43,7 @@ public class Demande {
 		reservations.add(nouvelleReservation);
 
 		StrategieNotification strategieNotification = strategieNotificationFactory.creerStrategieNotification();
-		MessageNotification message = new MessageNotificationSuccess(nouvelleReservation);
+		MessageNotification message = new MessageNotificationSucces(nouvelleReservation);
 
 		strategieNotification.notifier(message, groupe.getOrganisateur());
 		strategieNotification.notifier(message, groupe.getResponsable());
