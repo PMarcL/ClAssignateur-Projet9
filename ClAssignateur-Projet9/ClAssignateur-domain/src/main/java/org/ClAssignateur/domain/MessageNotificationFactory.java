@@ -8,8 +8,8 @@ public class MessageNotificationFactory {
 	}
 
 	public MessageNotification genereNotificationEchec() {
-		MessageNotification messageSucces = new MessageNotificationEchec();
-		return messageSucces;
+		MessageNotification messageEchec = new MessageNotificationEchec();
+		return messageEchec;
 	}
 
 }

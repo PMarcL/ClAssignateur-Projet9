@@ -11,7 +11,11 @@ public class MessageNotificationSucces implements MessageNotification {
 	@Override
 	public String genereMessage() {
 		String message = "La salle: %s a été réservée avec succès";
-		return String.format(message, salle.toString());
+		return String.format(message, salle.getNom());
+	}
+
+	public Salle getSalle() {
+		return this.salle;
 	}
 
 }
