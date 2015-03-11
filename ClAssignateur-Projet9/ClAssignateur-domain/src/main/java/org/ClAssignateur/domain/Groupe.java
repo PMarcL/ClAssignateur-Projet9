@@ -1,14 +1,14 @@
 package org.ClAssignateur.domain;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Groupe {
 
 	private Employe organisateur;
 	private Employe responsable;
-	private ArrayList<Employe> participants;
+	private List<Employe> participants;
 
-	public Groupe(Employe organisateur, Employe responsable, ArrayList<Employe> participants) {
+	public Groupe(Employe organisateur, Employe responsable, List<Employe> participants) {
 		this.organisateur = organisateur;
 		this.responsable = responsable;
 		this.participants = participants;
