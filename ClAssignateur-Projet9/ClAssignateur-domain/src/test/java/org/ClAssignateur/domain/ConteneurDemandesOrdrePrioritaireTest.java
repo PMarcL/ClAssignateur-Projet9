@@ -3,7 +3,6 @@ package org.ClAssignateur.domain;
 import static org.junit.Assert.*;
 import org.mockito.ArgumentMatcher;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +13,7 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 	private final Groupe GROUPE = mock(Groupe.class);
 	private final Priorite PRIORITE_BASSE = Priorite.basse();
 	private final Priorite PRIORITE_HAUTE = Priorite.haute();
+	private final String TITRE_REUNION = "Titre";
 
 	private Demande demandeFaiblePriorite;
 	private Demande demandeHautePriorite;
@@ -22,15 +22,14 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 	@Before
 	public void creerConteneurDemandes() {
-		demandeFaiblePriorite = new Demande(GROUPE, PRIORITE_BASSE);
-		demandeHautePriorite = new Demande(GROUPE, PRIORITE_HAUTE);
-
+		demandeFaiblePriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_BASSE);
+		demandeHautePriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_HAUTE);
 		conteneurDemandes = new ConteneurDemandesOrdrePrioritaire();
 	}
 
 	@Test
 	public void devraitEtreInitialementVide() {
-		assertFalse(conteneurDemandes.contientAuMoins(UN_ELEMENT));
+		assertTrue(conteneurDemandes.estVide());
 	}
 
 	@Test
@@ -39,6 +38,29 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
 		assertFalse(conteneurDemandes.contientAuMoins(DEUX_ELEMENTS));
+	}
+
+	@Test
+	public void etantDonneConteneurAvecUnElementQuandRetirerDemandeConteneurEstVide() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		conteneurDemandes.retirerDemande(demandeFaiblePriorite);
+		assertTrue(conteneurDemandes.estVide());
+	}
+
+	@Test
+	public void etantDonneConteneurAvecDeuxElementQuandRetirerPremierElementDevraitContenirUnSeulElement() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		ajouterDemandes(UN_ELEMENT, demandeHautePriorite, conteneurDemandes);
+
+		conteneurDemandes.retirerDemande(demandeHautePriorite);
+
+		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
+	}
+
+	@Test(expected = DemandesPasDansConteneurException.class)
+	public void etantDonneConteneurAvecUnElementQuandRetirerElementPasDansConteneurLanceException() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		conteneurDemandes.retirerDemande(demandeHautePriorite);
 	}
 
 	@Test

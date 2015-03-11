@@ -21,9 +21,16 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 	}
 
 	@Override
+	public void retirerDemande(Demande demandeARetirer) {
+		if (!demandes.remove(demandeARetirer)) {
+			throw new DemandesPasDansConteneurException("La demande à retirer n'est pas dans le conteneur.");
+		}
+	}
+
+	@Override
 	public Iterator<Demande> iterator() {
 		Comparator<Demande> parPriorite = ((demande1, demande2) -> (demande2.estPlusPrioritaire(demande1) ? 1
-				: (demande1.estAutantPrioritaire(demande2) ? 0 : -1)));
+				: (demande1.aLeMemeNiveauDePriorite(demande2) ? 0 : -1)));
 
 		return demandes.stream().sorted(parPriorite).iterator();
 	}
@@ -31,5 +38,9 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 	@Override
 	public void vider() {
 		demandes.clear();
+	}
+
+	public boolean estVide() {
+		return demandes.isEmpty();
 	}
 }

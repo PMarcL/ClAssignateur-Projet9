@@ -1,11 +1,8 @@
 package org.ClAssignateur.domain;
 
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
-
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
 import java.util.Iterator;
@@ -18,12 +15,16 @@ public class AssignateurSalleTest {
 	private Employe ORGANISATEUR = mock(Employe.class);
 	private Employe RESPONSABLE = mock(Employe.class);
 	private Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
+	private final String TITRE_REUNION = "Un titre";
 
 	private ConteneurDemandes conteneurDemandes;
 	private EntrepotSalles entrepotSalles;
+	private DemandesEntrepot demandesEntrepot;
 	private Demande demandeSalleDisponible;
+	private Demande demandeAAnnuler;
 	private Salle salleDisponible;
 	private Optional<Salle> salleDisponibleOptional;
+	private Optional<Demande> demandeAnnulerOptional;
 	private Notificateur strategieNotification;
 
 	private AssignateurSalle assignateur;
@@ -32,22 +33,70 @@ public class AssignateurSalleTest {
 	public void creerAssignateur() {
 		conteneurDemandes = mock(ConteneurDemandes.class);
 		entrepotSalles = mock(EntrepotSalles.class);
+		demandesEntrepot = mock(DemandesEntrepot.class);
 		demandeSalleDisponible = mock(Demande.class);
+		demandeAAnnuler = mock(Demande.class);
+		demandeAnnulerOptional = Optional.of(demandeAAnnuler);
 		salleDisponible = mock(Salle.class);
 		salleDisponibleOptional = Optional.of(salleDisponible);
 		strategieNotification = mock(Notificateur.class);
 
 		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(salleDisponibleOptional);
+		given(demandesEntrepot.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(demandeAnnulerOptional);
+		given(demandeAAnnuler.estAssignee()).willReturn(true);
 		given(demandeSalleDisponible.getGroupe()).willReturn(GROUPE);
 		viderConteneurDemande();
 
-		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles, strategieNotification);
+		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles, demandesEntrepot, strategieNotification);
 	}
 
 	@Test
 	public void quandAjouterDemandeDevraitAjouterDemandeDansConteneurDemandes() {
 		assignateur.ajouterDemande(demandeSalleDisponible);
 		verify(conteneurDemandes).ajouterDemande(demandeSalleDisponible);
+	}
+
+	@Test
+	public void quandAnnulerDemandeDevraitRetirerDuConteneur() {
+		assignateur.annulerDemandeEnAttente(demandeAAnnuler);
+		verify(conteneurDemandes).retirerDemande(demandeAAnnuler);
+	}
+
+	@Test
+	public void quandAnnulerDemandeDevraitArchiverDemande() {
+		assignateur.annulerDemandeEnAttente(demandeAAnnuler);
+		verify(demandesEntrepot).persisterDemande(demandeAAnnuler);
+	}
+
+	@Test
+	public void quandAnnulerDemandeDevraitMettreDemandeEnEtatAnnulee() {
+		assignateur.annulerDemandeEnAttente(demandeAAnnuler);
+		verify(demandeAAnnuler).annuler();
+	}
+
+	@Test
+	public void quandAnnulerReservationDevraitChercherDemandeDansEntrepot() {
+		assignateur.annulerReservation(TITRE_REUNION);
+		verify(demandesEntrepot).obtenirDemandeSelonTitre(TITRE_REUNION);
+	}
+
+	@Test
+	public void quandAnnulerReservationDevraitChangerLetatDeLaDemande() {
+		assignateur.annulerReservation(TITRE_REUNION);
+		verify(demandeAAnnuler).annuler();
+	}
+
+	@Test
+	public void quandAnnulerReservationDevraitPasAnnulerSeDemandeDejaAnnulee() {
+		given(demandeAAnnuler.estAssignee()).willReturn(false);
+		assignateur.annulerReservation(TITRE_REUNION);
+		verify(demandeAAnnuler, never()).annuler();
+	}
+
+	@Test
+	public void quandAnnulerReservationDevraitArchiverReservation() {
+		assignateur.annulerReservation(TITRE_REUNION);
+		verify(demandesEntrepot).persisterDemande(demandeAAnnuler);
 	}
 
 	@Test
@@ -109,7 +158,7 @@ public class AssignateurSalleTest {
 
 	@Test
 	public void etantDonneeReservationPlaceeAvecSuccesNotifierSuccesOrganisateur() {
-		Demande demandeAvecSalleDisponible = new Demande(GROUPE);
+		Demande demandeAvecSalleDisponible = new Demande(GROUPE, TITRE_REUNION);
 		ajouterDemande(demandeAvecSalleDisponible);
 		Salle salleDisponible = mock(Salle.class);
 		Optional<Salle> salleDisponibleOptionnelle = Optional.of(salleDisponible);
@@ -123,7 +172,7 @@ public class AssignateurSalleTest {
 
 	@Test
 	public void etantDonneeReservationPlaceeAvecSuccesNotifierSuccesResponsable() {
-		Demande demandeAvecSalleDisponible = new Demande(GROUPE);
+		Demande demandeAvecSalleDisponible = new Demande(GROUPE, TITRE_REUNION);
 		ajouterDemande(demandeAvecSalleDisponible);
 		Salle salleDisponible = mock(Salle.class);
 		Optional<Salle> salleDisponibleOptionnelle = Optional.of(salleDisponible);
@@ -136,8 +185,22 @@ public class AssignateurSalleTest {
 	}
 
 	@Test
-	public void etantDonneeImpossibiliteDePlaceeReservationNotifierEchecOrganisateur() {
-		Demande demandeNePouvantPasEtreAssignee = new Demande(GROUPE);
+	public void etantDonneeReservationPlaceeAvecSuccesReservationArchivee() {
+		Demande demandeAvecSalleDisponible = new Demande(GROUPE, TITRE_REUNION);
+		ajouterDemande(demandeAvecSalleDisponible);
+		Salle salleDisponible = mock(Salle.class);
+		Optional<Salle> salleDisponibleOptionnelle = Optional.of(salleDisponible);
+		given(entrepotSalles.obtenirSalleRepondantDemande(demandeAvecSalleDisponible)).willReturn(
+				salleDisponibleOptionnelle);
+
+		assignateur.run();
+
+		verify(demandesEntrepot).persisterDemande(demandeAvecSalleDisponible);
+	}
+
+	@Test
+	public void etantDonneeImpossibiliteDePlacerReservationNotifierEchecOrganisateur() {
+		Demande demandeNePouvantPasEtreAssignee = new Demande(GROUPE, TITRE_REUNION);
 		Optional<Salle> aucuneSalle = Optional.empty();
 		ajouterDemande(demandeNePouvantPasEtreAssignee);
 		given(entrepotSalles.obtenirSalleRepondantDemande(demandeNePouvantPasEtreAssignee)).willReturn(aucuneSalle);
@@ -148,8 +211,8 @@ public class AssignateurSalleTest {
 	}
 
 	@Test
-	public void etantDonneeImpossibiliteDePlaceeReservationNotifierEchecResponsable() {
-		Demande demandeNePouvantPasEtreAssignee = new Demande(GROUPE);
+	public void etantDonneeImpossibiliteDePlacerReservationNotifierEchecResponsable() {
+		Demande demandeNePouvantPasEtreAssignee = new Demande(GROUPE, TITRE_REUNION);
 		Optional<Salle> aucuneSalle = Optional.empty();
 		ajouterDemande(demandeNePouvantPasEtreAssignee);
 		given(entrepotSalles.obtenirSalleRepondantDemande(demandeNePouvantPasEtreAssignee)).willReturn(aucuneSalle);
@@ -158,31 +221,6 @@ public class AssignateurSalleTest {
 
 		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(RESPONSABLE));
 	}
-
-	/*
-	 * @Test public void
-	 * lorsquePlacerReservationAlorsNotifierSuccessResponsable() { Salle
-	 * SALLE_AJOUTER = new Salle(CAPACITE_SALLE);
-	 * 
-	 * demande.placerReservation(SALLE_AJOUTER);
-	 * 
-	 * verify(strategieNotification).notifier(any(MessageNotificationSucces.class
-	 * ), eq(RESPONSABLE)); }
-	 * 
-	 * @Test public void
-	 * lorsSignalerAucuneSalleCorrespondanteNotifierEchecOrganisateur() {
-	 * demande.signalerAucuneDemandeCorrespondante();
-	 * 
-	 * verify(strategieNotification).notifier(any(MessageNotificationEchec.class)
-	 * , eq(ORGANISATEUR)); }
-	 * 
-	 * @Test public void
-	 * lorsSignalerAucuneSalleCorrespondanteNotifierEchecResponsable() {
-	 * demande.signalerAucuneDemandeCorrespondante();
-	 * 
-	 * verify(strategieNotification).notifier(any(MessageNotificationEchec.class)
-	 * , eq(RESPONSABLE)); }
-	 */
 
 	private void viderConteneurDemande() {
 		Iterator<Demande> iterateur = mock(Iterator.class);

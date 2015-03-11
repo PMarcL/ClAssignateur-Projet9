@@ -44,7 +44,16 @@ public class ServiceReservationSalle {
 		assignateurSalle.assignerDemandeSalleSiContientAuMoins(limiteDemandes);
 	}
 
+	public void annulerDemandeEnAttente(Demande demandeAAnnuler) {
+		assignateurSalle.annulerDemandeEnAttente(demandeAAnnuler);
+	}
+
+	public void annulerReservation(String titreReservationAAnnuler) {
+		assignateurSalle.annulerReservation(titreReservationAAnnuler);
+	}
+
 	private long delaiEnMilisecondes(int delaiEnMinutes) {
 		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
 	}
+
 }
