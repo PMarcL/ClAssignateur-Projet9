@@ -18,6 +18,7 @@ public class DemandeTest {
 	private final int NOMBRE_DE_PARTICIPANT = 10;
 	private final int NOMBRE_DE_PARTICIPANT_DANS_GROUPE_PAR_DEFAUT = 0;
 	private final int CAPACITE_SALLE = 15;
+	private final String NOM_SALLE = "salle";
 	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
 
@@ -111,7 +112,7 @@ public class DemandeTest {
 
 	@Test
 	public void uneDemandeApresReservationContientUneReservation() {
-		Salle SALLE_AJOUTER = new Salle(CAPACITE_SALLE);
+		Salle SALLE_AJOUTER = new Salle(CAPACITE_SALLE, NOM_SALLE);
 
 		demande.placerReservation(SALLE_AJOUTER);
 
