@@ -18,8 +18,8 @@ public class Salle {
 		return nom;
 	}
 
-	public int getCapacite() {
-		return capacite;
+	public double pourcentageOccupation(int nbParticipants) {
+		return nbParticipants / capacite;
 	}
 
 	public boolean peutAccueillir(int nbParticipants) {

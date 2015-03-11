@@ -27,12 +27,16 @@ public class SelectionnerSalleLaPlusPetiteRepondantADemandeTest {
 		SALLE_CAPACITE_10 = mock(Salle.class);
 		SALLE_CAPACITE_100 = mock(Salle.class);
 
-		when(SALLE_CAPACITE_10.getCapacite()).thenReturn(10);
+		when(SALLE_CAPACITE_10.pourcentageOccupation(10)).thenReturn(1.0);
+		when(SALLE_CAPACITE_10.pourcentageOccupation(50)).thenReturn(5.0);
+		when(SALLE_CAPACITE_10.pourcentageOccupation(200)).thenReturn(20.0);
 		when(SALLE_CAPACITE_10.peutAccueillir(10)).thenReturn(true);
 		when(SALLE_CAPACITE_10.peutAccueillir(50)).thenReturn(false);
 		when(SALLE_CAPACITE_10.peutAccueillir(200)).thenReturn(false);
 
-		when(SALLE_CAPACITE_100.getCapacite()).thenReturn(100);
+		when(SALLE_CAPACITE_100.pourcentageOccupation(10)).thenReturn(0.1);
+		when(SALLE_CAPACITE_100.pourcentageOccupation(50)).thenReturn(0.5);
+		when(SALLE_CAPACITE_100.pourcentageOccupation(200)).thenReturn(2.0);
 		when(SALLE_CAPACITE_100.peutAccueillir(10)).thenReturn(true);
 		when(SALLE_CAPACITE_100.peutAccueillir(50)).thenReturn(true);
 		when(SALLE_CAPACITE_100.peutAccueillir(200)).thenReturn(false);
@@ -59,7 +63,7 @@ public class SelectionnerSalleLaPlusPetiteRepondantADemandeTest {
 	}
 
 	@Test
-	public void quandRechercheSalleSiNbParticipantEgaleCapaciteDeSalleOnObtient() {
+	public void quandRechercheSalleSiNbParticipantEgaleCapaciteDeUneSalleOnObtient() {
 		Optional<Salle> resultat = selecteurSalle.appliquer(salles, DEMANDE_NBPARTICIPANTS_10);
 
 		assertTrue(resultat.isPresent());

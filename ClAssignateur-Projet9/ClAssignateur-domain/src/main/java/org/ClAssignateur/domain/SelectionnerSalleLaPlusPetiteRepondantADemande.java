@@ -10,6 +10,6 @@ public class SelectionnerSalleLaPlusPetiteRepondantADemande implements Strategie
 	public Optional<Salle> appliquer(Collection<Salle> salles, Demande demande) {
 		int nbParticipants = demande.getNbParticipant();
 		return salles.stream().filter(salle -> salle.peutAccueillir(nbParticipants))
-				.min(Comparator.comparing(salle -> ((Salle) salle).getCapacite()));
+				.max(Comparator.comparing(salle -> ((Salle) salle).pourcentageOccupation(nbParticipants)));
 	}
 }
