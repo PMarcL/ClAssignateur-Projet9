@@ -4,8 +4,8 @@ import java.util.Optional;
 
 public interface EntrepotSalles {
 
-	public void ajouterSalle(Salle salle);
+	public void persister(Salle salle);
 
-	public Optional<Salle> obtenirSalleRepondantDemande(Demande demande);
+	public Optional<Salle> obtenirSalleRepondantDemande(StrategieDeSelectionDeSalle strategie, Demande demande);
 
 }
