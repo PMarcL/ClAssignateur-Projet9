@@ -22,7 +22,9 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 
 	@Override
 	public void retirerDemande(Demande demandeARetirer) {
-		demandes.remove(demandeARetirer);
+		if (!demandes.remove(demandeARetirer)) {
+			throw new DemandesPasDansConteneurException("La demande à retirer n'est pas dans le conteneur.");
+		}
 	}
 
 	@Override

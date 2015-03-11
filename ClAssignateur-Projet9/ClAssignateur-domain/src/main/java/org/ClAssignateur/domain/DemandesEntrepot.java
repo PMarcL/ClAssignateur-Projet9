@@ -7,4 +7,5 @@ public interface DemandesEntrepot {
 	public void persisterDemande(Demande demande);
 
 	public Optional<Demande> obtenirDemandeSelonTitre(String titre);
+
 }

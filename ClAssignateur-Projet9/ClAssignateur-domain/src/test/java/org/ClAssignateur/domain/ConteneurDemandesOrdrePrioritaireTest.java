@@ -57,11 +57,10 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
 	}
 
-	@Test
-	public void etantDonneConteneurAvecUnElementQuandRetirerElementPasDansConteneurTailleInchangee() {
+	@Test(expected = DemandesPasDansConteneurException.class)
+	public void etantDonneConteneurAvecUnElementQuandRetirerElementPasDansConteneurLanceException() {
 		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
 		conteneurDemandes.retirerDemande(demandeHautePriorite);
-		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
 	}
 
 	@Test

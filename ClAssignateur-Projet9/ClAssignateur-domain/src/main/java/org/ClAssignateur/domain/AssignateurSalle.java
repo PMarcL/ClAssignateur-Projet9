@@ -8,11 +8,14 @@ public class AssignateurSalle extends TimerTask {
 
 	private ConteneurDemandes demandesEnAttente;
 	private EntrepotSalles salles;
+	private DemandesEntrepot demandesArchivees;
 	private Notificateur notificateur;
 	private MessageNotificationFactory messageNotificationFactory;
 
-	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles, Notificateur notificateur) {
+	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles, DemandesEntrepot demandesArchivees,
+			Notificateur notificateur) {
 		this.demandesEnAttente = demandes;
+		this.demandesArchivees = demandesArchivees;
 		this.salles = salles;
 		this.notificateur = notificateur;
 		this.messageNotificationFactory = new MessageNotificationFactory();
@@ -24,6 +27,7 @@ public class AssignateurSalle extends TimerTask {
 
 	public void annulerDemandeEnAttente(Demande demandeAAnnuler) {
 		demandesEnAttente.retirerDemande(demandeAAnnuler);
+		demandesArchivees.persisterDemande(demandeAAnnuler);
 	}
 
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {

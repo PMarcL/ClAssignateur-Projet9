@@ -18,6 +18,7 @@ public class AssignateurSalleTest {
 
 	private ConteneurDemandes conteneurDemandes;
 	private EntrepotSalles entrepotSalles;
+	private DemandesEntrepot demandesEntrepot;
 	private Demande demandeSalleDisponible;
 	private Demande demandeAAnnuler;
 	private Salle salleDisponible;
@@ -30,6 +31,7 @@ public class AssignateurSalleTest {
 	public void creerAssignateur() {
 		conteneurDemandes = mock(ConteneurDemandes.class);
 		entrepotSalles = mock(EntrepotSalles.class);
+		demandesEntrepot = mock(DemandesEntrepot.class);
 		demandeSalleDisponible = mock(Demande.class);
 		demandeAAnnuler = mock(Demande.class);
 		salleDisponible = mock(Salle.class);
@@ -40,7 +42,7 @@ public class AssignateurSalleTest {
 		given(demandeSalleDisponible.getGroupe()).willReturn(GROUPE);
 		viderConteneurDemande();
 
-		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles, strategieNotification);
+		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles, demandesEntrepot, strategieNotification);
 	}
 
 	@Test
@@ -53,6 +55,12 @@ public class AssignateurSalleTest {
 	public void quandAnnulerDemandeDevraitRetirerDuConteneur() {
 		assignateur.annulerDemandeEnAttente(demandeAAnnuler);
 		verify(conteneurDemandes).retirerDemande(demandeAAnnuler);
+	}
+
+	@Test
+	public void quandAnnulerDemandeDevraitArchiverDemande() {
+		assignateur.annulerDemandeEnAttente(demandeAAnnuler);
+		verify(demandesEntrepot).persisterDemande(demandeAAnnuler);
 	}
 
 	@Test
