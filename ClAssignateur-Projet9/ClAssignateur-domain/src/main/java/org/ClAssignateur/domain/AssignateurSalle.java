@@ -1,7 +1,6 @@
 package org.ClAssignateur.domain;
 
 import java.util.Optional;
-
 import java.util.TimerTask;
 
 public class AssignateurSalle extends TimerTask {
@@ -27,7 +26,16 @@ public class AssignateurSalle extends TimerTask {
 
 	public void annulerDemandeEnAttente(Demande demandeAAnnuler) {
 		demandesEnAttente.retirerDemande(demandeAAnnuler);
+		demandeAAnnuler.annuler();
 		demandesArchivees.persisterDemande(demandeAAnnuler);
+	}
+
+	public void annulerReservation(String titreReservationAAnnuler) {
+		Optional<Demande> reservation = demandesArchivees.obtenirDemandeSelonTitre(titreReservationAAnnuler);
+		if (reservation.isPresent()) {
+			reservation.get().annuler();
+			demandesArchivees.persisterDemande(reservation.get());
+		}
 	}
 
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
@@ -65,4 +73,5 @@ public class AssignateurSalle extends TimerTask {
 		notificateur.notifier(message, demande.getOrganisateur());
 		notificateur.notifier(message, demande.getResponsable());
 	}
+
 }

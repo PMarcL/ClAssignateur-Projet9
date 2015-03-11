@@ -4,34 +4,32 @@ import java.util.ArrayList;
 
 public class Demande {
 
+	public enum EtatDemande {
+		EN_ATTENTE, ANNULEE, ASSIGNEE, INASSIGNABLE
+	}
+
 	private Groupe groupe;
 	private Priorite priorite;
 	private String titre;
+	private EtatDemande etat;
 	private ArrayList<Salle> reservations = new ArrayList<Salle>();
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
 		this.groupe = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
+		this.etat = EtatDemande.EN_ATTENTE;
 	}
 
 	public Demande(Groupe groupe, String titre) {
 		this.groupe = groupe;
 		this.titre = titre;
 		this.priorite = Priorite.basse();
+		this.etat = EtatDemande.EN_ATTENTE;
 	}
 
 	public Groupe getGroupe() {
 		return this.groupe;
-	}
-
-	public String getTitre() {
-		return this.titre;
-	}
-
-	public int getNbParticipant() {
-		int nombreDeParticipant = this.groupe.getNbParticipant();
-		return nombreDeParticipant;
 	}
 
 	public boolean estPlusPrioritaire(Demande autreDemande) {
@@ -43,9 +41,31 @@ public class Demande {
 				.estPlusPrioritaire(priorite));
 	}
 
+	public void placerReservation(Salle nouvelleReservation) {
+		reservations.add(nouvelleReservation);
+		etat = EtatDemande.ASSIGNEE;
+	}
+
+	public void annuler() {
+		this.etat = EtatDemande.ANNULEE;
+	}
+
+	public void aucuneSalleDisponible() {
+		this.etat = EtatDemande.INASSIGNABLE;
+	}
+
 	public boolean equals(Demande demande) {
 		return this.titre.equals(demande.getTitre()) && this.groupe.equals(demande.getGroupe())
 				&& this.aLeMemeNiveauDePriorite(demande);
+	}
+
+	public String getTitre() {
+		return this.titre;
+	}
+
+	public int getNbParticipant() {
+		int nombreDeParticipant = this.groupe.getNbParticipant();
+		return nombreDeParticipant;
 	}
 
 	public int getNbReservation() {
@@ -60,8 +80,8 @@ public class Demande {
 		return this.getGroupe().getResponsable();
 	}
 
-	public void placerReservation(Salle nouvelleReservation) {
-		reservations.add(nouvelleReservation);
+	public EtatDemande getEtat() {
+		return this.etat;
 	}
 
 }

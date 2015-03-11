@@ -1,6 +1,8 @@
 package org.ClAssignateur.domain;
 
+import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import org.ClAssignateur.domain.Demande.EtatDemande;
 import java.util.ArrayList;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
@@ -23,6 +25,7 @@ public class AssignateurSalleTest {
 	private Demande demandeAAnnuler;
 	private Salle salleDisponible;
 	private Optional<Salle> salleDisponibleOptional;
+	private Optional<Demande> demandeAnnulerOptional;
 	private Notificateur strategieNotification;
 
 	private AssignateurSalle assignateur;
@@ -34,11 +37,13 @@ public class AssignateurSalleTest {
 		demandesEntrepot = mock(DemandesEntrepot.class);
 		demandeSalleDisponible = mock(Demande.class);
 		demandeAAnnuler = mock(Demande.class);
+		demandeAnnulerOptional = Optional.of(demandeAAnnuler);
 		salleDisponible = mock(Salle.class);
 		salleDisponibleOptional = Optional.of(salleDisponible);
 		strategieNotification = mock(Notificateur.class);
 
 		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(salleDisponibleOptional);
+		given(demandesEntrepot.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(demandeAnnulerOptional);
 		given(demandeSalleDisponible.getGroupe()).willReturn(GROUPE);
 		viderConteneurDemande();
 
@@ -60,6 +65,30 @@ public class AssignateurSalleTest {
 	@Test
 	public void quandAnnulerDemandeDevraitArchiverDemande() {
 		assignateur.annulerDemandeEnAttente(demandeAAnnuler);
+		verify(demandesEntrepot).persisterDemande(demandeAAnnuler);
+	}
+
+	@Test
+	public void quandAnnulerDemandeDevraitMettreDemandeEnEtatAnnulee() {
+		assignateur.annulerDemandeEnAttente(demandeAAnnuler);
+		verify(demandeAAnnuler).annuler();
+	}
+
+	@Test
+	public void quandAnnulerReservationDevraitChercherDemandeDansEntrepot() {
+		assignateur.annulerReservation(TITRE_REUNION);
+		verify(demandesEntrepot).obtenirDemandeSelonTitre(TITRE_REUNION);
+	}
+
+	@Test
+	public void quandAnnulerReservationDevraitChangerLetatDeLaDemande() {
+		assignateur.annulerReservation(TITRE_REUNION);
+		verify(demandeAAnnuler).annuler();
+	}
+
+	@Test
+	public void quandAnnulerReservationDevraitArchiverReservation() {
+		assignateur.annulerReservation(TITRE_REUNION);
 		verify(demandesEntrepot).persisterDemande(demandeAAnnuler);
 	}
 

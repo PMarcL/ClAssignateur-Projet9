@@ -48,7 +48,7 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
+	public void demandePossedeInitialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
 		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
 
 		assertTrue(demandeAvecPriorite.aLeMemeNiveauDePriorite(demandeAvecPriorite));
@@ -56,8 +56,32 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsPrioriteALaValeurInitiale() {
+	public void demandePossedeInitialementLeChampsPrioriteALaValeurInitiale() {
 		assertTrue(demande.aLeMemeNiveauDePriorite(demande));
+	}
+
+	@Test
+	public void demandeEstInitialementDansLEtatEnAttente() {
+		assertTrue(demande.getEtat() == Demande.EtatDemande.EN_ATTENTE);
+	}
+
+	@Test
+	public void demandeApresReservationEstDansLEtatAssignee() {
+		Salle salle = new Salle(CAPACITE_SALLE, NOM_SALLE);
+		demande.placerReservation(salle);
+		assertTrue(demande.getEtat() == Demande.EtatDemande.ASSIGNEE);
+	}
+
+	@Test
+	public void demandeApresAnnulationEstDansLEtatAnnulee() {
+		demande.annuler();
+		assertTrue(demande.getEtat() == Demande.EtatDemande.ANNULEE);
+	}
+
+	@Test
+	public void demandeApresAucuneSalleDisponibleEstDansLEtatInnassignable() {
+		demande.aucuneSalleDisponible();
+		assertTrue(demande.getEtat() == Demande.EtatDemande.INASSIGNABLE);
 	}
 
 	@Test
