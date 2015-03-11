@@ -1,28 +1,29 @@
 package org.ClAssignateur.domain;
 
-import java.util.ArrayList;
-
 public class Demande {
 
 	private Groupe groupe;
 	private Priorite priorite;
-	private StrategieNotificationFactory strategieNotificationFactory;
-	private ArrayList<Salle> reservations = new ArrayList<Salle>();
+	private String titre;
 
-	public Demande(Groupe groupe, Priorite priorite, StrategieNotificationFactory strategieNotificationFactory) {
+	public Demande(Groupe groupe, String titre, Priorite priorite) {
 		this.groupe = groupe;
+		this.titre = titre;
 		this.priorite = priorite;
-		this.strategieNotificationFactory = strategieNotificationFactory;
 	}
 
-	public Demande(Groupe groupe, StrategieNotificationFactory strategieNotificationFactory) {
+	public Demande(Groupe groupe, String titre) {
 		this.groupe = groupe;
+		this.titre = titre;
 		this.priorite = Priorite.basse();
-		this.strategieNotificationFactory = strategieNotificationFactory;
 	}
 
 	public Groupe getGroupe() {
 		return this.groupe;
+	}
+
+	public String getTitre() {
+		return this.titre;
 	}
 
 	public int getNbParticipant() {
@@ -34,31 +35,14 @@ public class Demande {
 		return this.priorite.estPlusPrioritaire(autreDemande.priorite);
 	}
 
-	public boolean estAutantPrioritaire(Demande autreDemande) {
+	public boolean aLeMemeNiveauDePriorite(Demande autreDemande) {
 		return (!this.priorite.estPlusPrioritaire(autreDemande.priorite) && !autreDemande.priorite
 				.estPlusPrioritaire(priorite));
 	}
 
-	public void placerReservation(Salle nouvelleReservation) {
-		reservations.add(nouvelleReservation);
-
-		StrategieNotification strategieNotification = strategieNotificationFactory.creerStrategieNotification();
-		MessageNotification message = new MessageNotificationSuccess(nouvelleReservation);
-
-		strategieNotification.notifier(message, groupe.getOrganisateur());
-		strategieNotification.notifier(message, groupe.getResponsable());
-	}
-
-	public int getNbReservation() {
-		return reservations.size();
-	}
-
-	public void signalerAucuneDemandeCorrespondante() {
-		StrategieNotification strategieNotification = strategieNotificationFactory.creerStrategieNotification();
-		MessageNotification message = new MessageNotificationEchec();
-
-		strategieNotification.notifier(message, groupe.getOrganisateur());
-		strategieNotification.notifier(message, groupe.getResponsable());
+	public boolean equals(Demande demande) {
+		return this.titre.equals(demande.getTitre()) && this.groupe.equals(demande.getGroupe())
+				&& this.aLeMemeNiveauDePriorite(demande);
 	}
 
 }

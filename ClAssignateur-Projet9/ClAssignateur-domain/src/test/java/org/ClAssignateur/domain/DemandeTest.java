@@ -2,8 +2,6 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import org.junit.Before;
@@ -11,91 +9,73 @@ import org.junit.Test;
 
 public class DemandeTest {
 
+	private final String TITRE_REUNION = "Mon titre";
+	private final String TITRE_DIFFERENT = "Un autre titre";
 	private Employe ORGANISATEUR = mock(Employe.class);
 	private Employe RESPONSABLE = mock(Employe.class);
 	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
+	private final Groupe GROUPE_DIFFERENT = new Groupe(ORGANISATEUR, new Employe("courriel"), new ArrayList<Employe>());
 	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
-	private final StrategieNotification strategieNotification = mock(StrategieNotification.class);
-	private final StrategieNotificationFactory strategieNotificationFactory = mock(StrategieNotificationFactory.class);
 
 	private Demande demande;
 
 	@Before
 	public void creerLaDemande() {
-		willReturn(strategieNotification).given(strategieNotificationFactory).creerStrategieNotification();
-		demande = new Demande(GROUPE, strategieNotificationFactory);
+		demande = new Demande(GROUPE, TITRE_REUNION);
 	}
-	
 
 	@Test
-	public void demandePossedeIntialementLeChampsGroupeCommeDefiniDansLeConstructeur() {
+	public void demandePossedeInitialementLeChampsGroupeCommeDefiniDansLeConstructeur() {
 		Groupe groupe = demande.getGroupe();
 		assertEquals(GROUPE, groupe);
 	}
 
 	@Test
+	public void demandePossedeInitialementLeChampTitre() {
+		String titre = demande.getTitre();
+		assertEquals(TITRE_REUNION, titre);
+	}
+
+	@Test
 	public void demandePossedeParDefautPrioriteBasse() {
-		Demande autreDemande = new Demande(GROUPE, PRIORITE_PAR_DEFAUT, strategieNotificationFactory);
-		assertTrue(demande.estAutantPrioritaire(autreDemande));
+		Demande autreDemande = new Demande(GROUPE, TITRE_REUNION, PRIORITE_PAR_DEFAUT);
+		assertTrue(demande.aLeMemeNiveauDePriorite(autreDemande));
 	}
 
 	@Test
 	public void demandePossedeIntialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
-		Demande demandeAvecPriorite = new Demande(GROUPE, PRIORITE_MOYENNE, strategieNotificationFactory);
+		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
 
-		assertTrue(demandeAvecPriorite.estAutantPrioritaire(demandeAvecPriorite));
+		assertTrue(demandeAvecPriorite.aLeMemeNiveauDePriorite(demandeAvecPriorite));
 		assertTrue(demandeAvecPriorite.estPlusPrioritaire(demande));
 	}
 
 	@Test
 	public void demandePossedeIntialementLeChampsPrioriteALaValeurInitiale() {
-		assertTrue(demande.estAutantPrioritaire(demande));
+		assertTrue(demande.aLeMemeNiveauDePriorite(demande));
 	}
 
 	@Test
-	public void uneDemandeApresReservationContientUneReservation() {
-		Salle salle = new Salle(15);
-		
-		demande.placerReservation(salle);
-		
-		assertEquals(demande.getNbReservation(), 1);
+	public void UneDemandeEstIdentiqueAElleMeme() {
+		assertTrue(demande.equals(demande));
 	}
 
 	@Test
-	public void UneDemandeContientInitialementAucuneReservation() {
-		assertEquals(demande.getNbReservation(), 0);
+	public void UneDemandeEstDifferenteDUneDemandeAvecUnePrioriteDifferente() {
+		Demande demandeDifferente = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
+		assertFalse(demande.equals(demandeDifferente));
 	}
 
 	@Test
-	public void lorsquePlacerReservationAlorsNotifierSuccessOrganisateur() {
-		Salle salle = new Salle(15);
-
-		demande.placerReservation(salle);
-
-		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(ORGANISATEUR));
+	public void UneDemandeEstDifferenteDUneDemandeAvecUnTitreDifferent() {
+		Demande demandeDifferente = new Demande(GROUPE, TITRE_DIFFERENT, PRIORITE_PAR_DEFAUT);
+		assertFalse(demande.equals(demandeDifferente));
 	}
 
 	@Test
-	public void lorsquePlacerReservationAlorsNotifierSuccessResponsable() {
-		Salle salle = new Salle(15);
-
-		demande.placerReservation(salle);
-
-		verify(strategieNotification).notifier(any(MessageNotificationSuccess.class), eq(RESPONSABLE));
-	}
-
-	@Test
-	public void lorsSignalerAucuneSalleCorrespondanteNotifierEchecOrganisateur() {
-		demande.signalerAucuneDemandeCorrespondante();
-		
-		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(ORGANISATEUR));
-	}
-
-	@Test
-	public void lorsSignalerAucuneSalleCorrespondanteNotifierEchecResponsable() {
-		demande.signalerAucuneDemandeCorrespondante();
-		
-		verify(strategieNotification).notifier(any(MessageNotificationEchec.class), eq(RESPONSABLE));
+	public void UneDemandeEstDifferentDuneDemandeAvecUnAutreGroupe() {
+		Demande demandeDifferente = new Demande(GROUPE_DIFFERENT, TITRE_REUNION, PRIORITE_PAR_DEFAUT);
+		assertFalse(demande.equals(demandeDifferente));
 	}
 }

@@ -18,6 +18,10 @@ public class AssignateurSalle extends TimerTask {
 		demandes.ajouterDemande(demande);
 	}
 
+	public void annulerDemande(Demande demandeAAnnuler) {
+		demandes.retirerDemande(demandeAAnnuler);
+	}
+
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
 		if (demandes.contientAuMoins(nombreDemandes))
 			assignerDemandeSalle();
@@ -33,13 +37,11 @@ public class AssignateurSalle extends TimerTask {
 			Optional<Salle> salle = salles.obtenirSalleRepondantDemande(demandeCourante);
 
 			if (salle.isPresent()) {
-				demandeCourante.placerReservation(salle.get());
-			} else {
-				demandeCourante.signalerAucuneDemandeCorrespondante();
-			}
 
+			}
 		}
 
 		demandes.vider();
 	}
+
 }
