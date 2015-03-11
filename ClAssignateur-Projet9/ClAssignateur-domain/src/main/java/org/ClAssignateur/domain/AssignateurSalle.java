@@ -32,7 +32,7 @@ public class AssignateurSalle extends TimerTask {
 
 	public void annulerReservation(String titreReservationAAnnuler) {
 		Optional<Demande> reservation = demandesArchivees.obtenirDemandeSelonTitre(titreReservationAAnnuler);
-		if (reservation.isPresent()) {
+		if (reservation.isPresent() && reservation.get().estAssignee()) {
 			reservation.get().annuler();
 			demandesArchivees.persisterDemande(reservation.get());
 		}
@@ -55,6 +55,7 @@ public class AssignateurSalle extends TimerTask {
 			if (salle.isPresent()) {
 				demandeCourante.placerReservation(salle.get());
 				notifierSucces(demandeCourante, salle.get());
+				demandesArchivees.persisterDemande(demandeCourante);
 			} else {
 				notifierEchec(demandeCourante);
 			}

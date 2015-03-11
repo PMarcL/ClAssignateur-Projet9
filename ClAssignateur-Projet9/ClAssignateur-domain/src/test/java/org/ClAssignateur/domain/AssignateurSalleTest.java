@@ -1,8 +1,7 @@
 package org.ClAssignateur.domain;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-import org.ClAssignateur.domain.Demande.EtatDemande;
+
 import java.util.ArrayList;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
@@ -44,6 +43,7 @@ public class AssignateurSalleTest {
 
 		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(salleDisponibleOptional);
 		given(demandesEntrepot.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(demandeAnnulerOptional);
+		given(demandeAAnnuler.estAssignee()).willReturn(true);
 		given(demandeSalleDisponible.getGroupe()).willReturn(GROUPE);
 		viderConteneurDemande();
 
@@ -84,6 +84,13 @@ public class AssignateurSalleTest {
 	public void quandAnnulerReservationDevraitChangerLetatDeLaDemande() {
 		assignateur.annulerReservation(TITRE_REUNION);
 		verify(demandeAAnnuler).annuler();
+	}
+
+	@Test
+	public void quandAnnulerReservationDevraitPasAnnulerSeDemandeDejaAnnulee() {
+		given(demandeAAnnuler.estAssignee()).willReturn(false);
+		assignateur.annulerReservation(TITRE_REUNION);
+		verify(demandeAAnnuler, never()).annuler();
 	}
 
 	@Test
@@ -178,7 +185,21 @@ public class AssignateurSalleTest {
 	}
 
 	@Test
-	public void etantDonneeImpossibiliteDePlaceeReservationNotifierEchecOrganisateur() {
+	public void etantDonneeReservationPlaceeAvecSuccesReservationArchivee() {
+		Demande demandeAvecSalleDisponible = new Demande(GROUPE, TITRE_REUNION);
+		ajouterDemande(demandeAvecSalleDisponible);
+		Salle salleDisponible = mock(Salle.class);
+		Optional<Salle> salleDisponibleOptionnelle = Optional.of(salleDisponible);
+		given(entrepotSalles.obtenirSalleRepondantDemande(demandeAvecSalleDisponible)).willReturn(
+				salleDisponibleOptionnelle);
+
+		assignateur.run();
+
+		verify(demandesEntrepot).persisterDemande(demandeAvecSalleDisponible);
+	}
+
+	@Test
+	public void etantDonneeImpossibiliteDePlacerReservationNotifierEchecOrganisateur() {
 		Demande demandeNePouvantPasEtreAssignee = new Demande(GROUPE, TITRE_REUNION);
 		Optional<Salle> aucuneSalle = Optional.empty();
 		ajouterDemande(demandeNePouvantPasEtreAssignee);
@@ -190,7 +211,7 @@ public class AssignateurSalleTest {
 	}
 
 	@Test
-	public void etantDonneeImpossibiliteDePlaceeReservationNotifierEchecResponsable() {
+	public void etantDonneeImpossibiliteDePlacerReservationNotifierEchecResponsable() {
 		Demande demandeNePouvantPasEtreAssignee = new Demande(GROUPE, TITRE_REUNION);
 		Optional<Salle> aucuneSalle = Optional.empty();
 		ajouterDemande(demandeNePouvantPasEtreAssignee);

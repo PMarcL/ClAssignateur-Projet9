@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Demande {
 
 	public enum EtatDemande {
-		EN_ATTENTE, ANNULEE, ASSIGNEE, INASSIGNABLE
+		EN_ATTENTE, ANNULEE, ASSIGNEE
 	}
 
 	private Groupe groupe;
@@ -50,13 +50,16 @@ public class Demande {
 		this.etat = EtatDemande.ANNULEE;
 	}
 
-	public void aucuneSalleDisponible() {
-		this.etat = EtatDemande.INASSIGNABLE;
+	public boolean estAssignee() {
+		return this.etat == EtatDemande.ASSIGNEE;
 	}
 
-	public boolean equals(Demande demande) {
-		return this.titre.equals(demande.getTitre()) && this.groupe.equals(demande.getGroupe())
-				&& this.aLeMemeNiveauDePriorite(demande);
+	public boolean estEnAttente() {
+		return this.etat == EtatDemande.EN_ATTENTE;
+	}
+
+	public boolean estAnnulee() {
+		return this.etat == EtatDemande.ANNULEE;
 	}
 
 	public String getTitre() {
@@ -78,10 +81,6 @@ public class Demande {
 
 	public Employe getResponsable() {
 		return this.getGroupe().getResponsable();
-	}
-
-	public EtatDemande getEtat() {
-		return this.etat;
 	}
 
 }

@@ -10,11 +10,9 @@ import org.junit.Test;
 public class DemandeTest {
 
 	private final String TITRE_REUNION = "Mon titre";
-	private final String TITRE_DIFFERENT = "Un autre titre";
 	private Employe ORGANISATEUR = mock(Employe.class);
 	private Employe RESPONSABLE = mock(Employe.class);
 	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
-	private final Groupe GROUPE_DIFFERENT = new Groupe(ORGANISATEUR, new Employe("courriel"), new ArrayList<Employe>());
 	private final int NOMBRE_DE_PARTICIPANT = 10;
 	private final int NOMBRE_DE_PARTICIPANT_DANS_GROUPE_PAR_DEFAUT = 0;
 	private final int CAPACITE_SALLE = 15;
@@ -62,54 +60,25 @@ public class DemandeTest {
 
 	@Test
 	public void demandeEstInitialementDansLEtatEnAttente() {
-		assertTrue(demande.getEtat() == Demande.EtatDemande.EN_ATTENTE);
+		assertTrue(demande.estEnAttente());
 	}
 
 	@Test
 	public void demandeApresReservationEstDansLEtatAssignee() {
 		Salle salle = new Salle(CAPACITE_SALLE, NOM_SALLE);
 		demande.placerReservation(salle);
-		assertTrue(demande.getEtat() == Demande.EtatDemande.ASSIGNEE);
+		assertTrue(demande.estAssignee());
 	}
 
 	@Test
 	public void demandeApresAnnulationEstDansLEtatAnnulee() {
 		demande.annuler();
-		assertTrue(demande.getEtat() == Demande.EtatDemande.ANNULEE);
+		assertTrue(demande.estAnnulee());
 	}
 
 	@Test
-	public void demandeApresAucuneSalleDisponibleEstDansLEtatInnassignable() {
-		demande.aucuneSalleDisponible();
-		assertTrue(demande.getEtat() == Demande.EtatDemande.INASSIGNABLE);
-	}
-
-	@Test
-	public void UneDemandeEstIdentiqueAElleMeme() {
-		assertTrue(demande.equals(demande));
-	}
-
-	@Test
-	public void UneDemandeEstDifferenteDUneDemandeAvecUnePrioriteDifferente() {
-		Demande demandeDifferente = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
-		assertFalse(demande.equals(demandeDifferente));
-	}
-
-	@Test
-	public void UneDemandeEstDifferenteDUneDemandeAvecUnTitreDifferent() {
-		Demande demandeDifferente = new Demande(GROUPE, TITRE_DIFFERENT, PRIORITE_PAR_DEFAUT);
-		assertFalse(demande.equals(demandeDifferente));
-	}
-
-	@Test
-	public void UneDemandeEstDifferentDuneDemandeAvecUnAutreGroupe() {
-		Demande demandeDifferente = new Demande(GROUPE_DIFFERENT, TITRE_REUNION, PRIORITE_PAR_DEFAUT);
-		assertFalse(demande.equals(demandeDifferente));
-	}
-
-	public void demandePossedeIntialementLeChampsOrganisateurCommeDefiniDansGroupe() {
-		Employe organisateur = demande.getOrganisateur();
-		assertEquals(ORGANISATEUR, organisateur);
+	public void demandeEstInitialementPasAssignee() {
+		assertFalse(demande.estAssignee());
 	}
 
 	@Test
