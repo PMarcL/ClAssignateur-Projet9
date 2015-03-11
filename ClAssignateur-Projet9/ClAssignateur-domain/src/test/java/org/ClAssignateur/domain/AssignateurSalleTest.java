@@ -1,11 +1,7 @@
 package org.ClAssignateur.domain;
 
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
 import java.util.ArrayList;
-
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
 import java.util.Iterator;
@@ -55,7 +51,7 @@ public class AssignateurSalleTest {
 
 	@Test
 	public void quandAnnulerDemandeDevraitRetirerDuConteneur() {
-		assignateur.annulerDemande(demandeAAnnuler);
+		assignateur.annulerDemandeEnAttente(demandeAAnnuler);
 		verify(conteneurDemandes).retirerDemande(demandeAAnnuler);
 	}
 

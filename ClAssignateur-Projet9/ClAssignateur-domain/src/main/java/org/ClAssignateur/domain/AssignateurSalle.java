@@ -6,28 +6,28 @@ import java.util.TimerTask;
 
 public class AssignateurSalle extends TimerTask {
 
-	private ConteneurDemandes demandes;
+	private ConteneurDemandes demandesEnAttente;
 	private EntrepotSalles salles;
 	private Notificateur notificateur;
 	private MessageNotificationFactory messageNotificationFactory;
 
 	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles, Notificateur notificateur) {
-		this.demandes = demandes;
+		this.demandesEnAttente = demandes;
 		this.salles = salles;
 		this.notificateur = notificateur;
 		this.messageNotificationFactory = new MessageNotificationFactory();
 	}
 
 	public void ajouterDemande(Demande demande) {
-		demandes.ajouterDemande(demande);
+		demandesEnAttente.ajouterDemande(demande);
 	}
 
-	public void annulerDemande(Demande demandeAAnnuler) {
-		demandes.retirerDemande(demandeAAnnuler);
+	public void annulerDemandeEnAttente(Demande demandeAAnnuler) {
+		demandesEnAttente.retirerDemande(demandeAAnnuler);
 	}
 
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
-		if (demandes.contientAuMoins(nombreDemandes))
+		if (demandesEnAttente.contientAuMoins(nombreDemandes))
 			assignerDemandeSalle();
 	}
 
@@ -37,7 +37,7 @@ public class AssignateurSalle extends TimerTask {
 	}
 
 	private void assignerDemandeSalle() {
-		for (Demande demandeCourante : demandes) {
+		for (Demande demandeCourante : demandesEnAttente) {
 			Optional<Salle> salle = salles.obtenirSalleRepondantDemande(demandeCourante);
 
 			if (salle.isPresent()) {
@@ -47,8 +47,7 @@ public class AssignateurSalle extends TimerTask {
 				notifierEchec(demandeCourante);
 			}
 		}
-
-		demandes.vider();
+		demandesEnAttente.vider();
 	}
 
 	private void notifierSucces(Demande demande, Salle salleAssignee) {

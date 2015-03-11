@@ -29,7 +29,7 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 	@Test
 	public void devraitEtreInitialementVide() {
-		assertFalse(conteneurDemandes.contientAuMoins(UN_ELEMENT));
+		assertTrue(conteneurDemandes.estVide());
 	}
 
 	@Test
@@ -38,6 +38,30 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
 		assertFalse(conteneurDemandes.contientAuMoins(DEUX_ELEMENTS));
+	}
+
+	@Test
+	public void etantDonneConteneurAvecUnElementQuandRetirerDemandeConteneurEstVide() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		conteneurDemandes.retirerDemande(demandeFaiblePriorite);
+		assertTrue(conteneurDemandes.estVide());
+	}
+
+	@Test
+	public void etantDonneConteneurAvecDeuxElementQuandRetirerPremierElementDevraitContenirUnSeulElement() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		ajouterDemandes(UN_ELEMENT, demandeHautePriorite, conteneurDemandes);
+
+		conteneurDemandes.retirerDemande(demandeHautePriorite);
+
+		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
+	}
+
+	@Test
+	public void etantDonneConteneurAvecUnElementQuandRetirerElementPasDansConteneurTailleInchangee() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		conteneurDemandes.retirerDemande(demandeHautePriorite);
+		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
 	}
 
 	@Test

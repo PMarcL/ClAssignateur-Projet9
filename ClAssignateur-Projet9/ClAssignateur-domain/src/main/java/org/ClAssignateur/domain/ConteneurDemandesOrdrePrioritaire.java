@@ -22,7 +22,7 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 
 	@Override
 	public void retirerDemande(Demande demandeARetirer) {
-
+		demandes.remove(demandeARetirer);
 	}
 
 	@Override
@@ -36,5 +36,9 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 	@Override
 	public void vider() {
 		demandes.clear();
+	}
+
+	public boolean estVide() {
+		return demandes.isEmpty();
 	}
 }

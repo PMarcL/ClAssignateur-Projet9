@@ -40,8 +40,8 @@ public class ServiceReservationSalle {
 		assignerSiNecessaire();
 	}
 
-	public void annulerDemande(Demande demandeAAnnuler) {
-		assignateurSalle.annulerDemande(demandeAAnnuler);
+	public void annulerDemandeEnAttente(Demande demandeAAnnuler) {
+		assignateurSalle.annulerDemandeEnAttente(demandeAAnnuler);
 	}
 
 	private void assignerSiNecessaire() {

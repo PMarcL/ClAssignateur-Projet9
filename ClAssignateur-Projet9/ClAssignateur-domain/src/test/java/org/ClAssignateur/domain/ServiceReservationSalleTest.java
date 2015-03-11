@@ -61,8 +61,8 @@ public class ServiceReservationSalleTest {
 
 	@Test
 	public void quandAnnulerDemandeDevraitAnnulerDansAssignateur() {
-		serviceReservation.annulerDemande(demande);
-		verify(assignateur).annulerDemande(demande);
+		serviceReservation.annulerDemandeEnAttente(demande);
+		verify(assignateur).annulerDemandeEnAttente(demande);
 	}
 
 	@Test
