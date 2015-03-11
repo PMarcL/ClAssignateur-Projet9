@@ -8,21 +8,24 @@ import org.junit.Test;
 
 public class PrioriteTest {
 
+	Priorite prioriteTresBasse;
 	Priorite prioriteBasse;
 	Priorite prioriteMoyenne;
 	Priorite prioriteHaute;
+	Priorite prioriteTresHaute;
 
 	@Before
 	public void creerPriorites() {
+		prioriteTresBasse = Priorite.tresBasse();
 		prioriteBasse = Priorite.basse();
 		prioriteMoyenne = Priorite.moyenne();
 		prioriteHaute = Priorite.haute();
+		prioriteTresHaute = Priorite.tresHaute();
 	}
 
 	@Test
-	public void prioriteBasseEstLaMoinsPrioritaire() {
-		assertFalse(prioriteBasse.estPlusPrioritaire(prioriteMoyenne));
-		assertFalse(prioriteBasse.estPlusPrioritaire(prioriteHaute));
+	public void prioriteBasseEstPlusPrioritaireQuePrioriteTresBasse() {
+		assertTrue(prioriteBasse.estPlusPrioritaire(prioriteTresBasse));
 	}
 
 	@Test
@@ -31,20 +34,21 @@ public class PrioriteTest {
 	}
 
 	@Test
-	public void prioriteMoyenneEstMoinsPrioritaireQuePrioriteHaute() {
-		assertFalse(prioriteMoyenne.estPlusPrioritaire(prioriteHaute));
-	}
-
-	@Test
-	public void prioriteHauteEstLaPlusPrioritaire() {
-		assertTrue(prioriteHaute.estPlusPrioritaire(prioriteBasse));
+	public void prioriteHauteEstPlusPrioriteaireQuePrioriteMoyenne() {
 		assertTrue(prioriteHaute.estPlusPrioritaire(prioriteMoyenne));
 	}
 
 	@Test
+	public void prioriteTresHautePlusPrioritaireQuePrioriteHaute() {
+		assertTrue(prioriteTresHaute.estPlusPrioritaire(prioriteHaute));
+	}
+
+	@Test
 	public void deuxPrioriteEquivalentesNeSontPasPlusPrioritaire() {
+		assertFalse(prioriteTresBasse.estPlusPrioritaire(prioriteTresBasse));
 		assertFalse(prioriteBasse.estPlusPrioritaire(prioriteBasse));
 		assertFalse(prioriteMoyenne.estPlusPrioritaire(prioriteMoyenne));
 		assertFalse(prioriteHaute.estPlusPrioritaire(prioriteHaute));
+		assertFalse(prioriteTresHaute.estPlusPrioritaire(prioriteTresHaute));
 	}
 }
