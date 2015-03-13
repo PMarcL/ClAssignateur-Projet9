@@ -11,6 +11,7 @@ public class SalleTest {
 	private final int CAPACITE_INITIALE = 100;
 	private final int NB_PARTICIPANT_INFERIEUR_A_CAPACITE = 50;
 	private final int NB_PARTICIPANT_SUPERIEUR_A_CAPACITE = 150;
+	private final long POURCENTAGE_OCCUPATION_DE_50_PARTICIPANT = (long) 0.5;
 
 	private Salle salle;
 
@@ -27,6 +28,12 @@ public class SalleTest {
 	@Test
 	public void UneSalleNePeutPasAccueillirUnNombreDeParticipantSuperieurASaCapacite() {
 		assertFalse(salle.peutAccueillir(NB_PARTICIPANT_SUPERIEUR_A_CAPACITE));
+	}
+
+	@Test
+	public void UneSalleCalculeSonPourcentageOccupationSelonUnNombreDeParticipants() {
+		long resultat = salle.pourcentageOccupation(NB_PARTICIPANT_INFERIEUR_A_CAPACITE);
+		assertEquals(POURCENTAGE_OCCUPATION_DE_50_PARTICIPANT, resultat);
 	}
 
 	@Test
