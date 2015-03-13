@@ -9,10 +9,11 @@ public class AssignateurSalle extends TimerTask {
 	private EntrepotSalles salles;
 	private StrategieDeSelectionDeSalle strategieSelectionSalle;
 
-	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles) {
+	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles,
+			StrategieDeSelectionDeSalle strategieSelectionSalle) {
 		this.demandes = demandes;
 		this.salles = salles;
-		strategieSelectionSalle = new SelectionnerSalleLaPlusPetiteRepondantADemande();
+		this.strategieSelectionSalle = strategieSelectionSalle;
 	}
 
 	public void ajouterDemande(Demande demande) {

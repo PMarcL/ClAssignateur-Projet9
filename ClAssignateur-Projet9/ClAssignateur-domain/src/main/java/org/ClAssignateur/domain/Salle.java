@@ -4,26 +4,20 @@ import java.util.ArrayList;
 
 public class Salle {
 
-	private String nom;
 	private int capacite;
 	private ArrayList<Demande> reservations;
 
-	public Salle(String nomRecu, int capaciteRecu) {
-		nom = nomRecu;
-		capacite = capaciteRecu;
+	public Salle(int capacite) {
+		this.capacite = capacite;
 		reservations = new ArrayList<Demande>();
-	}
-
-	public String getNom() {
-		return nom;
-	}
-
-	public double pourcentageOccupation(int nbParticipants) {
-		return nbParticipants / capacite;
 	}
 
 	public boolean peutAccueillir(int nbParticipants) {
 		return capacite >= nbParticipants;
+	}
+
+	public double pourcentageOccupation(int nbParticipants) {
+		return nbParticipants / capacite;
 	}
 
 	public void placerReservation(Demande nouvelleReservation) {
@@ -34,5 +28,4 @@ public class Salle {
 		return reservations.size();
 
 	}
-
 }
