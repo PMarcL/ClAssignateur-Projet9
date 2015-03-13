@@ -2,8 +2,6 @@ package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
 
-import org.mockito.internal.matchers.InstanceOf;
-
 import org.junit.Before;
 import org.junit.Test;
 

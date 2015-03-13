@@ -7,12 +7,12 @@ public class AssignateurSalle extends TimerTask {
 
 	private ConteneurDemandes demandesEnAttente;
 	private EntrepotSalles salles;
-	private DemandesEntrepot demandesArchivees;
+	private DemandesEntrepotSansDoublon demandesArchivees;
 	private Notificateur notificateur;
 	private MessageNotificationFactory messageNotificationFactory;
 
-	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles, DemandesEntrepot demandesArchivees,
-			Notificateur notificateur) {
+	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles,
+			DemandesEntrepotSansDoublon demandesArchivees, Notificateur notificateur) {
 		this.demandesEnAttente = demandes;
 		this.demandesArchivees = demandesArchivees;
 		this.salles = salles;
@@ -24,18 +24,10 @@ public class AssignateurSalle extends TimerTask {
 		demandesEnAttente.ajouterDemande(demande);
 	}
 
-	public void annulerDemandeEnAttente(Demande demandeAAnnuler) {
-		demandesEnAttente.retirerDemande(demandeAAnnuler);
-		demandeAAnnuler.annuler();
-		demandesArchivees.persisterDemande(demandeAAnnuler);
-	}
-
-	public void annulerReservation(String titreReservationAAnnuler) {
-		Optional<Demande> reservation = demandesArchivees.obtenirDemandeSelonTitre(titreReservationAAnnuler);
-		if (reservation.isPresent() && reservation.get().estAssignee()) {
-			reservation.get().annuler();
-			demandesArchivees.persisterDemande(reservation.get());
-		}
+	public void annulerDemande(Demande demandeAnnulee) {
+		demandeAnnulee.annulerReservation();
+		demandesEnAttente.retirerDemande(demandeAnnulee);
+		demandesArchivees.persisterDemande(demandeAnnulee);
 	}
 
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
@@ -60,17 +52,20 @@ public class AssignateurSalle extends TimerTask {
 				notifierEchec(demandeCourante);
 			}
 		}
+
 		demandesEnAttente.vider();
 	}
 
 	private void notifierSucces(Demande demande, Salle salleAssignee) {
 		MessageNotification message = this.messageNotificationFactory.genereNotificationSucces(salleAssignee);
+
 		notificateur.notifier(message, demande.getOrganisateur());
 		notificateur.notifier(message, demande.getResponsable());
 	}
 
 	private void notifierEchec(Demande demande) {
 		MessageNotification message = this.messageNotificationFactory.genereNotificationEchec();
+
 		notificateur.notifier(message, demande.getOrganisateur());
 		notificateur.notifier(message, demande.getResponsable());
 	}

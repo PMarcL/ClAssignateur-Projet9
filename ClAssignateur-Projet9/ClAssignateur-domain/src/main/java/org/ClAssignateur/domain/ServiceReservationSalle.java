@@ -35,6 +35,10 @@ public class ServiceReservationSalle {
 		assignerSiNecessaire();
 	}
 
+	public void annulerDemande(Demande demandeAAnnuler) {
+		assignateurSalle.annulerDemande(demandeAAnnuler);
+	}
+
 	public void ajouterDemande(Demande nouvelleDemande) {
 		assignateurSalle.ajouterDemande(nouvelleDemande);
 		assignerSiNecessaire();
@@ -42,14 +46,6 @@ public class ServiceReservationSalle {
 
 	private void assignerSiNecessaire() {
 		assignateurSalle.assignerDemandeSalleSiContientAuMoins(limiteDemandes);
-	}
-
-	public void annulerDemandeEnAttente(Demande demandeAAnnuler) {
-		assignateurSalle.annulerDemandeEnAttente(demandeAAnnuler);
-	}
-
-	public void annulerReservation(String titreReservationAAnnuler) {
-		assignateurSalle.annulerReservation(titreReservationAAnnuler);
 	}
 
 	private long delaiEnMilisecondes(int delaiEnMinutes) {

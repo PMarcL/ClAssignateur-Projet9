@@ -1,7 +1,6 @@
 package org.ClAssignateur.domain;
 
 import java.util.Comparator;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -9,6 +8,16 @@ import java.util.Iterator;
 public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 
 	private List<Demande> demandes = new ArrayList<Demande>();
+
+	@Override
+	public void vider() {
+		demandes.clear();
+	}
+
+	@Override
+	public int taille() {
+		return demandes.size();
+	}
 
 	@Override
 	public boolean contientAuMoins(int nombreDemandes) {
@@ -22,9 +31,7 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 
 	@Override
 	public void retirerDemande(Demande demandeARetirer) {
-		if (!demandes.remove(demandeARetirer)) {
-			throw new DemandesPasDansConteneurException("La demande à retirer n'est pas dans le conteneur.");
-		}
+		demandes.remove(demandeARetirer);
 	}
 
 	@Override
@@ -33,14 +40,5 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 				: (demande1.aLeMemeNiveauDePriorite(demande2) ? 0 : -1)));
 
 		return demandes.stream().sorted(parPriorite).iterator();
-	}
-
-	@Override
-	public void vider() {
-		demandes.clear();
-	}
-
-	public boolean estVide() {
-		return demandes.isEmpty();
 	}
 }

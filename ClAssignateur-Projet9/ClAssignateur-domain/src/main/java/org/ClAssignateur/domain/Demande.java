@@ -46,7 +46,7 @@ public class Demande {
 		etat = EtatDemande.ASSIGNEE;
 	}
 
-	public void annuler() {
+	public void annulerReservation() {
 		this.etat = EtatDemande.ANNULEE;
 	}
 

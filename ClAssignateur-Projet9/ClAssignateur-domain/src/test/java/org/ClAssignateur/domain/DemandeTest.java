@@ -72,7 +72,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandeApresAnnulationEstDansLEtatAnnulee() {
-		demande.annuler();
+		demande.annulerReservation();
 		assertTrue(demande.estAnnulee());
 	}
 

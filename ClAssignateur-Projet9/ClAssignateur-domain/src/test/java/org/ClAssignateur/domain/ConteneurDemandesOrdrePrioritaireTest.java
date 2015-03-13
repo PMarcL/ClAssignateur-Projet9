@@ -1,6 +1,7 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
+
 import org.mockito.ArgumentMatcher;
 import static org.mockito.BDDMockito.*;
 import org.junit.Before;
@@ -8,6 +9,7 @@ import org.junit.Test;
 
 public class ConteneurDemandesOrdrePrioritaireTest {
 
+	private final int AUCUN_ELEMENT = 0;
 	private final int UN_ELEMENT = 1;
 	private final int DEUX_ELEMENTS = 2;
 	private final Groupe GROUPE = mock(Groupe.class);
@@ -29,38 +31,13 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 	@Test
 	public void devraitEtreInitialementVide() {
-		assertTrue(conteneurDemandes.estVide());
+		assertEquals(AUCUN_ELEMENT, conteneurDemandes.taille());
 	}
 
 	@Test
 	public void etantDonneConteneurVideQuandAjouterDemandeDevraitContenirUneDemande() {
 		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
-
-		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
-		assertFalse(conteneurDemandes.contientAuMoins(DEUX_ELEMENTS));
-	}
-
-	@Test
-	public void etantDonneConteneurAvecUnElementQuandRetirerDemandeConteneurEstVide() {
-		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
-		conteneurDemandes.retirerDemande(demandeFaiblePriorite);
-		assertTrue(conteneurDemandes.estVide());
-	}
-
-	@Test
-	public void etantDonneConteneurAvecDeuxElementQuandRetirerPremierElementDevraitContenirUnSeulElement() {
-		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
-		ajouterDemandes(UN_ELEMENT, demandeHautePriorite, conteneurDemandes);
-
-		conteneurDemandes.retirerDemande(demandeHautePriorite);
-
-		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
-	}
-
-	@Test(expected = DemandesPasDansConteneurException.class)
-	public void etantDonneConteneurAvecUnElementQuandRetirerElementPasDansConteneurLanceException() {
-		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
-		conteneurDemandes.retirerDemande(demandeHautePriorite);
+		assertEquals(UN_ELEMENT, conteneurDemandes.taille());
 	}
 
 	@Test
@@ -74,10 +51,46 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 	}
 
 	@Test
+	public void etantDonneConteneurAvecUnElementQuandRetirerDemandeConteneurEstVide() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		conteneurDemandes.retirerDemande(demandeFaiblePriorite);
+		assertEquals(AUCUN_ELEMENT, conteneurDemandes.taille());
+	}
+
+	@Test
+	public void etantDonneConteneurAvecDeuxElementQuandRetirerPremierElementDevraitContenirUnSeulElement() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		ajouterDemandes(UN_ELEMENT, demandeHautePriorite, conteneurDemandes);
+
+		conteneurDemandes.retirerDemande(demandeHautePriorite);
+
+		assertEquals(UN_ELEMENT, conteneurDemandes.taille());
+	}
+
+	// @Test
+	// public void
+	// etantDonneConteneurNeContenantPasElementARetirerQuandRetirerDemandeDevraitRecevoirResultatVide()
+	// {
+	// Optional<Demande> resultat =
+	// conteneurDemandes.retirerDemande(demandeHautePriorite);
+	// assertFalse(resultat.isPresent());
+	// }
+	//
+	// @Test
+	// public void
+	// etantDonneConteneurContenantElementARetirerQuandRetirerDemandeDevraitRecevoirResultatContenantDemande()
+	// {
+	// ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+	// Optional<Demande> resultat =
+	// conteneurDemandes.retirerDemande(demandeFaiblePriorite);
+	// assertEquals(demandeFaiblePriorite, resultat.get());
+	// }
+
+	@Test
 	public void etantDonneConteneurContenantDemandesQuandViderDevraitNePlusContenirElement() {
 		ajouterDemandes(DEUX_ELEMENTS, demandeFaiblePriorite, conteneurDemandes);
 		conteneurDemandes.vider();
-		assertFalse(conteneurDemandes.contientAuMoins(UN_ELEMENT));
+		assertEquals(AUCUN_ELEMENT, conteneurDemandes.taille());
 	}
 
 	@Test
@@ -86,6 +99,23 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 		ajouterDemandes(UN_ELEMENT, demandeHautePriorite, conteneurDemandes);
 
 		assertThat(conteneurDemandes, estEnOrdrePrioritaireDecroissant());
+	}
+
+	@Test
+	public void etantDonneConteneurContenantMoinsDeXElementsQuandContientAuMoinsXElementsDevraitRepondreFaux() {
+		assertFalse(conteneurDemandes.contientAuMoins(DEUX_ELEMENTS));
+	}
+
+	@Test
+	public void etantDonneConteneurContenantExactementXElementsQuandContientAuMoinsXElementDevraitRepondreVrai() {
+		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
+		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
+	}
+
+	@Test
+	public void etantDonneConteneurContenantPlusDeXElementsQuandContientAuMoinsXElementDevraitRepondreVrai() {
+		ajouterDemandes(DEUX_ELEMENTS, demandeFaiblePriorite, conteneurDemandes);
+		assertTrue(conteneurDemandes.contientAuMoins(UN_ELEMENT));
 	}
 
 	private EstEnOrdrePrioritaireDecroissant estEnOrdrePrioritaireDecroissant() {
