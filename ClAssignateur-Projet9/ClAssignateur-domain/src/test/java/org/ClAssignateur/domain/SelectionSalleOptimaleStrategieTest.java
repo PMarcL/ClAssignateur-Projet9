@@ -13,9 +13,13 @@ public class SelectionSalleOptimaleStrategieTest {
 
 	private final int NB_PARTICIPANTS = 100;
 	private final boolean PEUT_ACCUEILLIR = true;
-	private final float TAUX_OCCUPATION_TOTAL = 1.0f;
+	private final boolean PEUT_PAS_ACCUEILLIR = false;
+	private final float TAUX_OCCUPATION_OPTIMAL = 1.0f;
+	private final float TAUX_OCCUPATION_PAS_OPTIMAL = 0.5f;
 
-	private Salle salle;
+	private Salle salleOptimale;
+	private Salle sallePasOptimale;
+	private Salle salleNePouvantPasAccueillirParticipants;
 	private Demande demande;
 	private ArrayList<Salle> salles;
 
@@ -25,50 +29,56 @@ public class SelectionSalleOptimaleStrategieTest {
 	public void initialisation() {
 		selecteurSalle = new SelectionSalleOptimaleStrategie();
 
-		salle = mock(Salle.class);
+		salleOptimale = mock(Salle.class);
+		sallePasOptimale = mock(Salle.class);
+		salleNePouvantPasAccueillirParticipants = mock(Salle.class);
 		demande = mock(Demande.class);
+		given(demande.getNbParticipants()).willReturn(NB_PARTICIPANTS);
+		given(salleOptimale.peutAccueillir(NB_PARTICIPANTS)).willReturn(PEUT_ACCUEILLIR);
+		given(salleOptimale.getTauxOccupation(NB_PARTICIPANTS)).willReturn(TAUX_OCCUPATION_OPTIMAL);
+		given(sallePasOptimale.peutAccueillir(NB_PARTICIPANTS)).willReturn(PEUT_ACCUEILLIR);
+		given(sallePasOptimale.getTauxOccupation(NB_PARTICIPANTS)).willReturn(TAUX_OCCUPATION_PAS_OPTIMAL);
+		given(salleNePouvantPasAccueillirParticipants.peutAccueillir(NB_PARTICIPANTS)).willReturn(PEUT_PAS_ACCUEILLIR);
 
 		salles = new ArrayList<Salle>();
-		salles.add(salle);
 	}
 
 	@Test
 	public void quandRechercheSalleOnDoitObtenirUneSallePouvantContenirLeNbDeParticipants() {
-		given(demande.getNbParticipant()).willReturn(NB_PARTICIPANTS);
-		given(salle.peutAccueillir(NB_PARTICIPANTS)).willReturn(PEUT_ACCUEILLIR);
-		given(salle.getPourcentageOccupation(NB_PARTICIPANTS)).willReturn(TAUX_OCCUPATION_TOTAL);
+		salles.add(salleOptimale);
+		salles.add(salleNePouvantPasAccueillirParticipants);
+		Optional<Salle> salleObtenue = selecteurSalle.selectionnerSalle(salles, demande);
+		assertTrue(salleObtenue.get().peutAccueillir(NB_PARTICIPANTS));
+	}
+
+	@Test
+	public void etantDonnePlusieursSallesPouvantAccueillirNbParticipantsQuandRechercheSalleRetourneSalleOptimale() {
+		salles.add(salleOptimale);
+		salles.add(sallePasOptimale);
 
 		Optional<Salle> salleObtenue = selecteurSalle.selectionnerSalle(salles, demande);
 
-		assertEquals(salle, salleObtenue.get());
+		assertEquals(salleOptimale, salleObtenue.get());
 	}
 
-	// @Test
-	// public void quandRechercheSalle() {
-	// Optional<Salle> resultat = selecteurSalle.selectionnerSalle(salles,
-	// DEMANDE_NBPARTICIPANTS_10);
-	//
-	// assertTrue(resultat.isPresent());
-	// assertEquals(SALLE_CAPACITE_10, resultat.get());
-	// }
-	//
-	// @Test
-	// public void
-	// quandRechercheSalleSiNbParticipantEgaleCapaciteDeUneSalleOnObtient() {
-	// Optional<Salle> resultat = selecteurSalle.selectionnerSalle(salles,
-	// DEMANDE_NBPARTICIPANTS_10);
-	//
-	// assertTrue(resultat.isPresent());
-	// assertEquals(SALLE_CAPACITE_10, resultat.get());
-	// }
-	//
-	// @Test
-	// public void
-	// quandRechercheSalleSiAucunesSallesPeutAccueillirLesParticipantOnObtientRien()
-	// {
-	// Optional<Salle> resultat = selecteurSalle.selectionnerSalle(salles,
-	// DEMANDE_NBPARTICIPANTS_200);
-	//
-	// assertFalse(resultat.isPresent());
-	// }
+	@Test
+	public void etantDonneAucuneSalleNePouvantAccueillirNbParticipantsQuandRechercheSalleRetourneRien() {
+		salles.add(salleNePouvantPasAccueillirParticipants);
+		Optional<Salle> salleObtenue = selecteurSalle.selectionnerSalle(salles, demande);
+		assertFalse(salleObtenue.isPresent());
+	}
+
+	@Test
+	public void etantDonneDeuxSallesOptimalesRenvoieLaPremiereTrouvee() {
+		Salle premiereSalleOptimale = mock(Salle.class);
+		given(premiereSalleOptimale.peutAccueillir(NB_PARTICIPANTS)).willReturn(PEUT_ACCUEILLIR);
+		given(premiereSalleOptimale.getTauxOccupation(NB_PARTICIPANTS)).willReturn(TAUX_OCCUPATION_OPTIMAL);
+		salles.add(premiereSalleOptimale);
+		salles.add(salleOptimale);
+
+		Optional<Salle> salleObtenue = selecteurSalle.selectionnerSalle(salles, demande);
+
+		assertEquals(premiereSalleOptimale, salleObtenue.get());
+	}
+
 }

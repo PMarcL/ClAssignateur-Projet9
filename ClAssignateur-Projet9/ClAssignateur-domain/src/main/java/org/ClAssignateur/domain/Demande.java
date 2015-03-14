@@ -31,7 +31,7 @@ public class Demande {
 					"Le nombre de participants doit être supérieur au minimum de participants requis.");
 	}
 
-	public int getNbParticipant() {
+	public int getNbParticipants() {
 		return this.nbParticipant;
 	}
 

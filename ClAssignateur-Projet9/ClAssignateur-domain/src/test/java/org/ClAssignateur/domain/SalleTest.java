@@ -32,7 +32,7 @@ public class SalleTest {
 
 	@Test
 	public void UneSalleCalculeSonPourcentageOccupationSelonUnNombreDeParticipants() {
-		float resultat = salle.getPourcentageOccupation(NB_PARTICIPANT_INFERIEUR_A_CAPACITE);
+		float resultat = salle.getTauxOccupation(NB_PARTICIPANT_INFERIEUR_A_CAPACITE);
 		assertEquals(POURCENTAGE_OCCUPATION_DE_50_PARTICIPANTS, resultat, 0.01);
 	}
 

@@ -23,7 +23,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeIntialementLeChampsNbParticipantCommeDefiniDansLeConstructeur() {
-		int nbParticipant = demande.getNbParticipant();
+		int nbParticipant = demande.getNbParticipants();
 		assertEquals(NOMBRE_PARTICIPANT, nbParticipant);
 	}
 

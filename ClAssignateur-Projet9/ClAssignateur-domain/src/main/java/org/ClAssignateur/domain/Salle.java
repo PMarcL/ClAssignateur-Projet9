@@ -16,7 +16,7 @@ public class Salle {
 		return capacite >= nbParticipants;
 	}
 
-	public float getPourcentageOccupation(int nbParticipants) {
+	public float getTauxOccupation(int nbParticipants) {
 		return (float) nbParticipants / capacite;
 	}
 
