@@ -1,27 +1,20 @@
 package org.ClAssignateur.domain;
 
-import java.util.ArrayList;
-
 public class Salle {
 
+	private String nom;
 	private int capacite;
-	private ArrayList<Demande> reservations;
 
-	public Salle(int capacite) {
+	public Salle(int capacite, String nom) {
 		this.capacite = capacite;
-		reservations = new ArrayList<Demande>();
+		this.nom = nom;
 	}
 
 	public boolean peutAccueillir(int nbParticipants) {
-		return capacite >= nbParticipants;
+		return this.capacite >= nbParticipants;
 	}
 
-	public void placerReservation(Demande nouvelleReservation) {
-		reservations.add(nouvelleReservation);
-	}
-
-	public int getNbReservation() {
-		return reservations.size();
-
+	public String getNom() {
+		return this.nom;
 	}
 }

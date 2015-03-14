@@ -1,50 +1,86 @@
 package org.ClAssignateur.domain;
 
-import org.w3c.dom.ranges.RangeException;
+import java.util.ArrayList;
 
 public class Demande {
-	private final int NOMBRE_PARTICIPANTS_MINIMUM = 0;
 
-	private int nbParticipant;
-	private String organisateur;
+	public enum EtatDemande {
+		EN_ATTENTE, ANNULEE, ASSIGNEE
+	}
+
+	private Groupe groupe;
 	private Priorite priorite;
+	private String titre;
+	private EtatDemande etat;
+	private ArrayList<Salle> reservations = new ArrayList<Salle>();
 
-	public Demande(int nombreParticipant, String organisateur) {
-		validerNombreParticipant(nombreParticipant);
-
-		this.nbParticipant = nombreParticipant;
-		this.organisateur = organisateur;
-		this.priorite = Priorite.basse();
-	}
-
-	public Demande(int nombreParticipant, String organisateur, Priorite priorite) {
-		validerNombreParticipant(nombreParticipant);
-
-		this.nbParticipant = nombreParticipant;
-		this.organisateur = organisateur;
+	public Demande(Groupe groupe, String titre, Priorite priorite) {
+		this.groupe = groupe;
+		this.titre = titre;
 		this.priorite = priorite;
+		this.etat = EtatDemande.EN_ATTENTE;
 	}
 
-	private void validerNombreParticipant(int nombreParticipant) {
-		if (nombreParticipant <= NOMBRE_PARTICIPANTS_MINIMUM)
-			throw new RangeException((short) NOMBRE_PARTICIPANTS_MINIMUM,
-					"Le nombre de participants doit être supérieur au minimum de participants requis.");
+	public Demande(Groupe groupe, String titre) {
+		this.groupe = groupe;
+		this.titre = titre;
+		this.priorite = Priorite.basse();
+		this.etat = EtatDemande.EN_ATTENTE;
 	}
 
-	public int getNbParticipant() {
-		return this.nbParticipant;
-	}
-
-	public String getOrganisateur() {
-		return this.organisateur;
+	public Groupe getGroupe() {
+		return this.groupe;
 	}
 
 	public boolean estPlusPrioritaire(Demande autreDemande) {
 		return this.priorite.estPlusPrioritaire(autreDemande.priorite);
 	}
 
-	public boolean estAutantPrioritaire(Demande autreDemande) {
+	public boolean aLeMemeNiveauDePriorite(Demande autreDemande) {
 		return (!this.priorite.estPlusPrioritaire(autreDemande.priorite) && !autreDemande.priorite
 				.estPlusPrioritaire(priorite));
 	}
+
+	public void placerReservation(Salle nouvelleReservation) {
+		reservations.add(nouvelleReservation);
+		etat = EtatDemande.ASSIGNEE;
+	}
+
+	public void annulerReservation() {
+		this.etat = EtatDemande.ANNULEE;
+	}
+
+	public boolean estAssignee() {
+		return this.etat == EtatDemande.ASSIGNEE;
+	}
+
+	public boolean estEnAttente() {
+		return this.etat == EtatDemande.EN_ATTENTE;
+	}
+
+	public boolean estAnnulee() {
+		return this.etat == EtatDemande.ANNULEE;
+	}
+
+	public String getTitre() {
+		return this.titre;
+	}
+
+	public int getNbParticipant() {
+		int nombreDeParticipant = this.groupe.getNbParticipant();
+		return nombreDeParticipant;
+	}
+
+	public int getNbReservation() {
+		return reservations.size();
+	}
+
+	public Employe getOrganisateur() {
+		return this.getGroupe().getOrganisateur();
+	}
+
+	public Employe getResponsable() {
+		return this.getGroupe().getResponsable();
+	}
+
 }
