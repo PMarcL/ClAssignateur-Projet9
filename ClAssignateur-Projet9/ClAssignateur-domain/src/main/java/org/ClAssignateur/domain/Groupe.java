@@ -26,4 +26,8 @@ public class Groupe {
 		return participants.size();
 	}
 
+	public List<Employe> getParticipants() {
+		return participants;
+	}
+
 }

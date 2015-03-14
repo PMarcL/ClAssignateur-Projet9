@@ -10,6 +10,8 @@ public interface ConteneurDemandes extends Iterable<Demande> {
 
 	public abstract void retirerDemande(Demande demandeARetirer);
 
+	public abstract boolean contientDemande(Demande demande);
+
 	public abstract void vider();
 
 }

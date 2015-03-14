@@ -6,28 +6,42 @@ import java.util.TimerTask;
 public class AssignateurSalle extends TimerTask {
 
 	private ConteneurDemandes demandesEnAttente;
-	private EntrepotSalles salles;
+	private SallesEntrepot salles;
 	private DemandesEntrepotSansDoublon demandesArchivees;
 	private Notificateur notificateur;
-	private MessageNotificationFactory messageNotificationFactory;
 
-	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles,
+	public AssignateurSalle(ConteneurDemandes demandes, SallesEntrepot salles,
 			DemandesEntrepotSansDoublon demandesArchivees, Notificateur notificateur) {
 		this.demandesEnAttente = demandes;
 		this.demandesArchivees = demandesArchivees;
 		this.salles = salles;
 		this.notificateur = notificateur;
-		this.messageNotificationFactory = new MessageNotificationFactory();
 	}
 
 	public void ajouterDemande(Demande demande) {
-		demandesEnAttente.ajouterDemande(demande);
+		this.demandesEnAttente.ajouterDemande(demande);
 	}
 
 	public void annulerDemande(Demande demandeAnnulee) {
-		demandeAnnulee.annulerReservation();
-		demandesEnAttente.retirerDemande(demandeAnnulee);
-		demandesArchivees.persisterDemande(demandeAnnulee);
+		Optional<Demande> demandeAAnnuler = this.demandesArchivees.trouverDemandeSelonTitre(demandeAnnulee.getTitre());
+		if (demandeAAnnuler.isPresent()) {
+			annulerReservationArchivee(demandeAAnnuler);
+		} else if (this.demandesEnAttente.contientDemande(demandeAnnulee)) {
+			annulerDemandeEnAttente(demandeAnnulee);
+		}
+	}
+
+	private void annulerReservationArchivee(Optional<Demande> demandeAAnnuler) {
+		demandeAAnnuler.get().annulerReservation();
+		this.demandesArchivees.mettreAJourDemande(demandeAAnnuler.get());
+		this.notificateur.notifierAnnulation(demandeAAnnuler.get());
+	}
+
+	private void annulerDemandeEnAttente(Demande demandeAAnnuler) {
+		demandeAAnnuler.annulerReservation();
+		this.demandesEnAttente.retirerDemande(demandeAAnnuler);
+		this.demandesArchivees.persisterDemande(demandeAAnnuler);
+		this.notificateur.notifierAnnulation(demandeAAnnuler);
 	}
 
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
@@ -46,28 +60,14 @@ public class AssignateurSalle extends TimerTask {
 
 			if (salle.isPresent()) {
 				demandeCourante.placerReservation(salle.get());
-				notifierSucces(demandeCourante, salle.get());
-				demandesArchivees.persisterDemande(demandeCourante);
+				this.notificateur.notifierSucces(demandeCourante, salle.get());
+				this.demandesArchivees.persisterDemande(demandeCourante);
 			} else {
-				notifierEchec(demandeCourante);
+				this.notificateur.notifierEchec(demandeCourante);
 			}
 		}
 
 		demandesEnAttente.vider();
-	}
-
-	private void notifierSucces(Demande demande, Salle salleAssignee) {
-		MessageNotification message = this.messageNotificationFactory.genereNotificationSucces(salleAssignee);
-
-		notificateur.notifier(message, demande.getOrganisateur());
-		notificateur.notifier(message, demande.getResponsable());
-	}
-
-	private void notifierEchec(Demande demande) {
-		MessageNotification message = this.messageNotificationFactory.genereNotificationEchec();
-
-		notificateur.notifier(message, demande.getOrganisateur());
-		notificateur.notifier(message, demande.getResponsable());
 	}
 
 }

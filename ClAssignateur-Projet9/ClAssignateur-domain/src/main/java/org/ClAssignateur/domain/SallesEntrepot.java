@@ -2,7 +2,7 @@ package org.ClAssignateur.domain;
 
 import java.util.Optional;
 
-public interface EntrepotSalles {
+public interface SallesEntrepot {
 
 	public void ajouterSalle(Salle salle);
 

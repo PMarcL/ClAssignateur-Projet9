@@ -35,6 +35,11 @@ public class ConteneurDemandesOrdrePrioritaire implements ConteneurDemandes {
 	}
 
 	@Override
+	public boolean contientDemande(Demande demande) {
+		return demandes.contains(demande);
+	}
+
+	@Override
 	public Iterator<Demande> iterator() {
 		Comparator<Demande> parPriorite = ((demande1, demande2) -> (demande2.estPlusPrioritaire(demande1) ? 1
 				: (demande1.aLeMemeNiveauDePriorite(demande2) ? 0 : -1)));

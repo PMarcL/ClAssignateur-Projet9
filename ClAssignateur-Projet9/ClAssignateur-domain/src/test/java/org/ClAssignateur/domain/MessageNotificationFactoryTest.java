@@ -27,4 +27,5 @@ public class MessageNotificationFactoryTest {
 
 		assertEquals(salleAjouter, salleDuMessage);
 	}
+
 }

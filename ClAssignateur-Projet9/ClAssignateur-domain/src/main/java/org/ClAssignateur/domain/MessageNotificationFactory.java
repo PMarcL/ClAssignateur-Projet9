@@ -12,4 +12,9 @@ public class MessageNotificationFactory {
 		return messageEchec;
 	}
 
+	public MessageNotification genereNotificationAnnulation(Demande demande) {
+		MessageNotification messageAnnulation = new MessageNotificationAnnulation(demande);
+		return messageAnnulation;
+	}
+
 }

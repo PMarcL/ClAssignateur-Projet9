@@ -67,24 +67,17 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 		assertEquals(UN_ELEMENT, conteneurDemandes.taille());
 	}
 
-	// @Test
-	// public void
-	// etantDonneConteneurNeContenantPasElementARetirerQuandRetirerDemandeDevraitRecevoirResultatVide()
-	// {
-	// Optional<Demande> resultat =
-	// conteneurDemandes.retirerDemande(demandeHautePriorite);
-	// assertFalse(resultat.isPresent());
-	// }
-	//
-	// @Test
-	// public void
-	// etantDonneConteneurContenantElementARetirerQuandRetirerDemandeDevraitRecevoirResultatContenantDemande()
-	// {
-	// ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
-	// Optional<Demande> resultat =
-	// conteneurDemandes.retirerDemande(demandeFaiblePriorite);
-	// assertEquals(demandeFaiblePriorite, resultat.get());
-	// }
+	@Test
+	public void etantDonneConteneurAvecUnElementQuandAppelContientDemandeAvecLaBonneDemandeDevraitRetournerTrue() {
+		conteneurDemandes.ajouterDemande(demandeFaiblePriorite);
+		assertTrue(conteneurDemandes.contientDemande(demandeFaiblePriorite));
+	}
+
+	@Test
+	public void etantDonneConteneurAvecUnElementQuandAppelContientDemandeAvecMauvaiseDemandeDevraitRetournerFalse() {
+		conteneurDemandes.ajouterDemande(demandeFaiblePriorite);
+		assertFalse(conteneurDemandes.contientDemande(demandeHautePriorite));
+	}
 
 	@Test
 	public void etantDonneConteneurContenantDemandesQuandViderDevraitNePlusContenirElement() {
