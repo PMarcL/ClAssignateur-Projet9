@@ -16,7 +16,7 @@ public class Salle {
 		return capacite >= nbParticipants;
 	}
 
-	public long pourcentageOccupation(int nbParticipants) {
+	public long getPourcentageOccupation(int nbParticipants) {
 		return nbParticipants / capacite;
 	}
 

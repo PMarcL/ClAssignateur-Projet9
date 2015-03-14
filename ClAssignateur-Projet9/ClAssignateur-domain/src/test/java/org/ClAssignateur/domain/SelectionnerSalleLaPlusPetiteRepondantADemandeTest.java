@@ -27,16 +27,16 @@ public class SelectionnerSalleLaPlusPetiteRepondantADemandeTest {
 		SALLE_CAPACITE_10 = mock(Salle.class);
 		SALLE_CAPACITE_100 = mock(Salle.class);
 
-		when(SALLE_CAPACITE_10.pourcentageOccupation(10)).thenReturn((long) 1.0);
-		when(SALLE_CAPACITE_10.pourcentageOccupation(50)).thenReturn((long) 5.0);
-		when(SALLE_CAPACITE_10.pourcentageOccupation(200)).thenReturn((long) 20.0);
+		when(SALLE_CAPACITE_10.getPourcentageOccupation(10)).thenReturn((long) 1.0);
+		when(SALLE_CAPACITE_10.getPourcentageOccupation(50)).thenReturn((long) 5.0);
+		when(SALLE_CAPACITE_10.getPourcentageOccupation(200)).thenReturn((long) 20.0);
 		when(SALLE_CAPACITE_10.peutAccueillir(10)).thenReturn(true);
 		when(SALLE_CAPACITE_10.peutAccueillir(50)).thenReturn(false);
 		when(SALLE_CAPACITE_10.peutAccueillir(200)).thenReturn(false);
 
-		when(SALLE_CAPACITE_100.pourcentageOccupation(10)).thenReturn((long) 0.1);
-		when(SALLE_CAPACITE_100.pourcentageOccupation(50)).thenReturn((long) 0.5);
-		when(SALLE_CAPACITE_100.pourcentageOccupation(200)).thenReturn((long) 2.0);
+		when(SALLE_CAPACITE_100.getPourcentageOccupation(10)).thenReturn((long) 0.1);
+		when(SALLE_CAPACITE_100.getPourcentageOccupation(50)).thenReturn((long) 0.5);
+		when(SALLE_CAPACITE_100.getPourcentageOccupation(200)).thenReturn((long) 2.0);
 		when(SALLE_CAPACITE_100.peutAccueillir(10)).thenReturn(true);
 		when(SALLE_CAPACITE_100.peutAccueillir(50)).thenReturn(true);
 		when(SALLE_CAPACITE_100.peutAccueillir(200)).thenReturn(false);
