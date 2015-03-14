@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Optional;
 
-public class SelectionnerSalleLaPlusPetiteRepondantADemande implements StrategieDeSelectionDeSalle {
+public class SelectionSalleOptimaleStrategie implements SelectionSalleStrategie {
 
 	@Override
-	public Optional<Salle> appliquer(Collection<Salle> salles, Demande demande) {
+	public Optional<Salle> selectionnerSalle(Collection<Salle> salles, Demande demande) {
 		int nbParticipants = demande.getNbParticipant();
 		return salles.stream().filter(salle -> salle.peutAccueillir(nbParticipants))
 				.max(Comparator.comparing(salle -> ((Salle) salle).getPourcentageOccupation(nbParticipants)));

@@ -16,8 +16,8 @@ public class Salle {
 		return capacite >= nbParticipants;
 	}
 
-	public long getPourcentageOccupation(int nbParticipants) {
-		return nbParticipants / capacite;
+	public float getPourcentageOccupation(int nbParticipants) {
+		return (float) nbParticipants / capacite;
 	}
 
 	public void placerReservation(Demande nouvelleReservation) {
