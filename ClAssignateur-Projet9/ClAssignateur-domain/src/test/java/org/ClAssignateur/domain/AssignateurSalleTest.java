@@ -54,8 +54,7 @@ public class AssignateurSalleTest {
 	}
 
 	@Test
-	public void etantDonneDemandeNonPresenteDansDemandesArchiveesQuandAnnulerDemandeDevraitArchiverDemande() {
-		assignateur.ajouterDemande(demandeAAnnuler);
+	public void quandAnnulerDemandeDevraitArchiverDemande() {
 		assignateur.annulerDemande(demandeAAnnuler);
 		verify(demandesArchivees).persisterDemande(demandeAAnnuler);
 	}
