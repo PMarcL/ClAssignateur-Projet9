@@ -8,6 +8,7 @@ import org.junit.Test;
 public class MessageNotificationEchecTest {
 
 	private MessageNotificationEchec message;
+	private final String MESSAGE_DESIRE = "La demande n'a pas pu être assigné: aucune salle ne correspond à la demande";
 
 	@Before
 	public void creerMessageNotificationEchec() {
@@ -15,12 +16,9 @@ public class MessageNotificationEchecTest {
 	}
 
 	@Test
-	public void genereMessageDevraitAfficherLeBonNomDeSalle() {
-		String messageDesire = "La demande n'a pas pu être assigné: aucune salle ne correspond à la demande";
-
+	public void genereMessageDevraitAfficherLeBonMessage() {
 		String messageGenere = message.genereMessage();
-
-		assertEquals(messageDesire, messageGenere);
+		assertEquals(MESSAGE_DESIRE, messageGenere);
 	}
 
 }

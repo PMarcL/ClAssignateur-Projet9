@@ -9,6 +9,7 @@ public class MessageNotificationSuccesTest {
 	private final String NOM_SALLE = "nom-de-salle";
 	private final int CAPACITE_SALLE = 0;
 	private final Salle salleAjouter = new Salle(CAPACITE_SALLE, NOM_SALLE);
+	private final String MESSAGE_DESIRE = "La salle: " + NOM_SALLE + " a été réservée avec succès";
 
 	private MessageNotificationSucces message;
 
@@ -25,8 +26,7 @@ public class MessageNotificationSuccesTest {
 
 	@Test
 	public void genereMessageDevraitAfficherLeBonNomDeSalle() {
-		String messageDesire = "La salle: " + NOM_SALLE + " a été réservée avec succès";
 		String messageGenere = message.genereMessage();
-		assertEquals(messageDesire, messageGenere);
+		assertEquals(MESSAGE_DESIRE, messageGenere);
 	}
 }
