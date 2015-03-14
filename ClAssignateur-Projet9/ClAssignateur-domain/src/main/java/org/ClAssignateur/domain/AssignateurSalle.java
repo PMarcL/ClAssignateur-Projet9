@@ -1,17 +1,20 @@
 package org.ClAssignateur.domain;
 
+import java.util.Collection;
 import java.util.Optional;
-
 import java.util.TimerTask;
 
 public class AssignateurSalle extends TimerTask {
 
 	private ConteneurDemandes demandes;
-	private EntrepotSalles salles;
+	private EntrepotSalles entrepotSalles;
+	private SelectionSalleStrategie selectionSalleStrategie;
 
-	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles salles) {
+	public AssignateurSalle(ConteneurDemandes demandes, EntrepotSalles entrepotSalles,
+			SelectionSalleStrategie strategieSelectionSalle) {
 		this.demandes = demandes;
-		this.salles = salles;
+		this.entrepotSalles = entrepotSalles;
+		this.selectionSalleStrategie = strategieSelectionSalle;
 	}
 
 	public void ajouterDemande(Demande demande) {
@@ -29,11 +32,16 @@ public class AssignateurSalle extends TimerTask {
 	}
 
 	private void assignerDemandeSalle() {
-		for (Demande demandeCourante : demandes) {
-			Optional<Salle> salle = salles.obtenirSalleRepondantDemande(demandeCourante);
+		Collection<Salle> salles = entrepotSalles.obtenirSalles();
 
-			if (salle.isPresent())
+		for (Demande demandeCourante : demandes) {
+			Optional<Salle> salle = selectionSalleStrategie.selectionnerSalle(salles, demandeCourante);
+
+			if (salle.isPresent()) {
 				salle.get().placerReservation(demandeCourante);
+				entrepotSalles.persister(salle.get());
+			}
+
 		}
 
 		demandes.vider();

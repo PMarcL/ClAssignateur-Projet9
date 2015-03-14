@@ -16,6 +16,10 @@ public class Salle {
 		return capacite >= nbParticipants;
 	}
 
+	public float getTauxOccupation(int nbParticipants) {
+		return (float) nbParticipants / capacite;
+	}
+
 	public void placerReservation(Demande nouvelleReservation) {
 		reservations.add(nouvelleReservation);
 	}

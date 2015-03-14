@@ -1,12 +1,17 @@
 package org.ClAssignateur.domain;
 
 import static org.mockito.BDDMockito.*;
-import org.mockito.ArgumentMatcher;
-import org.mockito.InOrder;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
+import org.mockito.InOrder;
 
 public class AssignateurSalleTest {
 
@@ -14,22 +19,27 @@ public class AssignateurSalleTest {
 	private EntrepotSalles entrepotSalles;
 	private Demande demandeSalleDisponible;
 	private Salle salleDisponible;
+	private Collection<Salle> salles;
 	private Optional<Salle> salleDisponibleOptional;
-
+	private SelectionSalleStrategie strategieSelectionSalle;
 	private AssignateurSalle assignateur;
 
 	@Before
 	public void creerAssignateur() {
+		strategieSelectionSalle = mock(SelectionSalleStrategie.class);
 		conteneurDemandes = mock(ConteneurDemandes.class);
 		entrepotSalles = mock(EntrepotSalles.class);
 		demandeSalleDisponible = mock(Demande.class);
 		salleDisponible = mock(Salle.class);
 		salleDisponibleOptional = Optional.of(salleDisponible);
+		salles = new ArrayList<Salle>();
 
-		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(salleDisponibleOptional);
+		given(entrepotSalles.obtenirSalles()).willReturn(salles);
+
+		given(strategieSelectionSalle.selectionnerSalle(salles, demandeSalleDisponible)).willReturn(salleDisponibleOptional);
 		viderConteneurDemande();
 
-		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles);
+		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles, strategieSelectionSalle);
 	}
 
 	@Test
@@ -45,8 +55,8 @@ public class AssignateurSalleTest {
 
 		assignateur.run();
 
-		InOrder ordre = inOrder(entrepotSalles, conteneurDemandes);
-		ordre.verify(entrepotSalles, times(nombreDemandes)).obtenirSalleRepondantDemande(demandeSalleDisponible);
+		InOrder ordre = inOrder(strategieSelectionSalle, conteneurDemandes);
+		ordre.verify(strategieSelectionSalle, times(nombreDemandes)).selectionnerSalle(salles, demandeSalleDisponible);
 		ordre.verify(conteneurDemandes).vider();
 	}
 
@@ -55,8 +65,7 @@ public class AssignateurSalleTest {
 		ajouterDemande(demandeSalleDisponible);
 		Salle salleDisponible = mock(Salle.class);
 		Optional<Salle> salleDisponibleOptionnelle = Optional.of(salleDisponible);
-		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(
-				salleDisponibleOptionnelle);
+		given(strategieSelectionSalle.selectionnerSalle(salles, demandeSalleDisponible)).willReturn(salleDisponibleOptionnelle);
 
 		assignateur.run();
 
@@ -68,7 +77,7 @@ public class AssignateurSalleTest {
 		Demande demandeNePouvantPasEtreAssignee = mock(Demande.class);
 		Optional<Salle> aucuneSalle = Optional.empty();
 		ajouterDemande(demandeNePouvantPasEtreAssignee);
-		given(entrepotSalles.obtenirSalleRepondantDemande(demandeNePouvantPasEtreAssignee)).willReturn(aucuneSalle);
+		given(strategieSelectionSalle.selectionnerSalle(salles, demandeNePouvantPasEtreAssignee)).willReturn(aucuneSalle);
 
 		assignateur.run();
 
@@ -82,7 +91,7 @@ public class AssignateurSalleTest {
 
 		assignateur.assignerDemandeSalleSiContientAuMoins(nombreDemandes);
 
-		verify(entrepotSalles, atLeast(1)).obtenirSalleRepondantDemande(any(Demande.class));
+		verify(strategieSelectionSalle, atLeast(1)).selectionnerSalle(anyListOf(Salle.class), any(Demande.class));
 	}
 
 	@Test
@@ -92,7 +101,7 @@ public class AssignateurSalleTest {
 
 		assignateur.assignerDemandeSalleSiContientAuMoins(nombreDemandes + 1);
 
-		verify(entrepotSalles, never()).obtenirSalleRepondantDemande(any(Demande.class));
+		verify(strategieSelectionSalle, never()).selectionnerSalle(anyListOf(Salle.class), any(Demande.class));
 	}
 
 	private void viderConteneurDemande() {
