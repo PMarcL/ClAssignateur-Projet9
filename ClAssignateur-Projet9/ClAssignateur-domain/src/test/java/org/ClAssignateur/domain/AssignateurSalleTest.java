@@ -26,7 +26,7 @@ public class AssignateurSalleTest {
 	private Salle salleDisponible;
 	private Optional<Salle> salleDisponibleOptional;
 	private Optional<Demande> demandeAAnnulerOptional;
-	private Notificateur strategieNotification;
+	private Notificateur notificateur;
 
 	private AssignateurSalle assignateur;
 
@@ -34,7 +34,7 @@ public class AssignateurSalleTest {
 	public void creerAssignateur() {
 		configurerMocks();
 
-		assignateur = new AssignateurSalle(demandesEnAttente, entrepotSalles, demandesArchivees, strategieNotification);
+		assignateur = new AssignateurSalle(demandesEnAttente, entrepotSalles, demandesArchivees, notificateur);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class AssignateurSalleTest {
 	public void quandAnnulerDemandeSiDemandeDejaAssigneeDevraitNotifier() {
 		given(demandeAAnnuler.getResponsable()).willReturn(RESPONSABLE);
 		assignateur.annulerDemande(demandeAAnnuler);
-		verify(strategieNotification).notifierAnnulation(demandeAAnnuler);
+		verify(notificateur).notifierAnnulation(demandeAAnnuler);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class AssignateurSalleTest {
 
 		assignateur.annulerDemande(demandeAAnnuler);
 
-		verify(strategieNotification).notifierAnnulation(demandeAAnnuler);
+		verify(notificateur).notifierAnnulation(demandeAAnnuler);
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class AssignateurSalleTest {
 
 		assignateur.run();
 
-		verify(strategieNotification).notifierSucces(demandeAvecSalleDisponible, salleDisponible);
+		verify(notificateur).notifierSucces(demandeAvecSalleDisponible, salleDisponible);
 	}
 
 	@Test
@@ -194,7 +194,7 @@ public class AssignateurSalleTest {
 
 		assignateur.run();
 
-		verify(strategieNotification).notifierEchec(demandeNePouvantPasEtreAssignee);
+		verify(notificateur).notifierEchec(demandeNePouvantPasEtreAssignee);
 	}
 
 	private void viderConteneurDemande() {
@@ -240,7 +240,7 @@ public class AssignateurSalleTest {
 		demandeAAnnulerOptional = Optional.of(demandeAAnnuler);
 		salleDisponible = mock(Salle.class);
 		salleDisponibleOptional = Optional.of(salleDisponible);
-		strategieNotification = mock(Notificateur.class);
+		notificateur = mock(Notificateur.class);
 
 		given(entrepotSalles.obtenirSalleRepondantDemande(demandeSalleDisponible)).willReturn(salleDisponibleOptional);
 		given(demandeAAnnuler.estAssignee()).willReturn(true);
