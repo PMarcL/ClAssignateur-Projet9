@@ -1,5 +1,10 @@
 package org.ClAssignateur.domain;
 
+import org.ClAssignateur.domain.groupe.Employe;
+
+import org.ClAssignateur.domain.salles.Salle;
+import org.ClAssignateur.domain.demandes.Demande;
+
 public class Notificateur {
 
 	private NotificationStrategie notifictionStrategie;

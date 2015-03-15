@@ -1,4 +1,4 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.salles;
 
 public class Salle {
 

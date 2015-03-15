@@ -1,5 +1,12 @@
 package org.ClAssignateur.domain;
 
+import org.ClAssignateur.domain.salles.Salle;
+import org.ClAssignateur.domain.salles.SallesEntrepot;
+import org.ClAssignateur.domain.salles.SelectionSalleStrategie;
+
+import org.ClAssignateur.domain.demandes.ConteneurDemandes;
+import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.domain.demandes.DemandesEntrepotSansDoublon;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.TimerTask;

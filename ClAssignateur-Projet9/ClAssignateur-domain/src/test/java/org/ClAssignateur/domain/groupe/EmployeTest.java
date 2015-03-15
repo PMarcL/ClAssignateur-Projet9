@@ -1,7 +1,8 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.groupe;
 
 import static org.junit.Assert.*;
 
+import org.ClAssignateur.domain.groupe.Employe;
 import org.junit.Before;
 import org.junit.Test;
 

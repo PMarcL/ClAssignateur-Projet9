@@ -1,4 +1,4 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.demandes;
 
 import java.util.Optional;
 

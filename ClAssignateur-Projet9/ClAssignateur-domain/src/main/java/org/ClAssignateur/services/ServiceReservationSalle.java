@@ -1,5 +1,8 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.services;
 
+import org.ClAssignateur.domain.demandes.Demande;
+
+import org.ClAssignateur.domain.AssignateurSalle;
 import java.util.Timer;
 
 public class ServiceReservationSalle {

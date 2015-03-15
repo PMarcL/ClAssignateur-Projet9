@@ -2,10 +2,18 @@ package org.ClAssignateur.domain;
 
 import static org.mockito.BDDMockito.*;
 
+import org.ClAssignateur.domain.groupe.Employe;
+import org.ClAssignateur.domain.groupe.Groupe;
+
+import org.ClAssignateur.domain.salles.Salle;
+import org.ClAssignateur.domain.salles.SallesEntrepot;
+import org.ClAssignateur.domain.salles.SelectionSalleStrategie;
+import org.ClAssignateur.domain.demandes.ConteneurDemandes;
+import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.domain.demandes.DemandesEntrepotSansDoublon;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
 import java.util.ArrayList;

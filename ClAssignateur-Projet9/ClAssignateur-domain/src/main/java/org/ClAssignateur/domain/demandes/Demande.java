@@ -1,5 +1,9 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.demandes;
 
+import org.ClAssignateur.domain.groupe.Employe;
+import org.ClAssignateur.domain.groupe.Groupe;
+
+import org.ClAssignateur.domain.salles.Salle;
 import java.util.List;
 
 public class Demande {

@@ -1,6 +1,8 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.salles;
 
 import static org.junit.Assert.*;
+
+import org.ClAssignateur.domain.salles.Salle;
 import org.junit.Before;
 import org.junit.Test;
 

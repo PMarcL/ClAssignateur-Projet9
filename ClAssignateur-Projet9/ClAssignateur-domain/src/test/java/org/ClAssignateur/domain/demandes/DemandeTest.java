@@ -1,8 +1,13 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.demandes;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
+import org.ClAssignateur.domain.groupe.Employe;
+import org.ClAssignateur.domain.groupe.Groupe;
+
+import org.ClAssignateur.domain.salles.Salle;
+import org.ClAssignateur.domain.demandes.Demande;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;

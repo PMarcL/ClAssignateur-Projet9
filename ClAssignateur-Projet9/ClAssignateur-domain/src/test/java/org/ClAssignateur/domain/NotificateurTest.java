@@ -2,6 +2,10 @@ package org.ClAssignateur.domain;
 
 import static org.mockito.BDDMockito.*;
 
+import org.ClAssignateur.domain.groupe.Employe;
+
+import org.ClAssignateur.domain.salles.Salle;
+import org.ClAssignateur.domain.demandes.Demande;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;

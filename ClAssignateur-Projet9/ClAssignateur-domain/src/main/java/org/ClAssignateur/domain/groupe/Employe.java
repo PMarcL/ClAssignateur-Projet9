@@ -1,4 +1,4 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.groupe;
 
 public class Employe {
 	private String courriel;

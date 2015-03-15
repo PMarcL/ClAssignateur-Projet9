@@ -1,8 +1,13 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.demandes;
 
-import static org.junit.Assert.*;
-import org.mockito.ArgumentMatcher;
 import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.*;
+
+import org.ClAssignateur.domain.groupe.Groupe;
+
+import org.mockito.ArgumentMatcher;
+import org.ClAssignateur.domain.demandes.ConteneurDemandesOrdrePrioritaire;
+import org.ClAssignateur.domain.demandes.Demande;
 import org.junit.Before;
 import org.junit.Test;
 
