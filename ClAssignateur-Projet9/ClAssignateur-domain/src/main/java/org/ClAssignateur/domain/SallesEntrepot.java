@@ -2,7 +2,7 @@ package org.ClAssignateur.domain;
 
 import java.util.Collection;
 
-public interface EntrepotSalles {
+public interface SallesEntrepot {
 
 	public void persister(Salle salle);
 

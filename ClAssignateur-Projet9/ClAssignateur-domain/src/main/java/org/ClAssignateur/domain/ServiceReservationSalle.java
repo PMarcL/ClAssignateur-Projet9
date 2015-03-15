@@ -35,6 +35,10 @@ public class ServiceReservationSalle {
 		assignerSiNecessaire();
 	}
 
+	public void annulerDemande(Demande demandeAAnnuler) {
+		assignateurSalle.annulerDemande(demandeAAnnuler);
+	}
+
 	public void ajouterDemande(Demande nouvelleDemande) {
 		assignateurSalle.ajouterDemande(nouvelleDemande);
 		assignerSiNecessaire();
@@ -47,4 +51,5 @@ public class ServiceReservationSalle {
 	private long delaiEnMilisecondes(int delaiEnMinutes) {
 		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
 	}
+
 }

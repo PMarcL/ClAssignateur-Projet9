@@ -60,6 +60,12 @@ public class ServiceReservationSalleTest {
 	}
 
 	@Test
+	public void quandAnnulerDemandeDevraitAnnulerDansAssignateur() {
+		serviceReservation.annulerDemande(demande);
+		verify(assignateur).annulerDemande(demande);
+	}
+
+	@Test
 	public void quandSetLimiteDemandesAvantAssignationDevraitDemanderAssignationDemandes() {
 		serviceReservation.setLimiteDemandesAvantAssignation(LIMITE_DEMANDES_QUELCONQUE);
 		verify(assignateur).assignerDemandeSalleSiContientAuMoins(LIMITE_DEMANDES_QUELCONQUE);
