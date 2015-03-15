@@ -12,10 +12,7 @@ public class Notificateur {
 		String contenu = "La demande nommée:" + demandeAAnnuler.getTitre() + " à été annulée.";
 
 		notifierDirigeants(contenu, demandeAAnnuler);
-
-		for (Employe participant : demandeAAnnuler.getParticipants()) {
-			this.notifictionStrategie.notifier(contenu, participant);
-		}
+		notifierParticipants(contenu, demandeAAnnuler);
 	}
 
 	public void notifierSucces(Demande demandeAvecSalleDisponible, Salle salleDisponible) {
@@ -26,6 +23,12 @@ public class Notificateur {
 	public void notifierEchec(Demande demandeNePouvantPasEtreAssignee) {
 		String contenu = "Aucune salle n'a pu être assignée avec votre demande.";
 		notifierDirigeants(contenu, demandeNePouvantPasEtreAssignee);
+	}
+
+	private void notifierParticipants(String contenu, Demande demande) {
+		for (Employe participant : demande.getParticipants()) {
+			this.notifictionStrategie.notifier(contenu, participant);
+		}
 	}
 
 	private void notifierDirigeants(String contenu, Demande demande) {

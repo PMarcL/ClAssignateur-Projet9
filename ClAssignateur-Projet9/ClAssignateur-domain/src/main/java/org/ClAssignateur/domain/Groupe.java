@@ -22,7 +22,7 @@ public class Groupe {
 		return this.responsable;
 	}
 
-	public int getNbParticipant() {
+	public int getNbParticipants() {
 		return participants.size();
 	}
 

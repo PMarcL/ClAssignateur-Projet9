@@ -30,6 +30,10 @@ public class ServiceReservationSalle {
 		minuterie.scheduleAtFixedRate(assignateurSalle, delaiMilisecondes, delaiMilisecondes);
 	}
 
+	private long delaiEnMilisecondes(int delaiEnMinutes) {
+		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
+	}
+
 	public void setLimiteDemandesAvantAssignation(int limite) {
 		limiteDemandes = limite;
 		assignerSiNecessaire();
@@ -46,10 +50,6 @@ public class ServiceReservationSalle {
 
 	private void assignerSiNecessaire() {
 		assignateurSalle.assignerDemandeSalleSiContientAuMoins(limiteDemandes);
-	}
-
-	private long delaiEnMilisecondes(int delaiEnMinutes) {
-		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
 	}
 
 }

@@ -1,7 +1,6 @@
 package org.ClAssignateur.domain;
 
 import static org.junit.Assert.*;
-
 import org.mockito.ArgumentMatcher;
 import static org.mockito.BDDMockito.*;
 import org.junit.Before;
@@ -42,12 +41,12 @@ public class ConteneurDemandesOrdrePrioritaireTest {
 
 	@Test
 	public void etantDonneConteneurContenantDejaDemandesQuandAjouterDemandeDevraitContenirUneDemandeDePlus() {
+		final int TAILLE_DESIREE = 3;
 		ajouterDemandes(DEUX_ELEMENTS, demandeFaiblePriorite, conteneurDemandes);
+
 		ajouterDemandes(UN_ELEMENT, demandeFaiblePriorite, conteneurDemandes);
 
-		assertTrue(conteneurDemandes.contientAuMoins(DEUX_ELEMENTS));
-		assertTrue(conteneurDemandes.contientAuMoins(DEUX_ELEMENTS + UN_ELEMENT));
-		assertFalse(conteneurDemandes.contientAuMoins(DEUX_ELEMENTS + DEUX_ELEMENTS));
+		assertEquals(TAILLE_DESIREE, conteneurDemandes.taille());
 	}
 
 	@Test

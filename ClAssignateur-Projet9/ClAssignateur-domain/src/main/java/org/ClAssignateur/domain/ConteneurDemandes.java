@@ -2,16 +2,16 @@ package org.ClAssignateur.domain;
 
 public interface ConteneurDemandes extends Iterable<Demande> {
 
-	public abstract int taille();
+	public int taille();
 
-	public abstract boolean contientAuMoins(int nombreDemandes);
+	public boolean contientAuMoins(int nombreDemandes);
 
-	public abstract void ajouterDemande(Demande demandeAjoutee);
+	public void ajouterDemande(Demande demandeAjoutee);
 
-	public abstract void retirerDemande(Demande demandeARetirer);
+	public void retirerDemande(Demande demandeARetirer);
 
-	public abstract boolean contientDemande(Demande demande);
+	public boolean contientDemande(Demande demande);
 
-	public abstract void vider();
+	public void vider();
 
 }

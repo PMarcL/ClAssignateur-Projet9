@@ -1,10 +1,10 @@
 package org.ClAssignateur.domain;
 
-import java.util.ArrayList;
+import static org.mockito.BDDMockito.*;
 
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.BDDMockito.*;
 
 public class NotificateurTest {
 
@@ -22,13 +22,15 @@ public class NotificateurTest {
 	@Before
 	public void initialement() {
 		notificationStrategie = mock(NotificationStrategie.class);
-		notificateur = new Notificateur(notificationStrategie);
-		organisateur = mock(Employe.class);
 		demande = mock(Demande.class);
+		organisateur = mock(Employe.class);
+		responsable = mock(Employe.class);
+
 		given(demande.getTitre()).willReturn(TITRE_DEMANDE);
 		given(demande.getOrganisateur()).willReturn(organisateur);
-		responsable = mock(Employe.class);
 		given(demande.getResponsable()).willReturn(responsable);
+
+		notificateur = new Notificateur(notificationStrategie);
 	}
 
 	@Test
@@ -45,11 +47,9 @@ public class NotificateurTest {
 
 	@Test
 	public void quandNotifierSuccesDevraitAppelerNotifierAvecBonMessage() {
-		String MESSAGE_DESIRE = "La salle: " + NOM_DE_SALLE + " a été réservée avec succès.";
-
+		final String MESSAGE_DESIRE = "La salle: " + NOM_DE_SALLE + " a été réservée avec succès.";
 		notificateur.notifierSucces(demande, SALLE);
-
-		verify(notificationStrategie, times(2)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
+		verify(notificationStrategie, atLeast(1)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
 	}
 
 	@Test
@@ -66,11 +66,9 @@ public class NotificateurTest {
 
 	@Test
 	public void quandNotifierEchecDevraitAppelerNotifierAvecBonMessage() {
-		String MESSAGE_DESIRE = "Aucune salle n'a pu être assignée avec votre demande.";
-
+		final String MESSAGE_DESIRE = "Aucune salle n'a pu être assignée avec votre demande.";
 		notificateur.notifierEchec(demande);
-
-		verify(notificationStrategie, times(2)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
+		verify(notificationStrategie, atLeast(1)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
 	}
 
 	@Test
@@ -86,7 +84,7 @@ public class NotificateurTest {
 	}
 
 	@Test
-	public void quandNotifierAnnulationDevraitAppelerNotifierAvecTousLesParticipant() {
+	public void quandNotifierAnnulationDevraitAppelerNotifierAvecTousLesParticipants() {
 		Employe participant1 = mock(Employe.class);
 		Employe participant2 = mock(Employe.class);
 		ArrayList<Employe> participants = new ArrayList<Employe>();
@@ -102,10 +100,8 @@ public class NotificateurTest {
 
 	@Test
 	public void quandNotifierAnnulationDevraitAppelerNotifierAvecBonMessage() {
-		String MESSAGE_DESIRE = "La demande nommée:" + TITRE_DEMANDE + " à été annulée.";
-
+		final String MESSAGE_DESIRE = "La demande nommée:" + TITRE_DEMANDE + " à été annulée.";
 		notificateur.notifierAnnulation(demande);
-
-		verify(notificationStrategie, times(2)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
+		verify(notificationStrategie, atLeast(1)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
 	}
 }
