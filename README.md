@@ -17,12 +17,18 @@ Statut des scénarios:
 * Scénario 2: terminé
 * Scénario 3: terminé
 * Scénario 4: terminé
+* Scénario 5: Partiellement complété (implémentation de la stratégie de notification par courriel à terminer)
+* Scénario 6: terminé
+* Scénario 7: Partiellement complété (implémentation de la stratégie de notification par courriel à terminer)
+* Scénario 8-9-10: à faire
 
 Utilisation de la bibliothèque:
- 1. Il faut tout d'abord créer un EntrepotSalles pour y ajouter les salles à réserver.
- 2. Il faut ensuite créer une FileDemande qui servira à entreposer les demandes avant qu'elles soient traitées et un DeclencheurAssignationSalle avec une fréquence en minutes et une limite pour définir une quantité de demande à recevoir avant de procéder à la réservation.
- 3. On peut alors créer un objet de la classe ServiceReservationSalle avec les objet créés précédement et avec un objet qui implémente l'interface Executor. Celui-ci servira à démarrer le traitement lors de la création du Service.
- 4. On peut finalement ajouter des demandes avec l'objet ServiceReservationSalle et elle seront traitées périodiquement selon la fréquence et la limite du déclencheur. Cette fréquence ainsi que la limite sont configurable selon les besoins de l'utilisateur via la classe ServiceReservationSalle.
+ 1. Il faut tout d'abord créer une SallesEntrepot pour y ajouter les salles disponible pour la réservation et une SalleSelectionStrategie pour choisir comment les salles seront sélectionnées.
+ 2. Il faut ensuite créer un ConteneurDemandes pour les demandes en attente et un DemandesEntrepotSansDoublon pour les demandes archivées.
+ 3. Il faut créer un notificateur avec une stratégie de notification pour l'envoie des courriels lors du traitement des demandes.
+ 4. Il faut ensuite créer un AssignateurSalle qui fera le traitement des demandes.
+ 5. Il faut enfin créer un ServiceReservationSalle avec l'assignateur et un Timer qui servira de minuterie.
+ 6. Il sera finalement possible d'ajouter des demandes et elles seront traitées selon la fréquence de la minuterie ou la quantité de demandes.
 
 Définition de terminé
 
