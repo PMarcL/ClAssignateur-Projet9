@@ -1,11 +1,11 @@
 package org.ClAssignateur.domain;
 
-import java.util.Optional;
+import java.util.Collection;
 
 public interface SallesEntrepot {
 
-	public void ajouterSalle(Salle salle);
+	public void persister(Salle salle);
 
-	public Optional<Salle> obtenirSalleRepondantDemande(Demande demande);
+	public Collection<Salle> obtenirSalles();
 
 }

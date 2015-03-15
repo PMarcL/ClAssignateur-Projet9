@@ -89,7 +89,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeIntialementLeChampsNbParticipantCommeDefiniDansGroupe() {
-		int nbParticipant = demande.getNbParticipant();
+		int nbParticipant = demande.getNbParticipants();
 		assertEquals(NOMBRE_DE_PARTICIPANT_DANS_GROUPE_PAR_DEFAUT, nbParticipant);
 	}
 
@@ -98,7 +98,7 @@ public class DemandeTest {
 		Groupe groupePlusieursParticipants = creerGroupePlusieursParticipants(NOMBRE_DE_PARTICIPANT);
 		Demande demandeAvecPlusiseursParticipants = new Demande(groupePlusieursParticipants, TITRE_REUNION);
 
-		int nbParticipant = demandeAvecPlusiseursParticipants.getNbParticipant();
+		int nbParticipant = demandeAvecPlusiseursParticipants.getNbParticipants();
 
 		assertEquals(NOMBRE_DE_PARTICIPANT, nbParticipant);
 	}

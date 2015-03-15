@@ -68,7 +68,7 @@ public class Demande {
 		return this.titre;
 	}
 
-	public int getNbParticipant() {
+	public int getNbParticipants() {
 		int nombreDeParticipant = this.groupe.getNbParticipant();
 		return nombreDeParticipant;
 	}

@@ -1,21 +1,25 @@
 package org.ClAssignateur.domain;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.TimerTask;
 
 public class AssignateurSalle extends TimerTask {
 
 	private ConteneurDemandes demandesEnAttente;
-	private SallesEntrepot salles;
+	private SallesEntrepot entrepotSalles;
 	private DemandesEntrepotSansDoublon demandesArchivees;
 	private Notificateur notificateur;
+	private SelectionSalleStrategie selectionSalleStrategie;
 
 	public AssignateurSalle(ConteneurDemandes demandes, SallesEntrepot salles,
-			DemandesEntrepotSansDoublon demandesArchivees, Notificateur notificateur) {
+			DemandesEntrepotSansDoublon demandesArchivees, Notificateur notificateur,
+			SelectionSalleStrategie strategieSelectionSalle) {
 		this.demandesEnAttente = demandes;
 		this.demandesArchivees = demandesArchivees;
-		this.salles = salles;
+		this.entrepotSalles = salles;
 		this.notificateur = notificateur;
+		this.selectionSalleStrategie = strategieSelectionSalle;
 	}
 
 	public void ajouterDemande(Demande demande) {
@@ -55,8 +59,9 @@ public class AssignateurSalle extends TimerTask {
 	}
 
 	private void assignerDemandeSalle() {
+		Collection<Salle> salles = entrepotSalles.obtenirSalles();
 		for (Demande demandeCourante : demandesEnAttente) {
-			Optional<Salle> salle = salles.obtenirSalleRepondantDemande(demandeCourante);
+			Optional<Salle> salle = selectionSalleStrategie.selectionnerSalle(salles, demandeCourante);
 
 			if (salle.isPresent()) {
 				demandeCourante.placerReservation(salle.get());

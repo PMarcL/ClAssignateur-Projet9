@@ -14,6 +14,10 @@ public class Salle {
 		return this.capacite >= nbParticipants;
 	}
 
+	public float getTauxOccupation(int nbParticipants) {
+		return (float) nbParticipants / this.capacite;
+	}
+
 	public String getNom() {
 		return this.nom;
 	}
