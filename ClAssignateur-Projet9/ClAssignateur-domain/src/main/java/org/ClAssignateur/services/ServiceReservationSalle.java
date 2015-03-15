@@ -1,5 +1,8 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.services;
 
+import org.ClAssignateur.domain.demandes.Demande;
+
+import org.ClAssignateur.domain.AssignateurSalle;
 import java.util.Timer;
 
 public class ServiceReservationSalle {
@@ -30,9 +33,17 @@ public class ServiceReservationSalle {
 		minuterie.scheduleAtFixedRate(assignateurSalle, delaiMilisecondes, delaiMilisecondes);
 	}
 
+	private long delaiEnMilisecondes(int delaiEnMinutes) {
+		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
+	}
+
 	public void setLimiteDemandesAvantAssignation(int limite) {
 		limiteDemandes = limite;
 		assignerSiNecessaire();
+	}
+
+	public void annulerDemande(Demande demandeAAnnuler) {
+		assignateurSalle.annulerDemande(demandeAAnnuler);
 	}
 
 	public void ajouterDemande(Demande nouvelleDemande) {
@@ -44,7 +55,4 @@ public class ServiceReservationSalle {
 		assignateurSalle.assignerDemandeSalleSiContientAuMoins(limiteDemandes);
 	}
 
-	private long delaiEnMilisecondes(int delaiEnMinutes) {
-		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
-	}
 }

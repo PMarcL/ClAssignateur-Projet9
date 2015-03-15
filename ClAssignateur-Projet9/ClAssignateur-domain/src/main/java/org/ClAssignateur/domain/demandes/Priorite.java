@@ -1,4 +1,4 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.demandes;
 
 public class Priorite {
 

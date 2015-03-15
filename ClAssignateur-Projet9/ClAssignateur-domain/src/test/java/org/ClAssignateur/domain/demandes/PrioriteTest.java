@@ -1,9 +1,9 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.demandes;
 
 import static org.junit.Assert.*;
 
+import org.ClAssignateur.domain.demandes.Priorite;
 import org.junit.Before;
-
 import org.junit.Test;
 
 public class PrioriteTest {

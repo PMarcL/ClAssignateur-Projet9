@@ -1,9 +1,11 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.services;
 
 import static org.mockito.BDDMockito.*;
 
+import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.domain.AssignateurSalle;
+import org.ClAssignateur.services.ServiceReservationSalle;
 import org.mockito.InOrder;
-
 import java.util.Timer;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +59,12 @@ public class ServiceReservationSalleTest {
 	public void quandAjouterDemandeDevraitDemanderAssignationDemandes() {
 		serviceReservation.ajouterDemande(demande);
 		verify(assignateur).assignerDemandeSalleSiContientAuMoins(LIMITE_DEMANDES_PAR_DEFAUT);
+	}
+
+	@Test
+	public void quandAnnulerDemandeDevraitAnnulerDansAssignateur() {
+		serviceReservation.annulerDemande(demande);
+		verify(assignateur).annulerDemande(demande);
 	}
 
 	@Test

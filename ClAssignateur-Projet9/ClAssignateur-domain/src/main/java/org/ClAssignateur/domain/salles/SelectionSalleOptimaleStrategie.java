@@ -1,4 +1,6 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.salles;
+
+import org.ClAssignateur.domain.demandes.Demande;
 
 import java.util.Collection;
 import java.util.Comparator;
