@@ -27,9 +27,10 @@ public class AssignateurSalle extends TimerTask {
 	}
 
 	public void annulerDemande(Demande demandeAnnulee) {
-		Optional<Demande> demandeAAnnuler = this.demandesArchivees.trouverDemandeSelonTitre(demandeAnnulee.getTitre());
-		if (demandeAAnnuler.isPresent()) {
-			annulerReservationArchivee(demandeAAnnuler);
+		Optional<Demande> demandeCorrespondante = this.demandesArchivees.trouverDemandeSelonTitre(demandeAnnulee
+				.getTitre());
+		if (demandeCorrespondante.isPresent()) {
+			annulerReservationArchivee(demandeCorrespondante);
 		} else if (this.demandesEnAttente.contientDemande(demandeAnnulee)) {
 			annulerDemandeEnAttente(demandeAnnulee);
 		}
@@ -49,8 +50,9 @@ public class AssignateurSalle extends TimerTask {
 	}
 
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
-		if (demandesEnAttente.contientAuMoins(nombreDemandes))
+		if (demandesEnAttente.contientAuMoins(nombreDemandes)) {
 			assignerDemandeSalle();
+		}
 	}
 
 	@Override
@@ -60,19 +62,24 @@ public class AssignateurSalle extends TimerTask {
 
 	private void assignerDemandeSalle() {
 		Collection<Salle> salles = entrepotSalles.obtenirSalles();
+
 		for (Demande demandeCourante : demandesEnAttente) {
 			Optional<Salle> salle = selectionSalleStrategie.selectionnerSalle(salles, demandeCourante);
 
 			if (salle.isPresent()) {
-				demandeCourante.placerReservation(salle.get());
+				reserverSalle(demandeCourante, salle.get());
 				this.notificateur.notifierSucces(demandeCourante, salle.get());
-				this.demandesArchivees.persisterDemande(demandeCourante);
 			} else {
 				this.notificateur.notifierEchec(demandeCourante);
 			}
 		}
 
 		demandesEnAttente.vider();
+	}
+
+	private void reserverSalle(Demande demandeCourante, Salle salle) {
+		demandeCourante.placerReservation(salle);
+		this.demandesArchivees.persisterDemande(demandeCourante);
 	}
 
 }
