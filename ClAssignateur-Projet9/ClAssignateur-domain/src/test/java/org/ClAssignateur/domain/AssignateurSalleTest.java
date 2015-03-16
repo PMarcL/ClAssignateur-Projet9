@@ -3,8 +3,6 @@ package org.ClAssignateur.domain;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
-import org.ClAssignateur.domain.groupe.Employe;
-import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
 import org.ClAssignateur.domain.salles.SelectionSalleStrategie;
@@ -19,10 +17,6 @@ import org.junit.Test;
 
 public class AssignateurSalleTest {
 
-	private final Employe ORGANISATEUR = new Employe("exemple@courriel.com");
-	private final Employe RESPONSABLE = new Employe("exemple@gmail.com");
-	private final ArrayList<Employe> EMPLOYES = new ArrayList<Employe>();
-	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, EMPLOYES);
 	private final String TITRE_REUNION = "Un titre";
 	private final int NOMBRE_DEMANDES = 5;
 	private final Collection<Salle> SALLES = new ArrayList<Salle>();
@@ -156,14 +150,13 @@ public class AssignateurSalleTest {
 
 	private void ajouterDemandesEnAttente(int nombreDemandes, Demande demande) {
 		final boolean CONTIENT_AU_MOINS_NOMBRE_DEMANDES = true;
-
 		List<Demande> demandes = new ArrayList<Demande>();
 
 		for (int i = 0; i < nombreDemandes; i++) {
 			demandes.add(demande);
 		}
 
-		given(conteneurDemandes.obtenirDemandesEnAttente()).willReturn(demandes);
+		given(conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite()).willReturn(demandes);
 		given(conteneurDemandes.contientAuMoinsEnAttente(intThat(estInferieurOuEgal(nombreDemandes)))).willReturn(
 				CONTIENT_AU_MOINS_NOMBRE_DEMANDES);
 	}
@@ -178,13 +171,11 @@ public class AssignateurSalleTest {
 		salleDisponible = mock(Salle.class);
 		notificateur = mock(Notificateur.class);
 
-		given(entrepotSalles.obtenirSalles()).willReturn(SALLES);
 		given(strategieSelectionSalle.selectionnerSalle(SALLES, demandeSalleDisponible)).willReturn(
 				Optional.of(salleDisponible));
 		given(demandeAAnnuler.estAssignee()).willReturn(true);
 		given(demandeAAnnuler.getTitre()).willReturn(TITRE_REUNION);
-		given(demandeSalleDisponible.getGroupe()).willReturn(GROUPE);
-		given(conteneurDemandes.obtenirDemandesEnAttente()).willReturn(new ArrayList<Demande>());
+		given(conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite()).willReturn(new ArrayList<Demande>());
 	}
 
 	private void permettreTrouverDemandeAAnnuler() {

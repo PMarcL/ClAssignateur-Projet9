@@ -4,7 +4,6 @@ import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
 
 import java.util.Optional;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.ClAssignateur.domain.groupe.Groupe;
@@ -49,7 +48,7 @@ public class ConteneurDemandesTest {
 
 	@Test
 	public void quandObtenirDemandesEnAttenteDevraitObtenirDemandesEnAttenteEntrepot() {
-		conteneurDemandes.obtenirDemandesEnAttente();
+		conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
 		verify(demandesEnAttente).obtenirDemandes();
 	}
 
@@ -60,7 +59,7 @@ public class ConteneurDemandesTest {
 		demandesAjoutees.add(demandeHautePriorite);
 		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
 
-		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttente();
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
 
 		assertThat(demandesObtenues, estEnOrdrePrioritaireDecroissant());
 	}

@@ -57,7 +57,7 @@ public class AssignateurSalle extends TimerTask {
 
 	private void assignerDemandeSalle() {
 		Collection<Salle> salles = entrepotSalles.obtenirSalles();
-		List<Demande> demandesEnAttente = conteneurDemandes.obtenirDemandesEnAttente();
+		List<Demande> demandesEnAttente = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
 
 		for (Demande demandeCourante : demandesEnAttente) {
 			Optional<Salle> salle = selectionSalleStrategie.selectionnerSalle(salles, demandeCourante);
