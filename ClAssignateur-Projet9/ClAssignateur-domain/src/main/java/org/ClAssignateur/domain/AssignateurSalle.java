@@ -1,63 +1,51 @@
 package org.ClAssignateur.domain;
 
+import java.util.List;
+
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
 import org.ClAssignateur.domain.salles.SelectionSalleStrategie;
-
 import org.ClAssignateur.domain.demandes.ConteneurDemandes;
 import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.demandes.DemandesEntrepotSansDoublon;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.TimerTask;
 
 public class AssignateurSalle extends TimerTask {
 
-	private ConteneurDemandes demandesEnAttente;
+	private ConteneurDemandes conteneurDemandes;
 	private SallesEntrepot entrepotSalles;
-	private DemandesEntrepotSansDoublon demandesArchivees;
 	private Notificateur notificateur;
 	private SelectionSalleStrategie selectionSalleStrategie;
 
-	public AssignateurSalle(ConteneurDemandes demandes, SallesEntrepot salles,
-			DemandesEntrepotSansDoublon demandesArchivees, Notificateur notificateur,
+	public AssignateurSalle(ConteneurDemandes conteneurDemandes, SallesEntrepot salles, Notificateur notificateur,
 			SelectionSalleStrategie strategieSelectionSalle) {
-		this.demandesEnAttente = demandes;
-		this.demandesArchivees = demandesArchivees;
+		this.conteneurDemandes = conteneurDemandes;
 		this.entrepotSalles = salles;
 		this.notificateur = notificateur;
 		this.selectionSalleStrategie = strategieSelectionSalle;
 	}
 
 	public void ajouterDemande(Demande demande) {
-		this.demandesEnAttente.ajouterDemande(demande);
+		this.conteneurDemandes.mettreDemandeEnAttente(demande);
 	}
 
-	public void annulerDemande(Demande demandeAnnulee) {
-		Optional<Demande> demandeCorrespondante = this.demandesArchivees.trouverDemandeSelonTitre(demandeAnnulee
-				.getTitre());
-		if (demandeCorrespondante.isPresent()) {
-			annulerReservationArchivee(demandeCorrespondante);
-		} else if (this.demandesEnAttente.contientDemande(demandeAnnulee)) {
-			annulerDemandeEnAttente(demandeAnnulee);
+	public void annulerDemande(String titreDemandeAnnulee) {
+		Optional<Demande> demandeAAnnuler = this.conteneurDemandes.trouverDemandeSelonTitreReunion(titreDemandeAnnulee);
+
+		if (demandeAAnnuler.isPresent()) {
+			annulerReservation(demandeAAnnuler.get());
 		}
 	}
 
-	private void annulerReservationArchivee(Optional<Demande> demandeAAnnuler) {
-		demandeAAnnuler.get().annulerReservation();
-		this.demandesArchivees.mettreAJourDemande(demandeAAnnuler.get());
-		this.notificateur.notifierAnnulation(demandeAAnnuler.get());
-	}
-
-	private void annulerDemandeEnAttente(Demande demandeAAnnuler) {
+	private void annulerReservation(Demande demandeAAnnuler) {
 		demandeAAnnuler.annulerReservation();
-		this.demandesEnAttente.retirerDemande(demandeAAnnuler);
-		this.demandesArchivees.persisterDemande(demandeAAnnuler);
+		this.conteneurDemandes.archiverDemande(demandeAAnnuler);
 		this.notificateur.notifierAnnulation(demandeAAnnuler);
 	}
 
 	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
-		if (demandesEnAttente.contientAuMoins(nombreDemandes)) {
+		if (conteneurDemandes.contientAuMoinsEnAttente(nombreDemandes)) {
 			assignerDemandeSalle();
 		}
 	}
@@ -69,6 +57,7 @@ public class AssignateurSalle extends TimerTask {
 
 	private void assignerDemandeSalle() {
 		Collection<Salle> salles = entrepotSalles.obtenirSalles();
+		List<Demande> demandesEnAttente = conteneurDemandes.obtenirDemandesEnAttente();
 
 		for (Demande demandeCourante : demandesEnAttente) {
 			Optional<Salle> salle = selectionSalleStrategie.selectionnerSalle(salles, demandeCourante);
@@ -80,13 +69,11 @@ public class AssignateurSalle extends TimerTask {
 				this.notificateur.notifierEchec(demandeCourante);
 			}
 		}
-
-		demandesEnAttente.vider();
 	}
 
 	private void reserverSalle(Demande demandeCourante, Salle salle) {
 		demandeCourante.placerReservation(salle);
-		this.demandesArchivees.persisterDemande(demandeCourante);
+		this.conteneurDemandes.archiverDemande(demandeCourante);
 	}
 
 }
