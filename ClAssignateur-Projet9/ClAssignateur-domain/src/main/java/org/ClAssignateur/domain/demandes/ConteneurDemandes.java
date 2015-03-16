@@ -1,17 +1,49 @@
 package org.ClAssignateur.domain.demandes;
 
-public interface ConteneurDemandes extends Iterable<Demande> {
+import java.util.Optional;
+import java.util.Comparator;
+import java.util.List;
 
-	public int taille();
+public class ConteneurDemandes {
 
-	public boolean contientAuMoins(int nombreDemandes);
+	private DemandesEntrepot demandesEnAttente;
+	private DemandesEntrepot demandesArchivees;
 
-	public void ajouterDemande(Demande demandeAjoutee);
+	public ConteneurDemandes(DemandesEntrepot demandesEnAttente, DemandesEntrepot demandesArchivees) {
+		this.demandesEnAttente = demandesEnAttente;
+		this.demandesArchivees = demandesArchivees;
+	}
 
-	public void retirerDemande(Demande demandeARetirer);
+	public void mettreDemandeEnAttente(Demande demande) {
+		this.demandesEnAttente.persisterDemande(demande);
+	}
 
-	public boolean contientDemande(Demande demande);
+	public List<Demande> obtenirDemandesEnAttenteEnOrdreDePriorite() {
+		return trierDemandesParPriorite(this.demandesEnAttente.obtenirDemandes());
+	}
 
-	public void vider();
+	private List<Demande> trierDemandesParPriorite(List<Demande> demandesATrier) {
+		Comparator<Demande> parPriorite = ((demande1, demande2) -> (demande2.estPlusPrioritaire(demande1) ? 1
+				: (demande1.estAussiPrioritaire(demande2) ? 0 : -1)));
 
+		demandesATrier.sort(parPriorite);
+		return demandesATrier;
+	}
+
+	public Optional<Demande> trouverDemandeSelonTitreReunion(String titreReunion) {
+		Optional<Demande> demandeObtenue = this.demandesArchivees.obtenirDemandeSelonTitre(titreReunion);
+		if (!demandeObtenue.isPresent()) {
+			demandeObtenue = this.demandesEnAttente.obtenirDemandeSelonTitre(titreReunion);
+		}
+
+		return demandeObtenue;
+	}
+
+	public void archiverDemande(Demande demande) {
+		this.demandesArchivees.persisterDemande(demande);
+	}
+
+	public boolean contientAuMoinsEnAttente(int nbDemandesEnAttente) {
+		return (this.demandesEnAttente.taille() >= nbDemandesEnAttente);
+	}
 }
