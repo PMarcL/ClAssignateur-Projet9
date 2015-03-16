@@ -17,6 +17,7 @@ public class ServiceReservationSalleTest {
 	private final int FREQUENCE_MINUTES = 3;
 	private final int LIMITE_DEMANDES_PAR_DEFAUT = 10;
 	private final int LIMITE_DEMANDES_QUELCONQUE = 5;
+	private final String TITRE_DEMANDE_A_ANNULER = "DemandeAnnulee";
 
 	private Timer minuterie;
 	private AssignateurSalle assignateur;
@@ -63,8 +64,8 @@ public class ServiceReservationSalleTest {
 
 	@Test
 	public void quandAnnulerDemandeDevraitAnnulerDansAssignateur() {
-		serviceReservation.annulerDemande(demande);
-		verify(assignateur).annulerDemande(demande);
+		serviceReservation.annulerDemande(TITRE_DEMANDE_A_ANNULER);
+		verify(assignateur).annulerDemande(TITRE_DEMANDE_A_ANNULER);
 	}
 
 	@Test

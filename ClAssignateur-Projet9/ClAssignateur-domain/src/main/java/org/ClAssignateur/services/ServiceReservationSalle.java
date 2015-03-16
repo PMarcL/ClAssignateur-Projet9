@@ -42,8 +42,8 @@ public class ServiceReservationSalle {
 		assignerSiNecessaire();
 	}
 
-	public void annulerDemande(Demande demandeAAnnuler) {
-		assignateurSalle.annulerDemande(demandeAAnnuler);
+	public void annulerDemande(String titreDemandeAnnulee) {
+		assignateurSalle.annulerDemande(titreDemandeAnnulee);
 	}
 
 	public void ajouterDemande(Demande nouvelleDemande) {
