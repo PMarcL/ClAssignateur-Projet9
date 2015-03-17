@@ -3,9 +3,10 @@ package org.ClAssignateur.domain.demandes;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.UUID;
+
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
-
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.demandes.Demande;
 import java.util.ArrayList;
@@ -24,12 +25,26 @@ public class DemandeTest {
 	private final String NOM_SALLE = "salle";
 	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
+	private final UUID UN_ID = UUID.randomUUID();
 
 	private Demande demande;
 
 	@Before
 	public void creerLaDemande() {
-		demande = new Demande(GROUPE, TITRE_REUNION);
+		demande = new Demande(UN_ID, GROUPE, TITRE_REUNION);
+	}
+
+	@Test
+	public void demandePossedeInitialementLeChampsId() {
+		Demande demandeAvecIdAleatoire = new Demande(GROUPE, TITRE_REUNION);
+		UUID id = demandeAvecIdAleatoire.getID();
+		assertNotNull(id);
+	}
+
+	@Test
+	public void demandePossedeInitialementLeChampsIdCommeDefiniDansLeConstructeur() {
+		UUID id = demande.getID();
+		assertEquals(UN_ID, id);
 	}
 
 	@Test
@@ -95,6 +110,23 @@ public class DemandeTest {
 	public void quandAnnulerReservationDemandeEstPasAssignee() {
 		demande.annulerReservation();
 		assertFalse(demande.estAssignee());
+	}
+
+	@Test
+	public void deuxDemandesSontEgalesSiElleOnLeMemeId() {
+		Demande demandeDifferenteAvecLeMemeId = faireUneDemandeDifferenteAvecId(UN_ID);
+		assertTrue(demandeDifferenteAvecLeMemeId.equals(demande));
+	}
+
+	private Demande faireUneDemandeDifferenteAvecId(UUID id) {
+		String titre = "une_deuxieme_demande";
+
+		Employe organisateur_second = new Employe("deux@gmail.com");
+		Employe reponsable_second = new Employe("deux@gmail.com");
+		ArrayList<Employe> aucunParticipant = new ArrayList<Employe>();
+		Groupe deuxieme_groupe = new Groupe(organisateur_second, reponsable_second, aucunParticipant);
+
+		return new Demande(id, deuxieme_groupe, titre);
 	}
 
 	private Groupe creerGroupePlusieursParticipants(int nombreParticipants) {
