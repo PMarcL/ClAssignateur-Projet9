@@ -115,7 +115,18 @@ public class DemandeTest {
 	@Test
 	public void deuxDemandesSontEgalesSiElleOnLeMemeId() {
 		Demande demandeDifferenteAvecLeMemeId = faireUneDemandeDifferenteAvecId(UN_ID);
-		assertTrue(demandeDifferenteAvecLeMemeId.equals(demande));
+		Boolean demandesSontEgales = demandeDifferenteAvecLeMemeId.equals(demande);
+		assertTrue(demandesSontEgales);
+	}
+
+	@Test
+	public void deuxDemandesSontDifferentesSiElleNOnPasLeMemeId() {
+		Demande demande = new Demande(UN_ID, GROUPE, TITRE_REUNION);
+		Demande demandeDifferente = new Demande(UUID.randomUUID(), GROUPE, TITRE_REUNION);
+
+		Boolean demandesSontEgales = demandeDifferente.equals(demande);
+
+		assertFalse(demandesSontEgales);
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {
