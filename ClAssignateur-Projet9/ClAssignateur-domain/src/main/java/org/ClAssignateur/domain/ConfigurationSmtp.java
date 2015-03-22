@@ -1,6 +1,6 @@
 package org.ClAssignateur.domain;
 
-public interface ConfigurationServeurSmtp {
+public interface ConfigurationSmtp {
 
 	public String getAdresseServeurSmtp();
 

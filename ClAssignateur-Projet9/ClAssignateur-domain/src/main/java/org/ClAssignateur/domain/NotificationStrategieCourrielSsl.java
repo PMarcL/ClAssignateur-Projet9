@@ -22,9 +22,9 @@ public class NotificationStrategieCourrielSsl implements NotificationStrategie {
 	private final Integer VALEUR_PORT_SMTP_SSL = 465;
 	private final String SUJET_COURRIEL = "Notification de la part de ClAssignateur";
 
-	private ConfigurationServeurSmtp configSmtp;
+	private ConfigurationSmtp configSmtp;
 
-	public NotificationStrategieCourrielSsl(ConfigurationServeurSmtp configSmtp) {
+	public NotificationStrategieCourrielSsl(ConfigurationSmtp configSmtp) {
 		this.configSmtp = configSmtp;
 	}
 
