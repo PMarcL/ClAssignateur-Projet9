@@ -15,6 +15,8 @@ public interface DemandesEntrepot {
 
 	public Optional<Demande> obtenirDemandeSelonTitre(String titre);
 
+	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateur(String courriel);
+
 	public int taille();
 
 }
