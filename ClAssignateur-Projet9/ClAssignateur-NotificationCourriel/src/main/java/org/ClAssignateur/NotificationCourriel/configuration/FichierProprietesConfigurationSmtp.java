@@ -1,9 +1,10 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.NotificationCourriel.configuration;
 
 import java.io.IOException;
-
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.ClAssignateur.NotificationCourriel.ConfigurationSmtp;
 
 public class FichierProprietesConfigurationSmtp implements ConfigurationSmtp {
 
@@ -14,19 +15,14 @@ public class FichierProprietesConfigurationSmtp implements ConfigurationSmtp {
 
 	private Properties proprietes;
 
-	public FichierProprietesConfigurationSmtp() {
+	public FichierProprietesConfigurationSmtp() throws IOException {
 		proprietes = new Properties();
 		chargerProprietes();
 	}
 
-	private void chargerProprietes() {
+	private void chargerProprietes() throws IOException {
 		InputStream fluxEntree = getClass().getClassLoader().getResourceAsStream(CHEMIN_FICHIER_CONFIG);
-		try {
-			proprietes.load(fluxEntree);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		proprietes.load(fluxEntree);
 	}
 
 	public String getAdresseServeurSmtp() {

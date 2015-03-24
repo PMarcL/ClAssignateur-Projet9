@@ -1,4 +1,7 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.NotificationCourriel;
+
+import org.ClAssignateur.domain.notification.NotificationException;
+import org.ClAssignateur.domain.notification.NotificationStrategie;
 
 import javax.mail.Authenticator;
 import java.util.Properties;
@@ -12,7 +15,6 @@ import javax.mail.internet.MimeMessage;
 import org.ClAssignateur.domain.groupe.Employe;
 
 public class NotificationStrategieCourrielSsl implements NotificationStrategie {
-
 	private final String PROPRIETE_PORT_SMTP = "mail.smtp.port";
 	private final String PROPRIETE_SERVEUR_SMTP = "mail.smtp.host";
 	private final String PROPRIETE_SOCKET_FACTORY = "mail.smtp.socketFactory.class";
@@ -28,13 +30,11 @@ public class NotificationStrategieCourrielSsl implements NotificationStrategie {
 		this.configSmtp = configSmtp;
 	}
 
-	public void notifier(String contenu, Employe destinataire) {
+	public void notifier(String contenu, Employe destinataire) throws NotificationException {
 		try {
 			envoyerCourriel(contenu, destinataire);
 		} catch (MessagingException e) {
-			e.printStackTrace();
-			// TODO Gestion des exceptions adaptée à l'interface afin de
-			// respecter Liskov
+			throw new NotificationException("Une erreur est survenue lors de l'envoi du courriel.", e);
 		}
 	}
 
