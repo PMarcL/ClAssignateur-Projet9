@@ -1,9 +1,11 @@
-package org.ClAssignateur.domain;
+package org.ClAssignateur.domain.notification;
 
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.domain.groupe.Employe;
+import org.ClAssignateur.domain.notification.NotificationStrategie;
 
+import org.ClAssignateur.domain.notification.Notificateur;
+import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.demandes.Demande;
 import java.util.ArrayList;
@@ -11,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NotificateurTest {
-
 	private static final String TITRE_DEMANDE = "RENCONTRE_COURS_QUALITE";
 	private String NOM_DE_SALLE = "A100";
 	private Salle SALLE = new Salle(100, NOM_DE_SALLE);
