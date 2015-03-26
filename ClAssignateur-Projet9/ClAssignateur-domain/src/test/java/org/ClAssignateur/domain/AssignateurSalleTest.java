@@ -2,6 +2,8 @@ package org.ClAssignateur.domain;
 
 import static org.mockito.BDDMockito.*;
 
+import org.ClAssignateur.domain.notification.Notificateur;
+
 import java.util.List;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
