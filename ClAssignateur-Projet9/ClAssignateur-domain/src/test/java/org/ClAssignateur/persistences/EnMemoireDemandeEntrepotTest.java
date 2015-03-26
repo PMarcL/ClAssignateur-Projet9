@@ -3,8 +3,9 @@ package org.ClAssignateur.persistences;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import java.util.List;
+import org.ClAssignateur.domain.groupe.Employe;
 
+import java.util.List;
 import java.util.ArrayList;
 import org.junit.Before;
 import java.util.UUID;
@@ -19,6 +20,8 @@ public class EnMemoireDemandeEntrepotTest {
 	private static final UUID UN_UUID = UUID.randomUUID();
 	private static final String UN_TITRE_DISTINCT = "titre_distinc";
 	private static final String UN_TITRE = "titre";
+	private static final Employe UN_ORGANISATEUR_DISTINCT = new Employe("courriel");
+	private static final Employe UN_ORGANISATEUR = new Employe("courriel");
 
 	private Demande demande;
 
@@ -88,6 +91,19 @@ public class EnMemoireDemandeEntrepotTest {
 	}
 
 	@Test
+	public void etantDonneUnEntrepotAvecDeMultipleDemandesObtenirDemandesSelonOrganisateurDoitDonnerLesBonnesDemandes() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+		Demande demande1 = ajouterUneDemandeALEntrepot();
+		Demande demande2 = ajouterUneDemandeALEntrepot();
+
+		List<Demande> demandes = entrepot.obtenirDemandesSelonOrganisateur(UN_ORGANISATEUR);
+
+		assertFalse(demandes.contains(demande));
+		assertTrue(demandes.contains(demande1));
+		assertTrue(demandes.contains(demande2));
+	}
+
+	@Test
 	public void etantDonneUnEntrepotAvecDeMultipleDemandeObtenirDemandesDoitDonnerToutesLesDemandes() {
 		Demande demande1 = ajouterUneDemandeALEntrepot();
 		Demande demande2 = ajouterUneDemandeALEntrepot();
@@ -103,6 +119,7 @@ public class EnMemoireDemandeEntrepotTest {
 	private void faireEnSorteQuEntrepotPossedeUneDemande() {
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE_DISTINCT);
+		given(demande.getOrganisateur()).willReturn(UN_ORGANISATEUR_DISTINCT);
 		entrepot.persisterDemande(demande);
 	}
 
@@ -117,6 +134,7 @@ public class EnMemoireDemandeEntrepotTest {
 		UUID UN_UUID = UUID.randomUUID();
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE);
+		given(demande.getOrganisateur()).willReturn(UN_ORGANISATEUR);
 		entrepot.persisterDemande(demande);
 		return demande;
 	}

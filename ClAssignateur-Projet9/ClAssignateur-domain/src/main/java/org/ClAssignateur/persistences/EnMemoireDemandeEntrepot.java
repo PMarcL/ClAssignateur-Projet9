@@ -1,7 +1,9 @@
 package org.ClAssignateur.persistences;
 
-import java.util.ArrayList;
+import java.util.stream.Collectors;
 
+import org.ClAssignateur.domain.groupe.Employe;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,6 +37,11 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	}
 
 	@Override
+	public List<Demande> obtenirDemandesSelonOrganisateur(Employe organisateur) {
+		return demandes.stream().filter(x -> x.getOrganisateur().equals(organisateur)).collect(Collectors.toList());
+	}
+
+	@Override
 	public int taille() {
 		return demandes.size();
 	}
@@ -42,4 +49,5 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	private boolean existePas(Demande demande) {
 		return this.demandes.stream().noneMatch(demandeExistante -> demandeExistante.equals(demande));
 	}
+
 }
