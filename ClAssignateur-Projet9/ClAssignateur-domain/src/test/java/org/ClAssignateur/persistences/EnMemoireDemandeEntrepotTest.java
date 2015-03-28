@@ -3,8 +3,10 @@ package org.ClAssignateur.persistences;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import java.util.List;
+import java.util.Optional;
 
+import org.ClAssignateur.domain.groupe.Employe;
+import java.util.List;
 import java.util.ArrayList;
 import org.junit.Before;
 import java.util.UUID;
@@ -19,6 +21,9 @@ public class EnMemoireDemandeEntrepotTest {
 	private static final UUID UN_UUID = UUID.randomUUID();
 	private static final String UN_TITRE_DISTINCT = "titre_distinct";
 	private static final String UN_TITRE = "titre";
+	private static final String COURRIEL_ORGANISATEUR = "courriel@hotmail.com";
+	private static final String COURRIEL_NON_CORRESPONDANT = "courriel2@hotmail.com";
+	private static final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
 
 	private Demande demande;
 
@@ -53,23 +58,6 @@ public class EnMemoireDemandeEntrepotTest {
 
 		assertEquals(TAILLE_APRES_AJOUT_INITIAL_DESIREE, taille_obtenue);
 	}
-
-	/*
-	 * @Test public void
-	 * etantDonneUnEntrepotAvecUnDemandePossedantIdXQuandPersisterLaDemandeXModifieAlorsObtenirDemandeDonneLaNouvelleVersion
-	 * () { faireEnSorteQuEntrepotPossedeUneDemande(); Demande demandeModifie =
-	 * creerUneDemande(); given(demandeModifie.getID()).willReturn(UN_UUID); //
-	 * given(demandeModifie.equals(demande)).willReturn(true); //
-	 * given(demande.equals(demandeModifie)).willReturn(true);
-	 * 
-	 * Demande demandeAvantPersister =
-	 * entrepot.obtenirDemandeSelonId(UN_UUID).get();
-	 * entrepot.persisterDemande(demandeModifie); Demande demandeApresPersister
-	 * = entrepot.obtenirDemandeSelonId(UN_UUID).get();
-	 * 
-	 * assertEquals(UN_TITRE_DISTINCT, demandeAvantPersister.getTitre());
-	 * assertNotEquals(UN_TITRE_DISTINCT, demandeApresPersister.getTitre()); }
-	 */
 
 	@Test
 	public void etantDonneUnEntrepotAvecUnDemandePossedantIdXQuandPersiterLaDemandeAvecIdYAlorsTailleAugmenteDeUn() {
@@ -156,9 +144,50 @@ public class EnMemoireDemandeEntrepotTest {
 		assertFalse(demandeEstPresenteApres);
 	}
 
+	@Test
+	public void etantDonneUnEntrepotAvecUneDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdRetourneLaDemande() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR,
+				UN_UUID);
+		assertTrue(demandeRecu.isPresent());
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecUneDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdAvecMauvaisCourrielRetourneOptionalVide() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+
+		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(
+				COURRIEL_NON_CORRESPONDANT, UN_UUID);
+
+		assertFalse(demandeRecu.isPresent());
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecPlusieursDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdRetourneLaBonneDemande() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+		ajouterTroisDemandeALEntrepot();
+
+		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR,
+				UN_UUID);
+
+		assertEquals(demande, demandeRecu.get());
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecPlusieursDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdAvecMauvaisCourrielRetourneOptionalVide() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+		ajouterTroisDemandeALEntrepot();
+
+		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(
+				COURRIEL_NON_CORRESPONDANT, UN_UUID);
+
+		assertFalse(demandeRecu.isPresent());
+	}
+
 	private void faireEnSorteQuEntrepotPossedeUneDemande() {
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE_DISTINCT);
+		given(demande.getOrganisateur()).willReturn(ORGANISATEUR);
 		entrepot.persisterDemande(demande);
 	}
 
@@ -176,8 +205,8 @@ public class EnMemoireDemandeEntrepotTest {
 
 	private Demande creerUneDemande() {
 		Demande demande = mock(Demande.class);
-		UUID UN_UUID = UUID.randomUUID();
-		given(demande.getID()).willReturn(UN_UUID);
+		UUID unId = UUID.randomUUID();
+		given(demande.getID()).willReturn(unId);
 		given(demande.getTitre()).willReturn(UN_TITRE);
 		return demande;
 	}

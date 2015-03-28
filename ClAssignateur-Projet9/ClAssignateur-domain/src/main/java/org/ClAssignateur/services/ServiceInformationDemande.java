@@ -1,7 +1,8 @@
 package org.ClAssignateur.services;
 
-import java.util.Optional;
+import java.util.UUID;
 
+import java.util.Optional;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 
@@ -13,8 +14,9 @@ public class ServiceInformationDemande {
 		this.demandesEntrepot = demandes;
 	}
 
-	public int getNbParticipantsSelonCourrielOrganisateur(String courrielOrganisateur) {
-		Optional<Demande> demande = demandesEntrepot.obtenirDemandeSelonCourrielOrganisateur(courrielOrganisateur);
+	public int getNbParticipantsSelonCourrielOrganisateur(String courrielOrganisateur, UUID idDemande) {
+		Optional<Demande> demande = demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(courrielOrganisateur,
+				idDemande);
 		if (demande.isPresent())
 			return demande.get().getNbParticipants();
 		return 0;
