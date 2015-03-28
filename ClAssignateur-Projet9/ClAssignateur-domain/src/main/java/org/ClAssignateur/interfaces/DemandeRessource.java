@@ -1,17 +1,20 @@
 package org.ClAssignateur.interfaces;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.ClAssignateur.domain.groupe.Groupe;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import org.ClAssignateur.domain.demandes.Demande;
+import java.util.ArrayList;
+import org.ClAssignateur.domain.groupe.Employe;
+import javax.ws.rs.GET;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response.Status;
+import org.ClAssignateur.services.DemandePasPresenteException;
+import javax.ws.rs.core.Response;
+import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.services.ServiceDemande;
 import java.util.UUID;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
-import javax.xml.ws.http.HTTPException;
-import java.util.Optional;
-import org.ClAssignateur.domain.demandes.Demande;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 
@@ -19,36 +22,32 @@ import javax.ws.rs.Path;
 @Produces(MediaType.APPLICATION_JSON)
 public class DemandeRessource {
 
-	private DemandesEntrepot demandeEntrepot;
-	private DemandeDTOAssembleur assembleur;
+	private ServiceDemande serviceDemande;
 
-	public DemandeRessource(DemandesEntrepot demandeEntrepot, DemandeDTOAssembleur assembleur) {
-		this.demandeEntrepot = demandeEntrepot;
-		this.assembleur = assembleur;
+	public DemandeRessource() {
+		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
+		DemandeDTOAssembleur demandeDTOAssembleur = new DemandeDTOAssembleur();
+		this.serviceDemande = new ServiceDemande(demandeEntrepot, demandeDTOAssembleur);
 	}
 
-	@POST
-	@Path("/afficher")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String afficherDemande(String id) {
-		UUID idDemande = UUID.fromString(id);
-		Optional<Demande> demande = demandeEntrepot.obtenirDemandeSelonId(idDemande);
-		if (demande.isPresent()) {
-			DemandeDTO demandeResultat = assembleur.assemblerDemandeDTO(demande.get());
-			return creerJsonAPartirDe(demandeResultat);
-		} else {
-			throw new HTTPException(404);
-		}
+	public DemandeRessource(ServiceDemande service) {
+		this.serviceDemande = service;
 	}
 
-	private String creerJsonAPartirDe(DemandeDTO demandeResultat) {
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		String json;
+	@GET
+	@Path("/afficher/{courriel}/{numero_demande}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response afficherDemande(@PathParam(value = "courriel") String courriel,
+			@PathParam(value = "numero_demande") String numero_demande) {
 		try {
-			json = ow.writeValueAsString(demandeResultat);
-		} catch (JsonProcessingException e) {
-			throw new HTTPException(500);
+			UUID idDemande = UUID.fromString(numero_demande);
+			DemandeDTO demandeDTO = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
+			return Response.ok(demandeDTO).build();
+		} catch (DemandePasPresenteException ex) {
+			return Response.status(Status.NOT_FOUND).build();
+		} catch (Exception ex) {
+			return Response.serverError().build();
 		}
-		return json;
 	}
+
 }
