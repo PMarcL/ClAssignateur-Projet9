@@ -19,6 +19,10 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 		}
 	}
 
+	private boolean existePas(Demande demande) {
+		return this.demandes.stream().noneMatch(demandeExistante -> demandeExistante.equals(demande));
+	}
+
 	@Override
 	public List<Demande> obtenirDemandes() {
 		return demandes;
@@ -39,7 +43,28 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 		return demandes.size();
 	}
 
-	private boolean existePas(Demande demande) {
-		return this.demandes.stream().noneMatch(demandeExistante -> demandeExistante.equals(demande));
+	@Override
+	public void retirerDemande(Demande demande) {
+		int indexDeDemande = trouverIndexDe(demande);
+		demandes.remove(indexDeDemande);
+	}
+
+	private int trouverIndexDe(Demande demande) {
+		Optional<Demande> demandeTrouvee = trouverDemandeCorrespondant(demande);
+
+		if (demandeTrouvee.isPresent()) {
+			return demandes.indexOf(demandeTrouvee.get());
+		} else {
+			return -1;
+		}
+	}
+
+	private Optional<Demande> trouverDemandeCorrespondant(Demande demande) {
+		return this.demandes.stream().filter(demandeExistante -> demandeExistante.equals(demande)).findFirst();
+	}
+
+	@Override
+	public void vider() {
+		demandes.clear();
 	}
 }

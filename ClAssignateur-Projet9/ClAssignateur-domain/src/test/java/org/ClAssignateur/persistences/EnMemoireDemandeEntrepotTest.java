@@ -17,7 +17,7 @@ public class EnMemoireDemandeEntrepotTest {
 	private static final Object TAILLE_APRES_AJOUT_INITIAL_DESIREE = 1;
 	private static final Object TAILLE_APRES_SECOND_AJOUT_DESIREE = 2;
 	private static final UUID UN_UUID = UUID.randomUUID();
-	private static final String UN_TITRE_DISTINCT = "titre_distinc";
+	private static final String UN_TITRE_DISTINCT = "titre_distinct";
 	private static final String UN_TITRE = "titre";
 
 	private Demande demande;
@@ -53,6 +53,23 @@ public class EnMemoireDemandeEntrepotTest {
 
 		assertEquals(TAILLE_APRES_AJOUT_INITIAL_DESIREE, taille_obtenue);
 	}
+
+	/*
+	 * @Test public void
+	 * etantDonneUnEntrepotAvecUnDemandePossedantIdXQuandPersisterLaDemandeXModifieAlorsObtenirDemandeDonneLaNouvelleVersion
+	 * () { faireEnSorteQuEntrepotPossedeUneDemande(); Demande demandeModifie =
+	 * creerUneDemande(); given(demandeModifie.getID()).willReturn(UN_UUID); //
+	 * given(demandeModifie.equals(demande)).willReturn(true); //
+	 * given(demande.equals(demandeModifie)).willReturn(true);
+	 * 
+	 * Demande demandeAvantPersister =
+	 * entrepot.obtenirDemandeSelonId(UN_UUID).get();
+	 * entrepot.persisterDemande(demandeModifie); Demande demandeApresPersister
+	 * = entrepot.obtenirDemandeSelonId(UN_UUID).get();
+	 * 
+	 * assertEquals(UN_TITRE_DISTINCT, demandeAvantPersister.getTitre());
+	 * assertNotEquals(UN_TITRE_DISTINCT, demandeApresPersister.getTitre()); }
+	 */
 
 	@Test
 	public void etantDonneUnEntrepotAvecUnDemandePossedantIdXQuandPersiterLaDemandeAvecIdYAlorsTailleAugmenteDeUn() {
@@ -100,6 +117,39 @@ public class EnMemoireDemandeEntrepotTest {
 		assertTrue(demandes.contains(demande3));
 	}
 
+	@Test
+	public void etantDonneUnEntrepotAvecDeMultipleDemandeApresViderTailleEgaleZero() {
+		ajouterTroisDemandeALEntrepot();
+
+		entrepot.vider();
+		int tailleApresVider = entrepot.taille();
+
+		assertEquals(TAILLE_INITIALE_DESIREE, tailleApresVider);
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecUneDemandeApresRetirerDemandeTailleEgaleZero() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+
+		entrepot.retirerDemande(demande);
+		int tailleApresVider = entrepot.taille();
+
+		assertEquals(TAILLE_INITIALE_DESIREE, tailleApresVider);
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecMultipleDemandeApresRetirerDemandeObtenirDemandeDonneAucuneDemandePourLIdDeLaDemande() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+		ajouterTroisDemandeALEntrepot();
+
+		boolean demandeEstPresenteAvant = entrepot.obtenirDemandeSelonId(UN_UUID).isPresent();
+		entrepot.retirerDemande(demande);
+		boolean demandeEstPresenteApres = entrepot.obtenirDemandeSelonId(UN_UUID).isPresent();
+
+		assertTrue(demandeEstPresenteAvant);
+		assertFalse(demandeEstPresenteApres);
+	}
+
 	private void faireEnSorteQuEntrepotPossedeUneDemande() {
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE_DISTINCT);
@@ -113,11 +163,16 @@ public class EnMemoireDemandeEntrepotTest {
 	}
 
 	private Demande ajouterUneDemandeALEntrepot() {
+		Demande demande = creerUneDemande();
+		entrepot.persisterDemande(demande);
+		return demande;
+	}
+
+	private Demande creerUneDemande() {
 		Demande demande = mock(Demande.class);
 		UUID UN_UUID = UUID.randomUUID();
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE);
-		entrepot.persisterDemande(demande);
 		return demande;
 	}
 }
