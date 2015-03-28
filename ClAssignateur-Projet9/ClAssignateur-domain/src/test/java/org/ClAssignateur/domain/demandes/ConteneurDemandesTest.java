@@ -53,6 +53,12 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
+	public void quandObtenirDemandesEnAttenteDevraitViderEntrepot() {
+		conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+		verify(demandesEnAttente).vider();
+	}
+
+	@Test
 	public void quandObtenirDemandesEnAttenteDevraitTrierSelonOrdreDecroissantPriorite() {
 		List<Demande> demandesAjoutees = new ArrayList<Demande>();
 		demandesAjoutees.add(demandeFaiblePriorite);
@@ -72,15 +78,29 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
+	public void etantDonneDemandeArchiveeTrouveeQuandTrouverDemandeSelonTitreDevraitRetirerDansDemandesArchivees() {
+		given(demandesArchivees.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.of(demandeFaiblePriorite));
+		conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
+		verify(demandesArchivees).retirerDemande(demandeFaiblePriorite);
+	}
+
+	@Test
 	public void etantDonneDemandeArchiveeNonTrouveeQuandTrouverDemandeSelonTitreDevraitChercherDansDemandesEnAttente() {
-		demandesArchiveesNeContientPasDemandeRecherchee();
+		demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient();
 		conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
 		verify(demandesEnAttente).obtenirDemandeSelonTitre(TITRE_REUNION);
 	}
 
 	@Test
+	public void etantDonneDemandeArchiveeNonTrouveeQuandTrouverDemandeSelonTitreDevraitRetirerDansDemandesEnAttente() {
+		demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient();
+		conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
+		verify(demandesEnAttente).retirerDemande(demandeFaiblePriorite);
+	}
+
+	@Test
 	public void etantDonneDemandeEnAttenteTrouveeQuandTrouverDemandeSelonTitreDevraitRetournerDemande() {
-		demandesArchiveesNeContientPasDemandeRecherchee();
+		demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient();
 		given(demandesEnAttente.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.of(demandeFaiblePriorite));
 
 		Optional<Demande> demandeObtenue = conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
@@ -90,7 +110,7 @@ public class ConteneurDemandesTest {
 
 	@Test
 	public void etantDonneDemandeEnAttenteNonTrouveeQuandTrouverDemandeSelonTitreDevraitRetournerResultatVide() {
-		demandesArchiveesNeContientPasDemandeRecherchee();
+		demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient();
 		given(demandesEnAttente.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.empty());
 
 		Optional<Demande> demandeObtenue = conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
@@ -122,8 +142,9 @@ public class ConteneurDemandesTest {
 		assertTrue(resultat);
 	}
 
-	private void demandesArchiveesNeContientPasDemandeRecherchee() {
+	private void demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient() {
 		given(demandesArchivees.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.empty());
+		given(demandesEnAttente.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.of(demandeFaiblePriorite));
 	}
 
 	private EstEnOrdrePrioritaireDecroissant estEnOrdrePrioritaireDecroissant() {
