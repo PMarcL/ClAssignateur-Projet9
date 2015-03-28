@@ -6,10 +6,9 @@ import org.ClAssignateur.domain.groupe.Employe;
 
 public class DemandeDTO {
 
-	public int nbParticipants;
-	public Employe organisateur;
-	public Employe responsable;
-	public UUID identifiant;
-	public Salle salleAssignee;
+	public String salleDemandee;
+	public int nombrePersonne;
+	public String courrielOrganisateur;
+	public String salleAssignee;
 
 }

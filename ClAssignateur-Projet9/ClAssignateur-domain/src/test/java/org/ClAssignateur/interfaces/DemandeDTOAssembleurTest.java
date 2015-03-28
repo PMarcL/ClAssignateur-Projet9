@@ -13,9 +13,8 @@ import org.ClAssignateur.domain.demandes.Demande;
 public class DemandeDTOAssembleurTest {
 
 	private final int NB_PARTICIPANT = 12;
-	private final Employe ORGANISATEUR = new Employe("courriel@courriel.com");
-	private final Employe RESPONSABLE = new Employe("courriel2@courriel.com");
-	private final UUID DEMANDE_ID = UUID.randomUUID();
+	private final String COURRIEL_ORGANISATEUR = "courriel@courriel.com";
+	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
 
 	private Demande demande;
 	private Salle salle;
@@ -25,48 +24,33 @@ public class DemandeDTOAssembleurTest {
 	public void initialisation() {
 		demande = mock(Demande.class);
 		salle = mock(Salle.class);
+		given(demande.getNbParticipants()).willReturn(NB_PARTICIPANT);
+		given(demande.getOrganisateur()).willReturn(ORGANISATEUR);
+		given(demande.getSalleAssignee()).willReturn(salle);
 		assembleur = new DemandeDTOAssembleur();
 	}
 
 	@Test
 	public void etantDonneUneDemandeAvecNombreParticipantsXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecNombrePersonneX() {
-		given(demande.getNbParticipants()).willReturn(NB_PARTICIPANT);
 		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
-		assertEquals(NB_PARTICIPANT, demandeDTOResultat.nbParticipants);
+		assertEquals(NB_PARTICIPANT, demandeDTOResultat.nombrePersonne);
 	}
 
 	@Test
-	public void etantDonneUneDemandeAvecOrganisateurXQuandAssembleDemandeAlorsRetournDemandeDTOAvecOrganisateurX() {
-		given(demande.getOrganisateur()).willReturn(ORGANISATEUR);
+	public void etantDonneUneDemandeAvecOrganisateurXQuandAssembleDemandeAlorsRetournDemandeDTOAvecCourrielOrganisateurX() {
 		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
-		assertEquals(ORGANISATEUR, demandeDTOResultat.organisateur);
-	}
-
-	@Test
-	public void etantDonneUneDemandeAvecUnResponsableXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecResponsableX() {
-		given(demande.getResponsable()).willReturn(RESPONSABLE);
-		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
-		assertEquals(RESPONSABLE, demandeDTOResultat.responsable);
-	}
-
-	@Test
-	public void etantDonneUneDemandeAvecUnIdantifiantXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecIdentifiantX() {
-		given(demande.getID()).willReturn(DEMANDE_ID);
-		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
-		assertEquals(DEMANDE_ID, demandeDTOResultat.identifiant);
+		assertEquals(COURRIEL_ORGANISATEUR, demandeDTOResultat.courrielOrganisateur);
 	}
 
 	@Test
 	public void etantDonneUneDemandeAvecUneSalleAssigneeXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecSalleAssigneeX() {
-		given(demande.getSalleAssignee()).willReturn(salle);
 		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
-		assertEquals(salle, demandeDTOResultat.salleAssignee);
+		assertEquals(salle.getNom(), demandeDTOResultat.salleAssignee);
 	}
 
 	@Test
-	public void etantDonneUneDemandeSansSalleAssigneeQuandAssembleDemandeAlorsRetourneDemandeDTOSansSalleAssignee() {
-		given(demande.getSalleAssignee()).willReturn(null);
+	public void etantDonneUneDemandeAvecSalleAssigneeXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecSalleDemandeeX() {
 		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
-		assertEquals(null, demandeDTOResultat.salleAssignee);
+		assertEquals(salle.getNom(), demandeDTOResultat.salleDemandee);
 	}
 }
