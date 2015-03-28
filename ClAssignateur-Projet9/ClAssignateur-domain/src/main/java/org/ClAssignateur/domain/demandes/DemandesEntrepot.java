@@ -19,4 +19,8 @@ public interface DemandesEntrepot {
 
 	public int taille();
 
+	public void retirerDemande(Demande demande);
+
+	public void vider();
+
 }

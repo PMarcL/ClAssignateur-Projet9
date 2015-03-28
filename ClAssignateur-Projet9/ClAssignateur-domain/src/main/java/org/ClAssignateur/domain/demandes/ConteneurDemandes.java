@@ -19,7 +19,9 @@ public class ConteneurDemandes {
 	}
 
 	public List<Demande> obtenirDemandesEnAttenteEnOrdreDePriorite() {
-		return trierDemandesParPriorite(this.demandesEnAttente.obtenirDemandes());
+		List<Demande> demandesTriees = trierDemandesParPriorite(this.demandesEnAttente.obtenirDemandes());
+		demandesEnAttente.vider();
+		return demandesTriees;
 	}
 
 	private List<Demande> trierDemandesParPriorite(List<Demande> demandesATrier) {
@@ -32,10 +34,21 @@ public class ConteneurDemandes {
 
 	public Optional<Demande> trouverDemandeSelonTitreReunion(String titreReunion) {
 		Optional<Demande> demandeObtenue = this.demandesArchivees.obtenirDemandeSelonTitre(titreReunion);
-		if (!demandeObtenue.isPresent()) {
-			demandeObtenue = this.demandesEnAttente.obtenirDemandeSelonTitre(titreReunion);
+
+		if (demandeObtenue.isPresent()) {
+			this.demandesArchivees.retirerDemande(demandeObtenue.get());
+		} else {
+			demandeObtenue = obtenirDansDemandeEnAttente(titreReunion);
 		}
 
+		return demandeObtenue;
+	}
+
+	private Optional<Demande> obtenirDansDemandeEnAttente(String titreReunion) {
+		Optional<Demande> demandeObtenue = this.demandesEnAttente.obtenirDemandeSelonTitre(titreReunion);
+		if (demandeObtenue.isPresent()) {
+			this.demandesEnAttente.retirerDemande(demandeObtenue.get());
+		}
 		return demandeObtenue;
 	}
 
