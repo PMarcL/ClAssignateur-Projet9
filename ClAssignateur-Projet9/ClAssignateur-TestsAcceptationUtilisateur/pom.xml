@@ -7,9 +7,7 @@
     <artifactId>ClAssignateur-Projet9</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>ca.ulaval.glo4002</groupId>
   <artifactId>ClAssignateur-TestsAcceptationUtilisateur</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>ClAssignateur-TestsAcceptationUtilisateur</name>
   <url>http://maven.apache.org</url>
   <properties>
