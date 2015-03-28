@@ -4,7 +4,7 @@ import org.ClAssignateur.domain.demandes.Demande;
 
 public class DemandeResultatAssembleur {
 
-	public DemandeResultat Assembler(Demande demande) {
+	public DemandeResultat assemblerDemande(Demande demande) {
 		int nombrePersonne = demande.getNbParticipants();
 		return new DemandeResultat(nombrePersonne);
 	}

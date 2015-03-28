@@ -39,7 +39,7 @@ public class DemandeRessourceTest {
 	public void etantDonneDemandeExisteQuandAfficherDemandeAlorsAssemblerEstAppeler() {
 		faireEnSorteQueDemandeExiste();
 		ressource.afficherDemande(UN_UUID.toString());
-		verify(demandeResultatAssembleur).Assembler(demande);
+		verify(demandeResultatAssembleur).assemblerDemande(demande);
 	}
 
 	@Test(expected = HTTPException.class)

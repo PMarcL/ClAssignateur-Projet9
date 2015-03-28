@@ -16,7 +16,7 @@ public class DemandeResultatAssembleurTest {
 		Demande demande = mock(Demande.class);
 		given(demande.getNbParticipants()).willReturn(NOMBRE_PARTICIPANTS);
 
-		DemandeResultat demandeResultat = assembleur.Assembler(demande);
+		DemandeResultat demandeResultat = assembleur.assemblerDemande(demande);
 
 		assertEquals(NOMBRE_PARTICIPANTS, demandeResultat.nombrePersonne);
 	}

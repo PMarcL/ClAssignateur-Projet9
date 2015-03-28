@@ -34,7 +34,7 @@ public class DemandeRessource {
 		UUID idDemande = UUID.fromString(id);
 		Optional<Demande> demande = demandeEntrepot.obtenirDemandeSelonId(idDemande);
 		if (demande.isPresent()) {
-			DemandeResultat demandeResultat = assembleur.Assembler(demande.get());
+			DemandeResultat demandeResultat = assembleur.assemblerDemande(demande.get());
 			return creerJsonAPartirDe(demandeResultat);
 		} else {
 			throw new HTTPException(404);
