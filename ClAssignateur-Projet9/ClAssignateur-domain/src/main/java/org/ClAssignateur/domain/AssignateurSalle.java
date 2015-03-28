@@ -1,7 +1,8 @@
 package org.ClAssignateur.domain;
 
-import java.util.List;
+import org.ClAssignateur.domain.notification.Notificateur;
 
+import java.util.List;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
 import org.ClAssignateur.domain.salles.SelectionSalleStrategie;
