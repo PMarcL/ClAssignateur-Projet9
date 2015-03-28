@@ -1,7 +1,6 @@
 package org.ClAssignateur.persistences;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,7 +45,9 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	@Override
 	public void retirerDemande(Demande demande) {
 		int indexDeDemande = trouverIndexDe(demande);
-		demandes.remove(indexDeDemande);
+		if (indexDeDemande != -1) {
+			demandes.remove(indexDeDemande);
+		}
 	}
 
 	private int trouverIndexDe(Demande demande) {

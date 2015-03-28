@@ -138,6 +138,12 @@ public class EnMemoireDemandeEntrepotTest {
 	}
 
 	@Test
+	public void etantDonneUnEntrepotAvecMultipleDemandeLorsqueRetirerUneDemandeQuiNExistePasAlorsNeLancePasException() {
+		ajouterTroisDemandeALEntrepot();
+		entrepot.retirerDemande(demande);
+	}
+
+	@Test
 	public void etantDonneUnEntrepotAvecMultipleDemandeApresRetirerDemandeObtenirDemandeDonneAucuneDemandePourLIdDeLaDemande() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
 		ajouterTroisDemandeALEntrepot();
