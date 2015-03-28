@@ -97,6 +97,10 @@ public class Demande {
 		return groupe.getParticipants();
 	}
 
+	public Salle getSalleAssignee() {
+		return this.salleAssignee;
+	}
+
 	@Override
 	public boolean equals(Object other) {
 		if (other == null) {

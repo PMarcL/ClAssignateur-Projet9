@@ -20,9 +20,9 @@ import javax.ws.rs.Path;
 public class DemandeRessource {
 
 	private DemandesEntrepot demandeEntrepot;
-	private DemandeResultatAssembleur assembleur;
+	private DemandeDTOAssembleur assembleur;
 
-	public DemandeRessource(DemandesEntrepot demandeEntrepot, DemandeResultatAssembleur assembleur) {
+	public DemandeRessource(DemandesEntrepot demandeEntrepot, DemandeDTOAssembleur assembleur) {
 		this.demandeEntrepot = demandeEntrepot;
 		this.assembleur = assembleur;
 	}
@@ -34,14 +34,14 @@ public class DemandeRessource {
 		UUID idDemande = UUID.fromString(id);
 		Optional<Demande> demande = demandeEntrepot.obtenirDemandeSelonId(idDemande);
 		if (demande.isPresent()) {
-			DemandeResultat demandeResultat = assembleur.assemblerDemande(demande.get());
+			DemandeDTO demandeResultat = assembleur.assemblerDemandeDTO(demande.get());
 			return creerJsonAPartirDe(demandeResultat);
 		} else {
 			throw new HTTPException(404);
 		}
 	}
 
-	private String creerJsonAPartirDe(DemandeResultat demandeResultat) {
+	private String creerJsonAPartirDe(DemandeDTO demandeResultat) {
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		String json;
 		try {

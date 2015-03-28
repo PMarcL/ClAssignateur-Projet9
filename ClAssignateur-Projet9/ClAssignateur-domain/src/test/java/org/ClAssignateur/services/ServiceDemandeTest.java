@@ -3,14 +3,14 @@ package org.ClAssignateur.services;
 import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
 
-import org.ClAssignateur.interfaces.DemandeResultatAssembleur;
-
-import java.util.UUID;
-import java.util.Optional;
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 import org.junit.Test;
 import org.junit.Before;
+import java.util.UUID;
+import java.util.Optional;
+import org.ClAssignateur.interfaces.DemandeDTO;
+import org.ClAssignateur.interfaces.DemandeDTOAssembleur;
+import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 
 public class ServiceDemandeTest {
 
@@ -21,18 +21,21 @@ public class ServiceDemandeTest {
 	private ServiceDemande serviceDemande;
 	private Demande demande;
 	private Optional<Demande> demandeOptional;
-	private DemandeResultatAssembleur demandeAssembleur;
+	private DemandeDTOAssembleur demandeAssembleur;
+	private DemandeDTO demandeDTO;
 
 	@Before
 	public void Initialisation() {
 		demandesEntrepot = mock(DemandesEntrepot.class);
-		demandeAssembleur = mock(DemandeResultatAssembleur.class);
+		demandeAssembleur = mock(DemandeDTOAssembleur.class);
+		demandeDTO = mock(DemandeDTO.class);
 		demande = mock(Demande.class);
 		demandeOptional = Optional.of(demande);
 		serviceDemande = new ServiceDemande(demandesEntrepot, demandeAssembleur);
 
 		given(demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR, UUID_DEMANDE))
 				.willReturn(demandeOptional);
+		given(demandeAssembleur.assemblerDemandeDTO(demande)).willReturn(demandeDTO);
 	}
 
 	@Test
@@ -44,13 +47,20 @@ public class ServiceDemandeTest {
 	@Test
 	public void quandGetInfoDemandePourCourrielEtIdCreeDTOAvecDemandeResultatAssembleur() {
 		serviceDemande.getInfoDemandePourCourrielEtId(COURRIEL_ORGANISATEUR, UUID_DEMANDE);
-		verify(demandeAssembleur).assemblerDemande(demande);
+		verify(demandeAssembleur).assemblerDemandeDTO(demande);
 	}
 
 	@Test(expected = DemandePasPresenteException.class)
-	public void quandGetInforDemandePourCourrielEtIdSiDemandePasDansEntrepotLanceException() {
+	public void quandGetInfoDemandePourCourrielEtIdSiDemandePasDansEntrepotLanceException() {
 		given(demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR, UUID_DEMANDE))
 				.willReturn(Optional.empty());
 		serviceDemande.getInfoDemandePourCourrielEtId(COURRIEL_ORGANISATEUR, UUID_DEMANDE);
+	}
+
+	@Test
+	public void quandGetInfoDemandePourCourrielEtIdRetourneDemandeResultatAssembler() {
+		DemandeDTO demandeDTORecu = serviceDemande.getInfoDemandePourCourrielEtId(COURRIEL_ORGANISATEUR,
+				UUID_DEMANDE);
+		assertEquals(demandeDTO, demandeDTORecu);
 	}
 }

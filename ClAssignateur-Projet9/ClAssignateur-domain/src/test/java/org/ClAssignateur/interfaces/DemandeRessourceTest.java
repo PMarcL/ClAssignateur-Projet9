@@ -16,7 +16,7 @@ public class DemandeRessourceTest {
 
 	private Demande demande;
 	private DemandesEntrepot demandeEntrepot;
-	private DemandeResultatAssembleur demandeResultatAssembleur;
+	private DemandeDTOAssembleur demandeResultatAssembleur;
 
 	private DemandeRessource ressource;
 
@@ -24,7 +24,7 @@ public class DemandeRessourceTest {
 	public void initialement() {
 		demande = mock(Demande.class);
 		demandeEntrepot = mock(DemandesEntrepot.class);
-		demandeResultatAssembleur = mock(DemandeResultatAssembleur.class);
+		demandeResultatAssembleur = mock(DemandeDTOAssembleur.class);
 		ressource = new DemandeRessource(demandeEntrepot, demandeResultatAssembleur);
 	}
 
@@ -39,7 +39,7 @@ public class DemandeRessourceTest {
 	public void etantDonneDemandeExisteQuandAfficherDemandeAlorsAssemblerEstAppeler() {
 		faireEnSorteQueDemandeExiste();
 		ressource.afficherDemande(UN_UUID.toString());
-		verify(demandeResultatAssembleur).assemblerDemande(demande);
+		verify(demandeResultatAssembleur).assemblerDemandeDTO(demande);
 	}
 
 	@Test(expected = HTTPException.class)

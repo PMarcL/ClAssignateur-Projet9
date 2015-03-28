@@ -17,7 +17,7 @@ public class DemandeTest {
 
 	private final String TITRE_REUNION = "Mon titre";
 	private final Employe ORGANISATEUR = new Employe("courriel");
-	private final Employe RESPONSABLE = new Employe("courriel");
+	private final Employe RESPONSABLE = new Employe("courriel@hotmail.com");
 	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
 	private final int NOMBRE_DE_PARTICIPANTS = 10;
 	private final int NOMBRE_DE_PARTICIPANTS_DANS_GROUPE_PAR_DEFAUT = 0;
@@ -80,7 +80,7 @@ public class DemandeTest {
 	@Test
 	public void demandePossedeIntialementLeChampsResponsableCommeDefiniDansGroupe() {
 		Employe responsable = demande.getResponsable();
-		assertEquals(RESPONSABLE, responsable);
+		assertTrue(RESPONSABLE.equals(responsable));
 	}
 
 	@Test
@@ -127,6 +127,22 @@ public class DemandeTest {
 		Boolean demandesSontEgales = demandeDifferente.equals(demande);
 
 		assertFalse(demandesSontEgales);
+	}
+
+	@Test
+	public void etantDonneUneDemandePasAssigneeQuandGetSalleAssigneeRetourneSalleNull() {
+		Salle salleRecu = demande.getSalleAssignee();
+		assertEquals(null, salleRecu);
+	}
+
+	@Test
+	public void etantDonneUneDemandeAssigneeQuandGetSalleAssigneeRetournSalleAssignee() {
+		Salle salleAssignee = new Salle(CAPACITE_SALLE, NOM_SALLE);
+		demande.placerReservation(salleAssignee);
+
+		Salle salleRecu = demande.getSalleAssignee();
+
+		assertEquals(salleAssignee, salleRecu);
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {
