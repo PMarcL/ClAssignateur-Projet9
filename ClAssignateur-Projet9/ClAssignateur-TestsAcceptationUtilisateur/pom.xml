@@ -18,7 +18,6 @@
       <groupId>org.jbehave</groupId>
       <artifactId>jbehave-core</artifactId>
       <version>4.0-beta-11</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ca.ulaval.glo4002</groupId>
@@ -62,7 +61,7 @@
         <executions>
           <execution>
             <configuration>
-              <mainClass> org.ClAssignateur.testsAcceptationUtilisateur.RecitsClAssignateur </mainClass>
+              <mainClass>org.ClAssignateur.testsAcceptationUtilisateur.RecitsClAssignateur</mainClass>
             </configuration>
             <goals>
               <goal>java</goal>
