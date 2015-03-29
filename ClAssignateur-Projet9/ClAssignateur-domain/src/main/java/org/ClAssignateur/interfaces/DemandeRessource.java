@@ -1,22 +1,18 @@
 package org.ClAssignateur.interfaces;
 
-import org.ClAssignateur.domain.groupe.Groupe;
-
-import org.ClAssignateur.domain.demandes.Demande;
-import java.util.ArrayList;
-import org.ClAssignateur.domain.groupe.Employe;
 import javax.ws.rs.GET;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response.Status;
-import org.ClAssignateur.services.DemandePasPresenteException;
 import javax.ws.rs.core.Response;
-import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.services.ServiceDemande;
-import java.util.UUID;
-import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
+import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
+import org.ClAssignateur.services.DemandePasPresenteException;
+import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.services.ServiceDemande;
+import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+import java.util.UUID;
 
 @Path("/demandes")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +22,7 @@ public class DemandeRessource {
 
 	public DemandeRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
+		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
 		DemandeDTOAssembleur demandeDTOAssembleur = new DemandeDTOAssembleur();
 		this.serviceDemande = new ServiceDemande(demandeEntrepot, demandeDTOAssembleur);
 	}
