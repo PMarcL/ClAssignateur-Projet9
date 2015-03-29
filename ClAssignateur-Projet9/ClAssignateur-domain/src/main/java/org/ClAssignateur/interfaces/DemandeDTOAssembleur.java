@@ -10,6 +10,7 @@ public class DemandeDTOAssembleur {
 		dto.courrielOrganisateur = demande.getOrganisateur().courriel;
 		dto.salleDemandee = demande.getSalleAssignee().getNom();
 		dto.salleAssignee = demande.getSalleAssignee().getNom();
+		dto.etatDemande = demande.getEtat();
 		return dto;
 	}
 

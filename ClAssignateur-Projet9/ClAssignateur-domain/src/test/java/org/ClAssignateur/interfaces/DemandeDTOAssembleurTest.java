@@ -3,6 +3,8 @@ package org.ClAssignateur.interfaces;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
+import org.ClAssignateur.domain.demandes.Demande.STATUT_DEMANDE;
+
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +17,7 @@ public class DemandeDTOAssembleurTest {
 	private final int NB_PARTICIPANT = 12;
 	private final String COURRIEL_ORGANISATEUR = "courriel@courriel.com";
 	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
+	private final STATUT_DEMANDE ETAT_DEMANDE = STATUT_DEMANDE.EN_ATTENTE;
 
 	private Demande demande;
 	private Salle salle;
@@ -27,6 +30,7 @@ public class DemandeDTOAssembleurTest {
 		given(demande.getNbParticipants()).willReturn(NB_PARTICIPANT);
 		given(demande.getOrganisateur()).willReturn(ORGANISATEUR);
 		given(demande.getSalleAssignee()).willReturn(salle);
+		given(demande.getEtat()).willReturn(ETAT_DEMANDE);
 		assembleur = new DemandeDTOAssembleur();
 	}
 
@@ -52,5 +56,11 @@ public class DemandeDTOAssembleurTest {
 	public void etantDonneUneDemandeAvecSalleAssigneeXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecSalleDemandeeX() {
 		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
 		assertEquals(salle.getNom(), demandeDTOResultat.salleDemandee);
+	}
+
+	@Test
+	public void etantDonneUneDemandeAvecUnSatutXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecStatutX() {
+		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
+		assertEquals(ETAT_DEMANDE, demandeDTOResultat.etatDemande);
 	}
 }

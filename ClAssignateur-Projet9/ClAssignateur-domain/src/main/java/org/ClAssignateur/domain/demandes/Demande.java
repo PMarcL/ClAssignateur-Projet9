@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Demande {
 
-	enum ETATS_DEMANDE {
+	public enum STATUT_DEMANDE {
 		EN_ATTENTE, ACCEPTE, REFUSE
 	}
 
@@ -18,7 +18,7 @@ public class Demande {
 	private String titre;
 	private Salle salleAssignee;
 	private UUID id;
-	private ETATS_DEMANDE etat;
+	private STATUT_DEMANDE etat;
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
@@ -26,7 +26,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
-		this.etat = ETATS_DEMANDE.EN_ATTENTE;
+		this.etat = STATUT_DEMANDE.EN_ATTENTE;
 	}
 
 	public Demande(Groupe groupe, String titre) {
@@ -35,7 +35,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
-		this.etat = ETATS_DEMANDE.EN_ATTENTE;
+		this.etat = STATUT_DEMANDE.EN_ATTENTE;
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre, Priorite priorite) {
@@ -44,7 +44,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
-		this.etat = ETATS_DEMANDE.EN_ATTENTE;
+		this.etat = STATUT_DEMANDE.EN_ATTENTE;
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre) {
@@ -53,7 +53,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
-		this.etat = ETATS_DEMANDE.EN_ATTENTE;
+		this.etat = STATUT_DEMANDE.EN_ATTENTE;
 	}
 
 	public Groupe getGroupe() {
@@ -74,12 +74,12 @@ public class Demande {
 	}
 
 	public void placerReservation(Salle salleAssignee) {
-		this.etat = ETATS_DEMANDE.ACCEPTE;
+		this.etat = STATUT_DEMANDE.ACCEPTE;
 		this.salleAssignee = salleAssignee;
 	}
 
 	public void annulerReservation() {
-		this.etat = ETATS_DEMANDE.REFUSE;
+		this.etat = STATUT_DEMANDE.REFUSE;
 		this.salleAssignee = null;
 	}
 
@@ -125,7 +125,7 @@ public class Demande {
 		}
 	}
 
-	public ETATS_DEMANDE getEtat() {
+	public STATUT_DEMANDE getEtat() {
 		return etat;
 	}
 }
