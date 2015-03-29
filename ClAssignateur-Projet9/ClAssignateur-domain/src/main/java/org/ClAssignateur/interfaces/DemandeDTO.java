@@ -1,9 +1,5 @@
 package org.ClAssignateur.interfaces;
 
-import java.util.UUID;
-import org.ClAssignateur.domain.salles.Salle;
-import org.ClAssignateur.domain.groupe.Employe;
-
 public class DemandeDTO {
 
 	public String salleDemandee;

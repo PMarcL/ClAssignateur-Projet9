@@ -3,8 +3,9 @@ package org.ClAssignateur.domain.demandes;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import java.util.UUID;
+import org.ClAssignateur.domain.demandes.Demande.ETATS_DEMANDE;
 
+import java.util.UUID;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.salles.Salle;
@@ -66,6 +67,12 @@ public class DemandeTest {
 	}
 
 	@Test
+	public void demandeEstInitialementEnAttente() {
+		ETATS_DEMANDE resultat = demande.getEtat();
+		assertEquals(ETATS_DEMANDE.EN_ATTENTE, resultat);
+	}
+
+	@Test
 	public void demandePossedeInitialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
 		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
 
@@ -104,12 +111,14 @@ public class DemandeTest {
 		Salle salle = new Salle(CAPACITE_SALLE, NOM_SALLE);
 		demande.placerReservation(salle);
 		assertTrue(demande.estAssignee());
+		assertEquals(ETATS_DEMANDE.ACCEPTE, demande.getEtat());
 	}
 
 	@Test
 	public void quandAnnulerReservationDemandeEstPasAssignee() {
 		demande.annulerReservation();
 		assertFalse(demande.estAssignee());
+		assertEquals(ETATS_DEMANDE.REFUSE, demande.getEtat());
 	}
 
 	@Test

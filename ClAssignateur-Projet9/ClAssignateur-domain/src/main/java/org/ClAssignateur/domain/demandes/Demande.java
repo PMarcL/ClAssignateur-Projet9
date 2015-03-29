@@ -9,11 +9,16 @@ import java.util.List;
 
 public class Demande {
 
+	enum ETATS_DEMANDE {
+		EN_ATTENTE, ACCEPTE, REFUSE
+	}
+
 	private Groupe groupe;
 	private Priorite priorite;
 	private String titre;
 	private Salle salleAssignee;
 	private UUID id;
+	private ETATS_DEMANDE etat;
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
@@ -21,6 +26,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
+		this.etat = ETATS_DEMANDE.EN_ATTENTE;
 	}
 
 	public Demande(Groupe groupe, String titre) {
@@ -29,6 +35,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
+		this.etat = ETATS_DEMANDE.EN_ATTENTE;
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre, Priorite priorite) {
@@ -37,6 +44,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
+		this.etat = ETATS_DEMANDE.EN_ATTENTE;
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre) {
@@ -45,6 +53,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
+		this.etat = ETATS_DEMANDE.EN_ATTENTE;
 	}
 
 	public Groupe getGroupe() {
@@ -65,10 +74,12 @@ public class Demande {
 	}
 
 	public void placerReservation(Salle salleAssignee) {
+		this.etat = ETATS_DEMANDE.ACCEPTE;
 		this.salleAssignee = salleAssignee;
 	}
 
 	public void annulerReservation() {
+		this.etat = ETATS_DEMANDE.REFUSE;
 		this.salleAssignee = null;
 	}
 
@@ -112,5 +123,9 @@ public class Demande {
 			Demande autreDemande = (Demande) other;
 			return this.getID().equals(autreDemande.getID());
 		}
+	}
+
+	public ETATS_DEMANDE getEtat() {
+		return etat;
 	}
 }
