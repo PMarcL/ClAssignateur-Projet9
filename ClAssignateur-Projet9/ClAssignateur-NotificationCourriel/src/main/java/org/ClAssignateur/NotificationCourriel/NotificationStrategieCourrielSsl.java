@@ -40,7 +40,7 @@ public class NotificationStrategieCourrielSsl implements NotificationStrategie {
 
 	private void envoyerCourriel(String contenu, Employe destinataire) throws MessagingException {
 		Session sessionSmtp = configurerSessionSmtp();
-		Message message = creerMessage(sessionSmtp, destinataire.getCourriel(), contenu);
+		Message message = creerMessage(sessionSmtp, destinataire.courriel, contenu);
 		Transport.send(message);
 	}
 
