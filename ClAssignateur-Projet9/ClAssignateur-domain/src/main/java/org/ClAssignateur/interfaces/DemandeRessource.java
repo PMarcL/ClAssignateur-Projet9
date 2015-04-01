@@ -49,8 +49,9 @@ public class DemandeRessource {
 
 	@GET
 	@Path("/{courriel}")
-	public Response obtenirDemandesPourCourriel(@PathParam(value = "courriel") String courriel) {
-		return Response.ok().build();
+	public Response afficherDemandesPourCourriel(@PathParam(value = "courriel") String courriel) {
+		DemandesPourCourrielDTO demandes = this.serviceDemande.getDemandesPourCourriel(courriel);
+		return Response.ok(demandes).build();
 	}
 
 }

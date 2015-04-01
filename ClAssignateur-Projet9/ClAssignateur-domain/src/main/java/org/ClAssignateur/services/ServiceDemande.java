@@ -1,7 +1,8 @@
 package org.ClAssignateur.services;
 
-import org.ClAssignateur.interfaces.DemandeDTOAssembleur;
+import org.ClAssignateur.interfaces.DemandesPourCourrielDTO;
 
+import org.ClAssignateur.interfaces.DemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.DemandeDTO;
 import java.util.UUID;
 import java.util.Optional;
@@ -26,6 +27,10 @@ public class ServiceDemande {
 					"Aucune demande ne correspond au courriel d'organisateur ou au numéro donné.");
 		}
 		return demandeAssembleur.assemblerDemandeDTO(demande.get());
+	}
+
+	public DemandesPourCourrielDTO getDemandesPourCourriel(String courrielOrganisateur) {
+		return null;
 	}
 
 }
