@@ -16,8 +16,12 @@ public interface DemandesEntrepot {
 
 	public Optional<Demande> obtenirDemandeSelonTitre(String titre);
 
-	public List<Demande> obtenirDemandesSelonOrganisateur(Employe organisateur);
+	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateurEtId(String courriel, UUID id);
 
 	public int taille();
+
+	public void retirerDemande(Demande demande);
+
+	public void vider();
 
 }

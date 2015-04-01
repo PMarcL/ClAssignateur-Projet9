@@ -3,8 +3,9 @@ package org.ClAssignateur.domain.demandes;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import java.util.UUID;
+import org.ClAssignateur.domain.demandes.Demande.STATUT_DEMANDE;
 
+import java.util.UUID;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.salles.Salle;
@@ -17,7 +18,7 @@ public class DemandeTest {
 
 	private final String TITRE_REUNION = "Mon titre";
 	private final Employe ORGANISATEUR = new Employe("courriel");
-	private final Employe RESPONSABLE = new Employe("courriel");
+	private final Employe RESPONSABLE = new Employe("courriel@hotmail.com");
 	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
 	private final int NOMBRE_DE_PARTICIPANTS = 10;
 	private final int NOMBRE_DE_PARTICIPANTS_DANS_GROUPE_PAR_DEFAUT = 0;
@@ -66,6 +67,12 @@ public class DemandeTest {
 	}
 
 	@Test
+	public void demandeEstInitialementEnAttente() {
+		STATUT_DEMANDE resultat = demande.getEtat();
+		assertEquals(STATUT_DEMANDE.EN_ATTENTE, resultat);
+	}
+
+	@Test
 	public void demandePossedeInitialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
 		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
 
@@ -80,7 +87,7 @@ public class DemandeTest {
 	@Test
 	public void demandePossedeIntialementLeChampsResponsableCommeDefiniDansGroupe() {
 		Employe responsable = demande.getResponsable();
-		assertEquals(RESPONSABLE, responsable);
+		assertTrue(RESPONSABLE.equals(responsable));
 	}
 
 	@Test
@@ -104,12 +111,14 @@ public class DemandeTest {
 		Salle salle = new Salle(CAPACITE_SALLE, NOM_SALLE);
 		demande.placerReservation(salle);
 		assertTrue(demande.estAssignee());
+		assertEquals(STATUT_DEMANDE.ACCEPTE, demande.getEtat());
 	}
 
 	@Test
 	public void quandAnnulerReservationDemandeEstPasAssignee() {
 		demande.annulerReservation();
 		assertFalse(demande.estAssignee());
+		assertEquals(STATUT_DEMANDE.REFUSE, demande.getEtat());
 	}
 
 	@Test
@@ -127,6 +136,22 @@ public class DemandeTest {
 		Boolean demandesSontEgales = demandeDifferente.equals(demande);
 
 		assertFalse(demandesSontEgales);
+	}
+
+	@Test
+	public void etantDonneUneDemandePasAssigneeQuandGetSalleAssigneeRetourneSalleNull() {
+		Salle salleRecu = demande.getSalleAssignee();
+		assertEquals(null, salleRecu);
+	}
+
+	@Test
+	public void etantDonneUneDemandeAssigneeQuandGetSalleAssigneeRetournSalleAssignee() {
+		Salle salleAssignee = new Salle(CAPACITE_SALLE, NOM_SALLE);
+		demande.placerReservation(salleAssignee);
+
+		Salle salleRecu = demande.getSalleAssignee();
+
+		assertEquals(salleAssignee, salleRecu);
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {

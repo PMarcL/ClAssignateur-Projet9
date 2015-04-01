@@ -14,7 +14,7 @@ public class RESTMain {
 	}
 
 	private void demarrerServeur() throws Exception {
-		int httpPort = 8081;
+		int httpPort = 8080;
 
 		Server server = new Server(httpPort);
 		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/");
