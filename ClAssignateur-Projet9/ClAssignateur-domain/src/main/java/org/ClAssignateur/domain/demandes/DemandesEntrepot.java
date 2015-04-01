@@ -1,7 +1,5 @@
 package org.ClAssignateur.domain.demandes;
 
-import org.ClAssignateur.domain.groupe.Employe;
-
 import java.util.UUID;
 import java.util.List;
 import java.util.Optional;

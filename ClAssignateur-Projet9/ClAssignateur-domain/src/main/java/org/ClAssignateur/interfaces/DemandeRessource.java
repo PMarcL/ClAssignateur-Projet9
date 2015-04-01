@@ -47,4 +47,10 @@ public class DemandeRessource {
 		}
 	}
 
+	@GET
+	@Path("/{courriel}")
+	public Response obtenirDemandesPourCourriel(@PathParam(value = "courriel") String courriel) {
+		return Response.ok().build();
+	}
+
 }
