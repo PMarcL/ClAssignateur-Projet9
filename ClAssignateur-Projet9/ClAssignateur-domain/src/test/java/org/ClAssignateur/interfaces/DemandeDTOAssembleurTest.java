@@ -2,6 +2,10 @@ package org.ClAssignateur.interfaces;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+
+import java.util.List;
+
+import java.util.ArrayList;
 import org.ClAssignateur.domain.demandes.Demande.STATUT_DEMANDE;
 import java.util.UUID;
 import org.junit.Before;
@@ -12,7 +16,8 @@ import org.ClAssignateur.domain.demandes.Demande;
 
 public class DemandeDTOAssembleurTest {
 
-	private static final String AUCUNE_SALLE = "Aucune salle";
+	private static final int NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE = 1;
+	private static final String AUCUNE_SALLE = null;
 	private static final String NOM_DE_SALLE = "nom_de_salle";
 	private final int NB_PARTICIPANT = 12;
 	private final String COURRIEL_ORGANISATEUR = "courriel@courriel.com";
@@ -21,11 +26,13 @@ public class DemandeDTOAssembleurTest {
 
 	private Demande demande;
 	private Salle salle;
+	private List<Demande> demandes;
 	private DemandeDTOAssembleur assembleur;
 
 	@Before
 	public void initialisation() {
 		demande = mock(Demande.class);
+		demandes = new ArrayList<Demande>();
 		given(demande.getNbParticipants()).willReturn(NB_PARTICIPANT);
 		given(demande.getOrganisateur()).willReturn(ORGANISATEUR);
 		given(demande.getEtat()).willReturn(ETAT_DEMANDE);
@@ -61,6 +68,59 @@ public class DemandeDTOAssembleurTest {
 	public void etantDonneUneDemandeAvecUnSatutXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecStatutX() {
 		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
 		assertEquals(ETAT_DEMANDE, demandeDTOResultat.statutDemande);
+	}
+
+	@Test
+	public void etantDonneUneListeVideDeDemandeAssembleDemandesPourCourrielDonneUnDTOAvecDeuxChampVide() {
+
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+
+		assertTrue(demandePourCourrielDTO.assignees.isEmpty());
+		assertTrue(demandePourCourrielDTO.autres.isEmpty());
+	}
+
+	@Test
+	public void etantDonneUneListeAvecUneSalleAssigneAlorsAssembleDemandesPourCourrielDonneUnDTOAvecUneDemandeDansAssigne() {
+		faireEnSorteQuuneSalleSoitAssigne();
+		List<Demande> listeDemandes = new ArrayList<Demande>();
+		listeDemandes.add(demande);
+
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(listeDemandes);
+		int nombre_de_demandes_actuel = demandePourCourrielDTO.assignees.size();
+
+		assertEquals(NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE, nombre_de_demandes_actuel);
+	}
+
+	@Test
+	public void etantDonneUneListeAvecUneSalleAssigneAlorsAssembleDemandesPourCourrielDonneUnDTOAvecAutresVide() {
+		faireEnSorteQuuneSalleSoitAssigne();
+		List<Demande> listeDemandes = new ArrayList<Demande>();
+		listeDemandes.add(demande);
+
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(listeDemandes);
+
+		assertTrue(demandePourCourrielDTO.autres.isEmpty());
+	}
+
+	@Test
+	public void etantDonneUneListeAvecUneSallePasAssigneAlorsAssembleDemandesPourCourrielDonneUnDTOAvecAutresUneDemandeDansAutres() {
+		List<Demande> listeDemandes = new ArrayList<Demande>();
+		listeDemandes.add(demande);
+
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(listeDemandes);
+		int nombre_de_demandes_actuel = demandePourCourrielDTO.autres.size();
+
+		assertEquals(NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE, nombre_de_demandes_actuel);
+	}
+
+	@Test
+	public void etantDonneUneListeAvecUneSalleAutresAlorsAssembleDemandesPourCourrielDonneUnDTOAvecAssignesVide() {
+		List<Demande> listeDemandes = new ArrayList<Demande>();
+		listeDemandes.add(demande);
+
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(listeDemandes);
+
+		assertTrue(demandePourCourrielDTO.assignees.isEmpty());
 	}
 
 	private void faireEnSorteQuuneSalleSoitAssigne() {

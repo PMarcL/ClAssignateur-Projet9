@@ -1,7 +1,8 @@
 package org.ClAssignateur.services;
 
-import org.ClAssignateur.interfaces.DemandesPourCourrielDTO;
+import java.util.List;
 
+import org.ClAssignateur.interfaces.DemandesPourCourrielDTO;
 import org.ClAssignateur.interfaces.DemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.DemandeDTO;
 import java.util.UUID;
@@ -30,7 +31,8 @@ public class ServiceDemande {
 	}
 
 	public DemandesPourCourrielDTO getDemandesPourCourriel(String courrielOrganisateur) {
-		return null;
+		List<Demande> demandes = demandesEntrepot.obtenirDemandesSelonCourriel(courrielOrganisateur);
+		return demandeAssembleur.assemblerDemandesPourCourrielDTO(demandes);
 	}
 
 }

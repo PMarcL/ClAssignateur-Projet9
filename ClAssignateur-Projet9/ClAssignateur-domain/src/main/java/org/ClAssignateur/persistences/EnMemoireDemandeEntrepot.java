@@ -70,4 +70,9 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 		demandes.clear();
 	}
 
+	@Override
+	public List<Demande> obtenirDemandesSelonCourriel(String courriel) {
+		return demandes.stream().filter(x -> x.getOrganisateur().courriel.equals(courriel))
+				.collect(Collectors.toList());
+	}
 }

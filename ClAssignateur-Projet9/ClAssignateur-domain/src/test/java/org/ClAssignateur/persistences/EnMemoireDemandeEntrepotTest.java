@@ -13,6 +13,7 @@ import org.junit.Test;
 
 public class EnMemoireDemandeEntrepotTest {
 
+	private static final int UNE_SEULE_DEMANDE = 1;
 	private static final int TAILLE_INITIALE_DESIREE = 0;
 	private static final Object TAILLE_APRES_AJOUT_INITIAL_DESIREE = 1;
 	private static final Object TAILLE_APRES_SECOND_AJOUT_DESIREE = 2;
@@ -143,6 +144,30 @@ public class EnMemoireDemandeEntrepotTest {
 	}
 
 	@Test
+	public void etantDonneUnEntrepotAvecUneDemandeDunOrganisateurLorsqueObtenirDemandeSelonCourrielDonneUneSeulDemande() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR);
+		int taille_actuelle = demandesRecus.size();
+
+		assertEquals(UNE_SEULE_DEMANDE, taille_actuelle);
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecUneDemandeDunOrganisateurLorsqueObtenirDemandeSelonOrganisateurRetourneLaDemande() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR);
+		assertTrue(demandesRecus.contains(demande));
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecPlusieursDemandeQuiNAppartiennePasALorganisateurAlorsDonneUneListVide() {
+		ajouterTroisDemandeALEntrepot();
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR);
+		assertTrue(demandesRecus.isEmpty());
+	}
+
+	@Test
 	public void etantDonneUnEntrepotAvecUneDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdRetourneLaDemande() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
 		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR,
@@ -206,6 +231,10 @@ public class EnMemoireDemandeEntrepotTest {
 		UUID unId = UUID.randomUUID();
 		given(demande.getID()).willReturn(unId);
 		given(demande.getTitre()).willReturn(UN_TITRE);
+
+		Employe organisateurNonCorrespondant = new Employe(COURRIEL_NON_CORRESPONDANT);
+		given(demande.getOrganisateur()).willReturn(organisateurNonCorrespondant);
+
 		return demande;
 	}
 }
