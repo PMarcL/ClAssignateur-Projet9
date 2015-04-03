@@ -75,4 +75,18 @@ public class DemandeRessourceTest {
 		ressource.afficherDemandesPourCourriel(COURRIEL_ORGANISATEUR);
 		verify(service).getDemandesPourCourriel(COURRIEL_ORGANISATEUR);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void lorsqueAfficherDemandesPourCourrielSiErreurAlorsStatusDevraitEtre500() {
+		given(service.getDemandesPourCourriel(COURRIEL_ORGANISATEUR)).willThrow(Exception.class);
+		Response reponse = ressource.afficherDemandesPourCourriel(COURRIEL_ORGANISATEUR);
+		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), reponse.getStatus());
+	}
+
+	@Test
+	public void lorsqueAfficherDemandesPourCourrielLorsqueRecoitListeDemandeDevraitEtreOk() {
+		Response reponse = ressource.afficherDemandesPourCourriel(COURRIEL_ORGANISATEUR);
+		assertEquals(Status.OK.getStatusCode(), reponse.getStatus());
+	}
 }
