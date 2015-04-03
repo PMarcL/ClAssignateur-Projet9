@@ -17,12 +17,14 @@ import org.ClAssignateur.domain.demandes.Demande;
 public class DemandeDTOAssembleurTest {
 
 	private static final int NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE = 1;
+	private static final int NB_DE_DEMANDE_ASSIGNEE = 5;
+	private static final int NB_DE_DEMANDE_AUTRES = 10;
 	private static final String AUCUNE_SALLE = null;
 	private static final String NOM_DE_SALLE = "nom_de_salle";
 	private final int NB_PARTICIPANT = 12;
 	private final String COURRIEL_ORGANISATEUR = "courriel@courriel.com";
 	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
-	private final STATUT_DEMANDE ETAT_DEMANDE = STATUT_DEMANDE.EN_ATTENTE;
+	private final STATUT_DEMANDE ETAT_EN_ATTENTE = STATUT_DEMANDE.EN_ATTENTE;
 
 	private Demande demande;
 	private Salle salle;
@@ -35,7 +37,7 @@ public class DemandeDTOAssembleurTest {
 		demandes = new ArrayList<Demande>();
 		given(demande.getNbParticipants()).willReturn(NB_PARTICIPANT);
 		given(demande.getOrganisateur()).willReturn(ORGANISATEUR);
-		given(demande.getEtat()).willReturn(ETAT_DEMANDE);
+		given(demande.getEtat()).willReturn(ETAT_EN_ATTENTE);
 		assembleur = new DemandeDTOAssembleur();
 	}
 
@@ -67,7 +69,7 @@ public class DemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneDemandeAvecUnSatutXQuandAssembleDemandeAlorsRetourneDemandeDTOAvecStatutX() {
 		DemandeDTO demandeDTOResultat = assembleur.assemblerDemandeDTO(demande);
-		assertEquals(ETAT_DEMANDE, demandeDTOResultat.statutDemande);
+		assertEquals(ETAT_EN_ATTENTE, demandeDTOResultat.statutDemande);
 	}
 
 	@Test
@@ -119,7 +121,35 @@ public class DemandeDTOAssembleurTest {
 
 	@Test
 	public void etantDonneUneListeAvecPlusieursDemandesAssigneesAlorsAssembleDemandesPourCourrielRetourneBonNombreDemandesAssignees() {
+		ajouterPlusieursDemandesAssignees();
+		DemandesPourCourrielDTO resultat = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		assertEquals(NB_DE_DEMANDE_ASSIGNEE, resultat.assignees.size());
 
+	}
+
+	@Test
+	public void etantDonneUneListeAvecPlusieursDemandesEnAttenteAlorsAssembleDemandesPourCourrielRetourneBonNombreDemandesAutres() {
+		ajouterPlusieursDemandesAutres();
+		DemandesPourCourrielDTO resultat = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		assertEquals(NB_DE_DEMANDE_AUTRES, resultat.autres.size());
+	}
+
+	private void ajouterPlusieursDemandesAutres() {
+		for (int i = 0; i < NB_DE_DEMANDE_AUTRES; i++) {
+			demandes.add(demande);
+		}
+	}
+
+	private void ajouterPlusieursDemandesAssignees() {
+		salle = new Salle(NB_PARTICIPANT, NOM_DE_SALLE);
+		for (int i = 0; i < NB_DE_DEMANDE_ASSIGNEE; i++) {
+			Demande demandeAssignee = mock(Demande.class);
+			given(demandeAssignee.getNbParticipants()).willReturn(NB_PARTICIPANT);
+			given(demandeAssignee.getOrganisateur()).willReturn(ORGANISATEUR);
+			given(demandeAssignee.estAssignee()).willReturn(true);
+			given(demandeAssignee.getSalleAssignee()).willReturn(salle);
+			demandes.add(demandeAssignee);
+		}
 	}
 
 	private void faireEnSorteQuuneSalleSoitAssigne() {
