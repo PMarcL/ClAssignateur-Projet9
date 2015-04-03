@@ -1,9 +1,11 @@
 package org.ClAssignateur.persistences;
 
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 
@@ -66,5 +68,11 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	@Override
 	public void vider() {
 		demandes.clear();
+	}
+
+	@Override
+	public List<Demande> obtenirDemandesSelonCourriel(String courriel) {
+		return demandes.stream().filter(x -> x.getOrganisateur().courriel.equals(courriel))
+				.collect(Collectors.toList());
 	}
 }

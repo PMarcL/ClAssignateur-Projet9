@@ -47,4 +47,15 @@ public class DemandeRessource {
 		}
 	}
 
+	@GET
+	@Path("/{courriel}")
+	public Response afficherDemandesPourCourriel(@PathParam(value = "courriel") String courriel) {
+		try {
+			DemandesPourCourrielDTO demandes = this.serviceDemande.getDemandesPourCourriel(courriel);
+			return Response.ok(demandes).build();
+		} catch (Exception ex) {
+			return Response.serverError().build();
+		}
+	}
+
 }
