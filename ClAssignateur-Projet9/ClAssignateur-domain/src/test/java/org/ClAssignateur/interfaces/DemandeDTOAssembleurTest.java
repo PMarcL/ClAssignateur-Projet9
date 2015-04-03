@@ -82,10 +82,9 @@ public class DemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneListeAvecUneSalleAssigneAlorsAssembleDemandesPourCourrielDonneUnDTOAvecUneDemandeDansAssigne() {
 		faireEnSorteQuuneSalleSoitAssigne();
-		List<Demande> listeDemandes = new ArrayList<Demande>();
-		listeDemandes.add(demande);
+		demandes.add(demande);
 
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(listeDemandes);
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 		int nombre_de_demandes_actuel = demandePourCourrielDTO.assignees.size();
 
 		assertEquals(NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE, nombre_de_demandes_actuel);
@@ -94,20 +93,18 @@ public class DemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneListeAvecUneSalleAssigneAlorsAssembleDemandesPourCourrielDonneUnDTOAvecAutresVide() {
 		faireEnSorteQuuneSalleSoitAssigne();
-		List<Demande> listeDemandes = new ArrayList<Demande>();
-		listeDemandes.add(demande);
+		demandes.add(demande);
 
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(listeDemandes);
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 
 		assertTrue(demandePourCourrielDTO.autres.isEmpty());
 	}
 
 	@Test
 	public void etantDonneUneListeAvecUneSallePasAssigneAlorsAssembleDemandesPourCourrielDonneUnDTOAvecAutresUneDemandeDansAutres() {
-		List<Demande> listeDemandes = new ArrayList<Demande>();
-		listeDemandes.add(demande);
+		demandes.add(demande);
 
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(listeDemandes);
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 		int nombre_de_demandes_actuel = demandePourCourrielDTO.autres.size();
 
 		assertEquals(NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE, nombre_de_demandes_actuel);
@@ -115,12 +112,14 @@ public class DemandeDTOAssembleurTest {
 
 	@Test
 	public void etantDonneUneListeAvecUneSalleAutresAlorsAssembleDemandesPourCourrielDonneUnDTOAvecAssignesVide() {
-		List<Demande> listeDemandes = new ArrayList<Demande>();
-		listeDemandes.add(demande);
-
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(listeDemandes);
-
+		demandes.add(demande);
+		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 		assertTrue(demandePourCourrielDTO.assignees.isEmpty());
+	}
+
+	@Test
+	public void etantDonneUneListeAvecPlusieursDemandesAssigneesAlorsAssembleDemandesPourCourrielRetourneBonNombreDemandesAssignees() {
+
 	}
 
 	private void faireEnSorteQuuneSalleSoitAssigne() {
