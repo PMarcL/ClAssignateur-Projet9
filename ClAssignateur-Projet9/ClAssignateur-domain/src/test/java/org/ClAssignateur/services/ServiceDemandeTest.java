@@ -55,49 +55,4 @@ public class ServiceDemandeTest {
 		verify(demandesEntrepot).obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR);
 	}
 
-	/*
-	 * @Test public void
-	 * quandGetInfoDemandePourCourrielEtIdCreeDTOAvecDemandeResultatAssembleur()
-	 * { serviceDemande.getInfoDemandePourCourrielEtId(COURRIEL_ORGANISATEUR,
-	 * UUID_DEMANDE); verify(demandeAssembleur).assemblerDemandeDTO(demande); }
-	 */
-
-	/*
-	 * @Test public void
-	 * quandGetInfoDemandePourCourrielEtIdRetourneDemandeResultatAssembler() {
-	 * DemandeDTO demandeDTORecu =
-	 * serviceDemande.getInfoDemandePourCourrielEtId(COURRIEL_ORGANISATEUR,
-	 * UUID_DEMANDE); assertEquals(demandeDTO, demandeDTORecu); }
-	 */
-
-	/*
-	 * @Test public void
-	 * quandGetDemandesPourCourrielCreeDTOAvecDemandeAssembleur() {
-	 * List<Demande> demandes = new ArrayList<Demande>();
-	 * given(demandesEntrepot.
-	 * obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR)
-	 * ).willReturn(demandes);
-	 * 
-	 * serviceDemande.getDemandesPourCourriel(COURRIEL_ORGANISATEUR);
-	 * 
-	 * verify(demandeAssembleur).assemblerDemandesPourCourrielDTO(demandes); }
-	 */
-
-	/*
-	 * @Test public void
-	 * quandgetDemandesPourCourrielDonneDTOFourniParAssembleur() {
-	 * DemandesPourCourrielDTO dto_voulu = new DemandesPourCourrielDTO();
-	 * List<Demande> demandes = new ArrayList<Demande>();
-	 * given(demandesEntrepot.
-	 * obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR)
-	 * ).willReturn(demandes);
-	 * given(demandeAssembleur.assemblerDemandesPourCourrielDTO
-	 * (demandes)).willReturn(dto_voulu);
-	 * 
-	 * DemandesPourCourrielDTO dto =
-	 * serviceDemande.getDemandesPourCourriel(COURRIEL_ORGANISATEUR);
-	 * 
-	 * assertEquals(dto_voulu, dto); }
-	 */
-
 }
