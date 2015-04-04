@@ -23,7 +23,7 @@ public class DemandeRessourceTest {
 	private ServiceDemande service;
 	private DemandeDTOAssembleur assembleur;
 	private DemandeDTO dto;
-	private DemandesPourCourrielDTO demandesCourrielDTO;
+	private DemandesOrganisateurDTO demandesCourrielDTO;
 	private Demande demande;
 
 	private DemandeRessource ressource;
@@ -33,7 +33,7 @@ public class DemandeRessourceTest {
 		service = mock(ServiceDemande.class);
 		assembleur = mock(DemandeDTOAssembleur.class);
 		demande = mock(Demande.class);
-		demandesCourrielDTO = mock(DemandesPourCourrielDTO.class);
+		demandesCourrielDTO = mock(DemandesOrganisateurDTO.class);
 		dto = mock(DemandeDTO.class);
 		demandes = new ArrayList<Demande>();
 		given(service.getDemandesPourCourriel(COURRIEL_ORGANISATEUR)).willReturn(demandes);

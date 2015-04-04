@@ -41,9 +41,9 @@ public class DemandeRessource {
 	@Path("/{courriel}/{numero_demande}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response afficherDemande(@PathParam(value = "courriel") String courriel,
-			@PathParam(value = "numero_demande") String numero_demande) {
+			@PathParam(value = "numeroDemande") String numeroDemande) {
 		try {
-			UUID idDemande = UUID.fromString(numero_demande);
+			UUID idDemande = UUID.fromString(numeroDemande);
 			Demande demande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
 			DemandeDTO demandeDTO = assembleur.assemblerDemandeDTO(demande);
 			return Response.ok(demandeDTO).build();
@@ -53,9 +53,8 @@ public class DemandeRessource {
 			return Response.serverError().build();
 		}
 	}
-	
+
 	@POST
-	@Path("/ajouter/{nombrePersonne}/{courrielOrganisateur}/{priorite}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ajouterDemande(@PathParam(value = "nombrePersonne") int nombrePersonne,
 			@PathParam(value = "courrielOrganisateur") String courrielOrganisateur,
@@ -65,8 +64,7 @@ public class DemandeRessource {
 			demandeDTO.courrielOrganisateur = courrielOrganisateur;
 			demandeDTO.priorite = priorite;
 			demandeDTO.nombrePersonne = nombrePersonne;
-			
-			
+
 			return Response.ok(demandeDTO).build();
 		} catch (DemandePasPresenteException ex) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -74,14 +72,13 @@ public class DemandeRessource {
 			return Response.serverError().build();
 		}
 	}
-	
 
 	@GET
 	@Path("/{courriel}")
 	public Response afficherDemandesPourCourriel(@PathParam(value = "courriel") String courriel) {
 		try {
 			List<Demande> demandesPourCourriel = this.serviceDemande.getDemandesPourCourriel(courriel);
-			DemandesPourCourrielDTO demandes = assembleur.assemblerDemandesPourCourrielDTO(demandesPourCourriel);
+			DemandesOrganisateurDTO demandes = assembleur.assemblerDemandesPourCourrielDTO(demandesPourCourriel);
 			return Response.ok(demandes).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();

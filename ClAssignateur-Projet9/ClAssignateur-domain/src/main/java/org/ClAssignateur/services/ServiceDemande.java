@@ -2,7 +2,7 @@ package org.ClAssignateur.services;
 
 import java.util.List;
 
-import org.ClAssignateur.interfaces.DemandesPourCourrielDTO;
+import org.ClAssignateur.interfaces.DemandesOrganisateurDTO;
 import org.ClAssignateur.interfaces.DemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.DemandeDTO;
 import java.util.UUID;

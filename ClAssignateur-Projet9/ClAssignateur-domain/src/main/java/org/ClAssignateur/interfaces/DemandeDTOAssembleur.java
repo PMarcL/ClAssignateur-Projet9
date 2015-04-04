@@ -26,8 +26,8 @@ public class DemandeDTOAssembleur {
 		}
 	}
 
-	public DemandesPourCourrielDTO assemblerDemandesPourCourrielDTO(List<Demande> demandes) {
-		DemandesPourCourrielDTO dto = new DemandesPourCourrielDTO();
+	public DemandesOrganisateurDTO assemblerDemandesPourCourrielDTO(List<Demande> demandes) {
+		DemandesOrganisateurDTO dto = new DemandesOrganisateurDTO();
 		dto.assignees = creerListeAssigne(demandes);
 		dto.autres = creerListeAutres(demandes);
 		return dto;

@@ -75,7 +75,7 @@ public class DemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneListeVideDeDemandeAssembleDemandesPourCourrielDonneUnDTOAvecDeuxChampVide() {
 
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		DemandesOrganisateurDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 
 		assertTrue(demandePourCourrielDTO.assignees.isEmpty());
 		assertTrue(demandePourCourrielDTO.autres.isEmpty());
@@ -86,7 +86,7 @@ public class DemandeDTOAssembleurTest {
 		faireEnSorteQuuneSalleSoitAssigne();
 		demandes.add(demande);
 
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		DemandesOrganisateurDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 		int nombre_de_demandes_actuel = demandePourCourrielDTO.assignees.size();
 
 		assertEquals(NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE, nombre_de_demandes_actuel);
@@ -97,7 +97,7 @@ public class DemandeDTOAssembleurTest {
 		faireEnSorteQuuneSalleSoitAssigne();
 		demandes.add(demande);
 
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		DemandesOrganisateurDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 
 		assertTrue(demandePourCourrielDTO.autres.isEmpty());
 	}
@@ -106,7 +106,7 @@ public class DemandeDTOAssembleurTest {
 	public void etantDonneUneListeAvecUneSallePasAssigneAlorsAssembleDemandesPourCourrielDonneUnDTOAvecAutresUneDemandeDansAutres() {
 		demandes.add(demande);
 
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		DemandesOrganisateurDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 		int nombre_de_demandes_actuel = demandePourCourrielDTO.autres.size();
 
 		assertEquals(NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE, nombre_de_demandes_actuel);
@@ -115,14 +115,14 @@ public class DemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneListeAvecUneSalleAutresAlorsAssembleDemandesPourCourrielDonneUnDTOAvecAssignesVide() {
 		demandes.add(demande);
-		DemandesPourCourrielDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		DemandesOrganisateurDTO demandePourCourrielDTO = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 		assertTrue(demandePourCourrielDTO.assignees.isEmpty());
 	}
 
 	@Test
 	public void etantDonneUneListeAvecPlusieursDemandesAssigneesAlorsAssembleDemandesPourCourrielRetourneBonNombreDemandesAssignees() {
 		ajouterPlusieursDemandesAssignees();
-		DemandesPourCourrielDTO resultat = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		DemandesOrganisateurDTO resultat = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 		assertEquals(NB_DE_DEMANDE_ASSIGNEE, resultat.assignees.size());
 
 	}
@@ -130,7 +130,7 @@ public class DemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneListeAvecPlusieursDemandesEnAttenteAlorsAssembleDemandesPourCourrielRetourneBonNombreDemandesAutres() {
 		ajouterPlusieursDemandesAutres();
-		DemandesPourCourrielDTO resultat = assembleur.assemblerDemandesPourCourrielDTO(demandes);
+		DemandesOrganisateurDTO resultat = assembleur.assemblerDemandesPourCourrielDTO(demandes);
 		assertEquals(NB_DE_DEMANDE_AUTRES, resultat.autres.size());
 	}
 
