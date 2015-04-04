@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NotificateurTest {
-	private static final String TITRE_DEMANDE = "RENCONTRE_COURS_QUALITE";
+	private final String TITRE_DEMANDE = "RENCONTRE_COURS_QUALITE";
 	private String NOM_DE_SALLE = "A100";
 	private Salle SALLE = new Salle(100, NOM_DE_SALLE);
 

@@ -16,8 +16,8 @@ import java.util.List;
 
 public class DemandeRessourceTest {
 
-	private static final String COURRIEL_ORGANISATEUR = "courriel";
-	private static final String NUMERO_DEMANDE = UUID.randomUUID().toString();
+	private final String COURRIEL_ORGANISATEUR = "courriel";
+	private final String NUMERO_DEMANDE = UUID.randomUUID().toString();
 
 	private List<Demande> demandes;
 	private ServiceDemande service;

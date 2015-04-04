@@ -15,11 +15,11 @@ import org.ClAssignateur.domain.demandes.Demande;
 
 public class InformationsDemandeDTOAssembleurTest {
 
-	private static final int NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE = 1;
-	private static final int NB_DE_DEMANDE_ASSIGNEE = 5;
-	private static final int NB_DE_DEMANDE_AUTRES = 10;
-	private static final String AUCUNE_SALLE = null;
-	private static final String NOM_DE_SALLE = "nom_de_salle";
+	private final int NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE = 1;
+	private final int NB_DE_DEMANDE_ASSIGNEE = 5;
+	private final int NB_DE_DEMANDE_AUTRES = 10;
+	private final String AUCUNE_SALLE = null;
+	private final String NOM_DE_SALLE = "nom_de_salle";
 	private final int NB_PARTICIPANT = 12;
 	private final String COURRIEL_ORGANISATEUR = "courriel@courriel.com";
 	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);

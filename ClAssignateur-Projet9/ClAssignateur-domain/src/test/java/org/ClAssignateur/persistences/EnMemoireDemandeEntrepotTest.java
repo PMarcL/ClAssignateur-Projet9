@@ -13,16 +13,16 @@ import org.junit.Test;
 
 public class EnMemoireDemandeEntrepotTest {
 
-	private static final int UNE_SEULE_DEMANDE = 1;
-	private static final int TAILLE_INITIALE_DESIREE = 0;
-	private static final Object TAILLE_APRES_AJOUT_INITIAL_DESIREE = 1;
-	private static final Object TAILLE_APRES_SECOND_AJOUT_DESIREE = 2;
-	private static final UUID UN_UUID = UUID.randomUUID();
-	private static final String UN_TITRE_DISTINCT = "titre_distinct";
-	private static final String UN_TITRE = "titre";
-	private static final String COURRIEL_ORGANISATEUR = "courriel@hotmail.com";
-	private static final String COURRIEL_NON_CORRESPONDANT = "courriel2@hotmail.com";
-	private static final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
+	private final int UNE_SEULE_DEMANDE = 1;
+	private final int TAILLE_INITIALE_DESIREE = 0;
+	private final Object TAILLE_APRES_AJOUT_INITIAL_DESIREE = 1;
+	private final Object TAILLE_APRES_SECOND_AJOUT_DESIREE = 2;
+	private final UUID UN_UUID = UUID.randomUUID();
+	private final String UN_TITRE_DISTINCT = "titre_distinct";
+	private final String UN_TITRE = "titre";
+	private final String COURRIEL_ORGANISATEUR = "courriel@hotmail.com";
+	private final String COURRIEL_NON_CORRESPONDANT = "courriel2@hotmail.com";
+	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
 
 	private Demande demande;
 

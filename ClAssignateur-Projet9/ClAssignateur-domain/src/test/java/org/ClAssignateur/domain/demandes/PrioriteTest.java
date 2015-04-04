@@ -8,11 +8,11 @@ import org.junit.Test;
 
 public class PrioriteTest {
 
-	Priorite prioriteTresBasse;
-	Priorite prioriteBasse;
-	Priorite prioriteMoyenne;
-	Priorite prioriteHaute;
-	Priorite prioriteTresHaute;
+	private Priorite prioriteTresBasse;
+	private Priorite prioriteBasse;
+	private Priorite prioriteMoyenne;
+	private Priorite prioriteHaute;
+	private Priorite prioriteTresHaute;
 
 	@Before
 	public void creerPriorites() {
