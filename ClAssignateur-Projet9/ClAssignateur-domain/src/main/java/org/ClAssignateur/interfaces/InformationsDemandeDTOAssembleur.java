@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.ClAssignateur.domain.demandes.Demande;
 
-public class DemandeDTOAssembleur {
+public class InformationsDemandeDTOAssembleur {
 
 	private static final String AUCUNE_SALLE = null;
 
-	public DemandeDTO assemblerDemandeDTO(Demande demande) {
-		DemandeDTO dto = new DemandeDTO();
+	public InformationsDemandeDTO assemblerInformationsDemandeDTO(Demande demande) {
+		InformationsDemandeDTO dto = new InformationsDemandeDTO();
 		dto.nombrePersonne = demande.getNbParticipants();
 		dto.courrielOrganisateur = demande.getOrganisateur().courriel;
 		setValeurSalleAssigne(demande, dto);
@@ -18,7 +18,7 @@ public class DemandeDTOAssembleur {
 		return dto;
 	}
 
-	private void setValeurSalleAssigne(Demande demande, DemandeDTO dto) {
+	private void setValeurSalleAssigne(Demande demande, InformationsDemandeDTO dto) {
 		if (!demande.estAssignee()) {
 			dto.salleAssigne = AUCUNE_SALLE;
 		} else {
@@ -26,29 +26,29 @@ public class DemandeDTOAssembleur {
 		}
 	}
 
-	public DemandesOrganisateurDTO assemblerDemandesPourCourrielDTO(List<Demande> demandes) {
-		DemandesOrganisateurDTO dto = new DemandesOrganisateurDTO();
+	public OrganisateurDemandesDTO assemblerOrganisateurDemandesDTO(List<Demande> demandes) {
+		OrganisateurDemandesDTO dto = new OrganisateurDemandesDTO();
 		dto.assignees = creerListeAssigne(demandes);
 		dto.autres = creerListeAutres(demandes);
 		return dto;
 	}
 
-	private ArrayList<DemandeDTO> creerListeAutres(List<Demande> demandes) {
+	private ArrayList<InformationsDemandeDTO> creerListeAutres(List<Demande> demandes) {
 		List<Demande> listeDemandeAutres = demandes.stream().filter(x -> !x.estAssignee()).collect(Collectors.toList());
 		return creerListeDemandeDTOAPartirListeDemandes(listeDemandeAutres);
 	}
 
-	private ArrayList<DemandeDTO> creerListeAssigne(List<Demande> demandes) {
+	private ArrayList<InformationsDemandeDTO> creerListeAssigne(List<Demande> demandes) {
 		List<Demande> listeDemandeAssignees = demandes.stream().filter(x -> x.estAssignee())
 				.collect(Collectors.toList());
 		return creerListeDemandeDTOAPartirListeDemandes(listeDemandeAssignees);
 	}
 
-	private ArrayList<DemandeDTO> creerListeDemandeDTOAPartirListeDemandes(List<Demande> listeDemandes) {
-		ArrayList<DemandeDTO> listeDemandeDTO = new ArrayList<DemandeDTO>();
+	private ArrayList<InformationsDemandeDTO> creerListeDemandeDTOAPartirListeDemandes(List<Demande> listeDemandes) {
+		ArrayList<InformationsDemandeDTO> listeDemandeDTO = new ArrayList<InformationsDemandeDTO>();
 
 		for (Demande demande : listeDemandes) {
-			DemandeDTO dto = this.assemblerDemandeDTO(demande);
+			InformationsDemandeDTO dto = this.assemblerInformationsDemandeDTO(demande);
 			listeDemandeDTO.add(dto);
 		}
 

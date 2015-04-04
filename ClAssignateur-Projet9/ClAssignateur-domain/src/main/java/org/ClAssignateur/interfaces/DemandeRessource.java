@@ -23,16 +23,16 @@ import java.util.UUID;
 public class DemandeRessource {
 
 	private ServiceDemande serviceDemande;
-	private DemandeDTOAssembleur assembleur;
+	private InformationsDemandeDTOAssembleur assembleur;
 
 	public DemandeRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		this.assembleur = new DemandeDTOAssembleur();
+		this.assembleur = new InformationsDemandeDTOAssembleur();
 		this.serviceDemande = new ServiceDemande(demandeEntrepot);
 	}
 
-	public DemandeRessource(ServiceDemande service, DemandeDTOAssembleur assembleur) {
+	public DemandeRessource(ServiceDemande service, InformationsDemandeDTOAssembleur assembleur) {
 		this.serviceDemande = service;
 		this.assembleur = assembleur;
 	}
@@ -40,12 +40,12 @@ public class DemandeRessource {
 	@GET
 	@Path("/{courriel}/{numero_demande}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response afficherDemande(@PathParam(value = "courriel") String courriel,
+	public Response afficherUneDemande(@PathParam(value = "courriel") String courriel,
 			@PathParam(value = "numeroDemande") String numeroDemande) {
 		try {
 			UUID idDemande = UUID.fromString(numeroDemande);
 			Demande demande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
-			DemandeDTO demandeDTO = assembleur.assemblerDemandeDTO(demande);
+			InformationsDemandeDTO demandeDTO = assembleur.assemblerInformationsDemandeDTO(demande);
 			return Response.ok(demandeDTO).build();
 		} catch (DemandePasPresenteException ex) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -54,31 +54,32 @@ public class DemandeRessource {
 		}
 	}
 
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response ajouterDemande(@PathParam(value = "nombrePersonne") int nombrePersonne,
-			@PathParam(value = "courrielOrganisateur") String courrielOrganisateur,
-			@PathParam(value = "priorite") int priorite) {
-		try {
-			DemandeDTO demandeDTO = new DemandeDTO();
-			demandeDTO.courrielOrganisateur = courrielOrganisateur;
-			demandeDTO.priorite = priorite;
-			demandeDTO.nombrePersonne = nombrePersonne;
-
-			return Response.ok(demandeDTO).build();
-		} catch (DemandePasPresenteException ex) {
-			return Response.status(Status.NOT_FOUND).build();
-		} catch (Exception ex) {
-			return Response.serverError().build();
-		}
-	}
+	// @POST
+	// @Produces(MediaType.APPLICATION_JSON)
+	// public Response ajouterDemande(@PathParam(value = "nombrePersonne") int
+	// nombrePersonne,
+	// @PathParam(value = "courrielOrganisateur") String courrielOrganisateur,
+	// @PathParam(value = "priorite") int priorite) {
+	// try {
+	// InformationsDemandeDTO demandeDTO = new InformationsDemandeDTO();
+	// demandeDTO.courrielOrganisateur = courrielOrganisateur;
+	// demandeDTO.priorite = priorite;
+	// demandeDTO.nombrePersonne = nombrePersonne;
+	//
+	// return Response.ok(demandeDTO).build();
+	// } catch (DemandePasPresenteException ex) {
+	// return Response.status(Status.NOT_FOUND).build();
+	// } catch (Exception ex) {
+	// return Response.serverError().build();
+	// }
+	// }
 
 	@GET
 	@Path("/{courriel}")
-	public Response afficherDemandesPourCourriel(@PathParam(value = "courriel") String courriel) {
+	public Response afficherDemandesPourOrganisateur(@PathParam(value = "courriel") String courrielOrganisateur) {
 		try {
-			List<Demande> demandesPourCourriel = this.serviceDemande.getDemandesPourCourriel(courriel);
-			DemandesOrganisateurDTO demandes = assembleur.assemblerDemandesPourCourrielDTO(demandesPourCourriel);
+			List<Demande> demandesPourCourriel = this.serviceDemande.getDemandesPourCourriel(courrielOrganisateur);
+			OrganisateurDemandesDTO demandes = assembleur.assemblerOrganisateurDemandesDTO(demandesPourCourriel);
 			return Response.ok(demandes).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();

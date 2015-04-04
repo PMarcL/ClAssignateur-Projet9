@@ -6,13 +6,13 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import java.util.List;
-import org.ClAssignateur.interfaces.DemandesOrganisateurDTO;
+import org.ClAssignateur.interfaces.OrganisateurDemandesDTO;
 import org.junit.Test;
 import org.junit.Before;
 import java.util.UUID;
 import java.util.Optional;
-import org.ClAssignateur.interfaces.DemandeDTO;
-import org.ClAssignateur.interfaces.DemandeDTOAssembleur;
+import org.ClAssignateur.interfaces.InformationsDemandeDTO;
+import org.ClAssignateur.interfaces.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 
@@ -25,21 +25,21 @@ public class ServiceDemandeTest {
 	private ServiceDemande serviceDemande;
 	private Demande demande;
 	private Optional<Demande> demandeOptional;
-	private DemandeDTOAssembleur demandeAssembleur;
-	private DemandeDTO demandeDTO;
+	private InformationsDemandeDTOAssembleur demandeAssembleur;
+	private InformationsDemandeDTO demandeDTO;
 
 	@Before
 	public void Initialisation() {
 		demandesEntrepot = mock(DemandesEntrepot.class);
-		demandeAssembleur = mock(DemandeDTOAssembleur.class);
-		demandeDTO = mock(DemandeDTO.class);
+		demandeAssembleur = mock(InformationsDemandeDTOAssembleur.class);
+		demandeDTO = mock(InformationsDemandeDTO.class);
 		demande = mock(Demande.class);
 		demandeOptional = Optional.of(demande);
 		serviceDemande = new ServiceDemande(demandesEntrepot);
 
 		given(demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR, UUID_DEMANDE))
 				.willReturn(demandeOptional);
-		given(demandeAssembleur.assemblerDemandeDTO(demande)).willReturn(demandeDTO);
+		given(demandeAssembleur.assemblerInformationsDemandeDTO(demande)).willReturn(demandeDTO);
 	}
 
 	@Test

@@ -2,9 +2,9 @@ package org.ClAssignateur.services;
 
 import java.util.List;
 
-import org.ClAssignateur.interfaces.DemandesOrganisateurDTO;
-import org.ClAssignateur.interfaces.DemandeDTOAssembleur;
-import org.ClAssignateur.interfaces.DemandeDTO;
+import org.ClAssignateur.interfaces.OrganisateurDemandesDTO;
+import org.ClAssignateur.interfaces.InformationsDemandeDTOAssembleur;
+import org.ClAssignateur.interfaces.InformationsDemandeDTO;
 import java.util.UUID;
 import java.util.Optional;
 import org.ClAssignateur.domain.demandes.Demande;

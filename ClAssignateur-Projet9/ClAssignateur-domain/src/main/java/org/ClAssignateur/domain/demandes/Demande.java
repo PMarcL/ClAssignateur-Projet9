@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Demande {
 
-	public enum STATUT_DEMANDE {
-		EN_ATTENTE, ACCEPTE, REFUSE
+	public enum StatutDemande {
+		EN_ATTENTE, ACCEPTEE, REFUSEE
 	}
 
 	private Groupe groupe;
@@ -18,7 +18,7 @@ public class Demande {
 	private String titre;
 	private Salle salleAssignee;
 	private UUID id;
-	private STATUT_DEMANDE etat;
+	private StatutDemande etat;
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
@@ -26,7 +26,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
-		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+		this.etat = StatutDemande.EN_ATTENTE;
 	}
 
 	public Demande(Groupe groupe, String titre) {
@@ -35,7 +35,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
-		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+		this.etat = StatutDemande.EN_ATTENTE;
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre, Priorite priorite) {
@@ -44,7 +44,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
-		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+		this.etat = StatutDemande.EN_ATTENTE;
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre) {
@@ -53,7 +53,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
-		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+		this.etat = StatutDemande.EN_ATTENTE;
 	}
 
 	public Groupe getGroupe() {
@@ -74,12 +74,12 @@ public class Demande {
 	}
 
 	public void placerReservation(Salle salleAssignee) {
-		this.etat = STATUT_DEMANDE.ACCEPTE;
+		this.etat = StatutDemande.ACCEPTEE;
 		this.salleAssignee = salleAssignee;
 	}
 
 	public void annulerReservation() {
-		this.etat = STATUT_DEMANDE.REFUSE;
+		this.etat = StatutDemande.REFUSEE;
 		this.salleAssignee = null;
 	}
 
@@ -125,7 +125,7 @@ public class Demande {
 		}
 	}
 
-	public STATUT_DEMANDE getEtat() {
+	public StatutDemande getEtat() {
 		return etat;
 	}
 }
