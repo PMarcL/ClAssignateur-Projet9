@@ -7,11 +7,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
+import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.services.DemandePasPresenteException;
 import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.services.ServiceDemande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+import java.util.List;
 import java.util.UUID;
 
 @Path("/demandes")
@@ -19,16 +21,18 @@ import java.util.UUID;
 public class DemandeRessource {
 
 	private ServiceDemande serviceDemande;
+	private DemandeDTOAssembleur assembleur;
 
 	public DemandeRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		DemandeDTOAssembleur demandeDTOAssembleur = new DemandeDTOAssembleur();
-		this.serviceDemande = new ServiceDemande(demandeEntrepot, demandeDTOAssembleur);
+		this.assembleur = new DemandeDTOAssembleur();
+		this.serviceDemande = new ServiceDemande(demandeEntrepot);
 	}
 
-	public DemandeRessource(ServiceDemande service) {
+	public DemandeRessource(ServiceDemande service, DemandeDTOAssembleur assembleur) {
 		this.serviceDemande = service;
+		this.assembleur = assembleur;
 	}
 
 	@GET
@@ -38,7 +42,8 @@ public class DemandeRessource {
 			@PathParam(value = "numero_demande") String numero_demande) {
 		try {
 			UUID idDemande = UUID.fromString(numero_demande);
-			DemandeDTO demandeDTO = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
+			Demande demande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
+			DemandeDTO demandeDTO = assembleur.assemblerDemandeDTO(demande);
 			return Response.ok(demandeDTO).build();
 		} catch (DemandePasPresenteException ex) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -51,7 +56,8 @@ public class DemandeRessource {
 	@Path("/{courriel}")
 	public Response afficherDemandesPourCourriel(@PathParam(value = "courriel") String courriel) {
 		try {
-			DemandesPourCourrielDTO demandes = this.serviceDemande.getDemandesPourCourriel(courriel);
+			List<Demande> demandesPourCourriel = this.serviceDemande.getDemandesPourCourriel(courriel);
+			DemandesPourCourrielDTO demandes = assembleur.assemblerDemandesPourCourrielDTO(demandesPourCourriel);
 			return Response.ok(demandes).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();
