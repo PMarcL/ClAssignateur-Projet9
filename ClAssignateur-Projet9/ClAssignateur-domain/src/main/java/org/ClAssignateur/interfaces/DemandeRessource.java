@@ -1,5 +1,7 @@
 package org.ClAssignateur.interfaces;
 
+import javax.ws.rs.POST;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response.Status;
@@ -46,5 +48,27 @@ public class DemandeRessource {
 			return Response.serverError().build();
 		}
 	}
+	
+	@POST
+	@Path("/ajouter/{nombrePersonne}/{courrielOrganisateur}/{priorite}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response ajouterDemande(@PathParam(value = "nombrePersonne") int nombrePersonne,
+			@PathParam(value = "courrielOrganisateur") String courrielOrganisateur,
+			@PathParam(value = "priorite") int priorite) {
+		try {
+			DemandeDTO demandeDTO = new DemandeDTO();
+			demandeDTO.courrielOrganisateur = courrielOrganisateur;
+			demandeDTO.priorite = priorite;
+			demandeDTO.nombrePersonne = nombrePersonne;
+			
+			
+			return Response.ok(demandeDTO).build();
+		} catch (DemandePasPresenteException ex) {
+			return Response.status(Status.NOT_FOUND).build();
+		} catch (Exception ex) {
+			return Response.serverError().build();
+		}
+	}
+	
 
 }
