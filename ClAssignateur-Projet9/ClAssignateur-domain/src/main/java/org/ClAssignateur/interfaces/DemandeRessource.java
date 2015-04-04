@@ -36,7 +36,7 @@ public class DemandeRessource {
 	}
 
 	@GET
-	@Path("/afficher/{courriel}/{numero_demande}")
+	@Path("/{courriel}/{numero_demande}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response afficherDemande(@PathParam(value = "courriel") String courriel,
 			@PathParam(value = "numero_demande") String numero_demande) {
