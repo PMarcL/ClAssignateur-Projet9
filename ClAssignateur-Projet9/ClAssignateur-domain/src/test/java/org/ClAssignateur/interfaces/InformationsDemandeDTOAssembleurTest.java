@@ -7,7 +7,6 @@ import java.util.List;
 
 import java.util.ArrayList;
 import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
-import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.ClAssignateur.domain.groupe.Employe;
