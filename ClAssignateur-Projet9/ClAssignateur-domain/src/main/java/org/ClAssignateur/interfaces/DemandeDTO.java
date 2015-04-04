@@ -8,5 +8,6 @@ public class DemandeDTO {
 	public String courrielOrganisateur;
 	public STATUT_DEMANDE statutDemande;
 	public String salleAssigne;
+	public int priorite;
 
 }
