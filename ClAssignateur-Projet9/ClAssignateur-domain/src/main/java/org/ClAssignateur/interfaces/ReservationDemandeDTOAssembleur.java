@@ -21,8 +21,15 @@ public class ReservationDemandeDTOAssembleur {
 
 	private List<Employe> creerListeParticipants(ReservationDemandeDTO dto) {
 		List<Employe> participants = new ArrayList<Employe>();
-		for (String courrielParticipant : dto.courrielParticipants){
-			Employe participant = new Employe(courrielParticipant);
+		for (int indexParticipant = 0; indexParticipant < dto.nombrePersonnes; indexParticipant++){
+			Employe participant;
+			
+			if(indexParticipant < dto.courrielParticipants.size()){
+				participant = new Employe(dto.courrielParticipants.get(indexParticipant));
+			}else{
+				participant = new Employe("");
+			}
+			
 			participants.add(participant);
 		}
 		return participants;
