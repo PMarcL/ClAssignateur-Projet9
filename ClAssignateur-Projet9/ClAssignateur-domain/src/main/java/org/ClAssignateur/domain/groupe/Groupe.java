@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Groupe {
 
-	private Employe organisateur;
-	private Employe responsable;
-	private List<Employe> participants;
+	private final Employe organisateur;
+	private final Employe responsable;
+	private final List<Employe> participants;
 
 	public Groupe(Employe organisateur, Employe responsable, List<Employe> participants) {
 		this.organisateur = organisateur;
