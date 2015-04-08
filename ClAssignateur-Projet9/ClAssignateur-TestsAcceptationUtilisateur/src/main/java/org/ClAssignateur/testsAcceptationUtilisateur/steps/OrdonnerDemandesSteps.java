@@ -10,15 +10,18 @@ import org.ClAssignateur.domain.demandes.Priorite;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.notification.Notificateur;
-import org.ClAssignateur.domain.notification.NotificationEnConsole;
 import org.ClAssignateur.domain.salles.EnMemoireSallesEntrepot;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
 import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationSilencieuse;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.UUID;
 
 public class OrdonnerDemandesSteps {
 
@@ -26,6 +29,8 @@ public class OrdonnerDemandesSteps {
 			"responsable@hotmail.com"), new ArrayList<Employe>());
 	private final String TITRE_DEMANDE_PRIORITE_BASSE = "Demande basse priorite";
 	private final String TITRE_DEMANDE_PRIORITE_HAUTE = "Demande haute priorite";
+	private final UUID ID_DEMANDE_PRIORITE_BASSE = UUID.randomUUID();
+	private final UUID ID_DEMANDE_PRIORITE_HAUTE = UUID.randomUUID();
 
 	private EnMemoireDemandeEntrepot demandesTraitees;
 	private SallesEntrepot salles;
@@ -37,19 +42,21 @@ public class OrdonnerDemandesSteps {
 		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
 		salles = new EnMemoireSallesEntrepot();
 		salles.persister(new Salle(100, "PLT2770"));
-		assignateur = new AssignateurSalle(conteneurDemandes, salles, new Notificateur(new NotificationEnConsole()),
+		assignateur = new AssignateurSalle(conteneurDemandes, salles, new Notificateur(new NotificationSilencieuse()),
 				new SelectionSalleOptimaleStrategie());
 	}
 
 	@Given("une demande à priorité basse en attente")
 	public void givenUneDemandeAPrioriteBasse() {
-		Demande demandeBassePriorite = new Demande(GROUPE, TITRE_DEMANDE_PRIORITE_BASSE, Priorite.basse());
+		Demande demandeBassePriorite = new Demande(ID_DEMANDE_PRIORITE_BASSE, GROUPE, TITRE_DEMANDE_PRIORITE_BASSE,
+				Priorite.basse());
 		assignateur.ajouterDemande(demandeBassePriorite);
 	}
 
 	@Given("une demande à priorité haute en attente")
 	public void givenUneDemandeAPrioriteHaute() {
-		Demande demandeHautePriorite = new Demande(GROUPE, TITRE_DEMANDE_PRIORITE_HAUTE, Priorite.haute());
+		Demande demandeHautePriorite = new Demande(ID_DEMANDE_PRIORITE_HAUTE, GROUPE, TITRE_DEMANDE_PRIORITE_HAUTE,
+				Priorite.haute());
 		assignateur.ajouterDemande(demandeHautePriorite);
 	}
 
@@ -66,7 +73,10 @@ public class OrdonnerDemandesSteps {
 	@Then("la demande à priorité haute est traitée avant celle à priorité basse")
 	public void thenLaDemandeAPrioriteHauteEstTraiteeAvantCelleAPrioriteBasse() {
 		Demande derniereDemandeTraitee = demandesTraitees.getDerniereDemandePersistee();
-		assertTrue(TITRE_DEMANDE_PRIORITE_BASSE.equals(derniereDemandeTraitee.getTitre()));
+		Optional<Demande> demandeHautePriorite = demandesTraitees.obtenirDemandeSelonId(ID_DEMANDE_PRIORITE_HAUTE);
+
+		assertTrue(demandeHautePriorite.isPresent());
+		assertEquals(ID_DEMANDE_PRIORITE_BASSE, derniereDemandeTraitee.getID());
 	}
 
 	@Then("les demandes sont traitées selon leur ordre d'arrivée")
