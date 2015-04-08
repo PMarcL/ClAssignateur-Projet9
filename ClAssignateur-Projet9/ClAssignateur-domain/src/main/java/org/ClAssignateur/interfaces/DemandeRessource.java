@@ -21,18 +21,22 @@ import java.util.UUID;
 public class DemandeRessource {
 
 	private ServiceDemande serviceDemande;
-	private InformationsDemandeDTOAssembleur assembleur;
+	private InformationsDemandeDTOAssembleur infosDemandesAssembleur;
+	private OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur;
 
 	public DemandeRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		this.assembleur = new InformationsDemandeDTOAssembleur();
+		this.infosDemandesAssembleur = new InformationsDemandeDTOAssembleur();
+		this.organisateurDemandesAssembleur = new OrganisateurDemandesDTOAssembleur(infosDemandesAssembleur);
 		this.serviceDemande = new ServiceDemande(demandeEntrepot);
 	}
 
-	public DemandeRessource(ServiceDemande service, InformationsDemandeDTOAssembleur assembleur) {
+	public DemandeRessource(ServiceDemande service, InformationsDemandeDTOAssembleur infosDemandesAssembleur,
+			OrganisateurDemandesDTOAssembleur orgDemandesAssembleur) {
 		this.serviceDemande = service;
-		this.assembleur = assembleur;
+		this.infosDemandesAssembleur = infosDemandesAssembleur;
+		this.organisateurDemandesAssembleur = orgDemandesAssembleur;
 	}
 
 	@GET
@@ -43,7 +47,7 @@ public class DemandeRessource {
 		try {
 			UUID idDemande = UUID.fromString(numeroDemande);
 			Demande demande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
-			InformationsDemandeDTO demandeDTO = assembleur.assemblerInformationsDemandeDTO(demande);
+			InformationsDemandeDTO demandeDTO = infosDemandesAssembleur.assemblerInformationsDemandeDTO(demande);
 			return Response.ok(demandeDTO).build();
 		} catch (DemandePasPresenteException ex) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -77,7 +81,8 @@ public class DemandeRessource {
 	public Response afficherDemandesPourOrganisateur(@PathParam(value = "courriel") String courrielOrganisateur) {
 		try {
 			List<Demande> demandesPourCourriel = this.serviceDemande.getDemandesPourCourriel(courrielOrganisateur);
-			OrganisateurDemandesDTO demandes = assembleur.assemblerOrganisateurDemandesDTO(demandesPourCourriel);
+			OrganisateurDemandesDTO demandes = organisateurDemandesAssembleur
+					.assemblerOrganisateurDemandesDTO(demandesPourCourriel);
 			return Response.ok(demandes).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();

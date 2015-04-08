@@ -11,6 +11,7 @@ public class Employe {
 		if (!(o instanceof Employe)) {
 			return false;
 		}
+
 		Employe employe = (Employe) o;
 		return this.courriel.equals(employe.courriel);
 	}

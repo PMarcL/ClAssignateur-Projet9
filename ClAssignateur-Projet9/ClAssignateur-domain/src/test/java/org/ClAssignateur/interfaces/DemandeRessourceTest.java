@@ -21,7 +21,8 @@ public class DemandeRessourceTest {
 
 	private List<Demande> demandes;
 	private ServiceDemande service;
-	private InformationsDemandeDTOAssembleur assembleur;
+	private InformationsDemandeDTOAssembleur infosDemandesAssembleur;
+	private OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur;
 	private InformationsDemandeDTO dto;
 	private Demande demande;
 
@@ -30,14 +31,15 @@ public class DemandeRessourceTest {
 	@Before
 	public void initialement() {
 		service = mock(ServiceDemande.class);
-		assembleur = mock(InformationsDemandeDTOAssembleur.class);
+		infosDemandesAssembleur = mock(InformationsDemandeDTOAssembleur.class);
+		organisateurDemandesAssembleur = mock(OrganisateurDemandesDTOAssembleur.class);
 		demande = mock(Demande.class);
 		mock(OrganisateurDemandesDTO.class);
 		dto = mock(InformationsDemandeDTO.class);
 		demandes = new ArrayList<Demande>();
 		given(service.getDemandesPourCourriel(COURRIEL_ORGANISATEUR)).willReturn(demandes);
 
-		ressource = new DemandeRessource(service, assembleur);
+		ressource = new DemandeRessource(service, infosDemandesAssembleur, organisateurDemandesAssembleur);
 	}
 
 	@Test
@@ -50,7 +52,7 @@ public class DemandeRessourceTest {
 	public void etantDonneDemandeExisteAlorsConstruitLeDTO() {
 		faireEnSorteQueDemandeExiste();
 		ressource.afficherUneDemande(COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
-		verify(assembleur).assemblerInformationsDemandeDTO(demande);
+		verify(infosDemandesAssembleur).assemblerInformationsDemandeDTO(demande);
 	}
 
 	@Test
@@ -70,7 +72,7 @@ public class DemandeRessourceTest {
 	private void faireEnSorteQueDemandeExiste() {
 		given(service.getInfoDemandePourCourrielEtId(COURRIEL_ORGANISATEUR, UUID.fromString(NUMERO_DEMANDE)))
 				.willReturn(demande);
-		given(assembleur.assemblerInformationsDemandeDTO(demande)).willReturn(dto);
+		given(infosDemandesAssembleur.assemblerInformationsDemandeDTO(demande)).willReturn(dto);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -107,7 +109,7 @@ public class DemandeRessourceTest {
 	@Test
 	public void lorsqueAfficherDemandesPourCourrielLorsqueRecoitListeDemandesDevraitConstruireDTO() {
 		ressource.afficherDemandesPourOrganisateur(COURRIEL_ORGANISATEUR);
-		verify(assembleur).assemblerOrganisateurDemandesDTO(demandes);
+		verify(organisateurDemandesAssembleur).assemblerOrganisateurDemandesDTO(demandes);
 	}
 
 	@Test
