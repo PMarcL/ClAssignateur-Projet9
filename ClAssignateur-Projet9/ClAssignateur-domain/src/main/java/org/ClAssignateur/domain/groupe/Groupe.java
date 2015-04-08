@@ -9,12 +9,6 @@ public class Groupe {
 	private Employe organisateur;
 	private Employe responsable;
 	private List<Employe> participants;
-
-	public Groupe(Employe organisateur, int NbParticipants) {
-		this.organisateur = organisateur;
-		this.responsable = organisateur;
-		this.participants = new ArrayList<Employe>(NbParticipants);
-	}
 	
 	public Groupe(Employe organisateur, Employe responsable, List<Employe> participants) {
 		this.organisateur = organisateur;

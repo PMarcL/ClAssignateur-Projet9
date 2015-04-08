@@ -1,18 +1,30 @@
 package org.ClAssignateur.interfaces;
 
-import org.ClAssignateur.domain.groupe.Employe;
+import java.util.ArrayList;
 
+import java.util.List;
+import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.demandes.Demande;
 
 public class ReservationDemandeDTOAssembleur {
 
 	public Demande assemblerDemande(ReservationDemandeDTO dto) {
-		Employe organisateur = new Employe(dto.courrielOrganisateur);
-		Groupe groupe = new Groupe(organisateur, dto.nombrePersonnes);
 		String titre = creerTitreDemande(dto);
+		List<Employe> participants = creerListeParticipants(dto);
+		Employe organisateur = new Employe(dto.courrielOrganisateur);
+		Groupe groupe = new Groupe(organisateur,organisateur,participants);
 
 		return new Demande(groupe, titre);
+	}
+
+	private List<Employe> creerListeParticipants(ReservationDemandeDTO dto) {
+		List<Employe> participants = new ArrayList<Employe>();
+		for (String courrielParticipant : dto.courrielParticipants){
+			Employe participant = new Employe(courrielParticipant);
+			participants.add(participant);
+		}
+		return participants;
 	}
 
 	private String creerTitreDemande(ReservationDemandeDTO dto) {
