@@ -10,7 +10,7 @@ public class Priorite {
 
 	private int valeurPriorite;
 
-	private Priorite(int valeurPriorite) {
+	public Priorite(int valeurPriorite) {
 		this.valeurPriorite = valeurPriorite;
 	}
 

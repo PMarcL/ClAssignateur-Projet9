@@ -1,7 +1,8 @@
 package org.ClAssignateur.interfaces;
 
-import java.util.ArrayList;
+import org.ClAssignateur.domain.demandes.Priorite;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
@@ -14,8 +15,8 @@ public class ReservationDemandeDTOAssembleur {
 		List<Employe> participants = creerListeParticipants(dto);
 		Employe organisateur = new Employe(dto.courrielOrganisateur);
 		Groupe groupe = new Groupe(organisateur,organisateur,participants);
-
-		return new Demande(groupe, titre);
+		Priorite priorite = new Priorite(dto.priorite);
+		return new Demande(groupe, titre ,priorite);
 	}
 
 	private List<Employe> creerListeParticipants(ReservationDemandeDTO dto) {
