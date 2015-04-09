@@ -4,8 +4,6 @@ import javax.ws.rs.Consumes;
 
 import java.net.URI;
 import javax.ws.rs.POST;
-import javax.ws.rs.GET;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
@@ -17,7 +15,6 @@ import org.ClAssignateur.services.DemandePasPresenteException;
 import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.services.ServiceDemande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
-import java.util.List;
 import java.util.UUID;
 
 @Path("/demandes")

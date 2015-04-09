@@ -1,34 +1,31 @@
 package org.ClAssignateur.interfaces;
 
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
 import org.ClAssignateur.domain.demandes.Priorite;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
-import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
 import org.junit.Before;
 import org.junit.Test;
 import org.ClAssignateur.domain.groupe.Employe;
-import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.demandes.Demande;
 
 public class ReservationDemandeAssembleurTest {
 
 	private final int NB_PERSONNES = 5;
 	private final String COURRIEL_ORGANISATEUR = "courrielOrganisateur@courriel.com";
-	private final int PRIORITE_MOYENNE = 3 ;
-	private final List<String> COURRIEL_PARTICIPANTS = Collections.unmodifiableList(
-		    new ArrayList<String>() {
-				private static final long serialVersionUID = 1L;
-			{
-		        add("courriel1@courriel.com");
-		        add("courriel2@courriel.com");
-		        add("courriel3@courriel.com");
-		    }});
+	private final int PRIORITE_MOYENNE = 3;
+	private final List<String> COURRIEL_PARTICIPANTS = Collections.unmodifiableList(new ArrayList<String>() {
+		private static final long serialVersionUID = 1L;
+		{
+			add("courriel1@courriel.com");
+			add("courriel2@courriel.com");
+			add("courriel3@courriel.com");
+		}
+	});
 
 	private Demande demandePrioriteMoyenne;
-	
+
 	private ReservationDemandeAssembleur assembleur;
 	private ReservationDemandeDTO demandeDTO;
 
@@ -40,38 +37,38 @@ public class ReservationDemandeAssembleurTest {
 		demandeDTO.priorite = PRIORITE_MOYENNE;
 		demandeDTO.participantsCourriels = COURRIEL_PARTICIPANTS;
 		assembleur = new ReservationDemandeAssembleur();
-		
+
 		demandePrioriteMoyenne = new Demande(null, null, Priorite.moyenne());
 	}
-	
+
 	@Test
-	public void etantDonneUnDemandeDTOAvecUnNombreDePersonnesXQuandAssembleDemandeAlorsRetourneDemandeAvecNombreDeParticipantsX(){
+	public void etantDonneUnDemandeDTOAvecUnNombreDePersonnesXQuandAssembleDemandeAlorsRetourneDemandeAvecNombreDeParticipantsX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
 		assertEquals(NB_PERSONNES, demandeResultat.getNbParticipants());
 	}
-	
+
 	@Test
-	public void etantDonneUnDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielOrganisateurX(){
+	public void etantDonneUnDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielOrganisateurX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
 		assertEquals(COURRIEL_ORGANISATEUR, demandeResultat.getOrganisateur().courriel);
 	}
-	
+
 	@Test
-	public void etantDonneUnDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielResponsableX(){
+	public void etantDonneUnDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielResponsableX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
 		assertEquals(COURRIEL_ORGANISATEUR, demandeResultat.getResponsable().courriel);
 	}
-	
+
 	@Test
-	public void etantDonneUnDemandeDTOAvecPrioriteXQuandAssembleDemandeAlorsRetourneDemandeAvecPrioriteX(){
+	public void etantDonneUnDemandeDTOAvecPrioriteXQuandAssembleDemandeAlorsRetourneDemandeAvecPrioriteX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
 		assertTrue(demandeResultat.estAussiPrioritaire(demandePrioriteMoyenne));
 	}
-	
+
 	@Test
-	public void etantDonneUnDemandeDTOLaListeDeCourrielDeParticipantsQuandAssembleDemandeAlorsRetourneDemandeAvecDesParticipantsAvecLesCourriels(){
+	public void etantDonneUnDemandeDTOLaListeDeCourrielDeParticipantsQuandAssembleDemandeAlorsRetourneDemandeAvecDesParticipantsAvecLesCourriels() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		
+
 		List<Object> listeCourrielParticipants = getListeCourrielParticipants(demandeResultat);
 		assertTrue(listeCourrielParticipants.containsAll(COURRIEL_PARTICIPANTS));
 	}

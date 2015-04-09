@@ -1,7 +1,5 @@
 package org.ClAssignateur.domain.groupe;
 
-import java.util.ArrayList;
-
 import java.util.List;
 
 public class Groupe {
@@ -9,7 +7,7 @@ public class Groupe {
 	private Employe organisateur;
 	private Employe responsable;
 	private List<Employe> participants;
-	
+
 	public Groupe(Employe organisateur, Employe responsable, List<Employe> participants) {
 		this.organisateur = organisateur;
 		this.responsable = responsable;

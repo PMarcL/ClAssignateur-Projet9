@@ -2,7 +2,6 @@ package org.ClAssignateur.domain.demandes;
 
 import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
-
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,8 +152,8 @@ public class ConteneurDemandesTest {
 
 	private class EstEnOrdrePrioritaireDecroissant extends ArgumentMatcher<List<Demande>> {
 
+		@SuppressWarnings("unchecked")
 		public boolean matches(Object demandes) {
-
 			List<Demande> listeDemandes = (List<Demande>) demandes;
 			Demande derniereDemande = null;
 			for (Demande demandeCourante : listeDemandes) {
