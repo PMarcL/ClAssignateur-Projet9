@@ -6,7 +6,7 @@ public class ReservationDemandeDTO {
 
 	public int nombrePersonnes;
 	public String courrielOrganisateur;
-	public List<String> courrielParticipants;
+	public List<String> participantsCourriels;
 	public int priorite;
 
 }

@@ -8,7 +8,7 @@ import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.demandes.Demande;
 
-public class ReservationDemandeDTOAssembleur {
+public class ReservationDemandeAssembleur {
 
 	public Demande assemblerDemande(ReservationDemandeDTO dto) {
 		String titre = creerTitreDemande(dto);
@@ -24,8 +24,8 @@ public class ReservationDemandeDTOAssembleur {
 		for (int indexParticipant = 0; indexParticipant < dto.nombrePersonnes; indexParticipant++){
 			Employe participant;
 			
-			if(indexParticipant < dto.courrielParticipants.size()){
-				participant = new Employe(dto.courrielParticipants.get(indexParticipant));
+			if(indexParticipant < dto.participantsCourriels.size()){
+				participant = new Employe(dto.participantsCourriels.get(indexParticipant));
 			}else{
 				participant = new Employe("");
 			}

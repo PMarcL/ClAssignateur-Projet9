@@ -1,5 +1,7 @@
 package org.ClAssignateur.interfaces;
 
+import javax.ws.rs.POST;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response.Status;
@@ -42,8 +44,8 @@ public class DemandeRessource {
 	@GET
 	@Path("/{courriel}/{numero_demande}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response afficherUneDemande(@PathParam(value = "courriel") String courriel,
-			@PathParam(value = "numeroDemande") String numeroDemande) {
+	public Response afficherUneDemande(@PathParam(value = "courriel") String courriel, @PathParam(
+			value = "numeroDemande") String numeroDemande) {
 		try {
 			UUID idDemande = UUID.fromString(numeroDemande);
 			Demande demande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
@@ -55,26 +57,6 @@ public class DemandeRessource {
 			return Response.serverError().build();
 		}
 	}
-
-	// @POST
-	// @Produces(MediaType.APPLICATION_JSON)
-	// public Response ajouterDemande(@PathParam(value = "nombrePersonne") int
-	// nombrePersonne,
-	// @PathParam(value = "courrielOrganisateur") String courrielOrganisateur,
-	// @PathParam(value = "priorite") int priorite) {
-	// try {
-	// InformationsDemandeDTO demandeDTO = new InformationsDemandeDTO();
-	// demandeDTO.courrielOrganisateur = courrielOrganisateur;
-	// demandeDTO.priorite = priorite;
-	// demandeDTO.nombrePersonne = nombrePersonne;
-	//
-	// return Response.ok(demandeDTO).build();
-	// } catch (DemandePasPresenteException ex) {
-	// return Response.status(Status.NOT_FOUND).build();
-	// } catch (Exception ex) {
-	// return Response.serverError().build();
-	// }
-	// }
 
 	@GET
 	@Path("/{courriel}")

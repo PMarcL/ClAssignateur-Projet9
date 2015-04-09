@@ -29,4 +29,7 @@ public class ServiceDemande {
 		return demandesEntrepot.obtenirDemandesSelonCourriel(courrielOrganisateur);
 	}
 
+	public void ajouterDemande(Demande demande){
+		demandesEntrepot.persisterDemande(demande);
+	}
 }

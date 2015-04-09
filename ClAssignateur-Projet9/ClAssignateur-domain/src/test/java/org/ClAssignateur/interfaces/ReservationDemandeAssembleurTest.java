@@ -13,7 +13,7 @@ import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.demandes.Demande;
 
-public class ReservationDemandeDTOAssembleurTest {
+public class ReservationDemandeAssembleurTest {
 
 	private final int NB_PERSONNES = 5;
 	private final String COURRIEL_ORGANISATEUR = "courrielOrganisateur@courriel.com";
@@ -29,7 +29,7 @@ public class ReservationDemandeDTOAssembleurTest {
 
 	private Demande demandePrioriteMoyenne;
 	
-	private ReservationDemandeDTOAssembleur assembleur;
+	private ReservationDemandeAssembleur assembleur;
 	private ReservationDemandeDTO demandeDTO;
 
 	@Before
@@ -38,8 +38,8 @@ public class ReservationDemandeDTOAssembleurTest {
 		demandeDTO.nombrePersonnes = NB_PERSONNES;
 		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
 		demandeDTO.priorite = PRIORITE_MOYENNE;
-		demandeDTO.courrielParticipants = COURRIEL_PARTICIPANTS;
-		assembleur = new ReservationDemandeDTOAssembleur();
+		demandeDTO.participantsCourriels = COURRIEL_PARTICIPANTS;
+		assembleur = new ReservationDemandeAssembleur();
 		
 		demandePrioriteMoyenne = new Demande(null, null, Priorite.moyenne());
 	}
