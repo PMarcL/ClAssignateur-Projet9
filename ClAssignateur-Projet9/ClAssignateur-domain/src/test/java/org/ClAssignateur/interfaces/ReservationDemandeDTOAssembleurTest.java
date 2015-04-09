@@ -11,6 +11,7 @@ import org.ClAssignateur.domain.demandes.Demande;
 public class ReservationDemandeDTOAssembleurTest {
 
 	private final int NB_PERSONNES = 5;
+	private final int NB_COURRIELS_PARTICIPANTS_INFERIEUR_A_NB_PERSONNES = 3;
 	private final String COURRIEL_ORGANISATEUR = "courrielOrganisateur@courriel.com";
 	private final String COURRIEL_PARTICIPANT = "courrielParticipant@couriel.com";
 	private final int NIVEAU_PRIORITE = 3;
@@ -51,25 +52,40 @@ public class ReservationDemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneDemandeDTOLaListeDeCourrielDeParticipantsQuandAssembleDemandeAlorsRetourneDemandeAvecDesParticipantsAvecLesCourriels() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		List<Object> listeCourrielParticipants = getListeCourrielParticipants(demandeResultat);
-		assertTrue(listeCourrielParticipants.containsAll(listeCourrielParticipants()));
+		List<Object> listeCourrielParticipantsResultat = getListeCourrielParticipants(demandeResultat);
+		assertTrue(listeCourrielParticipantsResultat.containsAll(listeCourrielParticipants(NB_PERSONNES)));
 	}
 
-	// TODO manque probablement des cas de tests (ex : 5 participants, mais
-	// seulement 4 adresses courriels fournies)
+	@Test
+	public void etantDonneUneDemandeDTOLaListeDeCourrielDeParticipantsPlusCourteQueNbPersonnesXQuandAssembleDemandeAlorsRetourneDemandeAvecRetourneDemandeAvecNombreDeParticipantsX() {
+		demandeDTO.participantsCourriels = listeCourrielParticipants(NB_COURRIELS_PARTICIPANTS_INFERIEUR_A_NB_PERSONNES);
+		
+		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
+		assertEquals(NB_PERSONNES, demandeResultat.getNbParticipants());
+	}
+	
+	@Test
+	public void etantDonneUneDemandeDTOLaListeDeCourrielDeParticipantsPlusCourteQueNbPersonnesQuandAssembleDemandeAlorsRetourneDemandeAvecDesParticipantsAvecLesCourriels() {
+		demandeDTO.participantsCourriels = listeCourrielParticipants(NB_COURRIELS_PARTICIPANTS_INFERIEUR_A_NB_PERSONNES);
+		
+		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
+		
+		List<Object> listeCourrielParticipantsResultat = getListeCourrielParticipants(demandeResultat);
+		assertTrue(listeCourrielParticipantsResultat.containsAll(listeCourrielParticipants(NB_COURRIELS_PARTICIPANTS_INFERIEUR_A_NB_PERSONNES)));
+	}
 
 	private void configurerDTO() {
 		demandeDTO = new ReservationDemandeDTO();
 		demandeDTO.nombrePersonnes = NB_PERSONNES;
 		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
 		demandeDTO.priorite = NIVEAU_PRIORITE;
-		demandeDTO.participantsCourriels = listeCourrielParticipants();
+		demandeDTO.participantsCourriels = listeCourrielParticipants(NB_PERSONNES);
 	}
 
-	private List<String> listeCourrielParticipants() {
+	private List<String> listeCourrielParticipants(int longueurListe) {
 		ArrayList<String> courrielsParticipants = new ArrayList<String>();
-		for (int i = 0; i < NB_PERSONNES; i++)
-			courrielsParticipants.add(COURRIEL_PARTICIPANT);
+		for (int i = 0; i < longueurListe; i++)
+			courrielsParticipants.add(i+COURRIEL_PARTICIPANT);
 
 		return courrielsParticipants;
 	}
