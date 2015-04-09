@@ -75,7 +75,6 @@ public class DemandeTest {
 	@Test
 	public void demandePossedeInitialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
 		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
-
 		assertTrue(demandeAvecPriorite.estAussiPrioritaire(demandeAvecPriorite));
 	}
 
@@ -152,6 +151,19 @@ public class DemandeTest {
 		Salle salleRecu = demande.getSalleAssignee();
 
 		assertEquals(salleAssignee, salleRecu);
+	}
+
+	@Test
+	public void quandGetNiveauPrioriteDevraitDeleguerAPriorite() {
+		final int NIVEAU_PRIORITE = 5;
+		Priorite priorite = mock(Priorite.class);
+		given(priorite.getNiveauPriorite()).willReturn(NIVEAU_PRIORITE);
+		Demande demande = new Demande(GROUPE, TITRE_REUNION, priorite);
+
+		int niveauPrioriteResultat = demande.getNiveauPriorite();
+
+		verify(priorite).getNiveauPriorite();
+		assertEquals(NIVEAU_PRIORITE, niveauPrioriteResultat);
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {

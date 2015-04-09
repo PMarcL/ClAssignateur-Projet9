@@ -51,4 +51,17 @@ public class PrioriteTest {
 		assertFalse(prioriteHaute.estPlusPrioritaire(prioriteHaute));
 		assertFalse(prioriteTresHaute.estPlusPrioritaire(prioriteTresHaute));
 	}
+
+	@Test
+	public void etantDonneNiveauPrioriteXQuandGetNiveauPrioriteDevraitRetournerX() {
+		final int NIVEAU_PRIORITE = 50;
+		Priorite priorite = new Priorite(NIVEAU_PRIORITE);
+		assertEquals(NIVEAU_PRIORITE, priorite.getNiveauPriorite());
+	}
+
+	@Test(expected = NiveauPrioriteInvalideException.class)
+	public void etantDonneNiveauPrioriteInferieurAUnQuandCreationDevraitLancerException() {
+		final int NIVEAU_PRIORITE_INVALIDE = 0;
+		new Priorite(NIVEAU_PRIORITE_INVALIDE);
+	}
 }

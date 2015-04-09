@@ -1,17 +1,21 @@
 package org.ClAssignateur.domain.demandes;
 
 public class Priorite {
+	private final int NIVEAU_PRIORITE_MINIMUM = 1;
 
-	private static final int PRIORITE_TRES_BASSE = 1;
-	private static final int PRIORITE_BASSE = 2;
+	private static final int PRIORITE_TRES_BASSE = 5;
+	private static final int PRIORITE_BASSE = 4;
 	private static final int PRIORITE_MOYENNE = 3;
-	private static final int PRIORITE_HAUTE = 4;
-	private static final int PRIORITE_TRES_HAUTE = 5;
+	private static final int PRIORITE_HAUTE = 2;
+	private static final int PRIORITE_TRES_HAUTE = 1;
 
-	private int valeurPriorite;
+	private int niveauPriorite;
 
-	public Priorite(int valeurPriorite) {
-		this.valeurPriorite = valeurPriorite;
+	public Priorite(int niveauPriorite) {
+		this.niveauPriorite = niveauPriorite;
+
+		if (this.niveauPriorite < NIVEAU_PRIORITE_MINIMUM)
+			throw new NiveauPrioriteInvalideException();
 	}
 
 	public static Priorite tresBasse() {
@@ -35,6 +39,10 @@ public class Priorite {
 	}
 
 	public boolean estPlusPrioritaire(Priorite priorite) {
-		return this.valeurPriorite > priorite.valeurPriorite;
+		return this.niveauPriorite < priorite.niveauPriorite;
+	}
+
+	public int getNiveauPriorite() {
+		return this.niveauPriorite;
 	}
 }

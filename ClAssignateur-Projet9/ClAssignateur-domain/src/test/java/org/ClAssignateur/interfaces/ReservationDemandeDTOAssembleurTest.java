@@ -1,8 +1,6 @@
 package org.ClAssignateur.interfaces;
 
 import static org.junit.Assert.*;
-import org.ClAssignateur.domain.demandes.Priorite;
-import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -14,63 +12,66 @@ public class ReservationDemandeDTOAssembleurTest {
 
 	private final int NB_PERSONNES = 5;
 	private final String COURRIEL_ORGANISATEUR = "courrielOrganisateur@courriel.com";
-	private final int PRIORITE_MOYENNE = 3;
-	private final List<String> COURRIEL_PARTICIPANTS = Collections.unmodifiableList(new ArrayList<String>() {
-		private static final long serialVersionUID = 1L;
-		{
-			add("courriel1@courriel.com");
-			add("courriel2@courriel.com");
-			add("courriel3@courriel.com");
-		}
-	});
-
-	private Demande demandePrioriteMoyenne;
+	private final String COURRIEL_PARTICIPANT = "courrielParticipant@couriel.com";
+	private final int NIVEAU_PRIORITE = 3;
 
 	private ReservationDemandeDTOAssembleur assembleur;
 	private ReservationDemandeDTO demandeDTO;
 
 	@Before
 	public void initialisation() {
-		demandeDTO = new ReservationDemandeDTO();
-		demandeDTO.nombrePersonnes = NB_PERSONNES;
-		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
-		demandeDTO.priorite = PRIORITE_MOYENNE;
-		demandeDTO.participantsCourriels = COURRIEL_PARTICIPANTS;
+		configurerDTO();
 		assembleur = new ReservationDemandeDTOAssembleur();
-
-		demandePrioriteMoyenne = new Demande(null, null, Priorite.moyenne());
 	}
 
 	@Test
-	public void etantDonneUnDemandeDTOAvecUnNombreDePersonnesXQuandAssembleDemandeAlorsRetourneDemandeAvecNombreDeParticipantsX() {
+	public void etantDonneUneDemandeDTOAvecUnNombreDePersonnesXQuandAssembleDemandeAlorsRetourneDemandeAvecNombreDeParticipantsX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
 		assertEquals(NB_PERSONNES, demandeResultat.getNbParticipants());
 	}
 
 	@Test
-	public void etantDonneUnDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielOrganisateurX() {
+	public void etantDonneUneDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielOrganisateurX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
 		assertEquals(COURRIEL_ORGANISATEUR, demandeResultat.getOrganisateur().courriel);
 	}
 
 	@Test
-	public void etantDonneUnDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielResponsableX() {
+	public void etantDonneUneDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielResponsableX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
 		assertEquals(COURRIEL_ORGANISATEUR, demandeResultat.getResponsable().courriel);
 	}
 
 	@Test
-	public void etantDonneUnDemandeDTOAvecPrioriteXQuandAssembleDemandeAlorsRetourneDemandeAvecPrioriteX() {
+	public void etantDonneUneDemandeDTOAvecPrioriteXQuandAssembleDemandeAlorsRetourneDemandeAvecPrioriteX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		assertTrue(demandeResultat.estAussiPrioritaire(demandePrioriteMoyenne));
+		assertEquals(NIVEAU_PRIORITE, demandeResultat.getNiveauPriorite());
 	}
 
 	@Test
-	public void etantDonneUnDemandeDTOLaListeDeCourrielDeParticipantsQuandAssembleDemandeAlorsRetourneDemandeAvecDesParticipantsAvecLesCourriels() {
+	public void etantDonneUneDemandeDTOLaListeDeCourrielDeParticipantsQuandAssembleDemandeAlorsRetourneDemandeAvecDesParticipantsAvecLesCourriels() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-
 		List<Object> listeCourrielParticipants = getListeCourrielParticipants(demandeResultat);
-		assertTrue(listeCourrielParticipants.containsAll(COURRIEL_PARTICIPANTS));
+		assertTrue(listeCourrielParticipants.containsAll(listeCourrielParticipants()));
+	}
+
+	// TODO manque probablement des cas de tests (ex : 5 participants, mais
+	// seulement 4 adresses courriels fournies)
+
+	private void configurerDTO() {
+		demandeDTO = new ReservationDemandeDTO();
+		demandeDTO.nombrePersonnes = NB_PERSONNES;
+		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
+		demandeDTO.priorite = NIVEAU_PRIORITE;
+		demandeDTO.participantsCourriels = listeCourrielParticipants();
+	}
+
+	private List<String> listeCourrielParticipants() {
+		ArrayList<String> courrielsParticipants = new ArrayList<String>();
+		for (int i = 0; i < NB_PERSONNES; i++)
+			courrielsParticipants.add(COURRIEL_PARTICIPANT);
+
+		return courrielsParticipants;
 	}
 
 	private List<Object> getListeCourrielParticipants(Demande demandeResultat) {

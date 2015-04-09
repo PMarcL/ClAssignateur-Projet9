@@ -12,27 +12,28 @@ public class ReservationDemandeDTOAssembleur {
 
 	public Demande assemblerDemande(ReservationDemandeDTO dto) {
 		String titre = creerTitreDemande(dto);
-		List<Employe> participants = creerListeParticipants(dto);
-		Employe organisateur = new Employe(dto.courrielOrganisateur);
-		Groupe groupe = new Groupe(organisateur,organisateur,participants);
+		Groupe groupe = creerGroupe(dto);
 		Priorite priorite = new Priorite(dto.priorite);
-		return new Demande(groupe, titre ,priorite);
+		return new Demande(groupe, titre, priorite);
 	}
 
 	private List<Employe> creerListeParticipants(ReservationDemandeDTO dto) {
 		List<Employe> participants = new ArrayList<Employe>();
-		for (int indexParticipant = 0; indexParticipant < dto.nombrePersonnes; indexParticipant++){
-			Employe participant;
-			
-			if(indexParticipant < dto.participantsCourriels.size()){
-				participant = new Employe(dto.participantsCourriels.get(indexParticipant));
-			}else{
-				participant = new Employe("");
+		for (int indexParticipant = 0; indexParticipant < dto.nombrePersonnes; indexParticipant++) {
+			if (indexParticipant < dto.participantsCourriels.size()) {
+				participants.add(new Employe(dto.participantsCourriels.get(indexParticipant)));
+			} else {
+				participants.add(new Employe(""));
 			}
-			
-			participants.add(participant);
 		}
 		return participants;
+	}
+
+	private Groupe creerGroupe(ReservationDemandeDTO dto) {
+		List<Employe> participants = creerListeParticipants(dto);
+		Employe organisateur = new Employe(dto.courrielOrganisateur);
+		Groupe groupe = new Groupe(organisateur, organisateur, participants);
+		return groupe;
 	}
 
 	private String creerTitreDemande(ReservationDemandeDTO dto) {

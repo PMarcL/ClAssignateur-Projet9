@@ -126,6 +126,10 @@ public class Demande {
 	}
 
 	public StatutDemande getEtat() {
-		return etat;
+		return this.etat;
+	}
+
+	public int getNiveauPriorite() {
+		return this.priorite.getNiveauPriorite();
 	}
 }
