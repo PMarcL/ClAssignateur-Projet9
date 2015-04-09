@@ -14,7 +14,7 @@ import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DemandeRessourceTest {
+public class InformationsDemandeRessourceTest {
 
 	private final String COURRIEL_ORGANISATEUR = "courriel";
 	private final String NUMERO_DEMANDE = UUID.randomUUID().toString();
@@ -26,7 +26,7 @@ public class DemandeRessourceTest {
 	private InformationsDemandeDTO dto;
 	private Demande demande;
 
-	private DemandeRessource ressource;
+	private InformationsDemandeRessource ressource;
 
 	@Before
 	public void initialement() {
@@ -39,7 +39,7 @@ public class DemandeRessourceTest {
 		demandes = new ArrayList<Demande>();
 		given(service.getDemandesPourCourriel(COURRIEL_ORGANISATEUR)).willReturn(demandes);
 
-		ressource = new DemandeRessource(service, infosDemandesAssembleur, organisateurDemandesAssembleur);
+		ressource = new InformationsDemandeRessource(service, infosDemandesAssembleur, organisateurDemandesAssembleur);
 	}
 
 	@Test

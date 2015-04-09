@@ -19,19 +19,19 @@ import java.util.UUID;
 
 @Path("/demandes")
 @Consumes(MediaType.APPLICATION_JSON)
-public class AjoutRessource {
+public class AjoutDemandeRessource {
 
 	private ServiceDemande serviceDemande;
 	private ReservationDemandeDTOAssembleur reservationDemandeAssembleur;
 
-	public AjoutRessource() {
+	public AjoutDemandeRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
 		this.reservationDemandeAssembleur = new ReservationDemandeDTOAssembleur();
 		this.serviceDemande = new ServiceDemande(demandeEntrepot);
 	}
 
-	public AjoutRessource(ServiceDemande service, ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
+	public AjoutDemandeRessource(ServiceDemande service, ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
 		this.serviceDemande = service;
 		this.reservationDemandeAssembleur = reservationDemandeAssembleur;
 	}

@@ -18,13 +18,13 @@ import java.util.UUID;
 
 @Path("/demandes")
 @Produces(MediaType.APPLICATION_JSON)
-public class DemandeRessource {
+public class InformationsDemandeRessource {
 
 	private ServiceDemande serviceDemande;
 	private InformationsDemandeDTOAssembleur infosDemandesAssembleur;
 	private OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur;
 
-	public DemandeRessource() {
+	public InformationsDemandeRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
 		this.infosDemandesAssembleur = new InformationsDemandeDTOAssembleur();
@@ -32,7 +32,7 @@ public class DemandeRessource {
 		this.serviceDemande = new ServiceDemande(demandeEntrepot);
 	}
 
-	public DemandeRessource(ServiceDemande service, InformationsDemandeDTOAssembleur infosDemandesAssembleur,
+	public InformationsDemandeRessource(ServiceDemande service, InformationsDemandeDTOAssembleur infosDemandesAssembleur,
 			OrganisateurDemandesDTOAssembleur orgDemandesAssembleur) {
 		this.serviceDemande = service;
 		this.infosDemandesAssembleur = infosDemandesAssembleur;
