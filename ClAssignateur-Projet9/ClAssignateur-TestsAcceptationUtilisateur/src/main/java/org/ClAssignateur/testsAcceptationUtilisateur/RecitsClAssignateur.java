@@ -17,7 +17,7 @@ import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
-import org.jbehave.core.steps.ScanningStepsFactory;
+import org.jbehave.core.steps.InstanceStepsFactory;
 
 public class RecitsClAssignateur extends JUnitStories {
 
@@ -45,7 +45,7 @@ public class RecitsClAssignateur extends JUnitStories {
 
 	@Override
 	public InjectableStepsFactory stepsFactory() {
-		return new ScanningStepsFactory(configuration(), getClass());
+		return new InstanceStepsFactory(configuration());
 	}
 
 	@Override
