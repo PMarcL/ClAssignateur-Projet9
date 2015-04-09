@@ -69,8 +69,7 @@ public class Demande {
 	}
 
 	public boolean estAussiPrioritaire(Demande autreDemande) {
-		return (!this.priorite.estPlusPrioritaire(autreDemande.priorite) && !autreDemande.priorite
-				.estPlusPrioritaire(priorite));
+		return this.priorite.equals(autreDemande.priorite);
 	}
 
 	public void placerReservation(Salle salleAssignee) {
@@ -112,20 +111,20 @@ public class Demande {
 		return this.salleAssignee;
 	}
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		if (!(other instanceof Demande)) {
-			return false;
-		} else {
-			Demande autreDemande = (Demande) other;
-			return this.getID().equals(autreDemande.getID());
-		}
-	}
-
 	public STATUT_DEMANDE getEtat() {
 		return etat;
+	}
+
+	@Override
+	public boolean equals(Object autreObjet) {
+		if (autreObjet == null) {
+			return false;
+		}
+		if (!(autreObjet instanceof Demande)) {
+			return false;
+		} else {
+			Demande autreDemande = (Demande) autreObjet;
+			return this.getID().equals(autreDemande.getID());
+		}
 	}
 }
