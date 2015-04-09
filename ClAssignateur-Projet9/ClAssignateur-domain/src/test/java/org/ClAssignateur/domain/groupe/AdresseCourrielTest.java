@@ -1,14 +1,23 @@
 package org.ClAssignateur.domain.groupe;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
+
 import org.junit.Test;
 
 public class AdresseCourrielTest {
+	final String ADRESSE_COURRIEL_VALIDE = "monadresse@domaine.com";
+
+	private AdresseCourriel adresseCourriel;
+
+	@Before
+	public void initialisation() {
+		adresseCourriel = new AdresseCourriel(ADRESSE_COURRIEL_VALIDE);
+	}
 
 	@Test
 	public void etantDonneUneAdresseCourrielValideQuandToStringDevraitRetournerAdresseCourriel() {
-		final String ADRESSE_COURRIEL_VALIDE = "monadresse@domain.com";
-		AdresseCourriel adresseCourriel = new AdresseCourriel(ADRESSE_COURRIEL_VALIDE);
 		assertEquals(ADRESSE_COURRIEL_VALIDE, adresseCourriel.toString());
 	}
 
@@ -16,5 +25,18 @@ public class AdresseCourrielTest {
 	public void etantDonneuneAdresseCourrielInvalideQuandCreationDevraitLancerException() {
 		final String ADRESSE_COURRIEL_INVALIDE = "CeciEstUneAdresseCourrielInvalide";
 		new AdresseCourriel(ADRESSE_COURRIEL_INVALIDE);
+	}
+
+	@Test
+	public void etantDonneDeuxAdressesCourrielIdentiquesQuandEqualsDevraitRetournerVrai() {
+		AdresseCourriel autreAdresseCourriel = new AdresseCourriel(ADRESSE_COURRIEL_VALIDE);
+		assertTrue(adresseCourriel.equals(autreAdresseCourriel));
+	}
+
+	@Test
+	public void etantDonneDeuxAdressesCourrielsDifferentesQuandEqualsDevraitRetournerFaux() {
+		final String AUTRE_ADRESSE_COURRIEL_VALIDE = "masecondeadresse@autredomaine.com";
+		AdresseCourriel autreAdresseCourriel = new AdresseCourriel(AUTRE_ADRESSE_COURRIEL_VALIDE);
+		assertFalse(adresseCourriel.equals(autreAdresseCourriel));
 	}
 }

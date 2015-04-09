@@ -1,7 +1,6 @@
 package org.ClAssignateur.domain.groupe;
 
 import javax.mail.internet.AddressException;
-
 import javax.mail.internet.InternetAddress;
 
 public class AdresseCourriel {
@@ -19,6 +18,10 @@ public class AdresseCourriel {
 
 	@Override
 	public String toString() {
-		return this.adresseCourriel.getAddress();
+		return adresseCourriel.getAddress();
+	}
+
+	public boolean equals(Object autreAdresseCourriel) {
+		return this.toString().equals(autreAdresseCourriel.toString());
 	}
 }
