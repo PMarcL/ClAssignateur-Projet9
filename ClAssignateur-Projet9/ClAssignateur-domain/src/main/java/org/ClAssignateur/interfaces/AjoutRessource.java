@@ -1,7 +1,8 @@
 package org.ClAssignateur.interfaces;
 
-import java.net.URI;
+import javax.ws.rs.Consumes;
 
+import java.net.URI;
 import javax.ws.rs.POST;
 import javax.ws.rs.GET;
 import javax.ws.rs.PathParam;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Path("/demandes")
-@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class AjoutRessource {
 
 	private ServiceDemande serviceDemande;
@@ -40,22 +41,14 @@ public class AjoutRessource {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response ajouterDemande(@PathParam(value = "nombrePersonne") int nombrePersonne, @PathParam(
-			value = "courrielOrganisateur") String courrielOrganisateur, @PathParam(value = "priorite") int priorite,
-			@PathParam(value = "participantsCourriels") List<String> participantsCourriels) {
+	public Response ajouterDemande(ReservationDemandeDTO demandeDTO) {
 		try {
-			ReservationDemandeDTO demandeDTO = new ReservationDemandeDTO();
-			demandeDTO.nombrePersonnes = nombrePersonne;
-			demandeDTO.courrielOrganisateur = courrielOrganisateur;
-			demandeDTO.priorite = priorite;
-			demandeDTO.participantsCourriels = participantsCourriels;
-
 			Demande demande = reservationDemandeAssembleur.assemblerDemande(demandeDTO);
 
 			serviceDemande.ajouterDemande(demande);
 
 			UUID idDemande = demande.getID();
-			URI emplacement = new URI("/demandes/" + courrielOrganisateur + "/" + idDemande.toString());
+			URI emplacement = new URI("/demandes/" + demandeDTO.courrielOrganisateur + "/" + idDemande.toString());
 
 			return Response.created(emplacement).build();
 		} catch (DemandePasPresenteException ex) {
