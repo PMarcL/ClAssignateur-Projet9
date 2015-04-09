@@ -8,7 +8,7 @@ import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.demandes.Demande;
 
-public class ReservationDemandeAssembleur {
+public class ReservationDemandeDTOAssembleur {
 
 	public Demande assemblerDemande(ReservationDemandeDTO dto) {
 		String titre = creerTitreDemande(dto);

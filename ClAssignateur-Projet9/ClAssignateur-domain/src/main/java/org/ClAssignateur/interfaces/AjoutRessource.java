@@ -22,16 +22,16 @@ import java.util.UUID;
 public class AjoutRessource {
 
 	private ServiceDemande serviceDemande;
-	private ReservationDemandeAssembleur reservationDemandeAssembleur;
+	private ReservationDemandeDTOAssembleur reservationDemandeAssembleur;
 
 	public AjoutRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		this.reservationDemandeAssembleur = new ReservationDemandeAssembleur();
+		this.reservationDemandeAssembleur = new ReservationDemandeDTOAssembleur();
 		this.serviceDemande = new ServiceDemande(demandeEntrepot);
 	}
 
-	public AjoutRessource(ServiceDemande service, ReservationDemandeAssembleur reservationDemandeAssembleur) {
+	public AjoutRessource(ServiceDemande service, ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
 		this.serviceDemande = service;
 		this.reservationDemandeAssembleur = reservationDemandeAssembleur;
 	}

@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.demandes.Demande;
 
-public class ReservationDemandeAssembleurTest {
+public class ReservationDemandeDTOAssembleurTest {
 
 	private final int NB_PERSONNES = 5;
 	private final String COURRIEL_ORGANISATEUR = "courrielOrganisateur@courriel.com";
@@ -26,7 +26,7 @@ public class ReservationDemandeAssembleurTest {
 
 	private Demande demandePrioriteMoyenne;
 
-	private ReservationDemandeAssembleur assembleur;
+	private ReservationDemandeDTOAssembleur assembleur;
 	private ReservationDemandeDTO demandeDTO;
 
 	@Before
@@ -36,7 +36,7 @@ public class ReservationDemandeAssembleurTest {
 		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
 		demandeDTO.priorite = PRIORITE_MOYENNE;
 		demandeDTO.participantsCourriels = COURRIEL_PARTICIPANTS;
-		assembleur = new ReservationDemandeAssembleur();
+		assembleur = new ReservationDemandeDTOAssembleur();
 
 		demandePrioriteMoyenne = new Demande(null, null, Priorite.moyenne());
 	}
