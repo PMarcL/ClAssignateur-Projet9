@@ -4,6 +4,7 @@ import static java.util.Arrays.*;
 import static org.jbehave.core.io.CodeLocations.*;
 import static org.jbehave.core.reporters.Format.*;
 
+import org.ClAssignateur.testsAcceptationUtilisateur.steps.MaximiserLesPlacesDansSalleSteps;
 import org.ClAssignateur.testsAcceptationUtilisateur.steps.OrdonnerDemandesSteps;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -46,7 +47,8 @@ public class RecitsClAssignateur extends JUnitStories {
 
 	@Override
 	public InjectableStepsFactory stepsFactory() {
-		return new InstanceStepsFactory(configuration(), new OrdonnerDemandesSteps());
+		return new InstanceStepsFactory(configuration(), new OrdonnerDemandesSteps(),
+				new MaximiserLesPlacesDansSalleSteps());
 	}
 
 	@Override
