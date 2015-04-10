@@ -1,7 +1,6 @@
 package org.ClAssignateur.domain.demandes;
 
 import java.util.UUID;
-
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.salles.Salle;
@@ -127,5 +126,9 @@ public class Demande {
 
 	public STATUT_DEMANDE getEtat() {
 		return etat;
+	}
+
+	public String getCourrielOrganisateur() {
+		return this.getOrganisateur().courriel;
 	}
 }

@@ -22,7 +22,6 @@ public class EnMemoireDemandeEntrepotTest {
 	private static final String UN_TITRE = "titre";
 	private static final String COURRIEL_ORGANISATEUR = "courriel@hotmail.com";
 	private static final String COURRIEL_NON_CORRESPONDANT = "courriel2@hotmail.com";
-	private static final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
 
 	private Demande demande;
 
@@ -210,7 +209,7 @@ public class EnMemoireDemandeEntrepotTest {
 	private void faireEnSorteQuEntrepotPossedeUneDemande() {
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE_DISTINCT);
-		given(demande.getOrganisateur()).willReturn(ORGANISATEUR);
+		given(demande.getCourrielOrganisateur()).willReturn(COURRIEL_ORGANISATEUR);
 		entrepot.persisterDemande(demande);
 	}
 
@@ -231,9 +230,7 @@ public class EnMemoireDemandeEntrepotTest {
 		UUID unId = UUID.randomUUID();
 		given(demande.getID()).willReturn(unId);
 		given(demande.getTitre()).willReturn(UN_TITRE);
-
-		Employe organisateurNonCorrespondant = new Employe(COURRIEL_NON_CORRESPONDANT);
-		given(demande.getOrganisateur()).willReturn(organisateurNonCorrespondant);
+		given(demande.getCourrielOrganisateur()).willReturn(COURRIEL_NON_CORRESPONDANT);
 
 		return demande;
 	}
