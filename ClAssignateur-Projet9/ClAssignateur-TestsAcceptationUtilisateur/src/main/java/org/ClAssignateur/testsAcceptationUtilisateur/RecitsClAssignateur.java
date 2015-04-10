@@ -4,9 +4,7 @@ import static java.util.Arrays.*;
 import static org.jbehave.core.io.CodeLocations.*;
 import static org.jbehave.core.reporters.Format.*;
 
-import java.util.Arrays;
-import java.util.List;
-
+import org.ClAssignateur.testsAcceptationUtilisateur.steps.OrdonnerDemandesSteps;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.embedder.Embedder;
@@ -17,7 +15,10 @@ import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
-import org.jbehave.core.steps.ScanningStepsFactory;
+import org.jbehave.core.steps.InstanceStepsFactory;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class RecitsClAssignateur extends JUnitStories {
 
@@ -45,7 +46,7 @@ public class RecitsClAssignateur extends JUnitStories {
 
 	@Override
 	public InjectableStepsFactory stepsFactory() {
-		return new ScanningStepsFactory(configuration(), getClass());
+		return new InstanceStepsFactory(configuration(), new OrdonnerDemandesSteps());
 	}
 
 	@Override
