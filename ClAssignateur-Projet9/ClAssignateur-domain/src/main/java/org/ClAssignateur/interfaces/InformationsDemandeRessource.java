@@ -32,7 +32,8 @@ public class InformationsDemandeRessource {
 		this.serviceDemande = new ServiceDemande(demandeEntrepot);
 	}
 
-	public InformationsDemandeRessource(ServiceDemande service, InformationsDemandeDTOAssembleur infosDemandesAssembleur,
+	public InformationsDemandeRessource(ServiceDemande service,
+			InformationsDemandeDTOAssembleur infosDemandesAssembleur,
 			OrganisateurDemandesDTOAssembleur orgDemandesAssembleur) {
 		this.serviceDemande = service;
 		this.infosDemandesAssembleur = infosDemandesAssembleur;

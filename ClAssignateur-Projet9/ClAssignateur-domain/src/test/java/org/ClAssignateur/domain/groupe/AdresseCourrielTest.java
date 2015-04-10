@@ -8,6 +8,7 @@ import org.junit.Test;
 
 public class AdresseCourrielTest {
 	final String ADRESSE_COURRIEL_VALIDE = "monadresse@domaine.com";
+	final String AUTRE_ADRESSE_COURRIEL_VALIDE = "masecondeadresse@autredomaine.com";
 
 	private AdresseCourriel adresseCourriel;
 
@@ -35,8 +36,17 @@ public class AdresseCourrielTest {
 
 	@Test
 	public void etantDonneDeuxAdressesCourrielsDifferentesQuandEqualsDevraitRetournerFaux() {
-		final String AUTRE_ADRESSE_COURRIEL_VALIDE = "masecondeadresse@autredomaine.com";
 		AdresseCourriel autreAdresseCourriel = new AdresseCourriel(AUTRE_ADRESSE_COURRIEL_VALIDE);
 		assertFalse(adresseCourriel.equals(autreAdresseCourriel));
+	}
+
+	@Test
+	public void etantDonneUneAdresseCourrielEnChaineDeCaractereIdentiqueQuandEqualsDevraitRetournerVrai() {
+		assertTrue(adresseCourriel.equals(ADRESSE_COURRIEL_VALIDE));
+	}
+
+	@Test
+	public void etantDonneUneAdresseCourrielEnChaineDeCaracterDifferanteQuandEqualsDevraitRetournerFaux() {
+		assertFalse(adresseCourriel.equals(AUTRE_ADRESSE_COURRIEL_VALIDE));
 	}
 }
