@@ -1,7 +1,8 @@
 package org.ClAssignateur.interfaces;
 
-import javax.ws.rs.Consumes;
+import org.ClAssignateur.domain.groupe.AdresseCourrielInvalideException;
 
+import javax.ws.rs.Consumes;
 import java.net.URI;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.Response.Status;
@@ -48,8 +49,8 @@ public class AjoutDemandeRessource {
 			URI emplacement = new URI("/demandes/" + demandeDTO.courrielOrganisateur + "/" + idDemande.toString());
 
 			return Response.created(emplacement).build();
-		} catch (DemandePasPresenteException ex) {
-			return Response.status(Status.NOT_FOUND).build();
+		} catch (AdresseCourrielInvalideException ex) {
+			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();
 		}
