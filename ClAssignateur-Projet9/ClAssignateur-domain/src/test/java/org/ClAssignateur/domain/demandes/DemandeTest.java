@@ -17,9 +17,6 @@ import org.junit.Test;
 public class DemandeTest {
 
 	private final String TITRE_REUNION = "Mon titre";
-	private final Employe ORGANISATEUR = new Employe("courriel");
-	private final Employe RESPONSABLE = new Employe("courriel@hotmail.com");
-	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
 	private final int NOMBRE_DE_PARTICIPANTS = 10;
 	private final int NOMBRE_DE_PARTICIPANTS_DANS_GROUPE_PAR_DEFAUT = 0;
 	private final int CAPACITE_SALLE = 15;
@@ -28,16 +25,23 @@ public class DemandeTest {
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
 	private final UUID UN_ID = UUID.randomUUID();
 
+	private Employe organisateur;
+	private Employe responsable;
+	private Groupe groupe;
 	private Demande demande;
 
 	@Before
 	public void creerLaDemande() {
-		demande = new Demande(UN_ID, GROUPE, TITRE_REUNION);
+		organisateur = mock(Employe.class);
+		responsable = mock(Employe.class);
+		groupe = new Groupe(organisateur, responsable, new ArrayList<Employe>());
+
+		demande = new Demande(UN_ID, groupe, TITRE_REUNION);
 	}
 
 	@Test
 	public void demandePossedeInitialementLeChampsId() {
-		Demande demandeAvecIdAleatoire = new Demande(GROUPE, TITRE_REUNION);
+		Demande demandeAvecIdAleatoire = new Demande(groupe, TITRE_REUNION);
 		UUID id = demandeAvecIdAleatoire.getID();
 		assertNotNull(id);
 	}
@@ -50,8 +54,8 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeInitialementLeChampsGroupeCommeDefiniDansLeConstructeur() {
-		Groupe groupe = demande.getGroupe();
-		assertEquals(GROUPE, groupe);
+		Groupe resultatGroupe = demande.getGroupe();
+		assertEquals(groupe, resultatGroupe);
 	}
 
 	@Test
@@ -62,7 +66,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeParDefautPrioriteBasse() {
-		Demande autreDemande = new Demande(GROUPE, TITRE_REUNION, PRIORITE_PAR_DEFAUT);
+		Demande autreDemande = new Demande(groupe, TITRE_REUNION, PRIORITE_PAR_DEFAUT);
 		assertTrue(demande.estAussiPrioritaire(autreDemande));
 	}
 
@@ -74,7 +78,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeInitialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
-		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
+		Demande demandeAvecPriorite = new Demande(groupe, TITRE_REUNION, PRIORITE_MOYENNE);
 		assertTrue(demandeAvecPriorite.estAussiPrioritaire(demandeAvecPriorite));
 	}
 
@@ -85,8 +89,8 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeIntialementLeChampsResponsableCommeDefiniDansGroupe() {
-		Employe responsable = demande.getResponsable();
-		assertTrue(RESPONSABLE.equals(responsable));
+		Employe responsableResultat = demande.getResponsable();
+		assertEquals(responsable, responsableResultat);
 	}
 
 	@Test
@@ -129,8 +133,8 @@ public class DemandeTest {
 
 	@Test
 	public void deuxDemandesSontDifferentesSiElleNOnPasLeMemeId() {
-		Demande demande = new Demande(UN_ID, GROUPE, TITRE_REUNION);
-		Demande demandeDifferente = new Demande(UUID.randomUUID(), GROUPE, TITRE_REUNION);
+		Demande demande = new Demande(UN_ID, groupe, TITRE_REUNION);
+		Demande demandeDifferente = new Demande(UUID.randomUUID(), groupe, TITRE_REUNION);
 
 		Boolean demandesSontEgales = demandeDifferente.equals(demande);
 
@@ -158,7 +162,7 @@ public class DemandeTest {
 		final int NIVEAU_PRIORITE = 5;
 		Priorite priorite = mock(Priorite.class);
 		given(priorite.getNiveauPriorite()).willReturn(NIVEAU_PRIORITE);
-		Demande demande = new Demande(GROUPE, TITRE_REUNION, priorite);
+		Demande demande = new Demande(groupe, TITRE_REUNION, priorite);
 
 		int niveauPrioriteResultat = demande.getNiveauPriorite();
 
@@ -169,8 +173,8 @@ public class DemandeTest {
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {
 		String titre = "une_deuxieme_demande";
 
-		Employe organisateur_second = new Employe("deux@gmail.com");
-		Employe reponsable_second = new Employe("deux@gmail.com");
+		Employe organisateur_second = mock(Employe.class);
+		Employe reponsable_second = mock(Employe.class);
 		ArrayList<Employe> aucunParticipant = new ArrayList<Employe>();
 		Groupe deuxieme_groupe = new Groupe(organisateur_second, reponsable_second, aucunParticipant);
 
@@ -185,6 +189,6 @@ public class DemandeTest {
 			listeParticipants.add(nouveauEmploye);
 		}
 
-		return new Groupe(ORGANISATEUR, RESPONSABLE, listeParticipants);
+		return new Groupe(organisateur, responsable, listeParticipants);
 	}
 }

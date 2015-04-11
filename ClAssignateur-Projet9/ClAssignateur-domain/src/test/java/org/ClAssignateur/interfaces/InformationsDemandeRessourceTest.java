@@ -16,7 +16,7 @@ import java.util.List;
 
 public class InformationsDemandeRessourceTest {
 
-	private final String COURRIEL_ORGANISATEUR = "courriel";
+	private final String ADRESSE_COURRIEL_ORGANISATEUR = "courriel@domain.com";
 	private final String NUMERO_DEMANDE = UUID.randomUUID().toString();
 
 	private List<Demande> demandes;
@@ -34,43 +34,43 @@ public class InformationsDemandeRessourceTest {
 		infosDemandesAssembleur = mock(InformationsDemandeDTOAssembleur.class);
 		organisateurDemandesAssembleur = mock(OrganisateurDemandesDTOAssembleur.class);
 		demande = mock(Demande.class);
-		mock(OrganisateurDemandesDTO.class);
 		dto = mock(InformationsDemandeDTO.class);
 		demandes = new ArrayList<Demande>();
-		given(service.getDemandesPourCourriel(COURRIEL_ORGANISATEUR)).willReturn(demandes);
+		given(service.getDemandesPourCourriel(ADRESSE_COURRIEL_ORGANISATEUR)).willReturn(demandes);
 
 		ressource = new InformationsDemandeRessource(service, infosDemandesAssembleur, organisateurDemandesAssembleur);
 	}
 
 	@Test
 	public void lorsqueAfficherDemandeDevraitRetrouverLesInfosSelonLesBonCourrielEtId() {
-		ressource.afficherUneDemande(COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
-		verify(service).getInfoDemandePourCourrielEtId(eq(COURRIEL_ORGANISATEUR), eq(UUID.fromString(NUMERO_DEMANDE)));
+		ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
+		verify(service).getInfoDemandePourCourrielEtId(eq(ADRESSE_COURRIEL_ORGANISATEUR),
+				eq(UUID.fromString(NUMERO_DEMANDE)));
 	}
 
 	@Test
 	public void etantDonneDemandeExisteAlorsConstruitLeDTO() {
 		faireEnSorteQueDemandeExiste();
-		ressource.afficherUneDemande(COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
+		ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
 		verify(infosDemandesAssembleur).assemblerInformationsDemandeDTO(demande);
 	}
 
 	@Test
 	public void etantDonneDemandeExisteAlorsStatusDevraitEtreOk() {
 		faireEnSorteQueDemandeExiste();
-		Response reponse = ressource.afficherUneDemande(COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
+		Response reponse = ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
 		assertEquals(Status.OK.getStatusCode(), reponse.getStatus());
 	}
 
 	@Test
 	public void etantDonneDemandeExisteAlorsReponseDevraitAvoirBonDTO() {
 		faireEnSorteQueDemandeExiste();
-		Response reponse = ressource.afficherUneDemande(COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
+		Response reponse = ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
 		assertEquals(dto, reponse.getEntity());
 	}
 
 	private void faireEnSorteQueDemandeExiste() {
-		given(service.getInfoDemandePourCourrielEtId(COURRIEL_ORGANISATEUR, UUID.fromString(NUMERO_DEMANDE)))
+		given(service.getInfoDemandePourCourrielEtId(ADRESSE_COURRIEL_ORGANISATEUR, UUID.fromString(NUMERO_DEMANDE)))
 				.willReturn(demande);
 		given(infosDemandesAssembleur.assemblerInformationsDemandeDTO(demande)).willReturn(dto);
 	}
@@ -80,7 +80,7 @@ public class InformationsDemandeRessourceTest {
 	public void etantDonneDemandeNExistePasAlorsStatusDevraitEtre404() {
 		given(service.getInfoDemandePourCourrielEtId(anyString(), any(UUID.class))).willThrow(
 				DemandePasPresenteException.class);
-		Response reponse = ressource.afficherUneDemande(COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
+		Response reponse = ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
 		assertEquals(Status.NOT_FOUND.getStatusCode(), reponse.getStatus());
 	}
 
@@ -88,33 +88,33 @@ public class InformationsDemandeRessourceTest {
 	@Test
 	public void etantDonneErreurQuelconqueAlorsStatusDevraitEtre500() {
 		given(service.getInfoDemandePourCourrielEtId(anyString(), any(UUID.class))).willThrow(Exception.class);
-		Response reponse = ressource.afficherUneDemande(COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
+		Response reponse = ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
 		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), reponse.getStatus());
 	}
 
 	@Test
 	public void lorsqueAfficherDemandesPourCourrielDevraitRecupererLesInfos() {
-		ressource.afficherDemandesPourOrganisateur(COURRIEL_ORGANISATEUR);
-		verify(service).getDemandesPourCourriel(COURRIEL_ORGANISATEUR);
+		ressource.afficherDemandesPourOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR);
+		verify(service).getDemandesPourCourriel(ADRESSE_COURRIEL_ORGANISATEUR);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void lorsqueAfficherDemandesPourCourrielSiErreurAlorsStatusDevraitEtre500() {
-		given(service.getDemandesPourCourriel(COURRIEL_ORGANISATEUR)).willThrow(Exception.class);
-		Response reponse = ressource.afficherDemandesPourOrganisateur(COURRIEL_ORGANISATEUR);
+		given(service.getDemandesPourCourriel(ADRESSE_COURRIEL_ORGANISATEUR)).willThrow(Exception.class);
+		Response reponse = ressource.afficherDemandesPourOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR);
 		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), reponse.getStatus());
 	}
 
 	@Test
 	public void lorsqueAfficherDemandesPourCourrielLorsqueRecoitListeDemandesDevraitConstruireDTO() {
-		ressource.afficherDemandesPourOrganisateur(COURRIEL_ORGANISATEUR);
+		ressource.afficherDemandesPourOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR);
 		verify(organisateurDemandesAssembleur).assemblerOrganisateurDemandesDTO(demandes);
 	}
 
 	@Test
 	public void lorsqueAfficherDemandesPourCourrielLorsqueRecoitListeDemandesDevraitEtreOk() {
-		Response reponse = ressource.afficherDemandesPourOrganisateur(COURRIEL_ORGANISATEUR);
+		Response reponse = ressource.afficherDemandesPourOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR);
 		assertEquals(Status.OK.getStatusCode(), reponse.getStatus());
 	}
 }

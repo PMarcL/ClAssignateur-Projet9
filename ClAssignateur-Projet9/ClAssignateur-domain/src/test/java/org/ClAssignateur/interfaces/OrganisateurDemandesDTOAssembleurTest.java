@@ -2,6 +2,7 @@ package org.ClAssignateur.interfaces;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
 import java.util.ArrayList;
@@ -17,13 +18,12 @@ public class OrganisateurDemandesDTOAssembleurTest {
 	private final int NB_DE_DEMANDE_AUTRES = 10;
 	private final StatutDemande STATUT_DEMANDE_EN_ATTENTE = StatutDemande.EN_ATTENTE;
 	private final int NB_PARTICIPANT = 12;
-	private final String COURRIEL_ORGANISATEUR = "courriel@example.com";
-	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
 	private final String NOM_SALLE = "NomDeSalle";
 
 	private List<Demande> demandes;
 	private Demande demande;
 	private Salle salle;
+	private Employe organisateur;
 	private InformationsDemandeDTOAssembleur infosDemandesAssembleur;
 
 	private OrganisateurDemandesDTOAssembleur assembleur;
@@ -33,6 +33,7 @@ public class OrganisateurDemandesDTOAssembleurTest {
 		demandes = new ArrayList<Demande>();
 		configurerDemande();
 		infosDemandesAssembleur = mock(InformationsDemandeDTOAssembleur.class);
+		organisateur = mock(Employe.class);
 
 		assembleur = new OrganisateurDemandesDTOAssembleur(infosDemandesAssembleur);
 	}
@@ -102,7 +103,7 @@ public class OrganisateurDemandesDTOAssembleurTest {
 	private void configurerDemande() {
 		demande = mock(Demande.class);
 		given(demande.getNbParticipants()).willReturn(NB_PARTICIPANT);
-		given(demande.getOrganisateur()).willReturn(ORGANISATEUR);
+		given(demande.getOrganisateur()).willReturn(organisateur);
 		given(demande.getEtat()).willReturn(STATUT_DEMANDE_EN_ATTENTE);
 	}
 
@@ -117,7 +118,7 @@ public class OrganisateurDemandesDTOAssembleurTest {
 		for (int i = 0; i < NB_DE_DEMANDE_ASSIGNEE; i++) {
 			Demande demandeAssignee = mock(Demande.class);
 			given(demandeAssignee.getNbParticipants()).willReturn(NB_PARTICIPANT);
-			given(demandeAssignee.getOrganisateur()).willReturn(ORGANISATEUR);
+			given(demandeAssignee.getOrganisateur()).willReturn(organisateur);
 			given(demandeAssignee.estAssignee()).willReturn(true);
 			given(demandeAssignee.getSalleAssignee()).willReturn(salle);
 			demandes.add(demandeAssignee);

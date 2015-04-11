@@ -3,6 +3,8 @@ package org.ClAssignateur.interfaces;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
+import org.ClAssignateur.domain.groupe.AdresseCourriel;
+
 import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,7 @@ public class InformationsDemandeDTOAssembleurTest {
 	private final String AUCUNE_SALLE = null;
 	private final String NOM_SALLE = "NomDeSalle";
 	private final int NB_PARTICIPANT = 12;
-	private final String COURRIEL_ORGANISATEUR = "courriel@example.com";
+	private final AdresseCourriel COURRIEL_ORGANISATEUR = new AdresseCourriel("courriel@example.com");
 	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGANISATEUR);
 	private final StatutDemande STATUT_DEMANDE_EN_ATTENTE = StatutDemande.EN_ATTENTE;
 

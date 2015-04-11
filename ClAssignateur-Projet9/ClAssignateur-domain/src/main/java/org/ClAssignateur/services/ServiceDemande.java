@@ -1,7 +1,6 @@
 package org.ClAssignateur.services;
 
 import java.util.List;
-
 import java.util.UUID;
 import java.util.Optional;
 import org.ClAssignateur.domain.demandes.Demande;
@@ -29,7 +28,7 @@ public class ServiceDemande {
 		return demandesEntrepot.obtenirDemandesSelonCourriel(courrielOrganisateur);
 	}
 
-	public void ajouterDemande(Demande demande){
+	public void ajouterDemande(Demande demande) {
 		demandesEntrepot.persisterDemande(demande);
 	}
 }

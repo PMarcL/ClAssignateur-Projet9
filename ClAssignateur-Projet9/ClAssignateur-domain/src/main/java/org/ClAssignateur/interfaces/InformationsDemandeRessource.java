@@ -43,7 +43,7 @@ public class InformationsDemandeRessource {
 	@GET
 	@Path("/{courriel}/{numero_demande}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response afficherUneDemande(@PathParam(value = "courriel") String courriel,
+	public Response afficherDemande(@PathParam(value = "courriel") String courriel,
 			@PathParam(value = "numeroDemande") String numeroDemande) {
 		try {
 			UUID idDemande = UUID.fromString(numeroDemande);

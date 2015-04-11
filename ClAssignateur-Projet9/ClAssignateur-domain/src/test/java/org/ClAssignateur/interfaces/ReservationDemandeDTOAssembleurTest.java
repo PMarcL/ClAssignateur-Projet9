@@ -1,6 +1,7 @@
 package org.ClAssignateur.interfaces;
 
 import static org.junit.Assert.*;
+import org.ClAssignateur.domain.groupe.AdresseCourriel;
 import java.util.List;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -11,7 +12,6 @@ import org.ClAssignateur.domain.demandes.Demande;
 public class ReservationDemandeDTOAssembleurTest {
 
 	private final int NB_PERSONNES = 5;
-	private final int NB_COURRIELS_PARTICIPANTS_INFERIEUR_A_NB_PERSONNES = 3;
 	private final String COURRIEL_ORGANISATEUR = "courrielOrganisateur@courriel.com";
 	private final String COURRIEL_PARTICIPANT = "courrielParticipant@couriel.com";
 	private final int NIVEAU_PRIORITE = 3;
@@ -34,13 +34,15 @@ public class ReservationDemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielOrganisateurX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		assertEquals(COURRIEL_ORGANISATEUR, demandeResultat.getOrganisateur().courriel);
+		AdresseCourriel adresseCourrielOrganisateur = demandeResultat.getOrganisateur().courriel;
+		assertTrue(adresseCourrielOrganisateur.equals(COURRIEL_ORGANISATEUR));
 	}
 
 	@Test
 	public void etantDonneUneDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielResponsableX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		assertEquals(COURRIEL_ORGANISATEUR, demandeResultat.getResponsable().courriel);
+		AdresseCourriel adresseCourrielResponsable = demandeResultat.getResponsable().courriel;
+		assertTrue(adresseCourrielResponsable.equals(COURRIEL_ORGANISATEUR));
 	}
 
 	@Test
@@ -56,22 +58,10 @@ public class ReservationDemandeDTOAssembleurTest {
 		assertTrue(listeCourrielParticipantsResultat.containsAll(listeCourrielParticipants(NB_PERSONNES)));
 	}
 
-	@Test
-	public void etantDonneUneDemandeDTOLaListeDeCourrielDeParticipantsPlusCourteQueNbPersonnesXQuandAssembleDemandeAlorsRetourneDemandeAvecRetourneDemandeAvecNombreDeParticipantsX() {
-		demandeDTO.participantsCourriels = listeCourrielParticipants(NB_COURRIELS_PARTICIPANTS_INFERIEUR_A_NB_PERSONNES);
-		
-		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		assertEquals(NB_PERSONNES, demandeResultat.getNbParticipants());
-	}
-	
-	@Test
-	public void etantDonneUneDemandeDTOLaListeDeCourrielDeParticipantsPlusCourteQueNbPersonnesQuandAssembleDemandeAlorsRetourneDemandeAvecDesParticipantsAvecLesCourriels() {
-		demandeDTO.participantsCourriels = listeCourrielParticipants(NB_COURRIELS_PARTICIPANTS_INFERIEUR_A_NB_PERSONNES);
-		
-		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		
-		List<Object> listeCourrielParticipantsResultat = getListeCourrielParticipants(demandeResultat);
-		assertTrue(listeCourrielParticipantsResultat.containsAll(listeCourrielParticipants(NB_COURRIELS_PARTICIPANTS_INFERIEUR_A_NB_PERSONNES)));
+	@Test(expected = ReservationDemandeDTOInvalideException.class)
+	public void etantDonneDemandeDTOAvecNbCourrielsDifferentDeNbPersonnesQuandAssemblerDemandeDevraitLancerException() {
+		demandeDTO.nombrePersonnes--;
+		assembleur.assemblerDemande(demandeDTO);
 	}
 
 	private void configurerDTO() {
@@ -85,14 +75,14 @@ public class ReservationDemandeDTOAssembleurTest {
 	private List<String> listeCourrielParticipants(int longueurListe) {
 		ArrayList<String> courrielsParticipants = new ArrayList<String>();
 		for (int i = 0; i < longueurListe; i++)
-			courrielsParticipants.add(i+COURRIEL_PARTICIPANT);
+			courrielsParticipants.add(i + COURRIEL_PARTICIPANT);
 
 		return courrielsParticipants;
 	}
 
 	private List<Object> getListeCourrielParticipants(Demande demandeResultat) {
 		List<Employe> participants = demandeResultat.getParticipants();
-		Object[] courrielParticipants = participants.stream().map(p -> p.courriel).toArray();
+		Object[] courrielParticipants = participants.stream().map(p -> p.courriel.toString()).toArray();
 		List<Object> listeCourrielParticipants = java.util.Arrays.asList(courrielParticipants);
 		return listeCourrielParticipants;
 	}
