@@ -51,4 +51,19 @@ public class PrioriteTest {
 		assertFalse(prioriteHaute.estPlusPrioritaire(prioriteHaute));
 		assertFalse(prioriteTresHaute.estPlusPrioritaire(prioriteTresHaute));
 	}
+
+	@Test
+	public void prioriteEstEgalAElleMeme() {
+		assertTrue(prioriteBasse.equals(prioriteBasse));
+	}
+
+	@Test
+	public void prioriteNEstPasEgalAPrioriteDifferente() {
+		assertFalse(prioriteBasse.equals(prioriteHaute));
+	}
+
+	@Test
+	public void prioriteNEstPasEgalANull() {
+		assertFalse(prioriteHaute.equals(null));
+	}
 }

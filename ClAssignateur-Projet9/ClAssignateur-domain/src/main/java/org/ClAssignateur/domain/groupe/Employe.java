@@ -1,7 +1,7 @@
 package org.ClAssignateur.domain.groupe;
 
 public class Employe {
-	public String courriel;
+	public final String courriel;
 
 	public Employe(String courriel) {
 		this.courriel = courriel;

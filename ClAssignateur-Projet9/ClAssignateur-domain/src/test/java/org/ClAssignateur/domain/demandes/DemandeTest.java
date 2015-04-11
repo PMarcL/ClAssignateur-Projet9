@@ -76,7 +76,6 @@ public class DemandeTest {
 	@Test
 	public void demandePossedeInitialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
 		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
-
 		assertTrue(demandeAvecPriorite.estAussiPrioritaire(demandeAvecPriorite));
 	}
 
@@ -153,6 +152,18 @@ public class DemandeTest {
 		Salle salleRecu = demande.getSalleAssignee();
 
 		assertEquals(salleAssignee, salleRecu);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecLaMemePrioriteQuandEstAussiPrioritaireReturnTrue() {
+		Demande demandePrioriteMoyenne = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
+		assertTrue(demande.estAussiPrioritaire(demandePrioriteMoyenne));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteDifferenteQuandEstAussiPrioritaireReturnFalse() {
+		Demande demandePrioriteMoyenne = new Demande(GROUPE, TITRE_REUNION, Priorite.moyenne());
+		assertFalse(demande.estAussiPrioritaire(demandePrioriteMoyenne));
 	}
 
 	@Test

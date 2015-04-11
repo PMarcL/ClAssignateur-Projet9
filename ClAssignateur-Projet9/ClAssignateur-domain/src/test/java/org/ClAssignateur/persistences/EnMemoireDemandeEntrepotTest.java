@@ -3,7 +3,6 @@ package org.ClAssignateur.persistences;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.demandes.Demande;
 import java.util.List;
 import java.util.Optional;
