@@ -6,7 +6,6 @@ As a un organisateur
 I want to traiter les demandes plus rapidement en période de haute affluence
 					 
 Scenario:  La limite de demandes en attente est atteinte
-Given un lot de X demandes
-And une instance du service de reservation n'ayant aucune demande en attente
-When j'envoie toutes les demandes du lot
-Then l'assignation des demandes en attente est declenchée
+Given j'ai configuré le système pour tolérer X demandes
+When le nombre de demandes en attente atteint X demandes
+Then l'assignation des demandes en attente est déclenchée
