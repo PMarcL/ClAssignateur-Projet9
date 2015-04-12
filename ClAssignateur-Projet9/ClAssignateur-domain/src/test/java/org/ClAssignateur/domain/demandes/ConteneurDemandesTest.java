@@ -55,7 +55,7 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
-	public void quandObtenirDemandesEnAttenteDevraitTrierSelonOrdreDecroissantPriorite() {
+	public void quandObtenirDemandesAvecDeuxDemandesDejaOrdonneesDevraitTrierSelonOrdreDecroissantPriorite() {
 		List<Demande> demandesAjoutees = new ArrayList<Demande>();
 		demandesAjoutees.add(demandeFaiblePriorite);
 		demandesAjoutees.add(demandeHautePriorite);
@@ -67,7 +67,19 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
-	public void quandObtenirDemandesEnAttenteDevraitPasChangerOrdreDemandesSiMemePriorite() {
+	public void quandObtenirDemandesAvecDeuxDemandesPasOrdonneesDevraitTrierSelonOrdreDecroissantPriorite() {
+		List<Demande> demandesAjoutees = new ArrayList<Demande>();
+		demandesAjoutees.add(demandeHautePriorite);
+		demandesAjoutees.add(demandeFaiblePriorite);
+		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
+
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+
+		assertTrue(demandesObtenues.get(0).estPlusPrioritaire(demandesObtenues.get(1)));
+	}
+
+	@Test
+	public void quandObtenirDemandesEnAttenteDevraitPasChangerOrdreDemandesSiMemePrioriteEtPremiereDemandeCreerEnPremier() {
 		List<Demande> demandesAjoutees = new ArrayList<Demande>();
 		Demande premiereDemandeHautePriorite = mock(Demande.class);
 		configurerDemandesPourQuilsAientLaMemePriorite(premiereDemandeHautePriorite, demandeHautePriorite);
@@ -80,10 +92,26 @@ public class ConteneurDemandesTest {
 		assertEquals(premiereDemandeHautePriorite, demandesObtenues.get(0));
 	}
 
+	@Test
+	public void quandObtenirDemandesEnAttenteDevraitChangerOrdreDemandesSiMemePrioriteEtPremiereDemandeCreerEnDeuxieme() {
+		List<Demande> demandesAjoutees = new ArrayList<Demande>();
+		Demande secondeDemandeHautePriorite = mock(Demande.class);
+		configurerDemandesPourQuilsAientLaMemePriorite(demandeHautePriorite, secondeDemandeHautePriorite);
+		demandesAjoutees.add(demandeHautePriorite);
+		demandesAjoutees.add(secondeDemandeHautePriorite);
+		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
+
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+
+		assertEquals(secondeDemandeHautePriorite, demandesObtenues.get(1));
+	}
+
 	private void configurerDemandesPourQuilsAientLaMemePriorite(Demande premiereDemande, Demande secondeDemande) {
 		given(premiereDemande.estAussiPrioritaire(secondeDemande)).willReturn(true);
+		given(premiereDemande.estArriveeAvant(secondeDemande)).willReturn(true);
 		given(premiereDemande.estPlusPrioritaire(secondeDemande)).willReturn(false);
 		given(secondeDemande.estAussiPrioritaire(premiereDemande)).willReturn(true);
+		given(secondeDemande.estArriveeAvant(premiereDemande)).willReturn(false);
 		given(secondeDemande.estPlusPrioritaire(premiereDemande)).willReturn(false);
 	}
 

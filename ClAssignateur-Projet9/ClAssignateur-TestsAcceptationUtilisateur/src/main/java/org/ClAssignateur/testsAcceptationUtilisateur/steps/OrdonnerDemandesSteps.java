@@ -32,7 +32,7 @@ public class OrdonnerDemandesSteps {
 	private final String TITRE_DEMANDE_PRIORITE_HAUTE = "Demande haute priorite";
 	private final UUID ID_DEMANDE_PRIORITE_BASSE = UUID.randomUUID();
 	private final UUID ID_DEMANDE_PRIORITE_HAUTE = UUID.randomUUID();
-	private final int NB_DEMANDES_DE_MEME_PRIORITE = 3;
+	private final int NB_DEMANDES_DE_MEME_PRIORITE = 5;
 
 	private EnMemoireDemandeEntrepot demandesTraitees;
 	private SallesEntrepot salles;
@@ -82,6 +82,8 @@ public class OrdonnerDemandesSteps {
 
 		assertTrue(demandeHautePriorite.isPresent());
 		assertEquals(ID_DEMANDE_PRIORITE_BASSE, derniereDemandeTraitee.getID());
+
+		demandesTraitees.vider();
 	}
 
 	@Then("les demandes sont traitées selon leur ordre d'arrivée")
@@ -89,8 +91,12 @@ public class OrdonnerDemandesSteps {
 		List<Demande> demandes = demandesTraitees.obtenirDemandes();
 
 		for (int i = 0; i < NB_DEMANDES_DE_MEME_PRIORITE - 1; i++) {
-			assertTrue(demandes.get(i).estArriveeAvant(demandes.get(i + 1)));
+			Demande demandeCourante = demandes.get(i);
+			Demande demandeSuivante = demandes.get(i + 1);
+			assertTrue(demandeCourante.estArriveeAvant(demandeSuivante));
 		}
+
+		demandesTraitees.vider();
 	}
 
 }

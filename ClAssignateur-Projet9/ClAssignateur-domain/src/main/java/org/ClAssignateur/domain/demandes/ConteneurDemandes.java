@@ -26,7 +26,7 @@ public class ConteneurDemandes {
 
 	private List<Demande> trierDemandesParPriorite(List<Demande> demandesATrier) {
 		Comparator<Demande> parPriorite = ((demande1, demande2) -> (demande2.estPlusPrioritaire(demande1) ? 1
-				: (demande1.estAussiPrioritaire(demande2) ? 0 : -1)));
+				: (demande1.estAussiPrioritaire(demande2) ? (demande1.estArriveeAvant(demande2) ? -1 : 1) : -1)));
 
 		demandesATrier.sort(parPriorite);
 		return demandesATrier;
