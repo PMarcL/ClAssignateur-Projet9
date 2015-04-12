@@ -175,8 +175,8 @@ public class DemandeTest {
 
 	@Test
 	public void etantDonneDeuxDemandesAvecLaMemePrioriteQuandEstAussiPrioritaireReturnTrue() {
-		Demande demandePrioriteMoyenne = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
-		assertTrue(demande.estAussiPrioritaire(demandePrioriteMoyenne));
+		Demande demandePrioriteBasse = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
+		assertTrue(demande.estAussiPrioritaire(demandePrioriteBasse));
 	}
 
 	@Test
@@ -186,9 +186,23 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void etantDemandeAvecOrganisateurQuandGetCourrielOrganisateurAlorsDonneLeBonCourrielOrganisateur() {
+	public void etantDonneDemandeAvecOrganisateurQuandGetCourrielOrganisateurAlorsDonneLeBonCourrielOrganisateur() {
 		String courrielOrganisateurActuel = demande.getCourrielOrganisateur();
 		assertEquals(COURRIEL_ORGNISATEUR, courrielOrganisateurActuel);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteDifferenteLorsqueEstPlusPrioritaireRetourneVrai() {
+		Demande demandePrioriteHaute = new Demande(GROUPE, TITRE_REUNION, Priorite.haute());
+		Demande demandePrioriteBasse = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
+
+		assertTrue(demandePrioriteHaute.estPlusPrioritaire(demandePrioriteBasse));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteIdentitqueLorsqueEstPlusPrioritaireRetourneFaux() {
+		Demande demandePrioriteBasse = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
+		assertFalse(demande.estPlusPrioritaire(demandePrioriteBasse));
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {
