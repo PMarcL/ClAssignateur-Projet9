@@ -7,7 +7,7 @@ I want to : Je veux recevoir un courriel m'informant du résultat de l'assignati
 
 Scenario: En cas de succès (salle assignée) alors, le courriel indique la salle assignée
 Given une demande pouvant se faire assigné une salle
-When salle assignée avec succès
+When la salle est assignée avec succès
 Then le courriel envoyé indique la salle assigné
 
 Scenario: En cas d'échec alors, le courriel indique la raison du refus

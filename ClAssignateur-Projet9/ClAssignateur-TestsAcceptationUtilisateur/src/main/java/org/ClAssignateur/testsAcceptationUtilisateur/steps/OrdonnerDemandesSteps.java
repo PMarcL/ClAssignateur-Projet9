@@ -20,6 +20,7 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +32,7 @@ public class OrdonnerDemandesSteps {
 	private final String TITRE_DEMANDE_PRIORITE_HAUTE = "Demande haute priorite";
 	private final UUID ID_DEMANDE_PRIORITE_BASSE = UUID.randomUUID();
 	private final UUID ID_DEMANDE_PRIORITE_HAUTE = UUID.randomUUID();
+	private final int NB_DEMANDES_DE_MEME_PRIORITE = 3;
 
 	private EnMemoireDemandeEntrepot demandesTraitees;
 	private SallesEntrepot salles;
@@ -62,7 +64,10 @@ public class OrdonnerDemandesSteps {
 
 	@Given("plusieurs demandes de même priorité en attente de traitement")
 	public void givenPlusieursDemandesDeMemePriorite() {
-
+		for (int i = 0; i < NB_DEMANDES_DE_MEME_PRIORITE; i++) {
+			Demande demandePrioriteBasse = new Demande(GROUPE, TITRE_DEMANDE_PRIORITE_BASSE, Priorite.basse());
+			assignateur.ajouterDemande(demandePrioriteBasse);
+		}
 	}
 
 	@When("les demandes sont traitées")
@@ -81,7 +86,11 @@ public class OrdonnerDemandesSteps {
 
 	@Then("les demandes sont traitées selon leur ordre d'arrivée")
 	public void thenLesDemandesSontTraiteesSelonLeurOrdreArrivee() {
+		List<Demande> demandes = demandesTraitees.obtenirDemandes();
 
+		for (int i = 0; i < NB_DEMANDES_DE_MEME_PRIORITE - 1; i++) {
+			assertTrue(demandes.get(i).estArriveeAvant(demandes.get(i + 1)));
+		}
 	}
 
 }

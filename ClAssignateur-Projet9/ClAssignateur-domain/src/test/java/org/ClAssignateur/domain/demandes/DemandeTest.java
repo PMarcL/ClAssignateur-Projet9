@@ -2,9 +2,7 @@ package org.ClAssignateur.domain.demandes;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-
 import org.ClAssignateur.domain.demandes.Demande.STATUT_DEMANDE;
-
 import java.util.UUID;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
@@ -85,25 +83,46 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsResponsableCommeDefiniDansGroupe() {
+	public void demandePossedeInitialementLeChampsResponsableCommeDefiniDansGroupe() {
 		Employe responsable = demande.getResponsable();
 		assertTrue(RESPONSABLE.equals(responsable));
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsNbParticipantsCommeDefiniDansGroupe() {
+	public void demandePossedeInitialementLeChampsNbParticipantsCommeDefiniDansGroupe() {
 		int nbParticipants = demande.getNbParticipants();
 		assertEquals(NOMBRE_DE_PARTICIPANTS_DANS_GROUPE_PAR_DEFAUT, nbParticipants);
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsNbParticipantsCommeDefiniDansGroupeAvecPlusieursParticipants() {
+	public void demandePossedeInitialementLeChampsNbParticipantsCommeDefiniDansGroupeAvecPlusieursParticipants() {
 		Groupe groupePlusieursParticipants = creerGroupePlusieursParticipants(NOMBRE_DE_PARTICIPANTS);
 		Demande demandeAvecPlusiseursParticipants = new Demande(groupePlusieursParticipants, TITRE_REUNION);
 
 		int nbParticipants = demandeAvecPlusiseursParticipants.getNbParticipants();
 
 		assertEquals(NOMBRE_DE_PARTICIPANTS, nbParticipants);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesQuandEstArriveeAvantSurPremiereDemandeRetourneVrai() {
+		Demande premiereDemande = new Demande(GROUPE, TITRE_REUNION);
+		Demande deuxiemeDemande = new Demande(GROUPE, TITRE_REUNION);
+
+		assertTrue(premiereDemande.estArriveeAvant(deuxiemeDemande));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesQuandEstArriveeAvantSurDeuxiemeDemandeRetourneFaux() {
+		Demande premiereDemande = new Demande(GROUPE, TITRE_REUNION);
+		Demande deuxiemeDemande = new Demande(GROUPE, TITRE_REUNION);
+
+		assertFalse(deuxiemeDemande.estArriveeAvant(premiereDemande));
+	}
+
+	@Test
+	public void etantDonneUneDemandeQuandEstArriveeAvantSurElleMemeRetourneFaux() {
+		assertFalse(demande.estArriveeAvant(demande));
 	}
 
 	@Test
