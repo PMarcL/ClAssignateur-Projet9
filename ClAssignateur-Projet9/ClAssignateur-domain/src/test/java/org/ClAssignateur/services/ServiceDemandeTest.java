@@ -1,12 +1,7 @@
 package org.ClAssignateur.services;
 
 import static org.mockito.BDDMockito.*;
-import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
-import java.util.List;
-import org.ClAssignateur.interfaces.DemandesPourCourrielDTO;
 import org.junit.Test;
 import org.junit.Before;
 import java.util.UUID;

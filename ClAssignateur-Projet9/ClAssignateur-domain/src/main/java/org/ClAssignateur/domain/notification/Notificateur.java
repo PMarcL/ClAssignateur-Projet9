@@ -7,10 +7,10 @@ import org.ClAssignateur.domain.demandes.Demande;
 
 public class Notificateur {
 
-	private NotificationStrategie notifictionStrategie;
+	private NotificationStrategie notificationStrategie;
 
 	public Notificateur(NotificationStrategie notificationStrategie) {
-		this.notifictionStrategie = notificationStrategie;
+		this.notificationStrategie = notificationStrategie;
 	}
 
 	public void notifierAnnulation(Demande demandeAAnnuler) {
@@ -32,12 +32,12 @@ public class Notificateur {
 
 	private void notifierParticipants(String contenu, Demande demande) {
 		for (Employe participant : demande.getParticipants()) {
-			this.notifictionStrategie.notifier(contenu, participant);
+			this.notificationStrategie.notifier(contenu, participant);
 		}
 	}
 
 	private void notifierDirigeants(String contenu, Demande demande) {
-		this.notifictionStrategie.notifier(contenu, demande.getOrganisateur());
-		this.notifictionStrategie.notifier(contenu, demande.getResponsable());
+		this.notificationStrategie.notifier(contenu, demande.getOrganisateur());
+		this.notificationStrategie.notifier(contenu, demande.getResponsable());
 	}
 }

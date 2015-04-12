@@ -2,8 +2,8 @@ package org.ClAssignateur.domain.salles;
 
 public class Salle {
 
-	private String nom;
-	private int capacite;
+	private final String nom;
+	private final int capacite;
 
 	public Salle(int capacite, String nom) {
 		this.capacite = capacite;

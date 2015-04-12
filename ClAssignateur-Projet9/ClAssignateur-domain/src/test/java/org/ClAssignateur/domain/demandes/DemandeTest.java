@@ -17,7 +17,8 @@ import org.junit.Test;
 public class DemandeTest {
 
 	private final String TITRE_REUNION = "Mon titre";
-	private final Employe ORGANISATEUR = new Employe("courriel");
+	private final String COURRIEL_ORGNISATEUR = "courriel";
+	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGNISATEUR);
 	private final Employe RESPONSABLE = new Employe("courriel@hotmail.com");
 	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
 	private final int NOMBRE_DE_PARTICIPANTS = 10;
@@ -75,7 +76,6 @@ public class DemandeTest {
 	@Test
 	public void demandePossedeInitialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
 		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
-
 		assertTrue(demandeAvecPriorite.estAussiPrioritaire(demandeAvecPriorite));
 	}
 
@@ -152,6 +152,24 @@ public class DemandeTest {
 		Salle salleRecu = demande.getSalleAssignee();
 
 		assertEquals(salleAssignee, salleRecu);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecLaMemePrioriteQuandEstAussiPrioritaireReturnTrue() {
+		Demande demandePrioriteMoyenne = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
+		assertTrue(demande.estAussiPrioritaire(demandePrioriteMoyenne));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteDifferenteQuandEstAussiPrioritaireReturnFalse() {
+		Demande demandePrioriteMoyenne = new Demande(GROUPE, TITRE_REUNION, Priorite.moyenne());
+		assertFalse(demande.estAussiPrioritaire(demandePrioriteMoyenne));
+	}
+
+	@Test
+	public void etantDemandeAvecOrganisateurQuandGetCourrielOrganisateurAlorsDonneLeBonCourrielOrganisateur() {
+		String courrielOrganisateurActuel = demande.getCourrielOrganisateur();
+		assertEquals(COURRIEL_ORGNISATEUR, courrielOrganisateurActuel);
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {
