@@ -43,7 +43,7 @@ public class ConteneurDemandes {
 		this.demandesArchivees.persisterDemande(demande);
 	}
 
-	public boolean contientAuMoinsEnAttente(int nbDemandesEnAttente) {
-		return (this.demandesEnAttente.taille() >= nbDemandesEnAttente);
+	public int getNombreDemandesEnAttente() {
+		return this.demandesEnAttente.taille();
 	}
 }

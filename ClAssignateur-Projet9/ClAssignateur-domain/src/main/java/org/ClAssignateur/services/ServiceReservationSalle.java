@@ -52,7 +52,8 @@ public class ServiceReservationSalle {
 	}
 
 	private void assignerSiNecessaire() {
-		assignateurSalle.assignerDemandeSalleSiContientAuMoins(limiteDemandes);
+		if (assignateurSalle.getNombreDemandesEnAttente() >= limiteDemandes)
+			assignateurSalle.lancerAssignation();
 	}
 
 }

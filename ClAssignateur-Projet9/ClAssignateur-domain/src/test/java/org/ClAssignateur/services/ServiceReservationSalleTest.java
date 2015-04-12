@@ -57,9 +57,10 @@ public class ServiceReservationSalleTest {
 	}
 
 	@Test
-	public void quandAjouterDemandeDevraitDemanderAssignationDemandes() {
+	public void etantDonneLimiteDemandeEnAttenteAtteinteQuandAjouterDemandeDevraitLancerAssignation() {
+		given(assignateur.getNombreDemandesEnAttente()).willReturn(LIMITE_DEMANDES_PAR_DEFAUT);
 		serviceReservation.ajouterDemande(demande);
-		verify(assignateur).assignerDemandeSalleSiContientAuMoins(LIMITE_DEMANDES_PAR_DEFAUT);
+		verify(assignateur).lancerAssignation();
 	}
 
 	@Test
@@ -69,9 +70,10 @@ public class ServiceReservationSalleTest {
 	}
 
 	@Test
-	public void quandSetLimiteDemandesAvantAssignationDevraitDemanderAssignationDemandes() {
+	public void etantDonneNouvelleLimiteDemandeEnAttenteAtteinteQuandSetLimiteDemandesAvantAssignationDevraitDemanderAssignationDemandes() {
+		given(assignateur.getNombreDemandesEnAttente()).willReturn(LIMITE_DEMANDES_QUELCONQUE);
 		serviceReservation.setLimiteDemandesAvantAssignation(LIMITE_DEMANDES_QUELCONQUE);
-		verify(assignateur).assignerDemandeSalleSiContientAuMoins(LIMITE_DEMANDES_QUELCONQUE);
+		verify(assignateur).lancerAssignation();
 	}
 
 	private long delaiEnMillisecondes(int delaiEnMinutes) {
