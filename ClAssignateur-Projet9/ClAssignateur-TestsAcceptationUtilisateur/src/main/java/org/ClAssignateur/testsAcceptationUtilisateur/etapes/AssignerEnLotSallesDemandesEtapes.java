@@ -4,13 +4,12 @@ import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.domain.AssignateurSalle;
 import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.services.MinuterieStrategie;
+import org.ClAssignateur.services.Minuterie;
 import org.ClAssignateur.services.ServiceReservationSalle;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-import org.mockito.InOrder;
 
 public class AssignerEnLotSallesDemandesEtapes {
 	private final int X_NOMBRE_DEMANDES = 10;
@@ -18,11 +17,11 @@ public class AssignerEnLotSallesDemandesEtapes {
 
 	private ServiceReservationSalle serviceReservation;
 	private AssignateurSalle assignateurSalle;
-	private MinuterieStrategie minuterie;
+	private Minuterie minuterie;
 
 	@BeforeScenario
 	public void initialisationScenario() {
-		minuterie = mock(MinuterieStrategie.class);
+		minuterie = mock(Minuterie.class);
 		assignateurSalle = mock(AssignateurSalle.class);
 		serviceReservation = new ServiceReservationSalle(minuterie, this.assignateurSalle);
 	}
@@ -56,8 +55,6 @@ public class AssignerEnLotSallesDemandesEtapes {
 
 	@Then("la minuterie est réinitialisée")
 	public void thenLaMinuterieEstReinitialisee() {
-		InOrder enOrdre = inOrder(minuterie);
-		enOrdre.verify(minuterie).annulerAppelPeriodique();
-		enOrdre.verify(minuterie).planifierAppelPeriodique(eq(assignateurSalle), anyLong(), anyLong());
+		verify(minuterie).reinitialiser();
 	}
 }

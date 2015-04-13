@@ -7,10 +7,9 @@ import org.ClAssignateur.domain.demandes.ConteneurDemandes;
 import org.ClAssignateur.domain.demandes.Demande;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.TimerTask;
 import java.util.List;
 
-public class AssignateurSalle extends TimerTask {
+public class AssignateurSalle {
 
 	private ConteneurDemandes conteneurDemandes;
 	private SallesEntrepot entrepotSalles;
@@ -57,11 +56,6 @@ public class AssignateurSalle extends TimerTask {
 				this.notificateur.notifierEchec(demandeCourante);
 			}
 		}
-	}
-
-	@Override
-	public void run() {
-		lancerAssignation();
 	}
 
 	private void reserverSalle(Demande demandeCourante, Salle salle) {

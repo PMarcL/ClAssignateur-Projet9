@@ -73,52 +73,45 @@ public class AssignateurSalleTest {
 	}
 
 	@Test
-	public void quandAppelTacheMinuterieDevraitTenterTrouverSallePourChaqueDemande() {
-		ajouterDemandesEnAttente(NOMBRE_DEMANDES, demandeSalleDisponible);
-		assignateur.run();
-		verify(strategieSelectionSalle, times(NOMBRE_DEMANDES)).selectionnerSalle(SALLES, demandeSalleDisponible);
-	}
-
-	@Test
-	public void etantDonneSalleRepondantDemandeTrouveeQuandAppelTacheMinuterieDevraitReserverSalle() {
-		configurerSalleRepondantADemande();
-		assignateur.run();
-		verify(demandeSalleDisponible).placerReservation(salleDisponible);
-	}
-
-	@Test
-	public void etantDonneeReservationPlaceeAvecSuccesQuandAssignerDevraitNotifierSucces() {
-		configurerSalleRepondantADemande();
-		assignateur.run();
-		verify(notificateur).notifierSucces(demandeSalleDisponible, salleDisponible);
-	}
-
-	@Test
-	public void etantDonneeReservationPlaceeAvecSuccesQuandAssignerArchiverReservation() {
-		configurerSalleRepondantADemande();
-		assignateur.run();
-		verify(conteneurDemandes).archiverDemande(demandeSalleDisponible);
-	}
-
-	@Test
-	public void etantDonneeImpossibiliteDePlacerReservationQuandAssignerNotifierEchec() {
-		configurerSalleNeRepondantPasADemande();
-		assignateur.run();
-		verify(notificateur).notifierEchec(demandeAucuneSalleDisponible);
-	}
-
-	@Test
-	public void etantDonneAucuneSalleRepondantDemandeTrouveeQuandAssignerDemandeSalleDevraitNePasReserverSalle() {
-		configurerSalleNeRepondantPasADemande();
-		assignateur.run();
-		verify(demandeAucuneSalleDisponible, never()).placerReservation(salleDisponible);
-	}
-
-	@Test
 	public void quandLancerAssignationDevraitTenterAssignerChaqueDemande() {
 		ajouterDemandesEnAttente(NOMBRE_DEMANDES, demandeSalleDisponible);
 		assignateur.lancerAssignation();
 		verify(strategieSelectionSalle, times(NOMBRE_DEMANDES)).selectionnerSalle(eq(SALLES), any(Demande.class));
+	}
+
+	@Test
+	public void etantDonneSalleRepondantDemandeTrouveeQuandLancerAssignationDevraitReserverSalle() {
+		configurerSalleRepondantADemande();
+		assignateur.lancerAssignation();
+		verify(demandeSalleDisponible).placerReservation(salleDisponible);
+	}
+
+	@Test
+	public void etantDonneeReservationPlaceeAvecSuccesQuandLancerAssignationNotifierSucces() {
+		configurerSalleRepondantADemande();
+		assignateur.lancerAssignation();
+		verify(notificateur).notifierSucces(demandeSalleDisponible, salleDisponible);
+	}
+
+	@Test
+	public void etantDonneeReservationPlaceeAvecSuccesQuandLancerAssignationDevraitArchiverReservation() {
+		configurerSalleRepondantADemande();
+		assignateur.lancerAssignation();
+		verify(conteneurDemandes).archiverDemande(demandeSalleDisponible);
+	}
+
+	@Test
+	public void etantDonneeImpossibiliteDePlacerReservationQuandLancerAssignationDevraitNotifierEchec() {
+		configurerSalleNeRepondantPasADemande();
+		assignateur.lancerAssignation();
+		verify(notificateur).notifierEchec(demandeAucuneSalleDisponible);
+	}
+
+	@Test
+	public void etantDonneAucuneSalleRepondantDemandeTrouveeQuandLancerAssignationDevraitNePasReserverSalle() {
+		configurerSalleNeRepondantPasADemande();
+		assignateur.lancerAssignation();
+		verify(demandeAucuneSalleDisponible, never()).placerReservation(salleDisponible);
 	}
 
 	@Test
