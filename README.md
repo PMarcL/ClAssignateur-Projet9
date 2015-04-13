@@ -54,3 +54,5 @@ Convention de code
 4bis.Une exception peut être faite pour les tests.
 5. Les noms de variable sont des noms communs ou des groupes nominaux. ex: demandeEnTraitement ou demandeTraitée
 
+Scénarios BDD pour remise 3  
+Les scénarios BDD des tests qui n'avait pas à être automatisés sont dans le wiki du projet. Tous les scénarios devant être automatisés sont dans des fichiers "*.story" dans le module ClAssignateur-TestsAcceptationUtilisateur du projet.

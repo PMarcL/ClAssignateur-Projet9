@@ -1,4 +1,4 @@
-package org.ClAssignateur.testsAcceptationUtilisateur.steps;
+package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class OrdonnerDemandesSteps {
+public class OrdonnerDemandesEtapes {
 
 	private final Groupe GROUPE = new Groupe(new Employe("organisateur@hotmail.com"), new Employe(
 			"responsable@hotmail.com"), new ArrayList<Employe>());
@@ -39,7 +39,7 @@ public class OrdonnerDemandesSteps {
 	private ConteneurDemandes conteneurDemandes;
 	private AssignateurSalle assignateur;
 
-	public OrdonnerDemandesSteps() {
+	public OrdonnerDemandesEtapes() {
 		demandesTraitees = new EnMemoireDemandeEntrepot();
 		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
 		salles = new EnMemoireSallesEntrepot();

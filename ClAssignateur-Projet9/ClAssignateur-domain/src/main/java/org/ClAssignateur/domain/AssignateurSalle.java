@@ -43,18 +43,7 @@ public class AssignateurSalle extends TimerTask {
 		this.notificateur.notifierAnnulation(demandeAAnnuler);
 	}
 
-	public void assignerDemandeSalleSiContientAuMoins(int nombreDemandes) {
-		if (conteneurDemandes.contientAuMoinsEnAttente(nombreDemandes)) {
-			assignerDemandeSalle();
-		}
-	}
-
-	@Override
-	public void run() {
-		assignerDemandeSalle();
-	}
-
-	private void assignerDemandeSalle() {
+	public void lancerAssignation() {
 		Collection<Salle> salles = entrepotSalles.obtenirSalles();
 		List<Demande> demandesEnAttente = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
 
@@ -70,9 +59,18 @@ public class AssignateurSalle extends TimerTask {
 		}
 	}
 
+	@Override
+	public void run() {
+		lancerAssignation();
+	}
+
 	private void reserverSalle(Demande demandeCourante, Salle salle) {
 		demandeCourante.placerReservation(salle);
 		this.conteneurDemandes.archiverDemande(demandeCourante);
+	}
+
+	public int getNombreDemandesEnAttente() {
+		return this.conteneurDemandes.getNombreDemandesEnAttente();
 	}
 
 }

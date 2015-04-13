@@ -3,6 +3,8 @@ package org.ClAssignateur.domain.demandes;
 import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
 
+import java.util.Random;
+
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
@@ -170,21 +172,17 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
-	public void etantDonneTailleDemandeEnAttenteInferieureQuantiteRequiseQuandContientAuMoinsEnAttenteDevraitRetournerFaux() {
-		boolean resultat = conteneurDemandes.contientAuMoinsEnAttente(NB_DEMANDES_EN_ATTENTE + 1);
-		assertFalse(resultat);
+	public void etantDonneXDemandesEnAttenteQuandGetNombreDemandesEnAttenteDevraitRetournerX() {
+		final int NOMBRE_DEMANDES = mettreUnNombreAleatoireDeDemandesEnAttente();
+		int nbDemandesEnAttente = conteneurDemandes.getNombreDemandesEnAttente();
+		assertEquals(NOMBRE_DEMANDES, nbDemandesEnAttente);
 	}
 
-	@Test
-	public void etantDonneTailleDemandeEnAttenteSuperieureQuantiteRequiseQuandContientAuMoinsEnAttenteDevraitRetournerVrai() {
-		boolean resultat = conteneurDemandes.contientAuMoinsEnAttente(NB_DEMANDES_EN_ATTENTE - 1);
-		assertTrue(resultat);
-	}
-
-	@Test
-	public void etantDonneTailleDemandeEnAttenteEgaleQuantiteRequisesQuandContientAuMoinsEnAttenteDevraitRetournerVrai() {
-		boolean resultat = conteneurDemandes.contientAuMoinsEnAttente(NB_DEMANDES_EN_ATTENTE);
-		assertTrue(resultat);
+	private int mettreUnNombreAleatoireDeDemandesEnAttente() {
+		final int BORNE_SUPERIEURE = 99;
+		int nbDemandes = new Random().nextInt(BORNE_SUPERIEURE) + 1;
+		given(demandesEnAttente.taille()).willReturn(nbDemandes);
+		return nbDemandes;
 	}
 
 	private void demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient() {
