@@ -3,11 +3,11 @@ package org.ClAssignateur.domain.demandes;
 import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
 
+import java.util.Random;
+
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
-import org.ClAssignateur.domain.groupe.Groupe;
-import org.mockito.ArgumentMatcher;
 import org.ClAssignateur.domain.demandes.ConteneurDemandes;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.junit.Before;
@@ -15,9 +15,6 @@ import org.junit.Test;
 
 public class ConteneurDemandesTest {
 
-	private final Groupe GROUPE = mock(Groupe.class);
-	private final Priorite PRIORITE_BASSE = Priorite.basse();
-	private final Priorite PRIORITE_HAUTE = Priorite.haute();
 	private final String TITRE_REUNION = "Titre";
 	private final int NB_DEMANDES_EN_ATTENTE = 5;
 
@@ -30,11 +27,12 @@ public class ConteneurDemandesTest {
 
 	@Before
 	public void creerConteneurDemandes() {
-		demandeFaiblePriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_BASSE);
-		demandeHautePriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_HAUTE);
+		demandeFaiblePriorite = mock(Demande.class);
+		demandeHautePriorite = mock(Demande.class);
 		demandesEnAttente = mock(DemandesEntrepot.class);
 		demandesArchivees = mock(DemandesEntrepot.class);
 
+		given(demandeHautePriorite.estPlusPrioritaire(demandeFaiblePriorite)).willReturn(true);
 		given(demandesEnAttente.taille()).willReturn(NB_DEMANDES_EN_ATTENTE);
 
 		conteneurDemandes = new ConteneurDemandes(demandesEnAttente, demandesArchivees);
@@ -59,7 +57,7 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
-	public void quandObtenirDemandesEnAttenteDevraitTrierSelonOrdreDecroissantPriorite() {
+	public void quandObtenirDemandesAvecDeuxDemandesDejaOrdonneesDevraitTrierSelonOrdreDecroissantPriorite() {
 		List<Demande> demandesAjoutees = new ArrayList<Demande>();
 		demandesAjoutees.add(demandeFaiblePriorite);
 		demandesAjoutees.add(demandeHautePriorite);
@@ -67,7 +65,56 @@ public class ConteneurDemandesTest {
 
 		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
 
-		assertThat(demandesObtenues, estEnOrdrePrioritaireDecroissant());
+		assertTrue(demandesObtenues.get(0).estPlusPrioritaire(demandesObtenues.get(1)));
+	}
+
+	@Test
+	public void quandObtenirDemandesAvecDeuxDemandesPasOrdonneesDevraitTrierSelonOrdreDecroissantPriorite() {
+		List<Demande> demandesAjoutees = new ArrayList<Demande>();
+		demandesAjoutees.add(demandeHautePriorite);
+		demandesAjoutees.add(demandeFaiblePriorite);
+		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
+
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+
+		assertTrue(demandesObtenues.get(0).estPlusPrioritaire(demandesObtenues.get(1)));
+	}
+
+	@Test
+	public void quandObtenirDemandesEnAttenteDevraitPasChangerOrdreDemandesSiMemePrioriteEtPremiereDemandeCreerEnPremier() {
+		List<Demande> demandesAjoutees = new ArrayList<Demande>();
+		Demande premiereDemandeHautePriorite = mock(Demande.class);
+		configurerDemandesPourQuilsAientLaMemePriorite(premiereDemandeHautePriorite, demandeHautePriorite);
+		demandesAjoutees.add(premiereDemandeHautePriorite);
+		demandesAjoutees.add(demandeHautePriorite);
+		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
+
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+
+		assertEquals(premiereDemandeHautePriorite, demandesObtenues.get(0));
+	}
+
+	@Test
+	public void quandObtenirDemandesEnAttenteDevraitChangerOrdreDemandesSiMemePrioriteEtPremiereDemandeCreerEnDeuxieme() {
+		List<Demande> demandesAjoutees = new ArrayList<Demande>();
+		Demande secondeDemandeHautePriorite = mock(Demande.class);
+		configurerDemandesPourQuilsAientLaMemePriorite(demandeHautePriorite, secondeDemandeHautePriorite);
+		demandesAjoutees.add(demandeHautePriorite);
+		demandesAjoutees.add(secondeDemandeHautePriorite);
+		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
+
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+
+		assertEquals(secondeDemandeHautePriorite, demandesObtenues.get(1));
+	}
+
+	private void configurerDemandesPourQuilsAientLaMemePriorite(Demande premiereDemande, Demande secondeDemande) {
+		given(premiereDemande.estAussiPrioritaire(secondeDemande)).willReturn(true);
+		given(premiereDemande.estAnterieureA(secondeDemande)).willReturn(true);
+		given(premiereDemande.estPlusPrioritaire(secondeDemande)).willReturn(false);
+		given(secondeDemande.estAussiPrioritaire(premiereDemande)).willReturn(true);
+		given(secondeDemande.estAnterieureA(premiereDemande)).willReturn(false);
+		given(secondeDemande.estPlusPrioritaire(premiereDemande)).willReturn(false);
 	}
 
 	@Test
@@ -125,21 +172,17 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
-	public void etantDonneTailleDemandeEnAttenteInferieureQuantiteRequiseQuandContientAuMoinsEnAttenteDevraitRetournerFaux() {
-		boolean resultat = conteneurDemandes.contientAuMoinsEnAttente(NB_DEMANDES_EN_ATTENTE + 1);
-		assertFalse(resultat);
+	public void etantDonneXDemandesEnAttenteQuandGetNombreDemandesEnAttenteDevraitRetournerX() {
+		final int NOMBRE_DEMANDES = mettreUnNombreAleatoireDeDemandesEnAttente();
+		int nbDemandesEnAttente = conteneurDemandes.getNombreDemandesEnAttente();
+		assertEquals(NOMBRE_DEMANDES, nbDemandesEnAttente);
 	}
 
-	@Test
-	public void etantDonneTailleDemandeEnAttenteSuperieureQuantiteRequiseQuandContientAuMoinsEnAttenteDevraitRetournerVrai() {
-		boolean resultat = conteneurDemandes.contientAuMoinsEnAttente(NB_DEMANDES_EN_ATTENTE - 1);
-		assertTrue(resultat);
-	}
-
-	@Test
-	public void etantDonneTailleDemandeEnAttenteEgaleQuantiteRequisesQuandContientAuMoinsEnAttenteDevraitRetournerVrai() {
-		boolean resultat = conteneurDemandes.contientAuMoinsEnAttente(NB_DEMANDES_EN_ATTENTE);
-		assertTrue(resultat);
+	private int mettreUnNombreAleatoireDeDemandesEnAttente() {
+		final int BORNE_SUPERIEURE = 99;
+		int nbDemandes = new Random().nextInt(BORNE_SUPERIEURE) + 1;
+		given(demandesEnAttente.taille()).willReturn(nbDemandes);
+		return nbDemandes;
 	}
 
 	private void demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient() {
@@ -147,26 +190,4 @@ public class ConteneurDemandesTest {
 		given(demandesEnAttente.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.of(demandeFaiblePriorite));
 	}
 
-	private EstEnOrdrePrioritaireDecroissant estEnOrdrePrioritaireDecroissant() {
-		return new EstEnOrdrePrioritaireDecroissant();
-	}
-
-	private class EstEnOrdrePrioritaireDecroissant extends ArgumentMatcher<List<Demande>> {
-
-		public boolean matches(Object demandes) {
-
-			List<Demande> listeDemandes = (List<Demande>) demandes;
-			Demande derniereDemande = null;
-			for (Demande demandeCourante : listeDemandes) {
-				if (derniereDemande != null) {
-					if (demandeCourante.estPlusPrioritaire(derniereDemande))
-						return false;
-				}
-
-				derniereDemande = demandeCourante;
-			}
-
-			return true;
-		}
-	}
 }

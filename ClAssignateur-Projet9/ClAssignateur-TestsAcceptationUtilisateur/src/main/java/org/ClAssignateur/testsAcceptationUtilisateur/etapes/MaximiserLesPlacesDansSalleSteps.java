@@ -1,4 +1,4 @@
-package org.ClAssignateur.testsAcceptationUtilisateur.steps;
+package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
 import java.util.ArrayList;
 
@@ -58,7 +58,7 @@ public class MaximiserLesPlacesDansSalleSteps {
 	@When("assigner salle")
 	public void whenAssignerSalle() {
 		conteneurDemandes.mettreDemandeEnAttente(demandeAAssigner);
-		assignateur.run();
+		assignateur.lancerAssignation();
 	}
 
 	@Then("la salle assigne est celle avec le minimum de place pour la reunion")

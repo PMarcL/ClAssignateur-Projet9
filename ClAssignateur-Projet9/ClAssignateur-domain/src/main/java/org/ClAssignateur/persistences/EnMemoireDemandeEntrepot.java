@@ -5,23 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 
 public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 
 	private ArrayList<Demande> demandes = new ArrayList<Demande>();
-	private Demande derniereDemandePersistee;
 
 	public void persisterDemande(Demande demande) {
 		if (contientPasDemande(demande)) {
 			demandes.add(demande);
-			derniereDemandePersistee = demande;
 		}
 	}
 
-	private boolean contientPasDemande(Demande demande) {
+	protected boolean contientPasDemande(Demande demande) {
 		return this.demandes.stream().noneMatch(demandeExistante -> demandeExistante.equals(demande));
 	}
 
@@ -38,7 +35,7 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	}
 
 	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateurEtId(String courriel, UUID id) {
-		return demandes.stream().filter(x -> x.getID().equals(id) && x.getOrganisateur().courriel.equals(courriel))
+		return demandes.stream().filter(x -> x.getID().equals(id) && x.getCourrielOrganisateur().equals(courriel))
 				.findFirst();
 	}
 
@@ -74,11 +71,6 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 
 	@Override
 	public List<Demande> obtenirDemandesSelonCourriel(String courriel) {
-		return demandes.stream().filter(x -> x.getOrganisateur().courriel.equals(courriel))
-				.collect(Collectors.toList());
-	}
-
-	public Demande getDerniereDemandePersistee() {
-		return derniereDemandePersistee;
+		return demandes.stream().filter(x -> x.getCourrielOrganisateur().equals(courriel)).collect(Collectors.toList());
 	}
 }

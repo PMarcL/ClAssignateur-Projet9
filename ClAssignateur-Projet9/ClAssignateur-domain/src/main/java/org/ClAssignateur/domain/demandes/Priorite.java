@@ -37,4 +37,17 @@ public class Priorite {
 	public boolean estPlusPrioritaire(Priorite priorite) {
 		return this.valeurPriorite > priorite.valeurPriorite;
 	}
+
+	@Override
+	public boolean equals(Object autreObjet) {
+		if (autreObjet == null) {
+			return false;
+		}
+		if (!(autreObjet instanceof Priorite)) {
+			return false;
+		} else {
+			Priorite autrePriorite = (Priorite) autreObjet;
+			return this.valeurPriorite == autrePriorite.valeurPriorite;
+		}
+	}
 }

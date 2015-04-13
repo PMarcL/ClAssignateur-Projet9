@@ -2,9 +2,7 @@ package org.ClAssignateur.domain.demandes;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-
 import org.ClAssignateur.domain.demandes.Demande.STATUT_DEMANDE;
-
 import java.util.UUID;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
@@ -17,7 +15,8 @@ import org.junit.Test;
 public class DemandeTest {
 
 	private final String TITRE_REUNION = "Mon titre";
-	private final Employe ORGANISATEUR = new Employe("courriel");
+	private final String COURRIEL_ORGNISATEUR = "courriel";
+	private final Employe ORGANISATEUR = new Employe(COURRIEL_ORGNISATEUR);
 	private final Employe RESPONSABLE = new Employe("courriel@hotmail.com");
 	private final Groupe GROUPE = new Groupe(ORGANISATEUR, RESPONSABLE, new ArrayList<Employe>());
 	private final int NOMBRE_DE_PARTICIPANTS = 10;
@@ -75,7 +74,6 @@ public class DemandeTest {
 	@Test
 	public void demandePossedeInitialementLeChampsPrioriteCommeDefiniDansLeConstructeur() {
 		Demande demandeAvecPriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_MOYENNE);
-
 		assertTrue(demandeAvecPriorite.estAussiPrioritaire(demandeAvecPriorite));
 	}
 
@@ -85,25 +83,46 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsResponsableCommeDefiniDansGroupe() {
+	public void demandePossedeInitialementLeChampsResponsableCommeDefiniDansGroupe() {
 		Employe responsable = demande.getResponsable();
 		assertTrue(RESPONSABLE.equals(responsable));
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsNbParticipantsCommeDefiniDansGroupe() {
+	public void demandePossedeInitialementLeChampsNbParticipantsCommeDefiniDansGroupe() {
 		int nbParticipants = demande.getNbParticipants();
 		assertEquals(NOMBRE_DE_PARTICIPANTS_DANS_GROUPE_PAR_DEFAUT, nbParticipants);
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsNbParticipantsCommeDefiniDansGroupeAvecPlusieursParticipants() {
+	public void demandePossedeInitialementLeChampsNbParticipantsCommeDefiniDansGroupeAvecPlusieursParticipants() {
 		Groupe groupePlusieursParticipants = creerGroupePlusieursParticipants(NOMBRE_DE_PARTICIPANTS);
 		Demande demandeAvecPlusiseursParticipants = new Demande(groupePlusieursParticipants, TITRE_REUNION);
 
 		int nbParticipants = demandeAvecPlusiseursParticipants.getNbParticipants();
 
 		assertEquals(NOMBRE_DE_PARTICIPANTS, nbParticipants);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesQuandEstArriveeAvantSurPremiereDemandeRetourneVrai() {
+		Demande premiereDemande = new Demande(GROUPE, TITRE_REUNION);
+		Demande deuxiemeDemande = new Demande(GROUPE, TITRE_REUNION);
+
+		assertTrue(premiereDemande.estAnterieureA(deuxiemeDemande));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesQuandEstArriveeAvantSurDeuxiemeDemandeRetourneFaux() {
+		Demande premiereDemande = new Demande(GROUPE, TITRE_REUNION);
+		Demande deuxiemeDemande = new Demande(GROUPE, TITRE_REUNION);
+
+		assertFalse(deuxiemeDemande.estAnterieureA(premiereDemande));
+	}
+
+	@Test
+	public void etantDonneUneDemandeQuandEstArriveeAvantSurElleMemeRetourneFaux() {
+		assertFalse(demande.estAnterieureA(demande));
 	}
 
 	@Test
@@ -152,6 +171,38 @@ public class DemandeTest {
 		Salle salleRecu = demande.getSalleAssignee();
 
 		assertEquals(salleAssignee, salleRecu);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecLaMemePrioriteQuandEstAussiPrioritaireReturnTrue() {
+		Demande demandePrioriteBasse = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
+		assertTrue(demande.estAussiPrioritaire(demandePrioriteBasse));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteDifferenteQuandEstAussiPrioritaireReturnFalse() {
+		Demande demandePrioriteMoyenne = new Demande(GROUPE, TITRE_REUNION, Priorite.moyenne());
+		assertFalse(demande.estAussiPrioritaire(demandePrioriteMoyenne));
+	}
+
+	@Test
+	public void etantDonneDemandeAvecOrganisateurQuandGetCourrielOrganisateurAlorsDonneLeBonCourrielOrganisateur() {
+		String courrielOrganisateurActuel = demande.getCourrielOrganisateur();
+		assertEquals(COURRIEL_ORGNISATEUR, courrielOrganisateurActuel);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteDifferenteLorsqueEstPlusPrioritaireRetourneVrai() {
+		Demande demandePrioriteHaute = new Demande(GROUPE, TITRE_REUNION, Priorite.haute());
+		Demande demandePrioriteBasse = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
+
+		assertTrue(demandePrioriteHaute.estPlusPrioritaire(demandePrioriteBasse));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteIdentitqueLorsqueEstPlusPrioritaireRetourneFaux() {
+		Demande demandePrioriteBasse = new Demande(GROUPE, TITRE_REUNION, Priorite.basse());
+		assertFalse(demande.estPlusPrioritaire(demandePrioriteBasse));
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {

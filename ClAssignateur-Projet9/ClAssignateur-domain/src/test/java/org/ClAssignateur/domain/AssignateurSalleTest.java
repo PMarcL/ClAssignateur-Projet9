@@ -1,5 +1,6 @@
 package org.ClAssignateur.domain;
 
+import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 import org.ClAssignateur.domain.notification.Notificateur;
 import java.util.List;
@@ -7,7 +8,6 @@ import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
 import org.ClAssignateur.domain.demandes.ConteneurDemandes;
 import org.ClAssignateur.domain.demandes.Demande;
-import org.mockito.ArgumentMatcher;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -73,59 +73,52 @@ public class AssignateurSalleTest {
 	}
 
 	@Test
-	public void quandAppelTacheMinuterieDevraitTenterTrouverSallePourChaqueDemande() {
+	public void quandLancerAssignationDevraitTenterAssignerChaqueDemande() {
 		ajouterDemandesEnAttente(NOMBRE_DEMANDES, demandeSalleDisponible);
-		assignateur.run();
-		verify(strategieSelectionSalle, times(NOMBRE_DEMANDES)).selectionnerSalle(SALLES, demandeSalleDisponible);
+		assignateur.lancerAssignation();
+		verify(strategieSelectionSalle, times(NOMBRE_DEMANDES)).selectionnerSalle(eq(SALLES), any(Demande.class));
 	}
 
 	@Test
-	public void etantDonneSalleRepondantDemandeTrouveeQuandAppelTacheMinuterieDevraitReserverSalle() {
+	public void etantDonneSalleRepondantDemandeTrouveeQuandLancerAssignationDevraitReserverSalle() {
 		configurerSalleRepondantADemande();
-		assignateur.run();
+		assignateur.lancerAssignation();
 		verify(demandeSalleDisponible).placerReservation(salleDisponible);
 	}
 
 	@Test
-	public void etantDonneeReservationPlaceeAvecSuccesQuandAssignerDevraitNotifierSucces() {
+	public void etantDonneeReservationPlaceeAvecSuccesQuandLancerAssignationNotifierSucces() {
 		configurerSalleRepondantADemande();
-		assignateur.run();
+		assignateur.lancerAssignation();
 		verify(notificateur).notifierSucces(demandeSalleDisponible, salleDisponible);
 	}
 
 	@Test
-	public void etantDonneeReservationPlaceeAvecSuccesQuandAssignerArchiverReservation() {
+	public void etantDonneeReservationPlaceeAvecSuccesQuandLancerAssignationDevraitArchiverReservation() {
 		configurerSalleRepondantADemande();
-		assignateur.run();
+		assignateur.lancerAssignation();
 		verify(conteneurDemandes).archiverDemande(demandeSalleDisponible);
 	}
 
 	@Test
-	public void etantDonneeImpossibiliteDePlacerReservationQuandAssignerNotifierEchec() {
+	public void etantDonneeImpossibiliteDePlacerReservationQuandLancerAssignationDevraitNotifierEchec() {
 		configurerSalleNeRepondantPasADemande();
-		assignateur.run();
+		assignateur.lancerAssignation();
 		verify(notificateur).notifierEchec(demandeAucuneSalleDisponible);
 	}
 
 	@Test
-	public void etantDonneAucuneSalleRepondantDemandeTrouveeQuandAssignerDemandeSalleDevraitNePasReserverSalle() {
+	public void etantDonneAucuneSalleRepondantDemandeTrouveeQuandLancerAssignationDevraitNePasReserverSalle() {
 		configurerSalleNeRepondantPasADemande();
-		assignateur.run();
+		assignateur.lancerAssignation();
 		verify(demandeAucuneSalleDisponible, never()).placerReservation(salleDisponible);
 	}
 
 	@Test
-	public void etantDonneNombreDemandesDansConteneurDemandesSuperieurOuEgalALimiteQuandAssignerSiContientAuMoinsUnNombreDeDemandesDevraitAssigner() {
-		ajouterDemandesEnAttente(NOMBRE_DEMANDES, demandeSalleDisponible);
-		assignateur.assignerDemandeSalleSiContientAuMoins(NOMBRE_DEMANDES);
-		verify(strategieSelectionSalle, atLeast(1)).selectionnerSalle(anyListOf(Salle.class), any(Demande.class));
-	}
-
-	@Test
-	public void etantDonneNombreDemandesDansConteneurDemandesInferieurALimiteQuandAssignerSiContientAuMoinsUnNombreDeDemandesDevraitNePasAssigner() {
-		ajouterDemandesEnAttente(NOMBRE_DEMANDES, demandeSalleDisponible);
-		assignateur.assignerDemandeSalleSiContientAuMoins(NOMBRE_DEMANDES + 1);
-		verify(strategieSelectionSalle, never()).selectionnerSalle(anyListOf(Salle.class), any(Demande.class));
+	public void quandGetNombreDemandesEnAttenteDevraitDemanderAConteneurDemandes() {
+		given(conteneurDemandes.getNombreDemandesEnAttente()).willReturn(NOMBRE_DEMANDES);
+		int nbDemandesEnAttente = assignateur.getNombreDemandesEnAttente();
+		assertEquals(NOMBRE_DEMANDES, nbDemandesEnAttente);
 	}
 
 	private void configurerSalleRepondantADemande() {
@@ -148,7 +141,6 @@ public class AssignateurSalleTest {
 	}
 
 	private void ajouterDemandesEnAttente(int nombreDemandes, Demande demande) {
-		final boolean CONTIENT_AU_MOINS_NOMBRE_DEMANDES = true;
 		List<Demande> demandes = new ArrayList<Demande>();
 
 		for (int i = 0; i < nombreDemandes; i++) {
@@ -156,8 +148,7 @@ public class AssignateurSalleTest {
 		}
 
 		given(conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite()).willReturn(demandes);
-		given(conteneurDemandes.contientAuMoinsEnAttente(intThat(estInferieurOuEgal(nombreDemandes)))).willReturn(
-				CONTIENT_AU_MOINS_NOMBRE_DEMANDES);
+		given(conteneurDemandes.getNombreDemandesEnAttente()).willReturn(nombreDemandes);
 	}
 
 	private void configurerMocks() {
@@ -180,22 +171,5 @@ public class AssignateurSalleTest {
 	private void permettreTrouverDemandeAAnnuler() {
 		given(conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION))
 				.willReturn(Optional.of(demandeAAnnuler));
-	}
-
-	private EstInferieurOuEgal estInferieurOuEgal(int valeur) {
-		return new EstInferieurOuEgal(valeur);
-	}
-
-	private class EstInferieurOuEgal extends ArgumentMatcher<Integer> {
-
-		private int reference;
-
-		public EstInferieurOuEgal(int reference) {
-			this.reference = reference;
-		}
-
-		public boolean matches(Object valeur) {
-			return ((int) valeur <= reference);
-		}
 	}
 }
