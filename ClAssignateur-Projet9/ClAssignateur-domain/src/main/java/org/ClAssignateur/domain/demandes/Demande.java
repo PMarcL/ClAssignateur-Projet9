@@ -12,12 +12,19 @@ public class Demande {
 		EN_ATTENTE, ACCEPTE, REFUSE
 	}
 
+	private static int nombreDemandesCrees;
+
 	private Groupe groupe;
 	private Priorite priorite;
 	private String titre;
 	private Salle salleAssignee;
 	private UUID id;
 	private STATUT_DEMANDE etat;
+	private int estampille;
+
+	private static int genererEstampille() {
+		return ++nombreDemandesCrees;
+	}
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
@@ -26,6 +33,7 @@ public class Demande {
 		this.priorite = priorite;
 		this.salleAssignee = null;
 		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+		ajouterEstampille();
 	}
 
 	public Demande(Groupe groupe, String titre) {
@@ -35,6 +43,7 @@ public class Demande {
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
 		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+		ajouterEstampille();
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre, Priorite priorite) {
@@ -44,6 +53,7 @@ public class Demande {
 		this.priorite = priorite;
 		this.salleAssignee = null;
 		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+		ajouterEstampille();
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre) {
@@ -53,6 +63,11 @@ public class Demande {
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
 		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+		ajouterEstampille();
+	}
+
+	private void ajouterEstampille() {
+		this.estampille = Demande.genererEstampille();
 	}
 
 	public Groupe getGroupe() {
@@ -130,4 +145,9 @@ public class Demande {
 			return this.getID().equals(autreDemande.getID());
 		}
 	}
+
+	public boolean estAnterieureA(Demande demande) {
+		return this.estampille < demande.estampille;
+	}
+
 }

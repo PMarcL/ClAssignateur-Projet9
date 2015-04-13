@@ -3,9 +3,9 @@ package org.ClAssignateur.domain;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.SelectionSalleOptimaleStrategie;
 import org.ClAssignateur.domain.SelectionSalleStrategie;
+import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.demandes.Demande;
 import java.util.ArrayList;
 import java.util.Optional;

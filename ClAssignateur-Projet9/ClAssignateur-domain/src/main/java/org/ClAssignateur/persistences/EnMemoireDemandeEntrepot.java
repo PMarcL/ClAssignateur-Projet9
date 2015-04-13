@@ -13,12 +13,12 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	private ArrayList<Demande> demandes = new ArrayList<Demande>();
 
 	public void persisterDemande(Demande demande) {
-		if (existePas(demande)) {
+		if (contientPasDemande(demande)) {
 			demandes.add(demande);
 		}
 	}
 
-	private boolean existePas(Demande demande) {
+	protected boolean contientPasDemande(Demande demande) {
 		return this.demandes.stream().noneMatch(demandeExistante -> demandeExistante.equals(demande));
 	}
 
@@ -66,7 +66,7 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 
 	@Override
 	public void vider() {
-		demandes.clear();
+		demandes = new ArrayList<>();
 	}
 
 	@Override

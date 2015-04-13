@@ -14,6 +14,7 @@ public class EnMemoireDemandeEntrepotTest {
 
 	private static final int UNE_SEULE_DEMANDE = 1;
 	private static final int TAILLE_INITIALE_DESIREE = 0;
+	private static final int NB_DEMANDES_AJOUTEES = 5;
 	private static final Object TAILLE_APRES_AJOUT_INITIAL_DESIREE = 1;
 	private static final Object TAILLE_APRES_SECOND_AJOUT_DESIREE = 2;
 	private static final UUID UN_UUID = UUID.randomUUID();
@@ -72,7 +73,7 @@ public class EnMemoireDemandeEntrepotTest {
 	@Test
 	public void etantDonneUnEntrepotAvecDeMultipleDemandeObtenirDemandeSelonIdDoitRetournerLaBonneDemande() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
-		ajouterTroisDemandeALEntrepot();
+		ajouterPlusieursDemandesALEntrepot();
 
 		Demande demandeRetrouve = entrepot.obtenirDemandeSelonId(UN_UUID).get();
 
@@ -82,7 +83,7 @@ public class EnMemoireDemandeEntrepotTest {
 	@Test
 	public void etantDonneUnEntrepotAvecDeMultipleDemandeObtenirDemandeSelonTitreDoitRetournerLaBonneDemande() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
-		ajouterTroisDemandeALEntrepot();
+		ajouterPlusieursDemandesALEntrepot();
 
 		Demande demandeRetrouve = entrepot.obtenirDemandeSelonTitre(UN_TITRE_DISTINCT).get();
 
@@ -104,7 +105,7 @@ public class EnMemoireDemandeEntrepotTest {
 
 	@Test
 	public void etantDonneUnEntrepotAvecDeMultipleDemandeApresViderTailleEgaleZero() {
-		ajouterTroisDemandeALEntrepot();
+		ajouterPlusieursDemandesALEntrepot();
 
 		entrepot.vider();
 		int tailleApresVider = entrepot.taille();
@@ -124,14 +125,14 @@ public class EnMemoireDemandeEntrepotTest {
 
 	@Test
 	public void etantDonneUnEntrepotAvecMultipleDemandeLorsqueRetirerUneDemandeQuiNExistePasAlorsNeLancePasException() {
-		ajouterTroisDemandeALEntrepot();
+		ajouterPlusieursDemandesALEntrepot();
 		entrepot.retirerDemande(demande);
 	}
 
 	@Test
 	public void etantDonneUnEntrepotAvecMultipleDemandeApresRetirerDemandeObtenirDemandeDonneAucuneDemandePourLIdDeLaDemande() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
-		ajouterTroisDemandeALEntrepot();
+		ajouterPlusieursDemandesALEntrepot();
 
 		boolean demandeEstPresenteAvant = entrepot.obtenirDemandeSelonId(UN_UUID).isPresent();
 		entrepot.retirerDemande(demande);
@@ -160,7 +161,7 @@ public class EnMemoireDemandeEntrepotTest {
 
 	@Test
 	public void etantDonneUnEntrepotAvecPlusieursDemandeQuiNAppartiennePasALorganisateurAlorsDonneUneListVide() {
-		ajouterTroisDemandeALEntrepot();
+		ajouterPlusieursDemandesALEntrepot();
 		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR);
 		assertTrue(demandesRecus.isEmpty());
 	}
@@ -186,7 +187,7 @@ public class EnMemoireDemandeEntrepotTest {
 	@Test
 	public void etantDonneUnEntrepotAvecPlusieursDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdRetourneLaBonneDemande() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
-		ajouterTroisDemandeALEntrepot();
+		ajouterPlusieursDemandesALEntrepot();
 
 		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR,
 				UN_UUID);
@@ -197,7 +198,7 @@ public class EnMemoireDemandeEntrepotTest {
 	@Test
 	public void etantDonneUnEntrepotAvecPlusieursDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdAvecMauvaisCourrielRetourneOptionalVide() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
-		ajouterTroisDemandeALEntrepot();
+		ajouterPlusieursDemandesALEntrepot();
 
 		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(
 				COURRIEL_NON_CORRESPONDANT, UN_UUID);
@@ -212,10 +213,10 @@ public class EnMemoireDemandeEntrepotTest {
 		entrepot.persisterDemande(demande);
 	}
 
-	private void ajouterTroisDemandeALEntrepot() {
-		ajouterUneDemandeALEntrepot();
-		ajouterUneDemandeALEntrepot();
-		ajouterUneDemandeALEntrepot();
+	private void ajouterPlusieursDemandesALEntrepot() {
+		for (int i = 0; i < NB_DEMANDES_AJOUTEES; i++) {
+			ajouterUneDemandeALEntrepot();
+		}
 	}
 
 	private Demande ajouterUneDemandeALEntrepot() {
