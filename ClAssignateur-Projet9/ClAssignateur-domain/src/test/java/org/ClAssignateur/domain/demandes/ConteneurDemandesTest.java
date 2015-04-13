@@ -110,10 +110,10 @@ public class ConteneurDemandesTest {
 
 	private void configurerDemandesPourQuilsAientLaMemePriorite(Demande premiereDemande, Demande secondeDemande) {
 		given(premiereDemande.estAussiPrioritaire(secondeDemande)).willReturn(true);
-		given(premiereDemande.estArriveeAvant(secondeDemande)).willReturn(true);
+		given(premiereDemande.estAnterieureA(secondeDemande)).willReturn(true);
 		given(premiereDemande.estPlusPrioritaire(secondeDemande)).willReturn(false);
 		given(secondeDemande.estAussiPrioritaire(premiereDemande)).willReturn(true);
-		given(secondeDemande.estArriveeAvant(premiereDemande)).willReturn(false);
+		given(secondeDemande.estAnterieureA(premiereDemande)).willReturn(false);
 		given(secondeDemande.estPlusPrioritaire(premiereDemande)).willReturn(false);
 	}
 

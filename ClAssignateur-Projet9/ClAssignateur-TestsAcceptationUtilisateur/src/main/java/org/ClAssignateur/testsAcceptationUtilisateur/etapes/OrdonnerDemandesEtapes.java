@@ -92,7 +92,7 @@ public class OrdonnerDemandesEtapes {
 		for (int i = 0; i < NB_DEMANDES_DE_MEME_PRIORITE - 1; i++) {
 			Demande demandeCourante = demandes.get(i);
 			Demande demandeSuivante = demandes.get(i + 1);
-			assertTrue(demandeCourante.estArriveeAvant(demandeSuivante));
+			assertTrue(demandeCourante.estAnterieureA(demandeSuivante));
 		}
 	}
 

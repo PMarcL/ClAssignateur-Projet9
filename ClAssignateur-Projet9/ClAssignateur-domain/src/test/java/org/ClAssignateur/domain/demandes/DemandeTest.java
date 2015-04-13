@@ -109,7 +109,7 @@ public class DemandeTest {
 		Demande premiereDemande = new Demande(GROUPE, TITRE_REUNION);
 		Demande deuxiemeDemande = new Demande(GROUPE, TITRE_REUNION);
 
-		assertTrue(premiereDemande.estArriveeAvant(deuxiemeDemande));
+		assertTrue(premiereDemande.estAnterieureA(deuxiemeDemande));
 	}
 
 	@Test
@@ -117,12 +117,12 @@ public class DemandeTest {
 		Demande premiereDemande = new Demande(GROUPE, TITRE_REUNION);
 		Demande deuxiemeDemande = new Demande(GROUPE, TITRE_REUNION);
 
-		assertFalse(deuxiemeDemande.estArriveeAvant(premiereDemande));
+		assertFalse(deuxiemeDemande.estAnterieureA(premiereDemande));
 	}
 
 	@Test
 	public void etantDonneUneDemandeQuandEstArriveeAvantSurElleMemeRetourneFaux() {
-		assertFalse(demande.estArriveeAvant(demande));
+		assertFalse(demande.estAnterieureA(demande));
 	}
 
 	@Test

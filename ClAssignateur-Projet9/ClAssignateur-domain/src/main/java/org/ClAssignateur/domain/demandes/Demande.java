@@ -20,11 +20,10 @@ public class Demande {
 	private Salle salleAssignee;
 	private UUID id;
 	private STATUT_DEMANDE etat;
-	private long estampille;
+	private int estampille;
 
 	private static int genererEstampille() {
-		nombreDemandesCrees++;
-		return nombreDemandesCrees;
+		return ++nombreDemandesCrees;
 	}
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
@@ -147,7 +146,7 @@ public class Demande {
 		}
 	}
 
-	public boolean estArriveeAvant(Demande demande) {
+	public boolean estAnterieureA(Demande demande) {
 		return this.estampille < demande.estampille;
 	}
 
