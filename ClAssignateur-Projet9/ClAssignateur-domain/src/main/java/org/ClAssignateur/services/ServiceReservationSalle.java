@@ -20,7 +20,12 @@ public class ServiceReservationSalle {
 		this.frequence = FREQUENCE_PAR_DEFAUT;
 		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
 
+		redemarrerMinuterie();
+	}
+
+	private void redemarrerMinuterie() {
 		long delaiMilliseconde = delaiEnMilisecondes(frequence);
+		this.minuterie.annulerAppelPeriodique();
 		this.minuterie.planifierAppelPeriodique(this.assignateurSalle, delaiMilliseconde, delaiMilliseconde);
 	}
 
@@ -50,7 +55,10 @@ public class ServiceReservationSalle {
 	}
 
 	private void assignerSiNecessaire() {
-		assignateurSalle.assignerDemandeSalleSiContientAuMoins(limiteDemandes);
+		if (assignateurSalle.getNombreDemandesEnAttente() >= limiteDemandes) {
+			assignateurSalle.lancerAssignation();
+			redemarrerMinuterie();
+		}
 	}
 
 }
