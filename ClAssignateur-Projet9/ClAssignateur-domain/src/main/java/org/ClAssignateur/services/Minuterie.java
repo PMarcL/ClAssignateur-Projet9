@@ -1,10 +1,12 @@
 package org.ClAssignateur.services;
 
-import java.util.TimerTask;
+public interface Minuterie {
 
-public interface MinuterieStrategie {
+	public void souscrire(MinuterieObservateur observateur);
 
-	public void planifierAppelPeriodique(TimerTask classeAppelee, long delaiInitiale, long delaiPeriodique);
+	public void setDelai(Minute delai);
 
-	public void annulerAppelPeriodique();
+	public void reinitialiser();
+
+	public void demarrer();
 }

@@ -3,41 +3,28 @@ package org.ClAssignateur.services;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.AssignateurSalle;
 
-public class ServiceReservationSalle {
+public class ServiceReservationSalle implements MinuterieObservateur {
 
-	private final int FREQUENCE_PAR_DEFAUT = 5;
+	private final Minute DELAI_MINUTERIE_PAR_DEFAUT = new Minute(5);
 	private final int LIMITE_DEMANDES_PAR_DEFAUT = 10;
-	private final int MILLISECONDES_PAR_MINUTE = 60000;
 
 	private AssignateurSalle assignateurSalle;
-	private MinuterieStrategie minuterie;
-	private int frequence;
+	private Minuterie minuterie;
 	private int limiteDemandes;
 
-	public ServiceReservationSalle(MinuterieStrategie minuterie, AssignateurSalle assignateurSalle) {
+	public ServiceReservationSalle(Minuterie minuterie, AssignateurSalle assignateurSalle) {
 		this.assignateurSalle = assignateurSalle;
-		this.minuterie = minuterie;
-		this.frequence = FREQUENCE_PAR_DEFAUT;
 		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
 
-		redemarrerMinuterie();
+		this.minuterie = minuterie;
+		this.minuterie.setDelai(DELAI_MINUTERIE_PAR_DEFAUT);
+		this.minuterie.souscrire(this);
+		this.minuterie.demarrer();
 	}
 
-	private void redemarrerMinuterie() {
-		long delaiMilliseconde = delaiEnMilisecondes(frequence);
-		this.minuterie.annulerAppelPeriodique();
-		this.minuterie.planifierAppelPeriodique(this.assignateurSalle, delaiMilliseconde, delaiMilliseconde);
-	}
-
-	public void setFrequence(int nbMinutes) {
-		minuterie.annulerAppelPeriodique();
-
-		long delaiMilisecondes = delaiEnMilisecondes(nbMinutes);
-		minuterie.planifierAppelPeriodique(assignateurSalle, delaiMilisecondes, delaiMilisecondes);
-	}
-
-	private long delaiEnMilisecondes(int delaiEnMinutes) {
-		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
+	public void setFrequence(Minute nbMinutes) {
+		minuterie.setDelai(nbMinutes);
+		minuterie.reinitialiser();
 	}
 
 	public void setLimiteDemandesAvantAssignation(int limite) {
@@ -57,8 +44,12 @@ public class ServiceReservationSalle {
 	private void assignerSiNecessaire() {
 		if (assignateurSalle.getNombreDemandesEnAttente() >= limiteDemandes) {
 			assignateurSalle.lancerAssignation();
-			redemarrerMinuterie();
+			minuterie.reinitialiser();
 		}
+	}
+
+	public void notifierDelaiEcoule() {
+		assignateurSalle.lancerAssignation();
 	}
 
 }

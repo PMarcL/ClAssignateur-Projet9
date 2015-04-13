@@ -11,14 +11,13 @@ import org.junit.Test;
 
 public class ServiceReservationSalleTest {
 
-	private final int MILLISECONDES_PAR_MINUTE = 60000;
-	private final int FREQUENCE_PAR_DEFAUT = 5;
-	private final int FREQUENCE_MINUTES = 3;
+	private final Minute FREQUENCE_PAR_DEFAUT = new Minute(5);
+	private final Minute FREQUENCE_MINUTES = new Minute(3);
 	private final int LIMITE_DEMANDES_PAR_DEFAUT = 10;
 	private final int LIMITE_DEMANDES_QUELCONQUE = 5;
 	private final String TITRE_DEMANDE_A_ANNULER = "DemandeAnnulee";
 
-	private MinuterieStrategie minuterie;
+	private Minuterie minuterie;
 	private AssignateurSalle assignateur;
 	private Demande demande;
 
@@ -26,7 +25,7 @@ public class ServiceReservationSalleTest {
 
 	@Before
 	public void creerServiceReservation() {
-		minuterie = mock(MinuterieStrategie.class);
+		minuterie = mock(Minuterie.class);
 		assignateur = mock(AssignateurSalle.class);
 		demande = mock(Demande.class);
 
@@ -34,19 +33,27 @@ public class ServiceReservationSalleTest {
 	}
 
 	@Test
-	public void demarreMinuteriePendantDemarrageService() {
-		long delaiMillisecondes = delaiEnMillisecondes(FREQUENCE_PAR_DEFAUT);
-		verify(minuterie).planifierAppelPeriodique(assignateur, delaiMillisecondes, delaiMillisecondes);
+	public void configureMinuteriePendantDemarrageService() {
+		verify(minuterie).setDelai(FREQUENCE_PAR_DEFAUT);
 	}
 
 	@Test
-	public void quandSetFrequenceDevraitRedemarrerMinuterie() {
+	public void serviceSouscritNotificationMinuteriePendantDemarrageService() {
+		verify(minuterie).souscrire(serviceReservation);
+	}
+
+	@Test
+	public void demarreMinuteriePendantDemarrageService() {
+		verify(minuterie).demarrer();
+	}
+
+	@Test
+	public void quandSetFrequenceDevraitChangerFrequenceMinuterieAvantRedemarrerMinuterie() {
 		serviceReservation.setFrequence(FREQUENCE_MINUTES);
 
-		long delaiMillisecondes = delaiEnMillisecondes(FREQUENCE_MINUTES);
 		InOrder inOrder = inOrder(minuterie);
-		inOrder.verify(minuterie).annulerAppelPeriodique();
-		inOrder.verify(minuterie).planifierAppelPeriodique(assignateur, delaiMillisecondes, delaiMillisecondes);
+		inOrder.verify(minuterie).setDelai(FREQUENCE_MINUTES);
+		inOrder.verify(minuterie).reinitialiser();
 	}
 
 	@Test
@@ -75,8 +82,10 @@ public class ServiceReservationSalleTest {
 		verify(assignateur).lancerAssignation();
 	}
 
-	private long delaiEnMillisecondes(int delaiEnMinutes) {
-		return delaiEnMinutes * MILLISECONDES_PAR_MINUTE;
+	@Test
+	public void quandNotifierDelaiEcouleDevraitLancerAssignation() {
+		serviceReservation.notifierDelaiEcoule();
+		verify(assignateur).lancerAssignation();
 	}
 
 }
