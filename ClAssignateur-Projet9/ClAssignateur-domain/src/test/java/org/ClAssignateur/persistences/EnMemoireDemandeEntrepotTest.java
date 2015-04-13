@@ -206,27 +206,6 @@ public class EnMemoireDemandeEntrepotTest {
 		assertFalse(demandeRecu.isPresent());
 	}
 
-	@Test
-	public void etantDonneUnEntrepotVideLorsqueGetDerniereDemandePersisteeRenvoieLaDerniereDemandePersistee() {
-		Demande demande = mock(Demande.class);
-		entrepot.persisterDemande(demande);
-
-		Demande demandeRecu = entrepot.getDerniereDemandePersistee();
-
-		assertEquals(demande, demandeRecu);
-	}
-
-	@Test
-	public void etantDonneUnEntrepotAvecPlusieursDemandeLorsqueGetDerniereDemandePersisteeRenvoieLaDerniereDemandePersistee() {
-		ajouterPlusieursDemandesALEntrepot();
-		Demande demande = mock(Demande.class);
-		entrepot.persisterDemande(demande);
-
-		Demande demandeRecu = entrepot.getDerniereDemandePersistee();
-
-		assertEquals(demande, demandeRecu);
-	}
-
 	private void faireEnSorteQuEntrepotPossedeUneDemande() {
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE_DISTINCT);
