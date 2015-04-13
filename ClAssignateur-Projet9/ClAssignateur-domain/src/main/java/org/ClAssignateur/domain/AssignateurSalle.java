@@ -1,16 +1,14 @@
 package org.ClAssignateur.domain;
 
 import org.ClAssignateur.domain.notification.Notificateur;
-
-import java.util.List;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
-import org.ClAssignateur.domain.salles.SelectionSalleStrategie;
 import org.ClAssignateur.domain.demandes.ConteneurDemandes;
 import org.ClAssignateur.domain.demandes.Demande;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.TimerTask;
+import java.util.List;
 
 public class AssignateurSalle extends TimerTask {
 

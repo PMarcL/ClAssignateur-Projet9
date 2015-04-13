@@ -1,7 +1,8 @@
-package org.ClAssignateur.domain.salles;
+package org.ClAssignateur.domain;
+
+import org.ClAssignateur.domain.salles.Salle;
 
 import org.ClAssignateur.domain.demandes.Demande;
-
 import java.util.Collection;
 import java.util.Optional;
 

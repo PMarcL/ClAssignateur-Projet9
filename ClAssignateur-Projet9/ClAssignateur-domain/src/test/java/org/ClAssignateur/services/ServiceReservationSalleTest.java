@@ -6,7 +6,6 @@ import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.AssignateurSalle;
 import org.ClAssignateur.services.ServiceReservationSalle;
 import org.mockito.InOrder;
-import java.util.Timer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +18,7 @@ public class ServiceReservationSalleTest {
 	private final int LIMITE_DEMANDES_QUELCONQUE = 5;
 	private final String TITRE_DEMANDE_A_ANNULER = "DemandeAnnulee";
 
-	private Timer minuterie;
+	private MinuterieStrategie minuterie;
 	private AssignateurSalle assignateur;
 	private Demande demande;
 
@@ -27,7 +26,7 @@ public class ServiceReservationSalleTest {
 
 	@Before
 	public void creerServiceReservation() {
-		minuterie = mock(Timer.class);
+		minuterie = mock(MinuterieStrategie.class);
 		assignateur = mock(AssignateurSalle.class);
 		demande = mock(Demande.class);
 
@@ -37,7 +36,7 @@ public class ServiceReservationSalleTest {
 	@Test
 	public void demarreMinuteriePendantDemarrageService() {
 		long delaiMillisecondes = delaiEnMillisecondes(FREQUENCE_PAR_DEFAUT);
-		verify(minuterie).scheduleAtFixedRate(assignateur, delaiMillisecondes, delaiMillisecondes);
+		verify(minuterie).planifierAppelPeriodique(assignateur, delaiMillisecondes, delaiMillisecondes);
 	}
 
 	@Test
@@ -46,8 +45,8 @@ public class ServiceReservationSalleTest {
 
 		long delaiMillisecondes = delaiEnMillisecondes(FREQUENCE_MINUTES);
 		InOrder inOrder = inOrder(minuterie);
-		inOrder.verify(minuterie).cancel();
-		inOrder.verify(minuterie).scheduleAtFixedRate(assignateur, delaiMillisecondes, delaiMillisecondes);
+		inOrder.verify(minuterie).annulerAppelPeriodique();
+		inOrder.verify(minuterie).planifierAppelPeriodique(assignateur, delaiMillisecondes, delaiMillisecondes);
 	}
 
 	@Test

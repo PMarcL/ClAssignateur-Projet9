@@ -8,8 +8,6 @@ import java.util.Random;
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
-import org.ClAssignateur.domain.groupe.Groupe;
-import org.mockito.ArgumentMatcher;
 import org.ClAssignateur.domain.demandes.ConteneurDemandes;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.junit.Before;
@@ -17,9 +15,6 @@ import org.junit.Test;
 
 public class ConteneurDemandesTest {
 
-	private final Groupe GROUPE = mock(Groupe.class);
-	private final Priorite PRIORITE_BASSE = Priorite.basse();
-	private final Priorite PRIORITE_HAUTE = Priorite.haute();
 	private final String TITRE_REUNION = "Titre";
 	private final int NB_DEMANDES_EN_ATTENTE = 5;
 
@@ -32,11 +27,12 @@ public class ConteneurDemandesTest {
 
 	@Before
 	public void creerConteneurDemandes() {
-		demandeFaiblePriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_BASSE);
-		demandeHautePriorite = new Demande(GROUPE, TITRE_REUNION, PRIORITE_HAUTE);
+		demandeFaiblePriorite = mock(Demande.class);
+		demandeHautePriorite = mock(Demande.class);
 		demandesEnAttente = mock(DemandesEntrepot.class);
 		demandesArchivees = mock(DemandesEntrepot.class);
 
+		given(demandeHautePriorite.estPlusPrioritaire(demandeFaiblePriorite)).willReturn(true);
 		given(demandesEnAttente.taille()).willReturn(NB_DEMANDES_EN_ATTENTE);
 
 		conteneurDemandes = new ConteneurDemandes(demandesEnAttente, demandesArchivees);
@@ -55,6 +51,12 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
+	public void quandObtenirDemandesEnAttenteDevraitViderEntrepot() {
+		conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+		verify(demandesEnAttente).vider();
+	}
+
+	@Test
 	public void quandObtenirDemandesEnAttenteDevraitTrierSelonOrdreDecroissantPriorite() {
 		List<Demande> demandesAjoutees = new ArrayList<Demande>();
 		demandesAjoutees.add(demandeFaiblePriorite);
@@ -63,7 +65,28 @@ public class ConteneurDemandesTest {
 
 		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
 
-		assertThat(demandesObtenues, estEnOrdrePrioritaireDecroissant());
+		assertTrue(demandesObtenues.get(0).estPlusPrioritaire(demandesObtenues.get(1)));
+	}
+
+	@Test
+	public void quandObtenirDemandesEnAttenteDevraitPasChangerOrdreDemandesSiMemePriorite() {
+		List<Demande> demandesAjoutees = new ArrayList<Demande>();
+		Demande premiereDemandeHautePriorite = mock(Demande.class);
+		configurerDemandesPourQuilsAientLaMemePriorite(premiereDemandeHautePriorite, demandeHautePriorite);
+		demandesAjoutees.add(premiereDemandeHautePriorite);
+		demandesAjoutees.add(demandeHautePriorite);
+		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
+
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+
+		assertEquals(premiereDemandeHautePriorite, demandesObtenues.get(0));
+	}
+
+	private void configurerDemandesPourQuilsAientLaMemePriorite(Demande premiereDemande, Demande secondeDemande) {
+		given(premiereDemande.estAussiPrioritaire(secondeDemande)).willReturn(true);
+		given(premiereDemande.estPlusPrioritaire(secondeDemande)).willReturn(false);
+		given(secondeDemande.estAussiPrioritaire(premiereDemande)).willReturn(true);
+		given(secondeDemande.estPlusPrioritaire(premiereDemande)).willReturn(false);
 	}
 
 	@Test
@@ -74,15 +97,29 @@ public class ConteneurDemandesTest {
 	}
 
 	@Test
+	public void etantDonneDemandeArchiveeTrouveeQuandTrouverDemandeSelonTitreDevraitRetirerDansDemandesArchivees() {
+		given(demandesArchivees.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.of(demandeFaiblePriorite));
+		conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
+		verify(demandesArchivees).retirerDemande(demandeFaiblePriorite);
+	}
+
+	@Test
 	public void etantDonneDemandeArchiveeNonTrouveeQuandTrouverDemandeSelonTitreDevraitChercherDansDemandesEnAttente() {
-		demandesArchiveesNeContientPasDemandeRecherchee();
+		demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient();
 		conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
 		verify(demandesEnAttente).obtenirDemandeSelonTitre(TITRE_REUNION);
 	}
 
 	@Test
+	public void etantDonneDemandeArchiveeNonTrouveeQuandTrouverDemandeSelonTitreDevraitRetirerDansDemandesEnAttente() {
+		demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient();
+		conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
+		verify(demandesEnAttente).retirerDemande(demandeFaiblePriorite);
+	}
+
+	@Test
 	public void etantDonneDemandeEnAttenteTrouveeQuandTrouverDemandeSelonTitreDevraitRetournerDemande() {
-		demandesArchiveesNeContientPasDemandeRecherchee();
+		demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient();
 		given(demandesEnAttente.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.of(demandeFaiblePriorite));
 
 		Optional<Demande> demandeObtenue = conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
@@ -92,7 +129,7 @@ public class ConteneurDemandesTest {
 
 	@Test
 	public void etantDonneDemandeEnAttenteNonTrouveeQuandTrouverDemandeSelonTitreDevraitRetournerResultatVide() {
-		demandesArchiveesNeContientPasDemandeRecherchee();
+		demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient();
 		given(demandesEnAttente.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.empty());
 
 		Optional<Demande> demandeObtenue = conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION);
@@ -120,30 +157,9 @@ public class ConteneurDemandesTest {
 		return nbDemandes;
 	}
 
-	private void demandesArchiveesNeContientPasDemandeRecherchee() {
+	private void demandesArchiveesNeContientPasDemandeRechercheeMaisdemandesAttentesLaContient() {
 		given(demandesArchivees.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.empty());
+		given(demandesEnAttente.obtenirDemandeSelonTitre(TITRE_REUNION)).willReturn(Optional.of(demandeFaiblePriorite));
 	}
 
-	private EstEnOrdrePrioritaireDecroissant estEnOrdrePrioritaireDecroissant() {
-		return new EstEnOrdrePrioritaireDecroissant();
-	}
-
-	private class EstEnOrdrePrioritaireDecroissant extends ArgumentMatcher<List<Demande>> {
-
-		public boolean matches(Object demandes) {
-
-			List<Demande> listeDemandes = (List<Demande>) demandes;
-			Demande derniereDemande = null;
-			for (Demande demandeCourante : listeDemandes) {
-				if (derniereDemande != null) {
-					if (demandeCourante.estPlusPrioritaire(derniereDemande))
-						return false;
-				}
-
-				derniereDemande = demandeCourante;
-			}
-
-			return true;
-		}
-	}
 }

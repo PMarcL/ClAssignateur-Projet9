@@ -1,34 +1,66 @@
 package org.ClAssignateur.domain.demandes;
 
+import java.util.UUID;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
-
 import org.ClAssignateur.domain.salles.Salle;
 import java.util.List;
 
 public class Demande {
 
+	public enum STATUT_DEMANDE {
+		EN_ATTENTE, ACCEPTE, REFUSE
+	}
+
 	private Groupe groupe;
 	private Priorite priorite;
 	private String titre;
 	private Salle salleAssignee;
+	private UUID id;
+	private STATUT_DEMANDE etat;
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
+		this.id = UUID.randomUUID();
 		this.groupe = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
+		this.etat = STATUT_DEMANDE.EN_ATTENTE;
 	}
 
 	public Demande(Groupe groupe, String titre) {
+		this.id = UUID.randomUUID();
 		this.groupe = groupe;
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
+		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+	}
+
+	public Demande(UUID id, Groupe groupe, String titre, Priorite priorite) {
+		this.id = id;
+		this.groupe = groupe;
+		this.titre = titre;
+		this.priorite = priorite;
+		this.salleAssignee = null;
+		this.etat = STATUT_DEMANDE.EN_ATTENTE;
+	}
+
+	public Demande(UUID id, Groupe groupe, String titre) {
+		this.id = id;
+		this.groupe = groupe;
+		this.titre = titre;
+		this.priorite = Priorite.basse();
+		this.salleAssignee = null;
+		this.etat = STATUT_DEMANDE.EN_ATTENTE;
 	}
 
 	public Groupe getGroupe() {
 		return this.groupe;
+	}
+
+	public UUID getID() {
+		return this.id;
 	}
 
 	public boolean estPlusPrioritaire(Demande autreDemande) {
@@ -36,15 +68,16 @@ public class Demande {
 	}
 
 	public boolean estAussiPrioritaire(Demande autreDemande) {
-		return (!this.priorite.estPlusPrioritaire(autreDemande.priorite) && !autreDemande.priorite
-				.estPlusPrioritaire(priorite));
+		return this.priorite.equals(autreDemande.priorite);
 	}
 
 	public void placerReservation(Salle salleAssignee) {
+		this.etat = STATUT_DEMANDE.ACCEPTE;
 		this.salleAssignee = salleAssignee;
 	}
 
 	public void annulerReservation() {
+		this.etat = STATUT_DEMANDE.REFUSE;
 		this.salleAssignee = null;
 	}
 
@@ -73,4 +106,28 @@ public class Demande {
 		return groupe.getParticipants();
 	}
 
+	public Salle getSalleAssignee() {
+		return this.salleAssignee;
+	}
+
+	public STATUT_DEMANDE getEtat() {
+		return etat;
+	}
+
+	public String getCourrielOrganisateur() {
+		return this.getOrganisateur().courriel;
+	}
+
+	@Override
+	public boolean equals(Object autreObjet) {
+		if (autreObjet == null) {
+			return false;
+		}
+		if (!(autreObjet instanceof Demande)) {
+			return false;
+		} else {
+			Demande autreDemande = (Demande) autreObjet;
+			return this.getID().equals(autreDemande.getID());
+		}
+	}
 }

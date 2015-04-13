@@ -2,10 +2,9 @@ package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
 import static org.mockito.BDDMockito.*;
 
-import java.util.Timer;
-
 import org.ClAssignateur.domain.AssignateurSalle;
 import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.services.MinuterieStrategie;
 import org.ClAssignateur.services.ServiceReservationSalle;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
@@ -19,11 +18,11 @@ public class AssignerEnLotSallesDemandesEtapes {
 
 	private ServiceReservationSalle serviceReservation;
 	private AssignateurSalle assignateurSalle;
-	private Timer minuterie;
+	private MinuterieStrategie minuterie;
 
 	@BeforeScenario
 	public void initialisationScenario() {
-		minuterie = mock(Timer.class);
+		minuterie = mock(MinuterieStrategie.class);
 		assignateurSalle = mock(AssignateurSalle.class);
 		serviceReservation = new ServiceReservationSalle(minuterie, this.assignateurSalle);
 	}
@@ -58,7 +57,7 @@ public class AssignerEnLotSallesDemandesEtapes {
 	@Then("la minuterie est réinitialisée")
 	public void thenLaMinuterieEstReinitialisee() {
 		InOrder enOrdre = inOrder(minuterie);
-		enOrdre.verify(minuterie).cancel();
-		enOrdre.verify(minuterie).scheduleAtFixedRate(eq(assignateurSalle), anyLong(), anyLong());
+		enOrdre.verify(minuterie).annulerAppelPeriodique();
+		enOrdre.verify(minuterie).planifierAppelPeriodique(eq(assignateurSalle), anyLong(), anyLong());
 	}
 }

@@ -6,7 +6,6 @@ import org.ClAssignateur.domain.notification.Notificateur;
 import java.util.List;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
-import org.ClAssignateur.domain.salles.SelectionSalleStrategie;
 import org.ClAssignateur.domain.demandes.ConteneurDemandes;
 import org.ClAssignateur.domain.demandes.Demande;
 import java.util.ArrayList;
