@@ -12,7 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
-import org.ClAssignateur.services.DemandePasPresenteException;
 import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.services.ServiceDemande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
