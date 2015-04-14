@@ -58,12 +58,6 @@ public class ReservationDemandeDTOAssembleurTest {
 		assertTrue(listeCourrielParticipantsResultat.containsAll(listeCourrielParticipants(NB_PERSONNES)));
 	}
 
-	@Test(expected = ReservationDemandeDTOInvalideException.class)
-	public void etantDonneDemandeDTOAvecNbCourrielsDifferentDeNbPersonnesQuandAssemblerDemandeDevraitLancerException() {
-		demandeDTO.nombrePersonnes--;
-		assembleur.assemblerDemande(demandeDTO);
-	}
-
 	private void configurerDTO() {
 		demandeDTO = new ReservationDemandeDTO();
 		demandeDTO.nombrePersonnes = NB_PERSONNES;

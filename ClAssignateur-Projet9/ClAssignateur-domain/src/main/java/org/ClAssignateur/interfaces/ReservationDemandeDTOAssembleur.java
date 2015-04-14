@@ -11,19 +11,11 @@ import org.ClAssignateur.domain.demandes.Demande;
 
 public class ReservationDemandeDTOAssembleur {
 
-	public Demande assemblerDemande(ReservationDemandeDTO dto) throws ReservationDemandeDTOInvalideException {
-		validerConcordanceNbPersonnesVsNbCourriels(dto.nombrePersonnes, dto.participantsCourriels);
-
+	public Demande assemblerDemande(ReservationDemandeDTO dto) {
 		String titre = creerTitreDemande(dto);
 		Groupe groupe = creerGroupe(dto);
 		Priorite priorite = new Priorite(dto.priorite);
 		return new Demande(groupe, titre, priorite);
-	}
-
-	private void validerConcordanceNbPersonnesVsNbCourriels(int nbPersonnes, List<String> courrielsParticipants) {
-		if (nbPersonnes != courrielsParticipants.size())
-			throw new ReservationDemandeDTOInvalideException(
-					"Le nombre de personnes ne correspond pas au nombre d'adresseses courriel reçues.");
 	}
 
 	private List<Employe> creerListeParticipants(ReservationDemandeDTO dto) {
