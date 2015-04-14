@@ -49,7 +49,8 @@ public class AjoutDemandeRessource {
 
 			return Response.created(emplacement).build();
 		} catch (AdresseCourrielInvalideException ex) {
-			return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
+			String message = "Le courriel " + demandeDTO.courrielOrganisateur + " n'est pas valide";
+			return Response.status(Status.BAD_REQUEST).entity(message).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();
 		}
