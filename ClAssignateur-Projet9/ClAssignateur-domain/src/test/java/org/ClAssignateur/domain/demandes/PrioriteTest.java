@@ -64,4 +64,19 @@ public class PrioriteTest {
 		final int NIVEAU_PRIORITE_INVALIDE = 0;
 		new Priorite(NIVEAU_PRIORITE_INVALIDE);
 	}
+
+	@Test
+	public void prioriteEstEgalAElleMeme() {
+		assertTrue(prioriteBasse.equals(prioriteBasse));
+	}
+
+	@Test
+	public void prioriteNEstPasEgalAPrioriteDifferente() {
+		assertFalse(prioriteBasse.equals(prioriteHaute));
+	}
+
+	@Test
+	public void prioriteNEstPasEgalANull() {
+		assertFalse(prioriteHaute.equals(null));
+	}
 }

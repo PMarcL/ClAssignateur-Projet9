@@ -1,7 +1,8 @@
 package org.ClAssignateur.domain.demandes;
 
-import java.util.UUID;
+import org.ClAssignateur.domain.groupe.AdresseCourriel;
 
+import java.util.UUID;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.salles.Salle;
@@ -13,12 +14,19 @@ public class Demande {
 		EN_ATTENTE, ACCEPTEE, REFUSEE
 	}
 
+	private static int nombreDemandesCrees;
+
 	private Groupe groupe;
 	private Priorite priorite;
 	private String titre;
 	private Salle salleAssignee;
 	private UUID id;
 	private StatutDemande etat;
+	private int estampille;
+
+	private static int genererEstampille() {
+		return ++nombreDemandesCrees;
+	}
 
 	public Demande(Groupe groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
@@ -27,6 +35,7 @@ public class Demande {
 		this.priorite = priorite;
 		this.salleAssignee = null;
 		this.etat = StatutDemande.EN_ATTENTE;
+		ajouterEstampille();
 	}
 
 	public Demande(Groupe groupe, String titre) {
@@ -36,6 +45,7 @@ public class Demande {
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
 		this.etat = StatutDemande.EN_ATTENTE;
+		ajouterEstampille();
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre, Priorite priorite) {
@@ -45,6 +55,7 @@ public class Demande {
 		this.priorite = priorite;
 		this.salleAssignee = null;
 		this.etat = StatutDemande.EN_ATTENTE;
+		ajouterEstampille();
 	}
 
 	public Demande(UUID id, Groupe groupe, String titre) {
@@ -54,6 +65,11 @@ public class Demande {
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
 		this.etat = StatutDemande.EN_ATTENTE;
+		ajouterEstampille();
+	}
+
+	private void ajouterEstampille() {
+		this.estampille = Demande.genererEstampille();
 	}
 
 	public Groupe getGroupe() {
@@ -69,8 +85,7 @@ public class Demande {
 	}
 
 	public boolean estAussiPrioritaire(Demande autreDemande) {
-		return (!this.priorite.estPlusPrioritaire(autreDemande.priorite) && !autreDemande.priorite
-				.estPlusPrioritaire(priorite));
+		return this.priorite.equals(autreDemande.priorite);
 	}
 
 	public void placerReservation(Salle salleAssignee) {
@@ -112,15 +127,19 @@ public class Demande {
 		return this.salleAssignee;
 	}
 
+	public AdresseCourriel getCourrielOrganisateur() {
+		return this.getOrganisateur().courriel;
+	}
+
 	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
+	public boolean equals(Object autreObjet) {
+		if (autreObjet == null) {
 			return false;
 		}
-		if (!(other instanceof Demande)) {
+		if (!(autreObjet instanceof Demande)) {
 			return false;
 		} else {
-			Demande autreDemande = (Demande) other;
+			Demande autreDemande = (Demande) autreObjet;
 			return this.getID().equals(autreDemande.getID());
 		}
 	}
@@ -132,4 +151,9 @@ public class Demande {
 	public int getNiveauPriorite() {
 		return this.priorite.getNiveauPriorite();
 	}
+
+	public boolean estAnterieureA(Demande demande) {
+		return this.estampille < demande.estampille;
+	}
+
 }

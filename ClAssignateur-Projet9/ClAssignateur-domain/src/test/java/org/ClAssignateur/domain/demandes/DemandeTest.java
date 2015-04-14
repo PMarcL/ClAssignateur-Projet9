@@ -3,8 +3,9 @@ package org.ClAssignateur.domain.demandes;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
+import org.ClAssignateur.domain.groupe.AdresseCourriel;
 
+import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
 import java.util.UUID;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
@@ -16,7 +17,7 @@ import org.junit.Test;
 
 public class DemandeTest {
 
-	private final String TITRE_REUNION = "Mon titre";
+	private final String TITRE_REUNION = "Titre de ma réunion";
 	private final int NOMBRE_DE_PARTICIPANTS = 10;
 	private final int NOMBRE_DE_PARTICIPANTS_DANS_GROUPE_PAR_DEFAUT = 0;
 	private final int CAPACITE_SALLE = 15;
@@ -29,10 +30,12 @@ public class DemandeTest {
 	private Employe responsable;
 	private Groupe groupe;
 	private Demande demande;
+	private AdresseCourriel adresseCourrielOrganisateur;
 
 	@Before
-	public void creerLaDemande() {
-		organisateur = mock(Employe.class);
+	public void intialisation() {
+		adresseCourrielOrganisateur = mock(AdresseCourriel.class);
+		organisateur = new Employe(adresseCourrielOrganisateur);
 		responsable = mock(Employe.class);
 		groupe = new Groupe(organisateur, responsable, new ArrayList<Employe>());
 
@@ -94,19 +97,40 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsNbParticipantsCommeDefiniDansGroupe() {
+	public void demandePossedeInitialementLeChampsNbParticipantsCommeDefiniDansGroupe() {
 		int nbParticipants = demande.getNbParticipants();
 		assertEquals(NOMBRE_DE_PARTICIPANTS_DANS_GROUPE_PAR_DEFAUT, nbParticipants);
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsNbParticipantsCommeDefiniDansGroupeAvecPlusieursParticipants() {
+	public void demandePossedeInitialementLeChampsNbParticipantsCommeDefiniDansGroupeAvecPlusieursParticipants() {
 		Groupe groupePlusieursParticipants = creerGroupePlusieursParticipants(NOMBRE_DE_PARTICIPANTS);
 		Demande demandeAvecPlusiseursParticipants = new Demande(groupePlusieursParticipants, TITRE_REUNION);
 
 		int nbParticipants = demandeAvecPlusiseursParticipants.getNbParticipants();
 
 		assertEquals(NOMBRE_DE_PARTICIPANTS, nbParticipants);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesQuandEstArriveeAvantSurPremiereDemandeRetourneVrai() {
+		Demande premiereDemande = new Demande(groupe, TITRE_REUNION);
+		Demande deuxiemeDemande = new Demande(groupe, TITRE_REUNION);
+
+		assertTrue(premiereDemande.estAnterieureA(deuxiemeDemande));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesQuandEstArriveeAvantSurDeuxiemeDemandeRetourneFaux() {
+		Demande premiereDemande = new Demande(groupe, TITRE_REUNION);
+		Demande deuxiemeDemande = new Demande(groupe, TITRE_REUNION);
+
+		assertFalse(deuxiemeDemande.estAnterieureA(premiereDemande));
+	}
+
+	@Test
+	public void etantDonneUneDemandeQuandEstArriveeAvantSurElleMemeRetourneFaux() {
+		assertFalse(demande.estAnterieureA(demande));
 	}
 
 	@Test
@@ -168,6 +192,38 @@ public class DemandeTest {
 
 		verify(priorite).getNiveauPriorite();
 		assertEquals(NIVEAU_PRIORITE, niveauPrioriteResultat);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecLaMemePrioriteQuandEstAussiPrioritaireReturnTrue() {
+		Demande demandePrioriteBasse = new Demande(groupe, TITRE_REUNION, Priorite.basse());
+		assertTrue(demande.estAussiPrioritaire(demandePrioriteBasse));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteDifferenteQuandEstAussiPrioritaireReturnFalse() {
+		Demande demandePrioriteMoyenne = new Demande(groupe, TITRE_REUNION, Priorite.moyenne());
+		assertFalse(demande.estAussiPrioritaire(demandePrioriteMoyenne));
+	}
+
+	@Test
+	public void etantDonneDemandeAvecOrganisateurQuandGetCourrielOrganisateurAlorsDonneLeBonCourrielOrganisateur() {
+		AdresseCourriel courrielOrganisateurActuel = demande.getCourrielOrganisateur();
+		assertEquals(adresseCourrielOrganisateur, courrielOrganisateurActuel);
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteDifferenteLorsqueEstPlusPrioritaireRetourneVrai() {
+		Demande demandePrioriteHaute = new Demande(groupe, TITRE_REUNION, Priorite.haute());
+		Demande demandePrioriteBasse = new Demande(groupe, TITRE_REUNION, Priorite.basse());
+
+		assertTrue(demandePrioriteHaute.estPlusPrioritaire(demandePrioriteBasse));
+	}
+
+	@Test
+	public void etantDonneDeuxDemandesAvecPrioriteIdentitqueLorsqueEstPlusPrioritaireRetourneFaux() {
+		Demande demandePrioriteBasse = new Demande(groupe, TITRE_REUNION, Priorite.basse());
+		assertFalse(demande.estPlusPrioritaire(demandePrioriteBasse));
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {

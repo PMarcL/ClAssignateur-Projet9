@@ -1,6 +1,7 @@
 package org.ClAssignateur.domain.groupe;
 
 public class Employe {
+
 	public AdresseCourriel courriel;
 
 	public Employe(AdresseCourriel courriel) {

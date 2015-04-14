@@ -13,12 +13,12 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	private ArrayList<Demande> demandes = new ArrayList<Demande>();
 
 	public void persisterDemande(Demande demande) {
-		if (existePas(demande)) {
+		if (contientPasDemande(demande)) {
 			demandes.add(demande);
 		}
 	}
 
-	private boolean existePas(Demande demande) {
+	protected boolean contientPasDemande(Demande demande) {
 		return this.demandes.stream().noneMatch(demandeExistante -> demandeExistante.equals(demande));
 	}
 
@@ -35,7 +35,7 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	}
 
 	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateurEtId(String courriel, UUID id) {
-		return demandes.stream().filter(x -> x.getID().equals(id) && x.getOrganisateur().courriel.equals(courriel))
+		return demandes.stream().filter(x -> x.getID().equals(id) && x.getCourrielOrganisateur().equals(courriel))
 				.findFirst();
 	}
 
@@ -66,12 +66,11 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 
 	@Override
 	public void vider() {
-		demandes.clear();
+		demandes = new ArrayList<>();
 	}
 
 	@Override
 	public List<Demande> obtenirDemandesSelonCourriel(String courriel) {
-		return demandes.stream().filter(x -> x.getOrganisateur().courriel.equals(courriel))
-				.collect(Collectors.toList());
+		return demandes.stream().filter(x -> x.getCourrielOrganisateur().equals(courriel)).collect(Collectors.toList());
 	}
 }

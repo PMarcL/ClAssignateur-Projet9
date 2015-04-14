@@ -45,4 +45,17 @@ public class Priorite {
 	public int getNiveauPriorite() {
 		return this.niveauPriorite;
 	}
+
+	@Override
+	public boolean equals(Object autreObjet) {
+		if (autreObjet == null) {
+			return false;
+		}
+		if (!(autreObjet instanceof Priorite)) {
+			return false;
+		} else {
+			Priorite autrePriorite = (Priorite) autreObjet;
+			return this.niveauPriorite == autrePriorite.niveauPriorite;
+		}
+	}
 }

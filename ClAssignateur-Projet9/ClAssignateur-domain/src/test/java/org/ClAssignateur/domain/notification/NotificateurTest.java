@@ -51,10 +51,9 @@ public class NotificateurTest {
 	}
 
 	@Test
-	public void quandNotifierSuccesDevraitAppelerNotifierAvecBonMessage() {
-		final String MESSAGE_DESIRE = "La salle: " + NOM_DE_SALLE + " a été réservée avec succès.";
+	public void quandNotifierSuccesDevraitAppelerNotifierAvecMessageContenantLeNomDeLaSalle() {
 		notificateur.notifierSucces(demande, SALLE);
-		verify(notificationStrategie, atLeast(1)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
+		verify(notificationStrategie, atLeast(1)).notifier(contains(NOM_DE_SALLE), any(Employe.class));
 	}
 
 	@Test
@@ -70,10 +69,10 @@ public class NotificateurTest {
 	}
 
 	@Test
-	public void quandNotifierEchecDevraitAppelerNotifierAvecBonMessage() {
-		final String MESSAGE_DESIRE = "Aucune salle n'a pu être assignée avec votre demande.";
+	public void quandNotifierEchecDevraitAppelerNotifierAvecMessageInformantQueAucuneSalleEstAssignee() {
+		final String INFORMATION_NECESSAIRE = "Aucune salle";
 		notificateur.notifierEchec(demande);
-		verify(notificationStrategie, atLeast(1)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
+		verify(notificationStrategie, atLeast(1)).notifier(contains(INFORMATION_NECESSAIRE), any(Employe.class));
 	}
 
 	@Test
@@ -104,9 +103,8 @@ public class NotificateurTest {
 	}
 
 	@Test
-	public void quandNotifierAnnulationDevraitAppelerNotifierAvecBonMessage() {
-		final String MESSAGE_DESIRE = "La demande nommée:" + TITRE_DEMANDE + " à été annulée.";
+	public void quandNotifierAnnulationDevraitAppelerNotifierAvecMessageContenantLeTitreDeLaDemande() {
 		notificateur.notifierAnnulation(demande);
-		verify(notificationStrategie, atLeast(1)).notifier(eq(MESSAGE_DESIRE), any(Employe.class));
+		verify(notificationStrategie, atLeast(1)).notifier(contains(TITRE_DEMANDE), any(Employe.class));
 	}
 }
