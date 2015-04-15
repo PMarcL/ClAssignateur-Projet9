@@ -7,11 +7,11 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response;
 import org.junit.Test;
 import org.junit.Before;
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
+import java.util.UUID;
+import org.ClAssignateur.domaine.groupe.AdresseCourrielInvalideException;
 import org.ClAssignateur.interfaces.ressources.AjoutDemandeRessource;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
-import java.util.UUID;
 
 public class AjoutDemandeRessourceTest {
 

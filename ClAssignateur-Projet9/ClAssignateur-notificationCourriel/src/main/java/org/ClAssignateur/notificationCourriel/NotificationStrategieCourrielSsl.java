@@ -13,7 +13,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.ClAssignateur.domaine.groupe.Employe;
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
 import org.ClAssignateur.domaine.notification.NotificationException;
 import org.ClAssignateur.domaine.notification.NotificationStrategie;
 import org.ClAssignateur.notificationCourriel.configuration.ConfigurationSmtp;
@@ -44,7 +43,7 @@ public class NotificationStrategieCourrielSsl implements NotificationStrategie {
 
 	private void envoyerCourriel(String contenu, Employe destinataire) throws MessagingException {
 		Session sessionSmtp = configurerSessionSmtp();
-		Message message = creerMessage(sessionSmtp, destinataire.courriel, contenu);
+		Message message = creerMessage(sessionSmtp, destinataire.getAdresseCourriel(), contenu);
 		Transport.send(message);
 	}
 
@@ -66,11 +65,11 @@ public class NotificationStrategieCourrielSsl implements NotificationStrategie {
 		};
 	}
 
-	private Message creerMessage(Session sessionSmtp, AdresseCourriel courrielDestinataire, String contenu)
+	private Message creerMessage(Session sessionSmtp, String courrielDestinataire, String contenu)
 			throws MessagingException {
 		Message message = new MimeMessage(sessionSmtp);
 		message.setFrom(new InternetAddress(configSmtp.getNomUtilisateur()));
-		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(courrielDestinataire.toString()));
+		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(courrielDestinataire));
 		message.setSubject(SUJET_COURRIEL);
 		message.setText(contenu);
 

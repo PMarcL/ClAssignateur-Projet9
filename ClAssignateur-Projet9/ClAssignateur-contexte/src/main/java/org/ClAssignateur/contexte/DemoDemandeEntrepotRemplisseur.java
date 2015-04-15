@@ -7,15 +7,14 @@ import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
 import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.domaine.groupe.Groupe;
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
 import org.ClAssignateur.domaine.salles.Salle;
 
 public class DemoDemandeEntrepotRemplisseur {
 
 	public void remplir(DemandesEntrepot entrepot) {
 
-		Employe organisateur = creerEmploye("organisateur@hotmail.com");
-		Employe responsable = creerEmploye("responsable@hotmail.com");
+		Employe organisateur = new Employe("organisateur@hotmail.com");
+		Employe responsable = new Employe("responsable@hotmail.com");
 		Groupe groupe = new Groupe(organisateur, responsable, new ArrayList<Employe>());
 		UUID id = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
 		Demande demandeEnAttente = new Demande(id, groupe, "Demande demo");
@@ -26,10 +25,5 @@ public class DemoDemandeEntrepotRemplisseur {
 
 		entrepot.persisterDemande(demandeEnAttente);
 		entrepot.persisterDemande(demandeAssignee);
-	}
-
-	private Employe creerEmploye(String adresseCourriel) {
-		AdresseCourriel courriel = new AdresseCourriel(adresseCourriel);
-		return new Employe(courriel);
 	}
 }

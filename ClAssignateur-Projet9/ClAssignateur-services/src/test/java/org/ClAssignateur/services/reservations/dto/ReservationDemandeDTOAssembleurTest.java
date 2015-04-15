@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.groupe.Employe;
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 
@@ -38,14 +37,14 @@ public class ReservationDemandeDTOAssembleurTest {
 	@Test
 	public void etantDonneUneDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielOrganisateurX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		AdresseCourriel adresseCourrielOrganisateur = demandeResultat.getOrganisateur().courriel;
+		String adresseCourrielOrganisateur = demandeResultat.getCourrielOrganisateur();
 		assertTrue(adresseCourrielOrganisateur.equals(COURRIEL_ORGANISATEUR));
 	}
 
 	@Test
 	public void etantDonneUneDemandeDTOAvecCourrielOrganisateurXQuandAssembleDemandeAlorsRetourneDemandeAvecCourrielResponsableX() {
 		Demande demandeResultat = assembleur.assemblerDemande(demandeDTO);
-		AdresseCourriel adresseCourrielResponsable = demandeResultat.getResponsable().courriel;
+		String adresseCourrielResponsable = demandeResultat.getResponsable().getAdresseCourriel();
 		assertTrue(adresseCourrielResponsable.equals(COURRIEL_ORGANISATEUR));
 	}
 
@@ -80,7 +79,7 @@ public class ReservationDemandeDTOAssembleurTest {
 
 	private List<Object> getListeCourrielParticipants(Demande demandeResultat) {
 		List<Employe> participants = demandeResultat.getParticipants();
-		Object[] courrielParticipants = participants.stream().map(p -> p.courriel.toString()).toArray();
+		Object[] courrielParticipants = participants.stream().map(p -> p.getAdresseCourriel()).toArray();
 		List<Object> listeCourrielParticipants = java.util.Arrays.asList(courrielParticipants);
 		return listeCourrielParticipants;
 	}
