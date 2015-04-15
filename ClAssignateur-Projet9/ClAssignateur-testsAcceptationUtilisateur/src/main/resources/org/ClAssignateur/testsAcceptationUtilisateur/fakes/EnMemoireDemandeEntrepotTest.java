@@ -5,16 +5,11 @@ import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
-
+import org.junit.Before;
+import org.junit.Test;
 import java.util.List;
 import java.util.Optional;
-
-import org.junit.Before;
-
 import java.util.UUID;
-
-import org.junit.Test;
 
 public class EnMemoireDemandeEntrepotTest {
 
@@ -214,8 +209,7 @@ public class EnMemoireDemandeEntrepotTest {
 	private void faireEnSorteQuEntrepotPossedeUneDemande() {
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE_DISTINCT);
-		AdresseCourriel adresseCourrielOrganisateur = new AdresseCourriel(COURRIEL_ORGANISATEUR);
-		given(demande.getCourrielOrganisateur()).willReturn(adresseCourrielOrganisateur);
+		given(demande.getCourrielOrganisateur()).willReturn(COURRIEL_ORGANISATEUR);
 		entrepot.persisterDemande(demande);
 	}
 
@@ -237,8 +231,7 @@ public class EnMemoireDemandeEntrepotTest {
 		UUID unId = UUID.randomUUID();
 		given(demande.getID()).willReturn(unId);
 		given(demande.getTitre()).willReturn(UN_TITRE);
-		AdresseCourriel adressCourrielOrganisateurNonCorrespondant = new AdresseCourriel(COURRIEL_NON_CORRESPONDANT);
-		given(demande.getCourrielOrganisateur()).willReturn(adressCourrielOrganisateurNonCorrespondant);
+		given(demande.getCourrielOrganisateur()).willReturn(COURRIEL_NON_CORRESPONDANT);
 
 		return demande;
 	}

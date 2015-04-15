@@ -9,7 +9,7 @@ public class InformationsDemandeDTOAssembleur {
 	public InformationsDemandeDTO assemblerInformationsDemandeDTO(Demande demande) {
 		InformationsDemandeDTO dto = new InformationsDemandeDTO();
 		dto.nombrePersonne = demande.getNbParticipants();
-		dto.courrielOrganisateur = demande.getOrganisateur().courriel.toString();
+		dto.courrielOrganisateur = demande.getCourrielOrganisateur();
 		setValeurSalleAssigne(demande, dto);
 		dto.statutDemande = demande.getEtat();
 		return dto;
