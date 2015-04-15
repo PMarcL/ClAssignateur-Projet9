@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
-import org.ClAssignateur.services.infosDemandes.DemandePasPresenteException;
+import org.ClAssignateur.services.infosDemandes.DemandeIntrouvableException;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 
 public class ServiceInformationsDemandeTest {
@@ -41,7 +41,7 @@ public class ServiceInformationsDemandeTest {
 				UUID_DEMANDE);
 	}
 
-	@Test(expected = DemandePasPresenteException.class)
+	@Test(expected = DemandeIntrouvableException.class)
 	public void quandGetInfoDemandePourCourrielEtIdSiDemandePasDansEntrepotLanceException() {
 		given(demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(ADRESSE_COURRIEL_ORGANISATEUR, UUID_DEMANDE))
 				.willReturn(Optional.empty());

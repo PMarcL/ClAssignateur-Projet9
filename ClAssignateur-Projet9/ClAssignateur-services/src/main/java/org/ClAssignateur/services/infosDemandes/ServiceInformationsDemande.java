@@ -19,7 +19,7 @@ public class ServiceInformationsDemande {
 		Optional<Demande> demande = demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(courrielOrganisateur,
 				idDemande);
 		if (!demande.isPresent()) {
-			throw new DemandePasPresenteException(
+			throw new DemandeIntrouvableException(
 					"Aucune demande ne correspond au courriel d'organisateur ou au numéro donné.");
 		}
 		return demande.get();

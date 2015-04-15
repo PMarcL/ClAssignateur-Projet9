@@ -1,4 +1,4 @@
-package org.ClAssignateur.interfaces.dto.assembleur;
+package org.ClAssignateur.services.reservations.dto;
 
 import static org.junit.Assert.*;
 
@@ -10,8 +10,8 @@ import org.junit.Test;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
-import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
-import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 
 public class ReservationDemandeDTOAssembleurTest {
 

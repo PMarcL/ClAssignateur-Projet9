@@ -1,4 +1,4 @@
-package org.ClAssignateur.interfaces.dto;
+package org.ClAssignateur.services.infosDemandes.dto;
 
 import java.util.List;
 
