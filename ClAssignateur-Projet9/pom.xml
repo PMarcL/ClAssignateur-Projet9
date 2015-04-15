@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ca.ulaval.glo4002</groupId>
-  <artifactId>ClAssignateur-Projet9</artifactId>
+  <artifactId>ClAssignateur-projet9</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
@@ -23,8 +23,8 @@
     </plugins>
   </build>
   <modules>
-    <module>ClAssignateur-domain</module>
-    <module>ClAssignateur-NotificationCourriel</module>
-    <module>ClAssignateur-TestsAcceptationUtilisateur</module>
+    <module>ClAssignateur-domaine</module>
+    <module>ClAssignateur-notificationCourriel</module>
+    <module>ClAssignateur-testsAcceptationUtilisateur</module>
   </modules>
 </project>

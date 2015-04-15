@@ -1,11 +1,13 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
 import static org.junit.Assert.*;
+
 import org.ClAssignateur.domain.AssignateurSalle;
 import org.ClAssignateur.domain.SelectionSalleOptimaleStrategie;
 import org.ClAssignateur.domain.demandes.ConteneurDemandes;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.demandes.Priorite;
+import org.ClAssignateur.domain.groupe.AdresseCourriel;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.notification.Notificateur;
@@ -19,6 +21,7 @@ import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +29,9 @@ import java.util.UUID;
 
 public class OrdonnerDemandesEtapes {
 
-	private final Groupe GROUPE = new Groupe(new Employe("organisateur@hotmail.com"), new Employe(
-			"responsable@hotmail.com"), new ArrayList<Employe>());
+	// TODO revoir déclaration du groupe
+	private final Groupe GROUPE = new Groupe(new Employe(new AdresseCourriel("organisateur@hotmail.com")), new Employe(
+			new AdresseCourriel("responsable@hotmail.com")), new ArrayList<Employe>());
 	private final String TITRE_DEMANDE = "Réunion de 15 minutes";
 	private final int NB_DEMANDES_DE_MEME_PRIORITE = 5;
 	private final UUID ID_DEMANDE_FAIBLE_PRIORITE = UUID.randomUUID();

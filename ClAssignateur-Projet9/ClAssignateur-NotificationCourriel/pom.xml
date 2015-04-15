@@ -4,11 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>ca.ulaval.glo4002</groupId>
-    <artifactId>ClAssignateur-Projet9</artifactId>
+    <artifactId>ClAssignateur-projet9</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>ClAssignateur-NotificationCourriel</artifactId>
-  <name>ClAssignateur-NotificationCourriel</name>
+  <artifactId>ClAssignateur-notificationCourriel</artifactId>
+  <name>ClAssignateur-notificationCourriel</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,7 +22,7 @@
     </dependency>
     <dependency>
       <groupId>ca.ulaval.glo4002</groupId>
-      <artifactId>ClAssignateur-domain</artifactId>
+      <artifactId>ClAssignateur-domaine</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>

@@ -4,11 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>ca.ulaval.glo4002</groupId>
-    <artifactId>ClAssignateur-Projet9</artifactId>
+    <artifactId>ClAssignateur-projet9</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>ClAssignateur-domain</artifactId>
-  <name>ClAssignateur-domain</name>
+  <artifactId>ClAssignateur-domaine</artifactId>
+  <name>ClAssignateur-domaine</name>
   <url>http://maven.apache.org</url>
   <properties>
   </properties>
