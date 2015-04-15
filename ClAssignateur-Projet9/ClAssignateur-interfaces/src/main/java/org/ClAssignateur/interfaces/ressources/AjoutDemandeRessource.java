@@ -13,8 +13,6 @@ import javax.ws.rs.Path;
 
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
-import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
-import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
 
 import java.util.UUID;
@@ -24,7 +22,6 @@ import java.util.UUID;
 public class AjoutDemandeRessource {
 
 	private ServiceReservationSalle serviceDemande;
-	private ReservationDemandeDTOAssembleur reservationDemandeAssembleur;
 
 	public AjoutDemandeRessource() {
 		// TODO revoir ici une fois contexte établi pour aller chercher service
@@ -37,21 +34,15 @@ public class AjoutDemandeRessource {
 		// this.serviceDemande = new ServiceReservationSalle(demandeEntrepot);
 	}
 
-	public AjoutDemandeRessource(ServiceReservationSalle service,
-			ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
+	public AjoutDemandeRessource(ServiceReservationSalle service) {
 		this.serviceDemande = service;
-		this.reservationDemandeAssembleur = reservationDemandeAssembleur;
 	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ajouterDemande(ReservationDemandeDTO demandeDTO) {
 		try {
-			Demande demande = reservationDemandeAssembleur.assemblerDemande(demandeDTO);
-
-			serviceDemande.ajouterDemande(demande);
-
-			UUID idDemande = demande.getID();
+			UUID idDemande = serviceDemande.ajouterDemande(demandeDTO);
 			URI emplacement = new URI("/demandes/" + demandeDTO.courrielOrganisateur + "/" + idDemande.toString());
 
 			return Response.created(emplacement).build();
