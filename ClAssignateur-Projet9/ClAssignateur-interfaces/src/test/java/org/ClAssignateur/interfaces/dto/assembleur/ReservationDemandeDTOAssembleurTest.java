@@ -1,13 +1,18 @@
-package org.ClAssignateur.interfaces;
+package org.ClAssignateur.interfaces.dto.assembleur;
 
 import static org.junit.Assert.*;
+
 import org.ClAssignateur.domain.groupe.AdresseCourriel;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
+import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
 
 public class ReservationDemandeDTOAssembleurTest {
 

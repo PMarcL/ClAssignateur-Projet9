@@ -1,15 +1,24 @@
-package org.ClAssignateur.interfaces;
+package org.ClAssignateur.interfaces.ressources;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
+import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
+import org.ClAssignateur.interfaces.dto.assembleur.OrganisateurDemandesDTOAssembleur;
+import org.ClAssignateur.interfaces.ressources.InformationsDemandeRessource;
 import org.ClAssignateur.services.DemandePasPresenteException;
+
 import javax.ws.rs.core.Response.Status;
+
 import org.ClAssignateur.services.ServiceDemande;
+
 import javax.ws.rs.core.Response;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;

@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.junit.Before;
 import java.util.UUID;
 import java.util.Optional;
-import org.ClAssignateur.interfaces.InformationsDemandeDTO;
-import org.ClAssignateur.interfaces.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 
@@ -20,21 +18,16 @@ public class ServiceDemandeTest {
 	private ServiceDemande serviceDemande;
 	private Demande demande;
 	private Optional<Demande> demandeOptional;
-	private InformationsDemandeDTOAssembleur demandeAssembleur;
-	private InformationsDemandeDTO demandeDTO;
 
 	@Before
 	public void Initialisation() {
 		demandesEntrepot = mock(DemandesEntrepot.class);
-		demandeAssembleur = mock(InformationsDemandeDTOAssembleur.class);
-		demandeDTO = mock(InformationsDemandeDTO.class);
 		demande = mock(Demande.class);
 		demandeOptional = Optional.of(demande);
 		serviceDemande = new ServiceDemande(demandesEntrepot);
 
 		given(demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(ADRESSE_COURRIEL_ORGANISATEUR, UUID_DEMANDE))
 				.willReturn(demandeOptional);
-		given(demandeAssembleur.assemblerInformationsDemandeDTO(demande)).willReturn(demandeDTO);
 	}
 
 	@Test

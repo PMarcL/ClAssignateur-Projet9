@@ -1,4 +1,4 @@
-package org.ClAssignateur.interfaces;
+package org.ClAssignateur.interfaces.dto;
 
 import java.util.List;
 

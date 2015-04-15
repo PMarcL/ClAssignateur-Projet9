@@ -1,4 +1,4 @@
-package org.ClAssignateur.interfaces;
+package org.ClAssignateur.interfaces.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonInclude;

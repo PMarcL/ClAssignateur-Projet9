@@ -26,5 +26,6 @@
     <module>ClAssignateur-domaine</module>
     <module>ClAssignateur-notificationCourriel</module>
     <module>ClAssignateur-testsAcceptationUtilisateur</module>
+    <module>ClAssignateur-interfaces</module>
   </modules>
 </project>

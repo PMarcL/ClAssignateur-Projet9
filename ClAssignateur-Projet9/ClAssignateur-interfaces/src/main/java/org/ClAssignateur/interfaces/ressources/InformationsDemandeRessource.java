@@ -1,4 +1,4 @@
-package org.ClAssignateur.interfaces;
+package org.ClAssignateur.interfaces.ressources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.PathParam;
@@ -7,12 +7,18 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
+
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.services.DemandePasPresenteException;
 import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.services.ServiceDemande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
+import org.ClAssignateur.interfaces.dto.OrganisateurDemandesDTO;
+import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
+import org.ClAssignateur.interfaces.dto.assembleur.OrganisateurDemandesDTOAssembleur;
+
 import java.util.List;
 import java.util.UUID;
 

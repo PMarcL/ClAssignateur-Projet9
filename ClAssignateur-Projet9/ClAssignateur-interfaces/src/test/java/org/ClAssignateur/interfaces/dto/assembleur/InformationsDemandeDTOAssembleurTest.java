@@ -1,16 +1,17 @@
-package org.ClAssignateur.interfaces;
+package org.ClAssignateur.interfaces.dto.assembleur;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.domain.groupe.AdresseCourriel;
-
 import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
 import org.junit.Before;
 import org.junit.Test;
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
+import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
 
 public class InformationsDemandeDTOAssembleurTest {
 	private final String AUCUNE_SALLE = null;

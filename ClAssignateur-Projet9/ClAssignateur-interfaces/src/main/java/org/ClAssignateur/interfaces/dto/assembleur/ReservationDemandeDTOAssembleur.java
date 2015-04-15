@@ -1,13 +1,15 @@
-package org.ClAssignateur.interfaces;
+package org.ClAssignateur.interfaces.dto.assembleur;
 
 import org.ClAssignateur.domain.groupe.AdresseCourriel;
-
 import org.ClAssignateur.domain.demandes.Priorite;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.ClAssignateur.domain.groupe.Employe;
 import org.ClAssignateur.domain.groupe.Groupe;
 import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
 
 public class ReservationDemandeDTOAssembleur {
 

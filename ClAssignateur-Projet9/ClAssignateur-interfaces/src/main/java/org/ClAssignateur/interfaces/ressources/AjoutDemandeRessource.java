@@ -1,20 +1,26 @@
-package org.ClAssignateur.interfaces;
+package org.ClAssignateur.interfaces.ressources;
 
 import org.ClAssignateur.domain.groupe.AdresseCourrielInvalideException;
 
 import javax.ws.rs.Consumes;
+
 import java.net.URI;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
+
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.services.ServiceDemande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
+import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
+
 import java.util.UUID;
 
 @Path("/demandes")
