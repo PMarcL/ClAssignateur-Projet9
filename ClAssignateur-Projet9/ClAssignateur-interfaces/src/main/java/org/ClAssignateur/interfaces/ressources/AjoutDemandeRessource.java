@@ -15,8 +15,8 @@ import javax.ws.rs.Path;
 
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
-import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
@@ -31,13 +31,17 @@ public class AjoutDemandeRessource {
 	private ReservationDemandeDTOAssembleur reservationDemandeAssembleur;
 
 	public AjoutDemandeRessource() {
+		// TODO revoir ici une fois contexte établi pour aller chercher service
+		// à partir du service locator
+		// TODO enlever référence vers JBehave dans dans pom.xml
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
 		this.reservationDemandeAssembleur = new ReservationDemandeDTOAssembleur();
 		this.serviceDemande = new ServiceInformationsDemande(demandeEntrepot);
 	}
 
-	public AjoutDemandeRessource(ServiceInformationsDemande service, ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
+	public AjoutDemandeRessource(ServiceInformationsDemande service,
+			ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
 		this.serviceDemande = service;
 		this.reservationDemandeAssembleur = reservationDemandeAssembleur;
 	}

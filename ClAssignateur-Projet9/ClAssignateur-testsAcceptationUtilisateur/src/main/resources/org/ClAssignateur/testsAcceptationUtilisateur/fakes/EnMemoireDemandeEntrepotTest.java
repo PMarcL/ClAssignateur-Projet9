@@ -1,7 +1,9 @@
-package org.ClAssignateur.persistences;
+package org.ClAssignateur.testsAcceptationUtilisateur.fakes;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 
 import org.ClAssignateur.domain.groupe.AdresseCourriel;
 import org.ClAssignateur.domain.demandes.Demande;

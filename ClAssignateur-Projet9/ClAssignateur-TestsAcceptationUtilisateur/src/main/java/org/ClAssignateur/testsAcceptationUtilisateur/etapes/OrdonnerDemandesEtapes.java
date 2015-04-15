@@ -14,8 +14,7 @@ import org.ClAssignateur.domain.notification.Notificateur;
 import org.ClAssignateur.domain.salles.EnMemoireSallesEntrepot;
 import org.ClAssignateur.domain.salles.Salle;
 import org.ClAssignateur.domain.salles.SallesEntrepot;
-import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepotFake;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationSilencieuse;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
@@ -37,7 +36,7 @@ public class OrdonnerDemandesEtapes {
 	private final UUID ID_DEMANDE_FAIBLE_PRIORITE = UUID.randomUUID();
 	private final UUID ID_DEMANDE_HAUTE_PRIORITE = UUID.randomUUID();
 
-	private EnMemoireDemandeEntrepotFake demandesTraitees;
+	private EnMemoireDemandeEntrepot demandesTraitees;
 	private SallesEntrepot salles;
 	private ConteneurDemandes conteneurDemandes;
 	private AssignateurSalle assignateur;
@@ -46,7 +45,7 @@ public class OrdonnerDemandesEtapes {
 
 	@BeforeScenario
 	public void initialisation() {
-		demandesTraitees = new EnMemoireDemandeEntrepotFake();
+		demandesTraitees = new EnMemoireDemandeEntrepot();
 		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
 		salles = new EnMemoireSallesEntrepot();
 		salles.persister(new Salle(100, "PLT2770"));

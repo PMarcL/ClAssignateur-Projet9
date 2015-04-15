@@ -10,9 +10,9 @@ import javax.ws.rs.Path;
 
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
-import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.services.infosDemandes.DemandePasPresenteException;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
 import org.ClAssignateur.interfaces.dto.OrganisateurDemandesDTO;

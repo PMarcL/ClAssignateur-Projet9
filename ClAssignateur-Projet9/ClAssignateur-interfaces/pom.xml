@@ -36,5 +36,10 @@
       <artifactId>ClAssignateur-services</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>ca.ulaval.glo4002</groupId>
+      <artifactId>ClAssignateur-testsAcceptationUtilisateur</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
