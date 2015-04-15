@@ -2,24 +2,26 @@ package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
 import java.util.ArrayList;
 
-import org.ClAssignateur.domain.AssignateurSalle;
-import org.ClAssignateur.domain.SelectionSalleOptimaleStrategie;
-import org.ClAssignateur.domain.demandes.ConteneurDemandes;
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.groupe.Employe;
-import org.ClAssignateur.domain.groupe.Groupe;
-import org.ClAssignateur.domain.notification.Notificateur;
-import org.ClAssignateur.domain.salles.EnMemoireSallesEntrepot;
-import org.ClAssignateur.domain.salles.Salle;
-import org.ClAssignateur.domain.salles.SallesEntrepot;
-import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
+import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
+import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
+import org.ClAssignateur.domaine.notification.Notificateur;
+import org.ClAssignateur.domaine.salles.Salle;
+import org.ClAssignateur.domaine.salles.SallesEntrepot;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireSallesEntrepot;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationSilencieuse;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+
 import static org.junit.Assert.*;
 
-public class MaximiserLesPlacesDansSalleSteps {
+public class MaximiserLesPlacesDansSalleEtapes {
 
 	private static final int PLACES_50 = 50;
 	private static final int PLACES_100 = 100;
@@ -32,7 +34,7 @@ public class MaximiserLesPlacesDansSalleSteps {
 	private ConteneurDemandes conteneurDemandes;
 	private AssignateurSalle assignateur;
 
-	public MaximiserLesPlacesDansSalleSteps() {
+	public MaximiserLesPlacesDansSalleEtapes() {
 		demandesTraitees = new EnMemoireDemandeEntrepot();
 		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
 		salles = new EnMemoireSallesEntrepot();
@@ -73,8 +75,8 @@ public class MaximiserLesPlacesDansSalleSteps {
 	}
 
 	private Demande creerDemandeAvecDeuxParticipant() {
-		Employe organisateur = new Employe("uncourriel@gmail.com");
-		Employe responsable = new Employe("uncourriel2@gmail.com");
+		Employe organisateur = new Employe(new AdresseCourriel("uncourriel@gmail.com"));
+		Employe responsable = new Employe(new AdresseCourriel("uncourriel2@gmail.com"));
 
 		ArrayList<Employe> participants = new ArrayList<Employe>();
 		participants.add(organisateur);
