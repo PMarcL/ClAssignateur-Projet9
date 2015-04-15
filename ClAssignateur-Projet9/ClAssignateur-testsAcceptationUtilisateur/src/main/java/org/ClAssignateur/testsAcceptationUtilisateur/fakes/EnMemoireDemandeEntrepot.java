@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
 
 public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 

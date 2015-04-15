@@ -3,17 +3,16 @@ package org.ClAssignateur.interfaces.dto.assembleur;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.domain.groupe.Employe;
-import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
-
 import java.util.ArrayList;
 
 import org.junit.Before;
 
 import java.util.List;
 
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.salles.Salle;
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
+import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.interfaces.dto.OrganisateurDemandesDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.dto.assembleur.OrganisateurDemandesDTOAssembleur;

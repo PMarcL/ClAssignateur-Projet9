@@ -1,8 +1,8 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.fakes;
 
-import org.ClAssignateur.domain.groupe.Employe;
-import org.ClAssignateur.domain.notification.NotificationException;
-import org.ClAssignateur.domain.notification.NotificationStrategie;
+import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.notification.NotificationException;
+import org.ClAssignateur.domaine.notification.NotificationStrategie;
 
 public class NotificationSilencieuse implements NotificationStrategie {
 

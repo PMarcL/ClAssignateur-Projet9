@@ -1,14 +1,14 @@
 package org.ClAssignateur.contexte;
 
-import org.ClAssignateur.domain.groupe.AdresseCourriel;
-
-import org.ClAssignateur.domain.salles.Salle;
 import java.util.UUID;
 import java.util.ArrayList;
-import org.ClAssignateur.domain.groupe.Employe;
-import org.ClAssignateur.domain.groupe.Groupe;
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
+import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
+import org.ClAssignateur.domaine.salles.Salle;
 
 public class DemoDemandeEntrepotRemplisseur {
 

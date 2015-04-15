@@ -3,13 +3,13 @@ package org.ClAssignateur.interfaces.dto.assembleur;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.domain.groupe.AdresseCourriel;
-import org.ClAssignateur.domain.demandes.Demande.StatutDemande;
 import org.junit.Before;
 import org.junit.Test;
-import org.ClAssignateur.domain.groupe.Employe;
-import org.ClAssignateur.domain.salles.Salle;
-import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
+import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
+import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
 

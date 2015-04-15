@@ -4,13 +4,16 @@ import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
 
-import org.ClAssignateur.domain.groupe.AdresseCourriel;
-import org.ClAssignateur.domain.demandes.Demande;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.Before;
+
 import java.util.UUID;
+
 import org.junit.Test;
 
 public class EnMemoireDemandeEntrepotTest {

@@ -1,7 +1,7 @@
 package org.ClAssignateur.services.reservations;
 
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.AssignateurSalle;
+import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
+import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.services.reservations.minuterie.Minute;
 import org.ClAssignateur.services.reservations.minuterie.Minuterie;
 import org.ClAssignateur.services.reservations.minuterie.MinuterieObservateur;

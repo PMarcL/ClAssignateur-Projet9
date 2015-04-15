@@ -3,8 +3,9 @@ package org.ClAssignateur.services.infosDemandes;
 import java.util.List;
 import java.util.UUID;
 import java.util.Optional;
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
 
 public class ServiceInformationsDemande {
 

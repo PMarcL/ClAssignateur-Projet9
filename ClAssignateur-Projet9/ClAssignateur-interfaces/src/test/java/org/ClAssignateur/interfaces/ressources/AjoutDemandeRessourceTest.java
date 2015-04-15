@@ -1,14 +1,13 @@
 package org.ClAssignateur.interfaces.ressources;
 
-import org.ClAssignateur.domain.groupe.AdresseCourrielInvalideException;
-
 import java.util.UUID;
 
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response;
 
 import org.junit.Test;
-import org.ClAssignateur.domain.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
 import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.ressources.AjoutDemandeRessource;

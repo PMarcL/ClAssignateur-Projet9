@@ -1,7 +1,5 @@
 package org.ClAssignateur.interfaces.ressources;
 
-import org.ClAssignateur.domain.groupe.AdresseCourrielInvalideException;
-
 import javax.ws.rs.Consumes;
 
 import java.net.URI;
@@ -13,11 +11,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 
-import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexte.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
+import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
 import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
 

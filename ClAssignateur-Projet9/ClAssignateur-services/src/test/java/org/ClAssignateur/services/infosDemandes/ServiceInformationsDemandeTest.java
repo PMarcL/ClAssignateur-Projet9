@@ -8,8 +8,8 @@ import org.junit.Before;
 import java.util.UUID;
 import java.util.Optional;
 
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
 import org.ClAssignateur.services.infosDemandes.DemandePasPresenteException;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 

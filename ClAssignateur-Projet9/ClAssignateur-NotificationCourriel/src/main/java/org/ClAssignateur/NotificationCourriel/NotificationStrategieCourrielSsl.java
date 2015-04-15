@@ -1,8 +1,5 @@
 package org.ClAssignateur.notificationCourriel;
 
-import org.ClAssignateur.domain.notification.NotificationException;
-import org.ClAssignateur.domain.notification.NotificationStrategie;
-
 import javax.mail.Authenticator;
 
 import java.util.Properties;
@@ -15,8 +12,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.ClAssignateur.domain.groupe.AdresseCourriel;
-import org.ClAssignateur.domain.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
+import org.ClAssignateur.domaine.notification.NotificationException;
+import org.ClAssignateur.domaine.notification.NotificationStrategie;
 import org.ClAssignateur.notificationCourriel.configuration.ConfigurationSmtp;
 
 public class NotificationStrategieCourrielSsl implements NotificationStrategie {

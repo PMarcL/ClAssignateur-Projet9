@@ -2,8 +2,8 @@ package org.ClAssignateur.services.reservations;
 
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.domain.AssignateurSalle;
+import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
+import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.minuterie.Minute;
 import org.ClAssignateur.services.reservations.minuterie.Minuterie;
