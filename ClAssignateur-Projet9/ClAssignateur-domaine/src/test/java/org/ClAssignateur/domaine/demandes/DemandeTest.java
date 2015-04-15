@@ -3,8 +3,6 @@ package org.ClAssignateur.domaine.demandes;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
-
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
@@ -19,10 +17,11 @@ import org.junit.Test;
 public class DemandeTest {
 
 	private final String TITRE_REUNION = "Titre de ma réunion";
+	private final String NOM_SALLE = "salle";
+	private final String COURRIEL_ORGANISATEUR = "organisateur@hotmail.com";
 	private final int NOMBRE_DE_PARTICIPANTS = 10;
 	private final int NOMBRE_DE_PARTICIPANTS_DANS_GROUPE_PAR_DEFAUT = 0;
 	private final int CAPACITE_SALLE = 15;
-	private final String NOM_SALLE = "salle";
 	private final Priorite PRIORITE_PAR_DEFAUT = Priorite.basse();
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
 	private final UUID UN_ID = UUID.randomUUID();
@@ -31,12 +30,10 @@ public class DemandeTest {
 	private Employe responsable;
 	private Groupe groupe;
 	private Demande demande;
-	private AdresseCourriel adresseCourrielOrganisateur;
 
 	@Before
 	public void intialisation() {
-		adresseCourrielOrganisateur = mock(AdresseCourriel.class);
-		organisateur = new Employe(adresseCourrielOrganisateur);
+		organisateur = new Employe(COURRIEL_ORGANISATEUR);
 		responsable = mock(Employe.class);
 		groupe = new Groupe(organisateur, responsable, new ArrayList<Employe>());
 
@@ -209,8 +206,8 @@ public class DemandeTest {
 
 	@Test
 	public void etantDonneDemandeAvecOrganisateurQuandGetCourrielOrganisateurAlorsDonneLeBonCourrielOrganisateur() {
-		AdresseCourriel courrielOrganisateurActuel = demande.getCourrielOrganisateur();
-		assertEquals(adresseCourrielOrganisateur, courrielOrganisateurActuel);
+		String courrielOrganisateurActuel = demande.getCourrielOrganisateur();
+		assertTrue(courrielOrganisateurActuel.equals(COURRIEL_ORGANISATEUR));
 	}
 
 	@Test

@@ -1,13 +1,23 @@
 package org.ClAssignateur.domaine.groupe;
 
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 public class Employe {
 
-	public AdresseCourriel courriel;
+	private InternetAddress adresseCourriel;
 
-	public Employe(AdresseCourriel courriel) {
-		this.courriel = courriel;
+	public Employe(String courriel) throws AdresseCourrielInvalideException {
+		try {
+			this.adresseCourriel = new InternetAddress(courriel);
+			this.adresseCourriel.validate();
+		} catch (AddressException exception) {
+			throw new AdresseCourrielInvalideException();
+		}
+	}
+
+	public String getAdresseCourriel() {
+		return adresseCourriel.getAddress();
 	}
 
 	public boolean equals(Object o) {
@@ -16,7 +26,7 @@ public class Employe {
 		}
 
 		Employe employe = (Employe) o;
-		return this.courriel.equals(employe.courriel);
+		return this.adresseCourriel.equals(employe.adresseCourriel);
 	}
 
 }

@@ -1,7 +1,5 @@
 package org.ClAssignateur.domaine.demandes;
 
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
-
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.domaine.groupe.Groupe;
@@ -128,8 +126,8 @@ public class Demande {
 		return this.salleAssignee;
 	}
 
-	public AdresseCourriel getCourrielOrganisateur() {
-		return this.getOrganisateur().courriel;
+	public String getCourrielOrganisateur() {
+		return this.getOrganisateur().getAdresseCourriel();
 	}
 
 	@Override

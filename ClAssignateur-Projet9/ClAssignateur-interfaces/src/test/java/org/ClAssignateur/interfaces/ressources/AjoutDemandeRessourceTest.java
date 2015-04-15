@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
+import org.ClAssignateur.domaine.groupe.AdresseCourrielInvalideException;
 import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.ressources.AjoutDemandeRessource;

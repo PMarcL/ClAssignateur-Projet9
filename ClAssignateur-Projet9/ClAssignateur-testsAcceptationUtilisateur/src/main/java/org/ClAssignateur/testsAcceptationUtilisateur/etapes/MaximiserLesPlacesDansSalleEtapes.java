@@ -8,7 +8,6 @@ import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.domaine.groupe.Groupe;
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
@@ -75,8 +74,8 @@ public class MaximiserLesPlacesDansSalleEtapes {
 	}
 
 	private Demande creerDemandeAvecDeuxParticipant() {
-		Employe organisateur = new Employe(new AdresseCourriel("uncourriel@gmail.com"));
-		Employe responsable = new Employe(new AdresseCourriel("uncourriel2@gmail.com"));
+		Employe organisateur = new Employe("uncourriel@gmail.com");
+		Employe responsable = new Employe("uncourriel2@gmail.com");
 
 		ArrayList<Employe> participants = new ArrayList<Employe>();
 		participants.add(organisateur);

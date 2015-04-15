@@ -7,7 +7,6 @@ import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.domaine.groupe.Groupe;
-import org.ClAssignateur.domaine.groupe.courriel.AdresseCourriel;
 import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
 
 public class ReservationDemandeDTOAssembleur {
@@ -29,7 +28,7 @@ public class ReservationDemandeDTOAssembleur {
 	}
 
 	private Employe creerEmploye(String adresseCourriel) {
-		return new Employe(new AdresseCourriel(adresseCourriel));
+		return new Employe(adresseCourriel);
 	}
 
 	private Groupe creerGroupe(ReservationDemandeDTO dto) {
