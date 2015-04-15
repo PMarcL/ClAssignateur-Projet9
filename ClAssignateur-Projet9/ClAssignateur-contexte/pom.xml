@@ -7,8 +7,8 @@
     <artifactId>ClAssignateur-projet9</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>ClAssignateur-interfaces</artifactId>
-  <name>ClAssignateur-interfaces</name>
+  <artifactId>ClAssignateur-contexte</artifactId>
+  <name>ClAssignateur-contexte</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,21 +29,6 @@
     <dependency>
       <groupId>ca.ulaval.glo4002</groupId>
       <artifactId>ClAssignateur-domaine</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>ca.ulaval.glo4002</groupId>
-      <artifactId>ClAssignateur-services</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>ca.ulaval.glo4002</groupId>
-      <artifactId>ClAssignateur-testsAcceptationUtilisateur</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>ca.ulaval.glo4002</groupId>
-      <artifactId>ClAssignateur-contexte</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>

@@ -1,4 +1,4 @@
-package org.ClAssignateur.contexts;
+package org.ClAssignateur.contexte;
 
 import org.ClAssignateur.domain.groupe.AdresseCourriel;
 

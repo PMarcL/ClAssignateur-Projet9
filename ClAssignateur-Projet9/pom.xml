@@ -28,5 +28,6 @@
     <module>ClAssignateur-testsAcceptationUtilisateur</module>
     <module>ClAssignateur-interfaces</module>
     <module>ClAssignateur-services</module>
+    <module>ClAssignateur-contexte</module>
   </modules>
 </project>

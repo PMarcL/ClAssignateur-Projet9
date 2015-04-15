@@ -14,7 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 
 import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
+import org.ClAssignateur.contexte.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
