@@ -12,14 +12,10 @@ import org.ClAssignateur.contexte.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.services.infosDemandes.DemandeIntrouvableException;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTO;
-import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTO;
-import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTOAssembleur;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
 
-import java.util.List;
 import java.util.UUID;
 
 @Path("/demandes")
@@ -27,23 +23,15 @@ import java.util.UUID;
 public class InformationsDemandeRessource {
 
 	private ServiceInformationsDemande serviceDemande;
-	private InformationsDemandeDTOAssembleur infosDemandesAssembleur;
-	private OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur;
 
 	public InformationsDemandeRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		this.infosDemandesAssembleur = new InformationsDemandeDTOAssembleur();
-		this.organisateurDemandesAssembleur = new OrganisateurDemandesDTOAssembleur(infosDemandesAssembleur);
 		this.serviceDemande = new ServiceInformationsDemande(demandeEntrepot);
 	}
 
-	public InformationsDemandeRessource(ServiceInformationsDemande service,
-			InformationsDemandeDTOAssembleur infosDemandesAssembleur,
-			OrganisateurDemandesDTOAssembleur orgDemandesAssembleur) {
+	public InformationsDemandeRessource(ServiceInformationsDemande service) {
 		this.serviceDemande = service;
-		this.infosDemandesAssembleur = infosDemandesAssembleur;
-		this.organisateurDemandesAssembleur = orgDemandesAssembleur;
 	}
 
 	@GET
@@ -53,9 +41,9 @@ public class InformationsDemandeRessource {
 			@PathParam(value = "numeroDemande") String numeroDemande) {
 		try {
 			UUID idDemande = UUID.fromString(numeroDemande);
-			Demande demande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
-			InformationsDemandeDTO demandeDTO = infosDemandesAssembleur.assemblerInformationsDemandeDTO(demande);
-			return Response.ok(demandeDTO).build();
+			InformationsDemandeDTO infosDemande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel,
+					idDemande);
+			return Response.ok(infosDemande).build();
 		} catch (DemandeIntrouvableException ex) {
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (Exception ex) {
@@ -65,12 +53,11 @@ public class InformationsDemandeRessource {
 
 	@GET
 	@Path("/{courriel}")
-	public Response afficherDemandesPourOrganisateur(@PathParam(value = "courriel") String courrielOrganisateur) {
+	public Response afficherDemandesOrganisateur(@PathParam(value = "courriel") String courrielOrganisateur) {
 		try {
-			List<Demande> demandesPourCourriel = this.serviceDemande.getDemandesPourCourriel(courrielOrganisateur);
-			OrganisateurDemandesDTO demandes = organisateurDemandesAssembleur
-					.assemblerOrganisateurDemandesDTO(demandesPourCourriel);
-			return Response.ok(demandes).build();
+			OrganisateurDemandesDTO demandesOrganisateur = this.serviceDemande
+					.getDemandesPourCourriel(courrielOrganisateur);
+			return Response.ok(demandesOrganisateur).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();
 		}
