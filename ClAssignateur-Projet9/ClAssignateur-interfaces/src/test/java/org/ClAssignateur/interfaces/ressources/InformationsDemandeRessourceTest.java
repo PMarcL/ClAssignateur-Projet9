@@ -32,9 +32,9 @@ public class InformationsDemandeRessourceTest {
 		service = mock(ServiceInformationsDemande.class);
 		informationsDemande = mock(InformationsDemandeDTO.class);
 		demandesOrganisateur = mock(OrganisateurDemandesDTO.class);
-		given(service.getInfoDemandePourCourrielEtId(ADRESSE_COURRIEL_ORGANISATEUR, UUID.fromString(NUMERO_DEMANDE)))
+		given(service.getInformationsDemande(ADRESSE_COURRIEL_ORGANISATEUR, UUID.fromString(NUMERO_DEMANDE)))
 				.willReturn(informationsDemande);
-		given(service.getDemandesPourCourriel(ADRESSE_COURRIEL_ORGANISATEUR)).willReturn(demandesOrganisateur);
+		given(service.getDemandesOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR)).willReturn(demandesOrganisateur);
 
 		ressource = new InformationsDemandeRessource(service);
 	}
@@ -42,7 +42,7 @@ public class InformationsDemandeRessourceTest {
 	@Test
 	public void quandAfficherDemandeDevraitRetrouverInfosSelonCourrielEtId() {
 		ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
-		verify(service).getInfoDemandePourCourrielEtId(eq(ADRESSE_COURRIEL_ORGANISATEUR),
+		verify(service).getInformationsDemande(eq(ADRESSE_COURRIEL_ORGANISATEUR),
 				eq(UUID.fromString(NUMERO_DEMANDE)));
 	}
 
@@ -61,7 +61,7 @@ public class InformationsDemandeRessourceTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void etantDonneDemandeNExistePasQuandAfficherDemandeAlorsStatutDevraitEtre404() {
-		given(service.getInfoDemandePourCourrielEtId(anyString(), any(UUID.class))).willThrow(
+		given(service.getInformationsDemande(anyString(), any(UUID.class))).willThrow(
 				DemandeIntrouvableException.class);
 		Response reponse = ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
 		assertEquals(Status.NOT_FOUND.getStatusCode(), reponse.getStatus());
@@ -70,7 +70,7 @@ public class InformationsDemandeRessourceTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void etantDonneErreurQuelconqueQuandAfficherDemandeAlorsStatutDevraitEtre500() {
-		given(service.getInfoDemandePourCourrielEtId(anyString(), any(UUID.class))).willThrow(Exception.class);
+		given(service.getInformationsDemande(anyString(), any(UUID.class))).willThrow(Exception.class);
 		Response reponse = ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
 		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), reponse.getStatus());
 	}
@@ -78,13 +78,13 @@ public class InformationsDemandeRessourceTest {
 	@Test
 	public void quandAfficherDemandesOrganisateurDevraitRecupererResultatDuService() {
 		ressource.afficherDemandesOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR);
-		verify(service).getDemandesPourCourriel(ADRESSE_COURRIEL_ORGANISATEUR);
+		verify(service).getDemandesOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void etantDonneErreurQuelconqueQuandAfficherDemandesOrganisateurAlorsStatutDevraitEtre500() {
-		given(service.getDemandesPourCourriel(ADRESSE_COURRIEL_ORGANISATEUR)).willThrow(Exception.class);
+		given(service.getDemandesOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR)).willThrow(Exception.class);
 		Response reponse = ressource.afficherDemandesOrganisateur(ADRESSE_COURRIEL_ORGANISATEUR);
 		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), reponse.getStatus());
 	}

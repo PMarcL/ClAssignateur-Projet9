@@ -8,14 +8,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 
-import org.ClAssignateur.contexte.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.services.infosDemandes.DemandeIntrouvableException;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTO;
 import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTO;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
-
 import java.util.UUID;
 
 @Path("/demandes")
@@ -25,9 +21,10 @@ public class InformationsDemandeRessource {
 	private ServiceInformationsDemande serviceDemande;
 
 	public InformationsDemandeRessource() {
-		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
-		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		this.serviceDemande = new ServiceInformationsDemande(demandeEntrepot);
+		// DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
+		// new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
+		// this.serviceDemande = new
+		// ServiceInformationsDemande(demandeEntrepot);
 	}
 
 	public InformationsDemandeRessource(ServiceInformationsDemande service) {
@@ -41,8 +38,7 @@ public class InformationsDemandeRessource {
 			@PathParam(value = "numeroDemande") String numeroDemande) {
 		try {
 			UUID idDemande = UUID.fromString(numeroDemande);
-			InformationsDemandeDTO infosDemande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel,
-					idDemande);
+			InformationsDemandeDTO infosDemande = this.serviceDemande.getInformationsDemande(courriel, idDemande);
 			return Response.ok(infosDemande).build();
 		} catch (DemandeIntrouvableException ex) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -56,7 +52,7 @@ public class InformationsDemandeRessource {
 	public Response afficherDemandesOrganisateur(@PathParam(value = "courriel") String courrielOrganisateur) {
 		try {
 			OrganisateurDemandesDTO demandesOrganisateur = this.serviceDemande
-					.getDemandesPourCourriel(courrielOrganisateur);
+					.getDemandesOrganisateur(courrielOrganisateur);
 			return Response.ok(demandesOrganisateur).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();
