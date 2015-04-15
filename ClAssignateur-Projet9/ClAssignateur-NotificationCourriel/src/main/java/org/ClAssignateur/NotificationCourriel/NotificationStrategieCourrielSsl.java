@@ -1,4 +1,4 @@
-package org.ClAssignateur.NotificationCourriel;
+package org.ClAssignateur.notificationCourriel;
 
 import org.ClAssignateur.domain.notification.NotificationException;
 import org.ClAssignateur.domain.notification.NotificationStrategie;
@@ -17,6 +17,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.ClAssignateur.domain.groupe.AdresseCourriel;
 import org.ClAssignateur.domain.groupe.Employe;
+import org.ClAssignateur.notificationCourriel.configuration.ConfigurationSmtp;
 
 public class NotificationStrategieCourrielSsl implements NotificationStrategie {
 	private final String PROPRIETE_PORT_SMTP = "mail.smtp.port";

@@ -1,4 +1,4 @@
-package org.ClAssignateur.NotificationCourriel;
+package org.ClAssignateur.notificationCourriel.configuration;
 
 public interface ConfigurationSmtp {
 

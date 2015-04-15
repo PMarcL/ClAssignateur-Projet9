@@ -1,10 +1,8 @@
-package org.ClAssignateur.NotificationCourriel.configuration;
+package org.ClAssignateur.notificationCourriel.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.ClAssignateur.NotificationCourriel.ConfigurationSmtp;
 
 public class FichierProprietesConfigurationSmtp implements ConfigurationSmtp {
 
