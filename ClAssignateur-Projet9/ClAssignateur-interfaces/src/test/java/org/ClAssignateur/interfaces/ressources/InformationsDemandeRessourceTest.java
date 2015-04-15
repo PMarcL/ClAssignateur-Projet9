@@ -4,15 +4,15 @@ import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
-import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
-import org.ClAssignateur.interfaces.dto.assembleur.OrganisateurDemandesDTOAssembleur;
 import org.ClAssignateur.interfaces.ressources.InformationsDemandeRessource;
 
 import javax.ws.rs.core.Response.Status;
 
-import org.ClAssignateur.services.infosDemandes.DemandePasPresenteException;
+import org.ClAssignateur.services.infosDemandes.DemandeIntrouvableException;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
+import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTO;
+import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
+import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTOAssembleur;
 
 import javax.ws.rs.core.Response;
 
@@ -88,7 +88,7 @@ public class InformationsDemandeRessourceTest {
 	@Test
 	public void etantDonneDemandeNExistePasAlorsStatusDevraitEtre404() {
 		given(service.getInfoDemandePourCourrielEtId(anyString(), any(UUID.class))).willThrow(
-				DemandePasPresenteException.class);
+				DemandeIntrouvableException.class);
 		Response reponse = ressource.afficherDemande(ADRESSE_COURRIEL_ORGANISATEUR, NUMERO_DEMANDE);
 		assertEquals(Status.NOT_FOUND.getStatusCode(), reponse.getStatus());
 	}

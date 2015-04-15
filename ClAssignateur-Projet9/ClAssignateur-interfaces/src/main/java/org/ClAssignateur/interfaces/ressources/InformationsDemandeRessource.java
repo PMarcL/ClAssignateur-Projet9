@@ -9,15 +9,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 
 import org.ClAssignateur.contexte.DemoDemandeEntrepotRemplisseur;
-import org.ClAssignateur.services.infosDemandes.DemandePasPresenteException;
+import org.ClAssignateur.services.infosDemandes.DemandeIntrouvableException;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
+import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTO;
+import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
+import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTO;
+import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTOAssembleur;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
-import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
-import org.ClAssignateur.interfaces.dto.OrganisateurDemandesDTO;
-import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
-import org.ClAssignateur.interfaces.dto.assembleur.OrganisateurDemandesDTOAssembleur;
 
 import java.util.List;
 import java.util.UUID;
@@ -56,7 +56,7 @@ public class InformationsDemandeRessource {
 			Demande demande = this.serviceDemande.getInfoDemandePourCourrielEtId(courriel, idDemande);
 			InformationsDemandeDTO demandeDTO = infosDemandesAssembleur.assemblerInformationsDemandeDTO(demande);
 			return Response.ok(demandeDTO).build();
-		} catch (DemandePasPresenteException ex) {
+		} catch (DemandeIntrouvableException ex) {
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();

@@ -1,4 +1,4 @@
-package org.ClAssignateur.interfaces.dto;
+package org.ClAssignateur.services.reservations.dto;
 
 import java.util.List;
 

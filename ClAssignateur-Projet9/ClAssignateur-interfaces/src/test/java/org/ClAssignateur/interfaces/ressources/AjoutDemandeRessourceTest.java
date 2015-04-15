@@ -8,10 +8,10 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
-import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
-import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.ressources.AjoutDemandeRessource;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;

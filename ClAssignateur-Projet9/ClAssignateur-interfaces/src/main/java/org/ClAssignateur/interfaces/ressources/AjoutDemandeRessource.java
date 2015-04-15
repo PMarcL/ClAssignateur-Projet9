@@ -13,12 +13,12 @@ import javax.ws.rs.Path;
 
 import org.ClAssignateur.contexte.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
 import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
-import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
-import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
 
 import java.util.UUID;
 
