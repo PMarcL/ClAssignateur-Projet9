@@ -10,9 +10,9 @@ import javax.ws.rs.Path;
 
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
-import org.ClAssignateur.services.DemandePasPresenteException;
 import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.services.ServiceDemande;
+import org.ClAssignateur.services.infosDemandes.DemandePasPresenteException;
+import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
 import org.ClAssignateur.interfaces.dto.OrganisateurDemandesDTO;
@@ -26,7 +26,7 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 public class InformationsDemandeRessource {
 
-	private ServiceDemande serviceDemande;
+	private ServiceInformationsDemande serviceDemande;
 	private InformationsDemandeDTOAssembleur infosDemandesAssembleur;
 	private OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur;
 
@@ -35,10 +35,10 @@ public class InformationsDemandeRessource {
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
 		this.infosDemandesAssembleur = new InformationsDemandeDTOAssembleur();
 		this.organisateurDemandesAssembleur = new OrganisateurDemandesDTOAssembleur(infosDemandesAssembleur);
-		this.serviceDemande = new ServiceDemande(demandeEntrepot);
+		this.serviceDemande = new ServiceInformationsDemande(demandeEntrepot);
 	}
 
-	public InformationsDemandeRessource(ServiceDemande service,
+	public InformationsDemandeRessource(ServiceInformationsDemande service,
 			InformationsDemandeDTOAssembleur infosDemandesAssembleur,
 			OrganisateurDemandesDTOAssembleur orgDemandesAssembleur) {
 		this.serviceDemande = service;

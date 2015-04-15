@@ -1,9 +1,9 @@
-package org.ClAssignateur.services;
+package org.ClAssignateur.services.reservations.minuterie;
 
 import static org.junit.Assert.*;
 
+import org.ClAssignateur.services.reservations.minuterie.Minute;
 import org.junit.Before;
-
 import org.junit.Test;
 
 public class MinuteTest {

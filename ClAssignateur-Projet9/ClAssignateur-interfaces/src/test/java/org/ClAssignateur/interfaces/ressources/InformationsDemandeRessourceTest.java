@@ -8,11 +8,11 @@ import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.dto.assembleur.OrganisateurDemandesDTOAssembleur;
 import org.ClAssignateur.interfaces.ressources.InformationsDemandeRessource;
-import org.ClAssignateur.services.DemandePasPresenteException;
 
 import javax.ws.rs.core.Response.Status;
 
-import org.ClAssignateur.services.ServiceDemande;
+import org.ClAssignateur.services.infosDemandes.DemandePasPresenteException;
+import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 
 import javax.ws.rs.core.Response;
 
@@ -29,7 +29,7 @@ public class InformationsDemandeRessourceTest {
 	private final String NUMERO_DEMANDE = UUID.randomUUID().toString();
 
 	private List<Demande> demandes;
-	private ServiceDemande service;
+	private ServiceInformationsDemande service;
 	private InformationsDemandeDTOAssembleur infosDemandesAssembleur;
 	private OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur;
 	private InformationsDemandeDTO dto;
@@ -39,7 +39,7 @@ public class InformationsDemandeRessourceTest {
 
 	@Before
 	public void initialement() {
-		service = mock(ServiceDemande.class);
+		service = mock(ServiceInformationsDemande.class);
 		infosDemandesAssembleur = mock(InformationsDemandeDTOAssembleur.class);
 		organisateurDemandesAssembleur = mock(OrganisateurDemandesDTOAssembleur.class);
 		demande = mock(Demande.class);

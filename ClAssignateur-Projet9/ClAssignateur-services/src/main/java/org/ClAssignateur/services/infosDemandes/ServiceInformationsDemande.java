@@ -1,4 +1,4 @@
-package org.ClAssignateur.services;
+package org.ClAssignateur.services.infosDemandes;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 
-public class ServiceDemande {
+public class ServiceInformationsDemande {
 
 	DemandesEntrepot demandesEntrepot;
 
-	public ServiceDemande(DemandesEntrepot demandes) {
+	public ServiceInformationsDemande(DemandesEntrepot demandes) {
 		this.demandesEntrepot = demandes;
 	}
 

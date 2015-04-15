@@ -1,4 +1,4 @@
-package org.ClAssignateur.services;
+package org.ClAssignateur.services.reservations.minuterie;
 
 public interface MinuterieObservateur {
 

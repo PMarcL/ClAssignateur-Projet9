@@ -16,7 +16,7 @@ import javax.ws.rs.Path;
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.contexts.DemoDemandeEntrepotRemplisseur;
 import org.ClAssignateur.persistences.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.services.ServiceDemande;
+import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
 import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
@@ -27,17 +27,17 @@ import java.util.UUID;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AjoutDemandeRessource {
 
-	private ServiceDemande serviceDemande;
+	private ServiceInformationsDemande serviceDemande;
 	private ReservationDemandeDTOAssembleur reservationDemandeAssembleur;
 
 	public AjoutDemandeRessource() {
 		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
 		this.reservationDemandeAssembleur = new ReservationDemandeDTOAssembleur();
-		this.serviceDemande = new ServiceDemande(demandeEntrepot);
+		this.serviceDemande = new ServiceInformationsDemande(demandeEntrepot);
 	}
 
-	public AjoutDemandeRessource(ServiceDemande service, ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
+	public AjoutDemandeRessource(ServiceInformationsDemande service, ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
 		this.serviceDemande = service;
 		this.reservationDemandeAssembleur = reservationDemandeAssembleur;
 	}

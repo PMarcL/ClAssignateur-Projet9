@@ -1,4 +1,4 @@
-package org.ClAssignateur.services;
+package org.ClAssignateur.services.infosDemandes;
 
 public class DemandePasPresenteException extends RuntimeException {
 

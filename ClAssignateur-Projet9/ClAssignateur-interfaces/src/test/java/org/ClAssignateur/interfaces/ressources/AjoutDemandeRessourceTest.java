@@ -12,7 +12,7 @@ import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
 import org.ClAssignateur.interfaces.dto.assembleur.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.interfaces.ressources.AjoutDemandeRessource;
-import org.ClAssignateur.services.ServiceDemande;
+import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
@@ -28,7 +28,7 @@ public class AjoutDemandeRessourceTest {
 	private final String MESSAGE_EMAIL_INVALIDE = "Le courriel " + COURRIEL_ORGANISATEUR + " n'est pas valide";
 
 	private ReservationDemandeDTO demandeDTO;
-	private ServiceDemande service;
+	private ServiceInformationsDemande service;
 	private ReservationDemandeDTOAssembleur reservationDemandeAssembleur;
 	private Demande demande;
 
@@ -38,7 +38,7 @@ public class AjoutDemandeRessourceTest {
 	public void initialement() {
 		demandeDTO = mock(ReservationDemandeDTO.class);
 		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
-		service = mock(ServiceDemande.class);
+		service = mock(ServiceInformationsDemande.class);
 		reservationDemandeAssembleur = mock(ReservationDemandeDTOAssembleur.class);
 		demande = mock(Demande.class);
 		given(demande.getID()).willReturn(DEMANDE_ID);

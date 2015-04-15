@@ -4,8 +4,8 @@ import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.domain.AssignateurSalle;
 import org.ClAssignateur.domain.demandes.Demande;
-import org.ClAssignateur.services.Minuterie;
-import org.ClAssignateur.services.ServiceReservationSalle;
+import org.ClAssignateur.services.reservations.ServiceReservationSalle;
+import org.ClAssignateur.services.reservations.minuterie.Minuterie;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;

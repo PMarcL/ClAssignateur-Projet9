@@ -1,21 +1,25 @@
-package org.ClAssignateur.services;
+package org.ClAssignateur.services.infosDemandes;
 
 import static org.mockito.BDDMockito.*;
 
 import org.junit.Test;
 import org.junit.Before;
+
 import java.util.UUID;
 import java.util.Optional;
+
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.demandes.DemandesEntrepot;
+import org.ClAssignateur.services.infosDemandes.DemandePasPresenteException;
+import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
 
-public class ServiceDemandeTest {
+public class ServiceInformationsDemandeTest {
 
 	private final UUID UUID_DEMANDE = UUID.randomUUID();
 	private final String ADRESSE_COURRIEL_ORGANISATEUR = "courriel@domaine.com";
 
 	private DemandesEntrepot demandesEntrepot;
-	private ServiceDemande serviceDemande;
+	private ServiceInformationsDemande serviceDemande;
 	private Demande demande;
 	private Optional<Demande> demandeOptional;
 
@@ -24,7 +28,7 @@ public class ServiceDemandeTest {
 		demandesEntrepot = mock(DemandesEntrepot.class);
 		demande = mock(Demande.class);
 		demandeOptional = Optional.of(demande);
-		serviceDemande = new ServiceDemande(demandesEntrepot);
+		serviceDemande = new ServiceInformationsDemande(demandesEntrepot);
 
 		given(demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(ADRESSE_COURRIEL_ORGANISATEUR, UUID_DEMANDE))
 				.willReturn(demandeOptional);

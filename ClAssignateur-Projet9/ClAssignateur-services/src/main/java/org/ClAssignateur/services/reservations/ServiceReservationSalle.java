@@ -1,7 +1,10 @@
-package org.ClAssignateur.services;
+package org.ClAssignateur.services.reservations;
 
 import org.ClAssignateur.domain.demandes.Demande;
 import org.ClAssignateur.domain.AssignateurSalle;
+import org.ClAssignateur.services.reservations.minuterie.Minute;
+import org.ClAssignateur.services.reservations.minuterie.Minuterie;
+import org.ClAssignateur.services.reservations.minuterie.MinuterieObservateur;
 
 public class ServiceReservationSalle implements MinuterieObservateur {
 

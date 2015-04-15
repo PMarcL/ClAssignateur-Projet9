@@ -1,6 +1,9 @@
-package org.ClAssignateur.services;
+package org.ClAssignateur.services.reservations.minuterie;
 
 import static org.mockito.Mockito.*;
+
+import org.ClAssignateur.services.reservations.minuterie.MinuterieObservateur;
+import org.ClAssignateur.services.reservations.minuterie.MinuterieTimerJavaStandard;
 import org.junit.Test;
 
 public class MinuterieTimerJavaStandardTest {

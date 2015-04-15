@@ -27,5 +27,6 @@
     <module>ClAssignateur-notificationCourriel</module>
     <module>ClAssignateur-testsAcceptationUtilisateur</module>
     <module>ClAssignateur-interfaces</module>
+    <module>ClAssignateur-services</module>
   </modules>
 </project>
