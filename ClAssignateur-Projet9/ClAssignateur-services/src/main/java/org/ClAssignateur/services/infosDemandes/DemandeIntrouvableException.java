@@ -1,10 +1,10 @@
 package org.ClAssignateur.services.infosDemandes;
 
-public class DemandePasPresenteException extends RuntimeException {
+public class DemandeIntrouvableException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public DemandePasPresenteException(String message) {
+	public DemandeIntrouvableException(String message) {
 		super(message);
 	}
 

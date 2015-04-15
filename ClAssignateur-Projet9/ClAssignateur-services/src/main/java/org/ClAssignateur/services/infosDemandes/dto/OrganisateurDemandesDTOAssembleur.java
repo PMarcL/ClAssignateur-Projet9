@@ -1,12 +1,10 @@
-package org.ClAssignateur.interfaces.dto.assembleur;
+package org.ClAssignateur.services.infosDemandes.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
-import org.ClAssignateur.interfaces.dto.OrganisateurDemandesDTO;
 
 public class OrganisateurDemandesDTOAssembleur {
 

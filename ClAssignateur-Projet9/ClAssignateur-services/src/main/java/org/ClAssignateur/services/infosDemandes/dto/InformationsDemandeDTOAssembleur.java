@@ -1,7 +1,6 @@
-package org.ClAssignateur.interfaces.dto.assembleur;
+package org.ClAssignateur.services.infosDemandes.dto;
 
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
 
 public class InformationsDemandeDTOAssembleur {
 

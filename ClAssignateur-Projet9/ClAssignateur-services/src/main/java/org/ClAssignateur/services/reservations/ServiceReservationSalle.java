@@ -1,7 +1,11 @@
 package org.ClAssignateur.services.reservations;
 
+import java.util.UUID;
+
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.services.reservations.minuterie.Minute;
 import org.ClAssignateur.services.reservations.minuterie.Minuterie;
 import org.ClAssignateur.services.reservations.minuterie.MinuterieObservateur;
@@ -14,9 +18,12 @@ public class ServiceReservationSalle implements MinuterieObservateur {
 	private AssignateurSalle assignateurSalle;
 	private Minuterie minuterie;
 	private int limiteDemandes;
+	private ReservationDemandeDTOAssembleur assembleur;
 
-	public ServiceReservationSalle(Minuterie minuterie, AssignateurSalle assignateurSalle) {
+	public ServiceReservationSalle(Minuterie minuterie, AssignateurSalle assignateurSalle,
+			ReservationDemandeDTOAssembleur assembleur) {
 		this.assignateurSalle = assignateurSalle;
+		this.assembleur = assembleur;
 		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
 
 		this.minuterie = minuterie;
@@ -39,9 +46,11 @@ public class ServiceReservationSalle implements MinuterieObservateur {
 		assignateurSalle.annulerDemande(titreDemandeAnnulee);
 	}
 
-	public void ajouterDemande(Demande nouvelleDemande) {
-		assignateurSalle.ajouterDemande(nouvelleDemande);
+	public UUID ajouterDemande(ReservationDemandeDTO dto) {
+		Demande demande = assembleur.assemblerDemande(dto);
+		assignateurSalle.ajouterDemande(demande);
 		assignerSiNecessaire();
+		return demande.getID();
 	}
 
 	private void assignerSiNecessaire() {

@@ -5,6 +5,8 @@ import static org.mockito.BDDMockito.*;
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.services.reservations.minuterie.Minuterie;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
@@ -18,12 +20,16 @@ public class AssignerEnLotSallesDemandesEtapes {
 	private ServiceReservationSalle serviceReservation;
 	private AssignateurSalle assignateurSalle;
 	private Minuterie minuterie;
+	private ReservationDemandeDTOAssembleur assembleur;
+	private ReservationDemandeDTO dto;
 
 	@BeforeScenario
 	public void initialisationScenario() {
 		minuterie = mock(Minuterie.class);
 		assignateurSalle = mock(AssignateurSalle.class);
-		serviceReservation = new ServiceReservationSalle(minuterie, this.assignateurSalle);
+		assembleur = mock(ReservationDemandeDTOAssembleur.class);
+
+		serviceReservation = new ServiceReservationSalle(minuterie, this.assignateurSalle, assembleur);
 	}
 
 	@Given("j'ai configuré le système pour tolérer X demandes")
@@ -40,7 +46,8 @@ public class AssignerEnLotSallesDemandesEtapes {
 	public void whenLeNombreDeDemandesEnAttenteAtteint10Demandes() {
 		Demande demande = mock(Demande.class);
 		given(assignateurSalle.getNombreDemandesEnAttente()).willReturn(X_NOMBRE_DEMANDES);
-		serviceReservation.ajouterDemande(demande);
+		given(assembleur.assemblerDemande(dto)).willReturn(demande);
+		serviceReservation.ajouterDemande(dto);
 	}
 
 	@When("je configure le système pour tolérer Y demandes")

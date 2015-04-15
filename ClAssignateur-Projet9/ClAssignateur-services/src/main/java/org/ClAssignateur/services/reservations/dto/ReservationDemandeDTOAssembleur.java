@@ -1,4 +1,4 @@
-package org.ClAssignateur.interfaces.dto.assembleur;
+package org.ClAssignateur.services.reservations.dto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.domaine.groupe.Groupe;
-import org.ClAssignateur.interfaces.dto.ReservationDemandeDTO;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 
 public class ReservationDemandeDTOAssembleur {
 

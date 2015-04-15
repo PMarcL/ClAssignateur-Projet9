@@ -1,4 +1,4 @@
-package org.ClAssignateur.interfaces.dto.assembleur;
+package org.ClAssignateur.services.infosDemandes.dto;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
 import org.ClAssignateur.domaine.salles.Salle;
-import org.ClAssignateur.interfaces.dto.InformationsDemandeDTO;
-import org.ClAssignateur.interfaces.dto.assembleur.InformationsDemandeDTOAssembleur;
+import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTO;
+import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
 
 public class InformationsDemandeDTOAssembleurTest {
 	private final String AUCUNE_SALLE = null;
