@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.ClAssignateur.testsAcceptationUtilisateur.etapes.AssignerEnLotSallesDemandesEtapes;
+import org.ClAssignateur.testsAcceptationUtilisateur.etapes.MaximiserLesPlacesDansSalleSteps;
 import org.ClAssignateur.testsAcceptationUtilisateur.etapes.OrdonnerDemandesEtapes;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -48,7 +49,7 @@ public class RecitsClAssignateur extends JUnitStories {
 	@Override
 	public InjectableStepsFactory stepsFactory() {
 		return new InstanceStepsFactory(configuration(), new AssignerEnLotSallesDemandesEtapes(),
-				new OrdonnerDemandesEtapes());
+				new OrdonnerDemandesEtapes(), new MaximiserLesPlacesDansSalleSteps());
 	}
 
 	@Override
