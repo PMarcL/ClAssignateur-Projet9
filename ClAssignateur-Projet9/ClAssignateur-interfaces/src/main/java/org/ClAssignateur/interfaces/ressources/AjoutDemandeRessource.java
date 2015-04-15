@@ -11,13 +11,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 
-import org.ClAssignateur.contexte.DemoDemandeEntrepotRemplisseur;
-import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
+import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
 import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
 
 import java.util.UUID;
@@ -26,20 +23,21 @@ import java.util.UUID;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AjoutDemandeRessource {
 
-	private ServiceInformationsDemande serviceDemande;
+	private ServiceReservationSalle serviceDemande;
 	private ReservationDemandeDTOAssembleur reservationDemandeAssembleur;
 
 	public AjoutDemandeRessource() {
 		// TODO revoir ici une fois contexte établi pour aller chercher service
 		// à partir du service locator
 		// TODO enlever référence vers JBehave dans dans pom.xml
-		DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
-		new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		this.reservationDemandeAssembleur = new ReservationDemandeDTOAssembleur();
-		this.serviceDemande = new ServiceInformationsDemande(demandeEntrepot);
+		// DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
+		// new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
+		// this.reservationDemandeAssembleur = new
+		// ReservationDemandeDTOAssembleur();
+		// this.serviceDemande = new ServiceReservationSalle(demandeEntrepot);
 	}
 
-	public AjoutDemandeRessource(ServiceInformationsDemande service,
+	public AjoutDemandeRessource(ServiceReservationSalle service,
 			ReservationDemandeDTOAssembleur reservationDemandeAssembleur) {
 		this.serviceDemande = service;
 		this.reservationDemandeAssembleur = reservationDemandeAssembleur;

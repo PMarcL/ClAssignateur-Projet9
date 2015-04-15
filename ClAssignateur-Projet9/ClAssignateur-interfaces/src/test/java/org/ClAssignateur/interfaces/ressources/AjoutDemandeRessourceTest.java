@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.groupe.courriel.AdresseCourrielInvalideException;
 import org.ClAssignateur.interfaces.ressources.AjoutDemandeRessource;
-import org.ClAssignateur.services.infosDemandes.ServiceInformationsDemande;
+import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 
@@ -27,7 +27,7 @@ public class AjoutDemandeRessourceTest {
 	private final String MESSAGE_EMAIL_INVALIDE = "Le courriel " + COURRIEL_ORGANISATEUR + " n'est pas valide";
 
 	private ReservationDemandeDTO demandeDTO;
-	private ServiceInformationsDemande service;
+	private ServiceReservationSalle service;
 	private ReservationDemandeDTOAssembleur reservationDemandeAssembleur;
 	private Demande demande;
 
@@ -37,7 +37,7 @@ public class AjoutDemandeRessourceTest {
 	public void initialement() {
 		demandeDTO = mock(ReservationDemandeDTO.class);
 		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
-		service = mock(ServiceInformationsDemande.class);
+		service = mock(ServiceReservationSalle.class);
 		reservationDemandeAssembleur = mock(ReservationDemandeDTOAssembleur.class);
 		demande = mock(Demande.class);
 		given(demande.getID()).willReturn(DEMANDE_ID);
