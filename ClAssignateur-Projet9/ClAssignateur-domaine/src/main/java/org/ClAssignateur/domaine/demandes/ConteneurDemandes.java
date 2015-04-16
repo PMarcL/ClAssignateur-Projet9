@@ -1,5 +1,7 @@
 package org.ClAssignateur.domaine.demandes;
 
+import java.util.UUID;
+
 import java.util.Optional;
 import java.util.Comparator;
 import java.util.List;
@@ -58,5 +60,15 @@ public class ConteneurDemandes {
 
 	public int getNombreDemandesEnAttente() {
 		return this.demandesEnAttente.taille();
+	}
+
+	public List<Demande> obtenirDemandesSelonCourrielOrganisateur(String courrielOrganisateur) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateurEtId(String courrielOrganisateur, UUID idDemande) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

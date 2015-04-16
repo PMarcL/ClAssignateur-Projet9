@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Optional;
 
+import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTO;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTO;
@@ -13,20 +13,20 @@ import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTOAssem
 
 public class ServiceInformationsDemande {
 
-	DemandesEntrepot demandesEntrepot;
+	ConteneurDemandes conteneurDemandes;
 	InformationsDemandeDTOAssembleur infosDemandeAssembleur;
 	OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur;
 
-	public ServiceInformationsDemande(DemandesEntrepot demandes,
+	public ServiceInformationsDemande(ConteneurDemandes demandes,
 			InformationsDemandeDTOAssembleur infosDemandeAssembleur,
 			OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur) {
-		this.demandesEntrepot = demandes;
+		this.conteneurDemandes = demandes;
 		this.infosDemandeAssembleur = infosDemandeAssembleur;
 		this.organisateurDemandesAssembleur = organisateurDemandesAssembleur;
 	}
 
 	public InformationsDemandeDTO getInformationsDemande(String courrielOrganisateur, UUID idDemande) {
-		Optional<Demande> demande = demandesEntrepot.obtenirDemandeSelonCourrielOrganisateurEtId(courrielOrganisateur,
+		Optional<Demande> demande = conteneurDemandes.obtenirDemandeSelonCourrielOrganisateurEtId(courrielOrganisateur,
 				idDemande);
 		if (!demande.isPresent()) {
 			throw new DemandeIntrouvableException(
@@ -37,7 +37,7 @@ public class ServiceInformationsDemande {
 	}
 
 	public OrganisateurDemandesDTO getDemandesOrganisateur(String courrielOrganisateur) {
-		List<Demande> demandes = demandesEntrepot.obtenirDemandesSelonCourriel(courrielOrganisateur);
+		List<Demande> demandes = conteneurDemandes.obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
 		return this.organisateurDemandesAssembleur.assemblerOrganisateurDemandesDTO(demandes);
 	}
 }
