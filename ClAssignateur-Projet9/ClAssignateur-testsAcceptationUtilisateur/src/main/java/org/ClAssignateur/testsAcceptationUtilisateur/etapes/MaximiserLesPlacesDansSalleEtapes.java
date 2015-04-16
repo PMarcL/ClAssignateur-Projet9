@@ -8,6 +8,7 @@ import org.ClAssignateur.domaine.contacts.ContactsReunion;
 import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
@@ -22,11 +23,12 @@ import static org.junit.Assert.*;
 
 public class MaximiserLesPlacesDansSalleEtapes {
 
-	private static final int PLACES_50 = 50;
-	private static final int PLACES_100 = 100;
-	private static final String NOM_SALLE_50_PARTICIPANTS = "PLT2050";
-	private static final String NOM_SALLE_100_PARTICIPANTS = "PLT2100";
-	private static final String NOM_SALLE_100_PARTICIPANTS_SECONDE = "PLT2102";
+	private final int PLACES_50 = 50;
+	private final int PLACES_100 = 100;
+	private final String NOM_SALLE_50_PARTICIPANTS = "PLT2050";
+	private final String NOM_SALLE_100_PARTICIPANTS = "PLT2100";
+	private final String NOM_SALLE_100_PARTICIPANTS_SECONDE = "PLT2102";
+	private final Priorite PRIORITE = Priorite.moyenne();
 	private Demande demandeAAssigner;
 	private EnMemoireDemandeEntrepot demandesTraitees;
 	private SallesEntrepot salles;
@@ -82,6 +84,6 @@ public class MaximiserLesPlacesDansSalleEtapes {
 		participants.add(responsable);
 
 		ContactsReunion groupe = new ContactsReunion(organisateur, responsable, participants);
-		return new Demande(groupe, "Demande avec deux participant");
+		return new Demande(groupe, "Demande avec deux participant", PRIORITE);
 	}
 }

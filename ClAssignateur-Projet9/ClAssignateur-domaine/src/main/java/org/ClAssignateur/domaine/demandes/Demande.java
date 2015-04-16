@@ -38,31 +38,11 @@ public class Demande {
 		ajouterEstampille();
 	}
 
-	public Demande(ContactsReunion groupe, String titre) {
-		this.id = UUID.randomUUID();
-		this.contacts = groupe;
-		this.titre = titre;
-		this.priorite = Priorite.basse();
-		this.salleAssignee = null;
-		this.etat = StatutDemande.EN_ATTENTE;
-		ajouterEstampille();
-	}
-
 	public Demande(UUID id, ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = id;
 		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
-		this.salleAssignee = null;
-		this.etat = StatutDemande.EN_ATTENTE;
-		ajouterEstampille();
-	}
-
-	public Demande(UUID id, ContactsReunion groupe, String titre) {
-		this.id = id;
-		this.contacts = groupe;
-		this.titre = titre;
-		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
 		this.etat = StatutDemande.EN_ATTENTE;
 		ajouterEstampille();
@@ -135,7 +115,7 @@ public class Demande {
 			return false;
 		} else {
 			Demande autreDemande = (Demande) autreObjet;
-			return this.getID().equals(autreDemande.getID());
+			return this.id.equals(autreDemande.id);
 		}
 	}
 

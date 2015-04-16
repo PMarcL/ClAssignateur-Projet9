@@ -48,13 +48,13 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	}
 
 	public void retirerDemande(Demande demande) {
-		int indexDeDemande = trouverIndexDe(demande);
-		if (indexDeDemande != -1) {
-			this.demandes.remove(indexDeDemande);
+		int indexDemande = trouverIndexDemande(demande);
+		if (indexDemande != -1) {
+			this.demandes.remove(indexDemande);
 		}
 	}
 
-	private int trouverIndexDe(Demande demande) {
+	private int trouverIndexDemande(Demande demande) {
 		Optional<Demande> demandeTrouvee = trouverDemandeCorrespondant(demande);
 
 		if (demandeTrouvee.isPresent()) {

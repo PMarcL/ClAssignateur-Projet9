@@ -16,6 +16,7 @@ public class ContactsReunion {
 	}
 
 	public int getNbParticipants() {
+		// TODO à supprimer : plus utilisé
 		return participants.size();
 	}
 
