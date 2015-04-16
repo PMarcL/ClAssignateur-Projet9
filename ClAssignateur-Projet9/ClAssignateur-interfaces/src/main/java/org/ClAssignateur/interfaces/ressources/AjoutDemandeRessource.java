@@ -20,28 +20,22 @@ import java.util.UUID;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AjoutDemandeRessource {
 
-	private ServiceReservationSalle serviceDemande;
+	private ServiceReservationSalle serviceReservation;
 
 	public AjoutDemandeRessource() {
-		// TODO revoir ici une fois contexte établi pour aller chercher service
-		// à partir du service locator
 		// TODO enlever référence vers JBehave dans dans pom.xml
-		// DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
-		// new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		// this.reservationDemandeAssembleur = new
-		// ReservationDemandeDTOAssembleur();
-		// this.serviceDemande = new ServiceReservationSalle(demandeEntrepot);
+		this.serviceReservation = new ServiceReservationSalle();
 	}
 
 	public AjoutDemandeRessource(ServiceReservationSalle service) {
-		this.serviceDemande = service;
+		this.serviceReservation = service;
 	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ajouterDemande(ReservationDemandeDTO demandeDTO) {
 		try {
-			UUID idDemande = serviceDemande.ajouterDemande(demandeDTO);
+			UUID idDemande = serviceReservation.ajouterDemande(demandeDTO);
 			URI emplacement = new URI("/demandes/" + demandeDTO.courrielOrganisateur + "/" + idDemande.toString());
 
 			return Response.created(emplacement).build();

@@ -11,6 +11,7 @@ import org.ClAssignateur.domaine.salles.Salle;
 
 public class DemoDemandeEntrepotRemplisseur {
 
+	// TODO voir si cette classe est encore utile?
 	public void remplir(DemandesEntrepot entrepot) {
 
 		Employe organisateur = new Employe("organisateur@hotmail.com");
