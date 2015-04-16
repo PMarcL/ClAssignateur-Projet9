@@ -21,6 +21,7 @@ public class InformationsDemandeRessource {
 	private ServiceInformationsDemande serviceDemande;
 
 	public InformationsDemandeRessource() {
+		// TODO enlever code mort
 		// DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
 		// new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
 		// this.serviceDemande = new
