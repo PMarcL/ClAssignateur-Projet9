@@ -5,10 +5,13 @@ import static org.mockito.BDDMockito.*;
 
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response;
+
 import org.junit.Test;
 import org.junit.Before;
+
 import java.util.UUID;
-import org.ClAssignateur.domaine.groupe.AdresseCourrielInvalideException;
+
+import org.ClAssignateur.domaine.contacts.AdresseCourrielInvalideException;
 import org.ClAssignateur.interfaces.ressources.AjoutDemandeRessource;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;

@@ -2,12 +2,12 @@ package org.ClAssignateur.domaine.notification;
 
 import static org.mockito.BDDMockito.*;
 
+import org.ClAssignateur.domaine.contacts.InformationsContact;
+
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.InformationsContact;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.notification.NotificationStrategie;
 import org.ClAssignateur.domaine.salles.Salle;
-
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;

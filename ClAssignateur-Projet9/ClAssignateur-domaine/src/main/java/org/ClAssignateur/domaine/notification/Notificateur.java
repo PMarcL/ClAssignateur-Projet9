@@ -1,7 +1,8 @@
 package org.ClAssignateur.domaine.notification;
 
+import org.ClAssignateur.domaine.contacts.InformationsContact;
+
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.InformationsContact;
 import org.ClAssignateur.domaine.salles.Salle;
 
 public class Notificateur {

@@ -10,7 +10,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
-import org.ClAssignateur.domaine.groupe.AdresseCourrielInvalideException;
+
+import org.ClAssignateur.domaine.contacts.AdresseCourrielInvalideException;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 
@@ -23,7 +24,6 @@ public class AjoutDemandeRessource {
 	private ServiceReservationSalle serviceReservation;
 
 	public AjoutDemandeRessource() {
-		// TODO enlever référence vers JBehave dans dans pom.xml
 		this.serviceReservation = new ServiceReservationSalle();
 	}
 

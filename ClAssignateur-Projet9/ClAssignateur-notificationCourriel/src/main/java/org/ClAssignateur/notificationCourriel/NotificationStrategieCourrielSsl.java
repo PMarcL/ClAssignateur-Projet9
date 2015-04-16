@@ -12,7 +12,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.ClAssignateur.domaine.groupe.InformationsContact;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.notification.NotificationException;
 import org.ClAssignateur.domaine.notification.NotificationStrategie;
 import org.ClAssignateur.notificationCourriel.configuration.ConfigurationSmtp;

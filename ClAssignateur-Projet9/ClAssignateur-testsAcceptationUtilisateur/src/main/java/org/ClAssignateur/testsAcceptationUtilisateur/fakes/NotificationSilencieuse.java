@@ -1,6 +1,6 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.fakes;
 
-import org.ClAssignateur.domaine.groupe.InformationsContact;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.notification.NotificationException;
 import org.ClAssignateur.domaine.notification.NotificationStrategie;
 

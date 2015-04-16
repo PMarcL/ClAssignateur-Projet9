@@ -3,10 +3,10 @@ package org.ClAssignateur.services.reservations.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ClAssignateur.domaine.contacts.ContactsReunion;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 
 public class ReservationDemandeDTOAssembleur {
@@ -20,7 +20,7 @@ public class ReservationDemandeDTOAssembleur {
 
 	private List<InformationsContact> creerListeParticipants(ReservationDemandeDTO dto) {
 		List<InformationsContact> participants = new ArrayList<InformationsContact>();
-		for (int indexParticipant = 0; indexParticipant < dto.nombrePersonnes; indexParticipant++) {
+		for (int indexParticipant = 0; indexParticipant < dto.participantsCourriels.size(); indexParticipant++) {
 			String adresseCourriel = dto.participantsCourriels.get(indexParticipant);
 			participants.add(creerEmploye(adresseCourriel));
 		}

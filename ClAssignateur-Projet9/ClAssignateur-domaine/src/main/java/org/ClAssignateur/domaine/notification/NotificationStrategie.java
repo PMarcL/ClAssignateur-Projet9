@@ -1,6 +1,6 @@
 package org.ClAssignateur.domaine.notification;
 
-import org.ClAssignateur.domaine.groupe.InformationsContact;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 
 public interface NotificationStrategie {
 

@@ -1,6 +1,10 @@
-package org.ClAssignateur.domaine.groupe;
+package org.ClAssignateur.domaine.contacts;
 
 import static org.junit.Assert.*;
+
+import org.ClAssignateur.domaine.contacts.AdresseCourrielInvalideException;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
+
 import org.junit.Before;
 import org.junit.Test;
 

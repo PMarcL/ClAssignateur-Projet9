@@ -3,11 +3,14 @@ package org.ClAssignateur.domaine.demandes;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.List;
+
+import javax.sound.midi.MidiDevice.Info;
+import org.ClAssignateur.domaine.contacts.ContactsReunion;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
-import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
 import java.util.ArrayList;
@@ -51,12 +54,6 @@ public class DemandeTest {
 	public void demandePossedeInitialementLeChampsIdCommeDefiniDansLeConstructeur() {
 		UUID id = demande.getID();
 		assertEquals(UN_ID, id);
-	}
-
-	@Test
-	public void demandePossedeInitialementLeChampsGroupeCommeDefiniDansLeConstructeur() {
-		ContactsReunion resultatGroupe = demande.getGroupe();
-		assertEquals(groupe, resultatGroupe);
 	}
 
 	@Test
@@ -206,7 +203,7 @@ public class DemandeTest {
 
 	@Test
 	public void etantDonneDemandeAvecOrganisateurQuandGetCourrielOrganisateurAlorsDonneLeBonCourrielOrganisateur() {
-		String courrielOrganisateurActuel = demande.getCourrielOrganisateur();
+		String courrielOrganisateurActuel = demande.getOrganisateur().getAdresseCourriel();
 		assertTrue(courrielOrganisateurActuel.equals(COURRIEL_ORGANISATEUR));
 	}
 

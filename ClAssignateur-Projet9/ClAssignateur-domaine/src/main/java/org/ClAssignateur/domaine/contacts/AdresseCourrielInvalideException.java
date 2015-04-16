@@ -1,4 +1,4 @@
-package org.ClAssignateur.domaine.groupe;
+package org.ClAssignateur.domaine.contacts;
 
 public class AdresseCourrielInvalideException extends RuntimeException {
 

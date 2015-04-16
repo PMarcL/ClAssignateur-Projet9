@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
+import org.ClAssignateur.domaine.contacts.ContactsReunion;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;

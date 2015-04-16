@@ -1,4 +1,4 @@
-package org.ClAssignateur.domaine.groupe;
+package org.ClAssignateur.domaine.contacts;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;

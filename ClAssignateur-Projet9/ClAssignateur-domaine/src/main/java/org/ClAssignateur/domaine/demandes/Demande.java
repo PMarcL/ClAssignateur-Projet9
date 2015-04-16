@@ -1,8 +1,9 @@
 package org.ClAssignateur.domaine.demandes;
 
+import org.ClAssignateur.domaine.contacts.ContactsReunion;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
+
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Demande {
 
 	private static int nombreDemandesCrees;
 
-	private ContactsReunion groupe;
+	private ContactsReunion contacts;
 	private Priorite priorite;
 	private String titre;
 	private Salle salleAssignee;
@@ -29,7 +30,7 @@ public class Demande {
 
 	public Demande(ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
-		this.groupe = groupe;
+		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
@@ -39,7 +40,7 @@ public class Demande {
 
 	public Demande(ContactsReunion groupe, String titre) {
 		this.id = UUID.randomUUID();
-		this.groupe = groupe;
+		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
@@ -49,7 +50,7 @@ public class Demande {
 
 	public Demande(UUID id, ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = id;
-		this.groupe = groupe;
+		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
@@ -59,7 +60,7 @@ public class Demande {
 
 	public Demande(UUID id, ContactsReunion groupe, String titre) {
 		this.id = id;
-		this.groupe = groupe;
+		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
@@ -69,10 +70,6 @@ public class Demande {
 
 	private void ajouterEstampille() {
 		this.estampille = Demande.genererEstampille();
-	}
-
-	public ContactsReunion getGroupe() {
-		return this.groupe;
 	}
 
 	public UUID getID() {
@@ -106,20 +103,19 @@ public class Demande {
 	}
 
 	public int getNbParticipants() {
-		int nombreDeParticipants = this.groupe.getNbParticipants();
-		return nombreDeParticipants;
+		return this.contacts.getNbParticipants();
 	}
 
 	public InformationsContact getOrganisateur() {
-		return this.getGroupe().getOrganisateur();
+		return this.contacts.organisateur;
 	}
 
 	public InformationsContact getResponsable() {
-		return this.getGroupe().getResponsable();
+		return this.contacts.responsable;
 	}
 
 	public List<InformationsContact> getParticipants() {
-		return groupe.getParticipants();
+		return this.contacts.participants;
 	}
 
 	public Salle getSalleAssignee() {

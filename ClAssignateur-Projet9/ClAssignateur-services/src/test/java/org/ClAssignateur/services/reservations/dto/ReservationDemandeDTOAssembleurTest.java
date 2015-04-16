@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.InformationsContact;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 
