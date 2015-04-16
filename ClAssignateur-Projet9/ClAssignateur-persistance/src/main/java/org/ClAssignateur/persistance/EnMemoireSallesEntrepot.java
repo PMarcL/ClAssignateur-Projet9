@@ -1,4 +1,4 @@
-package org.ClAssignateur.testsAcceptationUtilisateur.fakes;
+package org.ClAssignateur.persistance;
 
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;

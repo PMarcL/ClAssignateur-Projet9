@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.services.localisateur.LocalisateurServices;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.services.reservations.minuterie.Minute;
@@ -20,16 +21,27 @@ public class ServiceReservationSalle implements MinuterieObservateur {
 	private int limiteDemandes;
 	private ReservationDemandeDTOAssembleur assembleur;
 
+	public ServiceReservationSalle() {
+		this.assignateurSalle = LocalisateurServices.getInstance().obtenir(AssignateurSalle.class);
+		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
+		this.assembleur = new ReservationDemandeDTOAssembleur();
+		this.minuterie = LocalisateurServices.getInstance().obtenir(Minuterie.class);
+		demarrerMinuterie();
+	}
+
+	private void demarrerMinuterie() {
+		this.minuterie.setDelai(DELAI_MINUTERIE_PAR_DEFAUT);
+		this.minuterie.souscrire(this);
+		this.minuterie.demarrer();
+	}
+
 	public ServiceReservationSalle(Minuterie minuterie, AssignateurSalle assignateurSalle,
 			ReservationDemandeDTOAssembleur assembleur) {
 		this.assignateurSalle = assignateurSalle;
 		this.assembleur = assembleur;
 		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
-
 		this.minuterie = minuterie;
-		this.minuterie.setDelai(DELAI_MINUTERIE_PAR_DEFAUT);
-		this.minuterie.souscrire(this);
-		this.minuterie.demarrer();
+		demarrerMinuterie();
 	}
 
 	public void setFrequence(Minute nbMinutes) {

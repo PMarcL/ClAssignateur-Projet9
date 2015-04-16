@@ -10,6 +10,10 @@ public class OrganisateurDemandesDTOAssembleur {
 
 	private InformationsDemandeDTOAssembleur assembleurInfosDemandesDTO;
 
+	public OrganisateurDemandesDTOAssembleur() {
+		this.assembleurInfosDemandesDTO = new InformationsDemandeDTOAssembleur();
+	}
+
 	public OrganisateurDemandesDTOAssembleur(InformationsDemandeDTOAssembleur assembleurInfosDemandesDTO) {
 		this.assembleurInfosDemandesDTO = assembleurInfosDemandesDTO;
 	}

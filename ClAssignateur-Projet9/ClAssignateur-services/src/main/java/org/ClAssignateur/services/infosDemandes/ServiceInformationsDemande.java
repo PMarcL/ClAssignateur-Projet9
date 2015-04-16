@@ -10,12 +10,19 @@ import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTO;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTO;
 import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTOAssembleur;
+import org.ClAssignateur.services.localisateur.LocalisateurServices;
 
 public class ServiceInformationsDemande {
 
 	ConteneurDemandes conteneurDemandes;
 	InformationsDemandeDTOAssembleur infosDemandeAssembleur;
 	OrganisateurDemandesDTOAssembleur organisateurDemandesAssembleur;
+
+	public ServiceInformationsDemande() {
+		this.conteneurDemandes = LocalisateurServices.getInstance().obtenir(ConteneurDemandes.class);
+		this.infosDemandeAssembleur = new InformationsDemandeDTOAssembleur();
+		this.organisateurDemandesAssembleur = new OrganisateurDemandesDTOAssembleur();
+	}
 
 	public ServiceInformationsDemande(ConteneurDemandes demandes,
 			InformationsDemandeDTOAssembleur infosDemandeAssembleur,
