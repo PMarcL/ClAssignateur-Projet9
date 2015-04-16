@@ -7,7 +7,7 @@ import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleSt
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
@@ -81,7 +81,7 @@ public class MaximiserLesPlacesDansSalleEtapes {
 		participants.add(organisateur);
 		participants.add(responsable);
 
-		Groupe groupe = new Groupe(organisateur, responsable, participants);
+		ContactsReunion groupe = new ContactsReunion(organisateur, responsable, participants);
 		return new Demande(groupe, "Demande avec deux participant");
 	}
 }

@@ -8,7 +8,7 @@ import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
@@ -29,7 +29,7 @@ import java.util.UUID;
 public class OrdonnerDemandesEtapes {
 
 	// TODO revoir déclaration du groupe
-	private final Groupe GROUPE = new Groupe(new InformationsContact("organisateur@hotmail.com"), new InformationsContact(
+	private final ContactsReunion GROUPE = new ContactsReunion(new InformationsContact("organisateur@hotmail.com"), new InformationsContact(
 			"responsable@hotmail.com"), new ArrayList<InformationsContact>());
 	private final String TITRE_DEMANDE = "Réunion de 15 minutes";
 	private final int NB_DEMANDES_DE_MEME_PRIORITE = 5;

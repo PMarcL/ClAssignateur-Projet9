@@ -7,7 +7,7 @@ import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
 import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
 import java.util.ArrayList;
@@ -28,14 +28,14 @@ public class DemandeTest {
 
 	private InformationsContact organisateur;
 	private InformationsContact responsable;
-	private Groupe groupe;
+	private ContactsReunion groupe;
 	private Demande demande;
 
 	@Before
 	public void intialisation() {
 		organisateur = new InformationsContact(COURRIEL_ORGANISATEUR);
 		responsable = mock(InformationsContact.class);
-		groupe = new Groupe(organisateur, responsable, new ArrayList<InformationsContact>());
+		groupe = new ContactsReunion(organisateur, responsable, new ArrayList<InformationsContact>());
 
 		demande = new Demande(UN_ID, groupe, TITRE_REUNION);
 	}
@@ -55,7 +55,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeInitialementLeChampsGroupeCommeDefiniDansLeConstructeur() {
-		Groupe resultatGroupe = demande.getGroupe();
+		ContactsReunion resultatGroupe = demande.getGroupe();
 		assertEquals(groupe, resultatGroupe);
 	}
 
@@ -102,7 +102,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeInitialementLeChampsNbParticipantsCommeDefiniDansGroupeAvecPlusieursParticipants() {
-		Groupe groupePlusieursParticipants = creerGroupePlusieursParticipants(NOMBRE_DE_PARTICIPANTS);
+		ContactsReunion groupePlusieursParticipants = creerGroupePlusieursParticipants(NOMBRE_DE_PARTICIPANTS);
 		Demande demandeAvecPlusiseursParticipants = new Demande(groupePlusieursParticipants, TITRE_REUNION);
 
 		int nbParticipants = demandeAvecPlusiseursParticipants.getNbParticipants();
@@ -230,12 +230,12 @@ public class DemandeTest {
 		InformationsContact organisateur_second = mock(InformationsContact.class);
 		InformationsContact reponsable_second = mock(InformationsContact.class);
 		ArrayList<InformationsContact> aucunParticipant = new ArrayList<InformationsContact>();
-		Groupe deuxieme_groupe = new Groupe(organisateur_second, reponsable_second, aucunParticipant);
+		ContactsReunion deuxieme_groupe = new ContactsReunion(organisateur_second, reponsable_second, aucunParticipant);
 
 		return new Demande(id, deuxieme_groupe, titre);
 	}
 
-	private Groupe creerGroupePlusieursParticipants(int nombreParticipants) {
+	private ContactsReunion creerGroupePlusieursParticipants(int nombreParticipants) {
 		ArrayList<InformationsContact> listeParticipants = new ArrayList<InformationsContact>();
 
 		for (int i = 0; i < nombreParticipants; i++) {
@@ -243,6 +243,6 @@ public class DemandeTest {
 			listeParticipants.add(nouveauEmploye);
 		}
 
-		return new Groupe(organisateur, responsable, listeParticipants);
+		return new ContactsReunion(organisateur, responsable, listeParticipants);
 	}
 }

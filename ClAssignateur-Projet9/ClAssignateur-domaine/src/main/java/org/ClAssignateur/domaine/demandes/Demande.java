@@ -2,7 +2,7 @@ package org.ClAssignateur.domaine.demandes;
 
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
 import java.util.List;
@@ -15,7 +15,7 @@ public class Demande {
 
 	private static int nombreDemandesCrees;
 
-	private Groupe groupe;
+	private ContactsReunion groupe;
 	private Priorite priorite;
 	private String titre;
 	private Salle salleAssignee;
@@ -27,7 +27,7 @@ public class Demande {
 		return ++nombreDemandesCrees;
 	}
 
-	public Demande(Groupe groupe, String titre, Priorite priorite) {
+	public Demande(ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
 		this.groupe = groupe;
 		this.titre = titre;
@@ -37,7 +37,7 @@ public class Demande {
 		ajouterEstampille();
 	}
 
-	public Demande(Groupe groupe, String titre) {
+	public Demande(ContactsReunion groupe, String titre) {
 		this.id = UUID.randomUUID();
 		this.groupe = groupe;
 		this.titre = titre;
@@ -47,7 +47,7 @@ public class Demande {
 		ajouterEstampille();
 	}
 
-	public Demande(UUID id, Groupe groupe, String titre, Priorite priorite) {
+	public Demande(UUID id, ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = id;
 		this.groupe = groupe;
 		this.titre = titre;
@@ -57,7 +57,7 @@ public class Demande {
 		ajouterEstampille();
 	}
 
-	public Demande(UUID id, Groupe groupe, String titre) {
+	public Demande(UUID id, ContactsReunion groupe, String titre) {
 		this.id = id;
 		this.groupe = groupe;
 		this.titre = titre;
@@ -71,7 +71,7 @@ public class Demande {
 		this.estampille = Demande.genererEstampille();
 	}
 
-	public Groupe getGroupe() {
+	public ContactsReunion getGroupe() {
 		return this.groupe;
 	}
 

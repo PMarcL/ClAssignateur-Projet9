@@ -6,14 +6,14 @@ import java.util.List;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.groupe.InformationsContact;
-import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.groupe.ContactsReunion;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 
 public class ReservationDemandeDTOAssembleur {
 
 	public Demande assemblerDemande(ReservationDemandeDTO dto) {
 		String titre = creerTitreDemande(dto);
-		Groupe groupe = creerGroupe(dto);
+		ContactsReunion groupe = creerGroupe(dto);
 		Priorite priorite = new Priorite(dto.priorite);
 		return new Demande(groupe, titre, priorite);
 	}
@@ -31,10 +31,10 @@ public class ReservationDemandeDTOAssembleur {
 		return new InformationsContact(adresseCourriel);
 	}
 
-	private Groupe creerGroupe(ReservationDemandeDTO dto) {
+	private ContactsReunion creerGroupe(ReservationDemandeDTO dto) {
 		List<InformationsContact> participants = creerListeParticipants(dto);
 		InformationsContact organisateur = creerEmploye(dto.courrielOrganisateur);
-		Groupe groupe = new Groupe(organisateur, organisateur, participants);
+		ContactsReunion groupe = new ContactsReunion(organisateur, organisateur, participants);
 		return groupe;
 	}
 

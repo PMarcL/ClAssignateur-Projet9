@@ -2,13 +2,13 @@ package org.ClAssignateur.domaine.groupe;
 
 import java.util.List;
 
-public class Groupe {
+public class ContactsReunion {
 
 	private final InformationsContact organisateur;
 	private final InformationsContact responsable;
 	private final List<InformationsContact> participants;
 
-	public Groupe(InformationsContact organisateur, InformationsContact responsable, List<InformationsContact> participants) {
+	public ContactsReunion(InformationsContact organisateur, InformationsContact responsable, List<InformationsContact> participants) {
 		this.organisateur = organisateur;
 		this.responsable = responsable;
 		this.participants = participants;
