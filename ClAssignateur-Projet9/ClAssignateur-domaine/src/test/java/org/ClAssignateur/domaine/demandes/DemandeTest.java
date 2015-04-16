@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.*;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
-import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.InformationsContact;
 import org.ClAssignateur.domaine.groupe.Groupe;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
@@ -26,16 +26,16 @@ public class DemandeTest {
 	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
 	private final UUID UN_ID = UUID.randomUUID();
 
-	private Employe organisateur;
-	private Employe responsable;
+	private InformationsContact organisateur;
+	private InformationsContact responsable;
 	private Groupe groupe;
 	private Demande demande;
 
 	@Before
 	public void intialisation() {
-		organisateur = new Employe(COURRIEL_ORGANISATEUR);
-		responsable = mock(Employe.class);
-		groupe = new Groupe(organisateur, responsable, new ArrayList<Employe>());
+		organisateur = new InformationsContact(COURRIEL_ORGANISATEUR);
+		responsable = mock(InformationsContact.class);
+		groupe = new Groupe(organisateur, responsable, new ArrayList<InformationsContact>());
 
 		demande = new Demande(UN_ID, groupe, TITRE_REUNION);
 	}
@@ -90,7 +90,7 @@ public class DemandeTest {
 
 	@Test
 	public void demandePossedeIntialementLeChampsResponsableCommeDefiniDansGroupe() {
-		Employe responsableResultat = demande.getResponsable();
+		InformationsContact responsableResultat = demande.getResponsable();
 		assertEquals(responsable, responsableResultat);
 	}
 
@@ -227,19 +227,19 @@ public class DemandeTest {
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {
 		String titre = "une_deuxieme_demande";
 
-		Employe organisateur_second = mock(Employe.class);
-		Employe reponsable_second = mock(Employe.class);
-		ArrayList<Employe> aucunParticipant = new ArrayList<Employe>();
+		InformationsContact organisateur_second = mock(InformationsContact.class);
+		InformationsContact reponsable_second = mock(InformationsContact.class);
+		ArrayList<InformationsContact> aucunParticipant = new ArrayList<InformationsContact>();
 		Groupe deuxieme_groupe = new Groupe(organisateur_second, reponsable_second, aucunParticipant);
 
 		return new Demande(id, deuxieme_groupe, titre);
 	}
 
 	private Groupe creerGroupePlusieursParticipants(int nombreParticipants) {
-		ArrayList<Employe> listeParticipants = new ArrayList<Employe>();
+		ArrayList<InformationsContact> listeParticipants = new ArrayList<InformationsContact>();
 
 		for (int i = 0; i < nombreParticipants; i++) {
-			Employe nouveauEmploye = mock(Employe.class);
+			InformationsContact nouveauEmploye = mock(InformationsContact.class);
 			listeParticipants.add(nouveauEmploye);
 		}
 

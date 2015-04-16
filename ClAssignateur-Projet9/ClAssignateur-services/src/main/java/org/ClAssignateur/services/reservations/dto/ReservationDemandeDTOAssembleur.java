@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.InformationsContact;
 import org.ClAssignateur.domaine.groupe.Groupe;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 
@@ -18,8 +18,8 @@ public class ReservationDemandeDTOAssembleur {
 		return new Demande(groupe, titre, priorite);
 	}
 
-	private List<Employe> creerListeParticipants(ReservationDemandeDTO dto) {
-		List<Employe> participants = new ArrayList<Employe>();
+	private List<InformationsContact> creerListeParticipants(ReservationDemandeDTO dto) {
+		List<InformationsContact> participants = new ArrayList<InformationsContact>();
 		for (int indexParticipant = 0; indexParticipant < dto.nombrePersonnes; indexParticipant++) {
 			String adresseCourriel = dto.participantsCourriels.get(indexParticipant);
 			participants.add(creerEmploye(adresseCourriel));
@@ -27,13 +27,13 @@ public class ReservationDemandeDTOAssembleur {
 		return participants;
 	}
 
-	private Employe creerEmploye(String adresseCourriel) {
-		return new Employe(adresseCourriel);
+	private InformationsContact creerEmploye(String adresseCourriel) {
+		return new InformationsContact(adresseCourriel);
 	}
 
 	private Groupe creerGroupe(ReservationDemandeDTO dto) {
-		List<Employe> participants = creerListeParticipants(dto);
-		Employe organisateur = creerEmploye(dto.courrielOrganisateur);
+		List<InformationsContact> participants = creerListeParticipants(dto);
+		InformationsContact organisateur = creerEmploye(dto.courrielOrganisateur);
 		Groupe groupe = new Groupe(organisateur, organisateur, participants);
 		return groupe;
 	}

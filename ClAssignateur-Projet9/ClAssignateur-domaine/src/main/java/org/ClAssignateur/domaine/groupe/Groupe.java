@@ -4,21 +4,21 @@ import java.util.List;
 
 public class Groupe {
 
-	private final Employe organisateur;
-	private final Employe responsable;
-	private final List<Employe> participants;
+	private final InformationsContact organisateur;
+	private final InformationsContact responsable;
+	private final List<InformationsContact> participants;
 
-	public Groupe(Employe organisateur, Employe responsable, List<Employe> participants) {
+	public Groupe(InformationsContact organisateur, InformationsContact responsable, List<InformationsContact> participants) {
 		this.organisateur = organisateur;
 		this.responsable = responsable;
 		this.participants = participants;
 	}
 
-	public Employe getOrganisateur() {
+	public InformationsContact getOrganisateur() {
 		return this.organisateur;
 	}
 
-	public Employe getResponsable() {
+	public InformationsContact getResponsable() {
 		return this.responsable;
 	}
 
@@ -26,7 +26,7 @@ public class Groupe {
 		return participants.size();
 	}
 
-	public List<Employe> getParticipants() {
+	public List<InformationsContact> getParticipants() {
 		return participants;
 	}
 

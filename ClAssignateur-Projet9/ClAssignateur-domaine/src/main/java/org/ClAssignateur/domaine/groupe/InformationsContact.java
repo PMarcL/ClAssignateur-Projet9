@@ -3,11 +3,11 @@ package org.ClAssignateur.domaine.groupe;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-public class Employe {
+public class InformationsContact {
 
 	private InternetAddress adresseCourriel;
 
-	public Employe(String courriel) throws AdresseCourrielInvalideException {
+	public InformationsContact(String courriel) throws AdresseCourrielInvalideException {
 		try {
 			this.adresseCourriel = new InternetAddress(courriel);
 			this.adresseCourriel.validate();
@@ -21,11 +21,11 @@ public class Employe {
 	}
 
 	public boolean equals(Object o) {
-		if (!(o instanceof Employe)) {
+		if (!(o instanceof InformationsContact)) {
 			return false;
 		}
 
-		Employe employe = (Employe) o;
+		InformationsContact employe = (InformationsContact) o;
 		return this.adresseCourriel.equals(employe.adresseCourriel);
 	}
 

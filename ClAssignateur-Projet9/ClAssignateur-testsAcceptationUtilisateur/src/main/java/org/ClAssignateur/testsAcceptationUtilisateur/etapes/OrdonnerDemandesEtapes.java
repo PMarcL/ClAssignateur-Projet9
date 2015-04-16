@@ -7,7 +7,7 @@ import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleSt
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.InformationsContact;
 import org.ClAssignateur.domaine.groupe.Groupe;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
@@ -29,8 +29,8 @@ import java.util.UUID;
 public class OrdonnerDemandesEtapes {
 
 	// TODO revoir déclaration du groupe
-	private final Groupe GROUPE = new Groupe(new Employe("organisateur@hotmail.com"), new Employe(
-			"responsable@hotmail.com"), new ArrayList<Employe>());
+	private final Groupe GROUPE = new Groupe(new InformationsContact("organisateur@hotmail.com"), new InformationsContact(
+			"responsable@hotmail.com"), new ArrayList<InformationsContact>());
 	private final String TITRE_DEMANDE = "Réunion de 15 minutes";
 	private final int NB_DEMANDES_DE_MEME_PRIORITE = 5;
 	private final UUID ID_DEMANDE_FAIBLE_PRIORITE = UUID.randomUUID();

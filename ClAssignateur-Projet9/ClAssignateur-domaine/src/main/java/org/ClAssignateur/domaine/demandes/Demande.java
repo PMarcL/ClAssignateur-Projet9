@@ -1,7 +1,7 @@
 package org.ClAssignateur.domaine.demandes;
 
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.groupe.InformationsContact;
 import org.ClAssignateur.domaine.groupe.Groupe;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
@@ -110,15 +110,15 @@ public class Demande {
 		return nombreDeParticipants;
 	}
 
-	public Employe getOrganisateur() {
+	public InformationsContact getOrganisateur() {
 		return this.getGroupe().getOrganisateur();
 	}
 
-	public Employe getResponsable() {
+	public InformationsContact getResponsable() {
 		return this.getGroupe().getResponsable();
 	}
 
-	public List<Employe> getParticipants() {
+	public List<InformationsContact> getParticipants() {
 		return groupe.getParticipants();
 	}
 
