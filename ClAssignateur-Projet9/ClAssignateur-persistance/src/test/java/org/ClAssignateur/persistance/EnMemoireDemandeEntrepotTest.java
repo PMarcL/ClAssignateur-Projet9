@@ -1,12 +1,13 @@
-package org.ClAssignateur.testsAcceptationUtilisateur.fakes;
+package org.ClAssignateur.persistance;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

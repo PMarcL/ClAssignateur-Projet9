@@ -11,7 +11,7 @@ import org.ClAssignateur.domaine.groupe.Groupe;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireSallesEntrepot;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationSilencieuse;
 import org.jbehave.core.annotations.Given;
