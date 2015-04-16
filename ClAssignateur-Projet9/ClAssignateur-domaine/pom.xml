@@ -30,15 +30,5 @@
       <artifactId>mail</artifactId>
       <version>1.4</version>
     </dependency>
-    <dependency>
-      <groupId>org.glassfish.jersey.containers</groupId>
-      <artifactId>jersey-container-jetty-servlet</artifactId>
-      <version>2.9</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jersey.media</groupId>
-      <artifactId>jersey-media-json-jackson</artifactId>
-      <version>2.9</version>
-    </dependency>
   </dependencies>
 </project>
