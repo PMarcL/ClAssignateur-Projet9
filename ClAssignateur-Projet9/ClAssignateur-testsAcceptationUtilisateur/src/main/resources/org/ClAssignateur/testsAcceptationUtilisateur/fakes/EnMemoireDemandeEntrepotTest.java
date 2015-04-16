@@ -146,7 +146,7 @@ public class EnMemoireDemandeEntrepotTest {
 	public void etantDonneUnEntrepotAvecUneDemandeDunOrganisateurLorsqueObtenirDemandeSelonCourrielDonneUneSeulDemande() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
 
-		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR);
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
 		int taille_actuelle = demandesRecus.size();
 
 		assertEquals(UNE_SEULE_DEMANDE, taille_actuelle);
@@ -155,14 +155,14 @@ public class EnMemoireDemandeEntrepotTest {
 	@Test
 	public void etantDonneUnEntrepotAvecUneDemandeDunOrganisateurLorsqueObtenirDemandeSelonOrganisateurRetourneLaDemande() {
 		faireEnSorteQuEntrepotPossedeUneDemande();
-		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR);
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
 		assertTrue(demandesRecus.contains(demande));
 	}
 
 	@Test
 	public void etantDonneUnEntrepotAvecPlusieursDemandeQuiNAppartiennePasALorganisateurAlorsDonneUneListVide() {
 		ajouterPlusieursDemandesALEntrepot();
-		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourriel(COURRIEL_ORGANISATEUR);
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
 		assertTrue(demandesRecus.isEmpty());
 	}
 

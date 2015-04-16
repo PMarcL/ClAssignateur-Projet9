@@ -10,7 +10,7 @@ public interface DemandesEntrepot {
 
 	public List<Demande> obtenirDemandes();
 
-	public List<Demande> obtenirDemandesSelonCourriel(String courriel);
+	public List<Demande> obtenirDemandesSelonCourrielOrganisateur(String courrielOrganisateur);
 
 	public Optional<Demande> obtenirDemandeSelonId(UUID id);
 

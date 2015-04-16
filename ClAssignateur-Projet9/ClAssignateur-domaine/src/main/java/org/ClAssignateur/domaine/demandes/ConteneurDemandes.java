@@ -63,12 +63,25 @@ public class ConteneurDemandes {
 	}
 
 	public List<Demande> obtenirDemandesSelonCourrielOrganisateur(String courrielOrganisateur) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Demande> demandesOrganisateur = obtenirDemandesEnAttenteOrganisateur(courrielOrganisateur);
+		demandesOrganisateur.addAll(obtenirDemandesArchiveesOrganisateur(courrielOrganisateur));
+		return demandesOrganisateur;
+	}
+
+	private List<Demande> obtenirDemandesEnAttenteOrganisateur(String courrielOrganisateur) {
+		return demandesEnAttente.obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
+	}
+
+	private List<Demande> obtenirDemandesArchiveesOrganisateur(String courrielOrganisateur) {
+		return demandesArchivees.obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
 	}
 
 	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateurEtId(String courrielOrganisateur, UUID idDemande) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Demande> demandesOrganisateur = obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
+		return extraireDemandeSelonId(idDemande, demandesOrganisateur);
+	}
+
+	private Optional<Demande> extraireDemandeSelonId(UUID idDemande, List<Demande> demandesOrganisateur) {
+		return demandesOrganisateur.stream().filter(demande -> demande.getID().equals(idDemande)).findFirst();
 	}
 }

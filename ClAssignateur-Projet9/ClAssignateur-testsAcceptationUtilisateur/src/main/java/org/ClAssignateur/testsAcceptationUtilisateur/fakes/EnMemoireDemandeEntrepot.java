@@ -76,7 +76,7 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 	}
 
 	@Override
-	public List<Demande> obtenirDemandesSelonCourriel(String courriel) {
+	public List<Demande> obtenirDemandesSelonCourrielOrganisateur(String courriel) {
 		return demandes.stream().filter(x -> x.getCourrielOrganisateur().equals(courriel)).collect(Collectors.toList());
 	}
 
