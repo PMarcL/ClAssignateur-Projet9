@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.services.localisateur.LocalisateurServices;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.services.reservations.minuterie.Minute;
@@ -21,11 +20,11 @@ public class ServiceReservationSalle implements MinuterieObservateur {
 	private int limiteDemandes;
 	private ReservationDemandeDTOAssembleur assembleur;
 
-	public ServiceReservationSalle() {
-		this.assignateurSalle = LocalisateurServices.getInstance().obtenir(AssignateurSalle.class);
+	public ServiceReservationSalle(AssignateurSalle assignateurSalle, Minuterie minuterie) {
+		this.assignateurSalle = assignateurSalle;
 		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
 		this.assembleur = new ReservationDemandeDTOAssembleur();
-		this.minuterie = LocalisateurServices.getInstance().obtenir(Minuterie.class);
+		this.minuterie = minuterie;
 		demarrerMinuterie();
 	}
 

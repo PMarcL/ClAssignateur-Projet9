@@ -17,7 +17,7 @@ import org.ClAssignateur.domaine.salles.SallesEntrepot;
 import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.ClAssignateur.services.localisateur.LocalisateurServices;
-import org.ClAssignateur.services.reservations.minuterie.Minuterie;
+import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.minuterie.MinuterieTimerJavaStandard;
 
 public class ContexteDeveloppement extends Contexte {
@@ -26,27 +26,31 @@ public class ContexteDeveloppement extends Contexte {
 
 	private SallesEntrepot sallesEntrepot;
 	private ConteneurDemandes conteneurDemandes;
+	private AssignateurSalle assignateurSalle;
 
 	public ContexteDeveloppement() {
 		this.sallesEntrepot = new EnMemoireSallesEntrepot();
 		this.conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), new EnMemoireDemandeEntrepot());
+		initialiserAssignateurSalle();
+	}
+
+	private void initialiserAssignateurSalle() {
+		this.assignateurSalle = new AssignateurSalle(this.conteneurDemandes, this.sallesEntrepot, creerNotificateur(),
+				new SelectionSalleOptimaleStrategie());
+	}
+
+	private Notificateur creerNotificateur() {
+		return new Notificateur(new NotificationStrategieConsole());
 	}
 
 	@Override
 	protected void enregistrerServices() {
 		LocalisateurServices.getInstance().enregistrer(ConteneurDemandes.class, this.conteneurDemandes);
-		LocalisateurServices.getInstance().enregistrer(Minuterie.class, new MinuterieTimerJavaStandard());
-		LocalisateurServices.getInstance().enregistrer(AssignateurSalle.class, creerAssignateurSalle());
+		LocalisateurServices.getInstance().enregistrer(ServiceReservationSalle.class, creerServiceReservationSalle());
 	}
 
-	private AssignateurSalle creerAssignateurSalle() {
-		AssignateurSalle assignateurSalle = new AssignateurSalle(this.conteneurDemandes, this.sallesEntrepot,
-				creerNotificateur(), new SelectionSalleOptimaleStrategie());
-		return assignateurSalle;
-	}
-
-	private Notificateur creerNotificateur() {
-		return new Notificateur(new NotificationStrategieConsole());
+	private ServiceReservationSalle creerServiceReservationSalle() {
+		return new ServiceReservationSalle(assignateurSalle, new MinuterieTimerJavaStandard());
 	}
 
 	@Override
