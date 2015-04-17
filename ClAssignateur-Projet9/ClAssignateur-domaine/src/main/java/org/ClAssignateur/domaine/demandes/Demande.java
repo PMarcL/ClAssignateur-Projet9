@@ -40,6 +40,7 @@ public class Demande {
 		ajouterEstampille();
 	}
 
+	// TODO voir si encore utile
 	public Demande(UUID id, int nombreParticipants, ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = id;
 		this.nbParticipants = nombreParticipants;

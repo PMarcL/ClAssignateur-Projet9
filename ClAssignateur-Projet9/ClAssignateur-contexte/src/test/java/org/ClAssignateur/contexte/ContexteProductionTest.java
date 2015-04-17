@@ -8,15 +8,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 
-public class ContexteProjetTest extends ContexteProjet {
+public class ContexteProductionTest extends ContexteProduction {
 
 	private SallesEntrepot sallesEntrepot;
-	private ContexteProjet contexte;
+	private ContexteProduction contexte;
 
 	@Before
 	public void initialisation() {
 		sallesEntrepot = mock(SallesEntrepot.class);
-		contexte = new ContexteProjet(sallesEntrepot);
+		contexte = new ContexteProduction(sallesEntrepot);
 	}
 
 	@Test

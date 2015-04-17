@@ -1,6 +1,6 @@
 package org.ClAssignateur.interfaces;
 
-import org.ClAssignateur.contexte.ContexteProjet;
+import org.ClAssignateur.contexte.ContexteProduction;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.Server;
 public class RESTMain {
 
 	public static void main(String[] args) throws Exception {
-		new ContexteProjet().appliquer();
+		new ContexteProduction().appliquer();
 		new RESTMain().demarrerServeur();
 	}
 

@@ -1,8 +1,9 @@
-package org.ClAssignateur.contexte;
+package org.ClAssignateur.contexte.developpement;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.ClAssignateur.contexte.Contexte;
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
 import org.ClAssignateur.domaine.contacts.ContactsReunion;
@@ -11,38 +12,23 @@ import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.notification.Notificateur;
-import org.ClAssignateur.domaine.notification.NotificationStrategie;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
-import org.ClAssignateur.notificationCourriel.NotificationStrategieCourrielSsl;
-import org.ClAssignateur.notificationCourriel.configuration.ChargementFichierConfigSmtpException;
-import org.ClAssignateur.notificationCourriel.configuration.ConfigurationSmtp;
-import org.ClAssignateur.notificationCourriel.configuration.ConfigurationSmtpParDefaut;
-import org.ClAssignateur.notificationCourriel.configuration.FichierProprietesConfigurationSmtp;
 import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.ClAssignateur.services.localisateur.LocalisateurServices;
 import org.ClAssignateur.services.reservations.minuterie.Minuterie;
 import org.ClAssignateur.services.reservations.minuterie.MinuterieTimerJavaStandard;
 
-public class ContexteProjet extends Contexte {
+public class ContexteDeveloppement extends Contexte {
 
 	private final int CAPACITE_SALLE_PAR_DEFAUT = 99;
 
 	private SallesEntrepot sallesEntrepot;
 	private ConteneurDemandes conteneurDemandes;
 
-	public ContexteProjet() {
+	public ContexteDeveloppement() {
 		this.sallesEntrepot = new EnMemoireSallesEntrepot();
-		intialiserConteneurDemandes();
-	}
-
-	public ContexteProjet(SallesEntrepot sallesEntrepot) {
-		this.sallesEntrepot = sallesEntrepot;
-		intialiserConteneurDemandes();
-	}
-
-	private void intialiserConteneurDemandes() {
 		this.conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), new EnMemoireDemandeEntrepot());
 	}
 
@@ -60,20 +46,7 @@ public class ContexteProjet extends Contexte {
 	}
 
 	private Notificateur creerNotificateur() {
-		NotificationStrategie strategie = new NotificationStrategieCourrielSsl(recupererConfigurationSmtp());
-		Notificateur notificateur = new Notificateur(strategie);
-		return notificateur;
-	}
-
-	private ConfigurationSmtp recupererConfigurationSmtp() {
-		ConfigurationSmtp configSmtp;
-		try {
-			configSmtp = new FichierProprietesConfigurationSmtp();
-		} catch (ChargementFichierConfigSmtpException ex) {
-			configSmtp = new ConfigurationSmtpParDefaut();
-		}
-
-		return configSmtp;
+		return new Notificateur(new NotificationStrategieConsole());
 	}
 
 	@Override
@@ -93,9 +66,11 @@ public class ContexteProjet extends Contexte {
 		InformationsContact responsable = new InformationsContact("responsable@hotmail.com");
 		ContactsReunion groupe = new ContactsReunion(organisateur, responsable, new ArrayList<InformationsContact>());
 		UUID id = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-		Demande demandeEnAttente = new Demande(id, groupe, "Demande demo", Priorite.basse());
+		int nombreParticipants = 10;
+		Demande demandeEnAttente = new Demande(id, nombreParticipants, groupe, "Demande demo", Priorite.basse());
 
-		Demande demandeAssignee = new Demande(UUID.randomUUID(), groupe, "Demande demo2", Priorite.basse());
+		Demande demandeAssignee = new Demande(UUID.randomUUID(), nombreParticipants, groupe, "Demande demo2",
+				Priorite.basse());
 		Salle salle = new Salle(15, "A15");
 		demandeAssignee.placerReservation(salle);
 
