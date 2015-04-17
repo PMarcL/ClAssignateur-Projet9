@@ -12,8 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 
 import org.ClAssignateur.domaine.contacts.AdresseCourrielInvalideException;
-import org.ClAssignateur.services.localisateur.LocalisateurServices;
-import org.ClAssignateur.services.localisateur.ServiceIntrouvableException;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 
@@ -26,12 +24,17 @@ public class AjoutDemandeRessource {
 	private ServiceReservationSalle serviceReservation;
 
 	public AjoutDemandeRessource() {
-		try{
-		this.serviceReservation = LocalisateurServices.getInstance().obtenir(ServiceReservationSalle.class);
-		}catch (ServiceIntrouvableException ex){
-			this.serviceReservation = new ServiceReservationSalle();
-			LocalisateurServices.getInstance().enregistrer(ServiceReservationSalle.class, this.serviceReservation);
-		}
+		this.serviceReservation = new ServiceReservationSalle();
+
+		// TODO décommenter si test minuterie ne fonctionne pas
+		// try{
+		// this.serviceReservation =
+		// LocalisateurServices.getInstance().obtenir(ServiceReservationSalle.class);
+		// }catch (ServiceIntrouvableException ex){
+		// this.serviceReservation = new ServiceReservationSalle();
+		// LocalisateurServices.getInstance().enregistrer(ServiceReservationSalle.class,
+		// this.serviceReservation);
+		// }
 	}
 
 	public AjoutDemandeRessource(ServiceReservationSalle service) {
