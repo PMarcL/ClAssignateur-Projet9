@@ -34,7 +34,8 @@ public abstract class Minuterie {
 	protected abstract void reinitialiserImplementation();
 
 	public void souscrire(MinuterieObservateur observateur) {
-		this.observateurs.add(observateur);
+		if (!this.observateurs.contains(observateur))
+			this.observateurs.add(observateur);
 	}
 
 	public void setDelai(Minute delai) {

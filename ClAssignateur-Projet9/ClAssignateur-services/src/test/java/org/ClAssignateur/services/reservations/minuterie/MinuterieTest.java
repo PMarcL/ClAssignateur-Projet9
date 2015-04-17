@@ -47,6 +47,16 @@ public class MinuterieTest extends Minuterie {
 	}
 
 	@Test
+	public void etantDonneObservateurSouscritDeuxFoisQuandNotifierObservateurDevraitNotifierObservateurSeulementUneFois() {
+		MinuterieObservateur observateur = souscrireObservateur();
+		minuterie.souscrire(observateur);
+
+		minuterie.notifierObservateurs();
+
+		verify(observateur, times(1)).notifierDelaiEcoule();
+	}
+
+	@Test
 	public void etantDonneMinuteriePasDemarreeQuandDemarrerDevraitDemarrerImplementation() {
 		minuterie.demarrer();
 		assertEquals(1, minuterie.demarrerImplementationAppelCompte);
