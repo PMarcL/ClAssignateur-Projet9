@@ -15,11 +15,6 @@ public class ContactsReunion {
 		this.participants = participants;
 	}
 
-	public int getNbParticipants() {
-		// TODO à supprimer : plus utilisé
-		return participants.size();
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ContactsReunion))

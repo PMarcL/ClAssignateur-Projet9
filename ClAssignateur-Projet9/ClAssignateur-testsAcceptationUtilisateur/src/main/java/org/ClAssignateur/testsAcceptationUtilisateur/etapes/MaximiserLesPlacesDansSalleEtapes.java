@@ -28,7 +28,8 @@ public class MaximiserLesPlacesDansSalleEtapes {
 	private final String NOM_SALLE_50_PARTICIPANTS = "PLT2050";
 	private final String NOM_SALLE_100_PARTICIPANTS = "PLT2100";
 	private final String NOM_SALLE_100_PARTICIPANTS_SECONDE = "PLT2102";
-	private final Priorite PRIORITE = Priorite.moyenne();
+	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
+
 	private Demande demandeAAssigner;
 	private EnMemoireDemandeEntrepot demandesTraitees;
 	private SallesEntrepot salles;
@@ -76,6 +77,8 @@ public class MaximiserLesPlacesDansSalleEtapes {
 	}
 
 	private Demande creerDemandeAvecDeuxParticipant() {
+		final int NB_PARTICIPANTS = 2;
+
 		InformationsContact organisateur = new InformationsContact("uncourriel@gmail.com");
 		InformationsContact responsable = new InformationsContact("uncourriel2@gmail.com");
 
@@ -84,6 +87,6 @@ public class MaximiserLesPlacesDansSalleEtapes {
 		participants.add(responsable);
 
 		ContactsReunion groupe = new ContactsReunion(organisateur, responsable, participants);
-		return new Demande(groupe, "Demande avec deux participant", PRIORITE);
+		return new Demande(NB_PARTICIPANTS, groupe, "Demande avec deux participant", PRIORITE_MOYENNE);
 	}
 }

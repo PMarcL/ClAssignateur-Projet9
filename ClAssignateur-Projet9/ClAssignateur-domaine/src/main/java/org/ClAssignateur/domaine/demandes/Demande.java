@@ -16,6 +16,7 @@ public class Demande {
 
 	private static int nombreDemandesCrees;
 
+	private int nbParticipants;
 	private ContactsReunion contacts;
 	private Priorite priorite;
 	private String titre;
@@ -28,18 +29,20 @@ public class Demande {
 		return ++nombreDemandesCrees;
 	}
 
-	public Demande(ContactsReunion groupe, String titre, Priorite priorite) {
+	public Demande(int nombreParticipants, ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
 		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
 		this.etat = StatutDemande.EN_ATTENTE;
+		this.nbParticipants = nombreParticipants;
 		ajouterEstampille();
 	}
 
-	public Demande(UUID id, ContactsReunion groupe, String titre, Priorite priorite) {
+	public Demande(UUID id, int nombreParticipants, ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = id;
+		this.nbParticipants = nombreParticipants;
 		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
@@ -83,7 +86,7 @@ public class Demande {
 	}
 
 	public int getNbParticipants() {
-		return this.contacts.getNbParticipants();
+		return this.nbParticipants;
 	}
 
 	public InformationsContact getOrganisateur() {

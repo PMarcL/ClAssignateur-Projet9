@@ -19,9 +19,11 @@ public class DemoDemandeEntrepotRemplisseur {
 		InformationsContact responsable = new InformationsContact("responsable@hotmail.com");
 		ContactsReunion groupe = new ContactsReunion(organisateur, responsable, new ArrayList<InformationsContact>());
 		UUID id = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-		Demande demandeEnAttente = new Demande(id, groupe, "Demande demo", Priorite.basse());
+		int nombreParticipants = 5;
+		Demande demandeEnAttente = new Demande(id, nombreParticipants, groupe, "Demande demo", Priorite.basse());
 
-		Demande demandeAssignee = new Demande(UUID.randomUUID(), groupe, "Demande demo2", Priorite.basse());
+		Demande demandeAssignee = new Demande(UUID.randomUUID(), nombreParticipants, groupe, "Demande demo2",
+				Priorite.basse());
 		Salle salle = new Salle(15, "A15");
 		demandeAssignee.placerReservation(salle);
 

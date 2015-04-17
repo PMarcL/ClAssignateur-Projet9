@@ -28,9 +28,10 @@ import java.util.UUID;
 
 public class OrdonnerDemandesEtapes {
 
+	private final int NB_PARTICIPANTS = 5;
 	// TODO revoir déclaration du groupe
-	private final ContactsReunion GROUPE = new ContactsReunion(new InformationsContact("organisateur@hotmail.com"), new InformationsContact(
-			"responsable@hotmail.com"), new ArrayList<InformationsContact>());
+	private final ContactsReunion GROUPE = new ContactsReunion(new InformationsContact("organisateur@hotmail.com"),
+			new InformationsContact("responsable@hotmail.com"), new ArrayList<InformationsContact>());
 	private final String TITRE_DEMANDE = "Réunion de 15 minutes";
 	private final int NB_DEMANDES_DE_MEME_PRIORITE = 5;
 	private final UUID ID_DEMANDE_FAIBLE_PRIORITE = UUID.randomUUID();
@@ -49,8 +50,10 @@ public class OrdonnerDemandesEtapes {
 		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
 		salles = new EnMemoireSallesEntrepot();
 		salles.persister(new Salle(100, "PLT2770"));
-		demandePrioriteBasse = new Demande(ID_DEMANDE_FAIBLE_PRIORITE, GROUPE, TITRE_DEMANDE, Priorite.basse());
-		demandePrioriteHaute = new Demande(ID_DEMANDE_HAUTE_PRIORITE, GROUPE, TITRE_DEMANDE, Priorite.haute());
+		demandePrioriteBasse = new Demande(ID_DEMANDE_FAIBLE_PRIORITE, NB_PARTICIPANTS, GROUPE, TITRE_DEMANDE,
+				Priorite.basse());
+		demandePrioriteHaute = new Demande(ID_DEMANDE_HAUTE_PRIORITE, NB_PARTICIPANTS, GROUPE, TITRE_DEMANDE,
+				Priorite.haute());
 
 		assignateur = new AssignateurSalle(conteneurDemandes, salles, new Notificateur(new NotificationSilencieuse()),
 				new SelectionSalleOptimaleStrategie());
@@ -100,7 +103,7 @@ public class OrdonnerDemandesEtapes {
 	}
 
 	private Demande creerDemande(Priorite prioriteDemande) {
-		return new Demande(GROUPE, TITRE_DEMANDE, prioriteDemande);
+		return new Demande(NB_PARTICIPANTS, GROUPE, TITRE_DEMANDE, prioriteDemande);
 	}
 
 }
