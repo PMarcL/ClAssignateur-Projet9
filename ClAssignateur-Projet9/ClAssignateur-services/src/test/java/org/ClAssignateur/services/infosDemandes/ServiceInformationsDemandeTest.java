@@ -41,24 +41,28 @@ public class ServiceInformationsDemandeTest {
 	}
 
 	@Test
-	public void quandGetInformationsDemandeDevraitChercherDemandeDansEntrepot() {
+	public void quandGetInformationsDemandeDevraitChercherDemandeDansConteneurDemandes() {
 		serviceDemande.getInformationsDemande(ADRESSE_COURRIEL_ORGANISATEUR, UUID_DEMANDE);
-		verify(conteneurDemandes).obtenirDemandeSelonCourrielOrganisateurEtId(ADRESSE_COURRIEL_ORGANISATEUR,
-				UUID_DEMANDE);
+		verify(conteneurDemandes).obtenirDemandeSelonId(UUID_DEMANDE);
 	}
 
 	@Test
-	public void quandGetInformationsDemandeDevraitRetournerInformationsDemande() {
+	public void etantDonneDemandeTrouveConcerneOrganisateurQuandGetInformationsDemandeDevraitRetournerInformationsDemande() {
 		InformationsDemandeDTO infosDemandeResultat = serviceDemande.getInformationsDemande(
 				ADRESSE_COURRIEL_ORGANISATEUR, UUID_DEMANDE);
 		assertEquals(infosDemande, infosDemandeResultat);
 	}
 
 	@Test(expected = DemandeIntrouvableException.class)
-	public void etanDonneDemandePasDansEntrepotQuandGetInformationsDemandeDevraitLancerException() {
-		given(
-				conteneurDemandes.obtenirDemandeSelonCourrielOrganisateurEtId(ADRESSE_COURRIEL_ORGANISATEUR,
-						UUID_DEMANDE)).willReturn(Optional.empty());
+	public void etantDonneDemandeTrouveConvernePasOrganisateurquandGetInformationsDemandeDevraitLancerException() {
+		final String AUTRE_ADRESSE_COURRIEL = "CeciEstUneAutreAdresseCourriel";
+		given(demande.getCourrielOrganisateur()).willReturn(AUTRE_ADRESSE_COURRIEL);
+		serviceDemande.getInformationsDemande(ADRESSE_COURRIEL_ORGANISATEUR, UUID_DEMANDE);
+	}
+
+	@Test(expected = DemandeIntrouvableException.class)
+	public void etanDonneDemandePasDansConteneurDemandesQuandGetInformationsDemandeDevraitLancerException() {
+		given(conteneurDemandes.obtenirDemandeSelonId(UUID_DEMANDE)).willReturn(Optional.empty());
 		serviceDemande.getInformationsDemande(ADRESSE_COURRIEL_ORGANISATEUR, UUID_DEMANDE);
 	}
 
@@ -85,9 +89,8 @@ public class ServiceInformationsDemandeTest {
 		organisateurDemandesAssembleur = mock(OrganisateurDemandesDTOAssembleur.class);
 		organisateurDemandes = mock(OrganisateurDemandesDTO.class);
 
-		given(
-				conteneurDemandes.obtenirDemandeSelonCourrielOrganisateurEtId(ADRESSE_COURRIEL_ORGANISATEUR,
-						UUID_DEMANDE)).willReturn(demandeOptional);
+		given(demande.getCourrielOrganisateur()).willReturn(ADRESSE_COURRIEL_ORGANISATEUR);
+		given(conteneurDemandes.obtenirDemandeSelonId(UUID_DEMANDE)).willReturn(demandeOptional);
 		given(infosDemandeAssembleur.assemblerInformationsDemandeDTO(demande)).willReturn(infosDemande);
 		given(organisateurDemandesAssembleur.assemblerOrganisateurDemandesDTO(any(List.class))).willReturn(
 				organisateurDemandes);

@@ -33,14 +33,21 @@ public class ServiceInformationsDemande {
 	}
 
 	public InformationsDemandeDTO getInformationsDemande(String courrielOrganisateur, UUID idDemande) {
-		Optional<Demande> demande = conteneurDemandes.obtenirDemandeSelonCourrielOrganisateurEtId(courrielOrganisateur,
-				idDemande);
-		if (!demande.isPresent()) {
-			throw new DemandeIntrouvableException(
-					"Aucune demande ne correspond au courriel d'organisateur ou au numéro donné.");
+		Optional<Demande> demande = conteneurDemandes.obtenirDemandeSelonId(idDemande);
+		if (demandeAppartienOrganisateur(courrielOrganisateur, demande)) {
+			return this.infosDemandeAssembleur.assemblerInformationsDemandeDTO(demande.get());
 		}
 
-		return this.infosDemandeAssembleur.assemblerInformationsDemandeDTO(demande.get());
+		throw new DemandeIntrouvableException(
+				"Aucune demande ne correspond au courriel d'organisateur ou au numéro donné.");
+	}
+
+	private boolean demandeAppartienOrganisateur(String courrielOrganisateur, Optional<Demande> demande) {
+		if (demande.isPresent()) {
+			return demande.get().getCourrielOrganisateur().equals(courrielOrganisateur);
+		} else {
+			return false;
+		}
 	}
 
 	public OrganisateurDemandesDTO getDemandesOrganisateur(String courrielOrganisateur) {

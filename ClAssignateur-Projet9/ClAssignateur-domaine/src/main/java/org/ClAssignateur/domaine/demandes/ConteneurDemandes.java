@@ -20,7 +20,7 @@ public class ConteneurDemandes {
 		this.demandesEnAttente.persisterDemande(demande);
 	}
 
-	public List<Demande> obtenirDemandesEnAttenteEnOrdreDePriorite() {
+	public List<Demande> obtenirDemandesEnAttenteOrdrePrioritaire() {
 		List<Demande> demandesTriees = trierDemandesParPriorite(this.demandesEnAttente.obtenirDemandes());
 		demandesEnAttente.vider();
 		return demandesTriees;
@@ -76,12 +76,11 @@ public class ConteneurDemandes {
 		return demandesArchivees.obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
 	}
 
-	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateurEtId(String courrielOrganisateur, UUID idDemande) {
-		List<Demande> demandesOrganisateur = obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
-		return extraireDemandeSelonId(idDemande, demandesOrganisateur);
-	}
+	public Optional<Demande> obtenirDemandeSelonId(UUID idDemande) {
+		Optional<Demande> demandeObtenue = demandesEnAttente.obtenirDemandeSelonId(idDemande);
+		if (!demandeObtenue.isPresent())
+			demandeObtenue = demandesArchivees.obtenirDemandeSelonId(idDemande);
 
-	private Optional<Demande> extraireDemandeSelonId(UUID idDemande, List<Demande> demandesOrganisateur) {
-		return demandesOrganisateur.stream().filter(demande -> demande.getID().equals(idDemande)).findFirst();
+		return demandeObtenue;
 	}
 }

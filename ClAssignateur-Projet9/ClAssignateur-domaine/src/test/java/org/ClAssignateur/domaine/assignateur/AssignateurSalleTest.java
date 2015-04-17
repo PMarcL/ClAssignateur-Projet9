@@ -151,7 +151,7 @@ public class AssignateurSalleTest {
 			demandes.add(demande);
 		}
 
-		given(conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite()).willReturn(demandes);
+		given(conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire()).willReturn(demandes);
 		given(conteneurDemandes.getNombreDemandesEnAttente()).willReturn(nombreDemandes);
 	}
 
@@ -169,7 +169,7 @@ public class AssignateurSalleTest {
 				Optional.of(salleDisponible));
 		given(demandeAAnnuler.estAssignee()).willReturn(true);
 		given(demandeAAnnuler.getTitre()).willReturn(TITRE_REUNION);
-		given(conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite()).willReturn(new ArrayList<Demande>());
+		given(conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire()).willReturn(new ArrayList<Demande>());
 	}
 
 	private void permettreTrouverDemandeAAnnuler() {
