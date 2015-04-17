@@ -29,8 +29,8 @@ import java.util.UUID;
 public class OrdonnerDemandesEtapes {
 
 	// TODO revoir déclaration du groupe
-	private final ContactsReunion GROUPE = new ContactsReunion(new InformationsContact("organisateur@hotmail.com"), new InformationsContact(
-			"responsable@hotmail.com"), new ArrayList<InformationsContact>());
+	private final ContactsReunion GROUPE = new ContactsReunion(new InformationsContact("organisateur@hotmail.com"),
+			new InformationsContact("responsable@hotmail.com"), new ArrayList<InformationsContact>());
 	private final String TITRE_DEMANDE = "Réunion de 15 minutes";
 	private final int NB_DEMANDES_DE_MEME_PRIORITE = 5;
 	private final UUID ID_DEMANDE_FAIBLE_PRIORITE = UUID.randomUUID();
