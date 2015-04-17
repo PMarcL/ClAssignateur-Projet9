@@ -7,6 +7,7 @@ import static org.jbehave.core.reporters.Format.*;
 import java.util.Arrays;
 import java.util.List;
 
+import org.ClAssignateur.testsAcceptationUtilisateur.etapes.AnnulerUneDemandeEtapes;
 import org.ClAssignateur.testsAcceptationUtilisateur.etapes.AssignerEnLotSallesDemandesEtapes;
 import org.ClAssignateur.testsAcceptationUtilisateur.etapes.MaximiserLesPlacesDansSalleEtapes;
 import org.ClAssignateur.testsAcceptationUtilisateur.etapes.OrdonnerDemandesEtapes;
@@ -49,7 +50,7 @@ public class RecitsClAssignateur extends JUnitStories {
 	@Override
 	public InjectableStepsFactory stepsFactory() {
 		return new InstanceStepsFactory(configuration(), new AssignerEnLotSallesDemandesEtapes(),
-				new OrdonnerDemandesEtapes(), new MaximiserLesPlacesDansSalleEtapes());
+				new OrdonnerDemandesEtapes(), new MaximiserLesPlacesDansSalleEtapes(), new AnnulerUneDemandeEtapes());
 	}
 
 	@Override

@@ -15,10 +15,15 @@ Given une demande en attente de traitement
 When on annule la demande en attente
 Then la demande en attente est annulée
 
-Scenario: Archiver une demande annulée
+Scenario: Archiver une demande en attente annulée
 Given une demande en attente de traitement
 When on annule la demande en attente
-Then la demande est archivée
+Then la demande en attente est archivée
+
+Scenario: Archiver une demande assignée annulée
+Given une demande assignée
+When on annule la demande assignée
+Then la demande assignée est archivée
 
 Scenario: Retirer la salle d'une demande annulée
 Given une demande assignée
