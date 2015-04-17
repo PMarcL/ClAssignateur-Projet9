@@ -12,7 +12,7 @@ public class InformationsContact {
 			this.adresseCourriel = new InternetAddress(courriel);
 			this.adresseCourriel.validate();
 		} catch (AddressException exception) {
-			throw new AdresseCourrielInvalideException();
+			throw new AdresseCourrielInvalideException(courriel);
 		}
 	}
 

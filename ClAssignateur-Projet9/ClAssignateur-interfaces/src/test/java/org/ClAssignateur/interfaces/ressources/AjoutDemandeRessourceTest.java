@@ -22,7 +22,7 @@ public class AjoutDemandeRessourceTest {
 	private final String COURRIEL_ORGANISATEUR = "courrielOrganisateur@courriel.com";
 	private final String EMPLACEMENT_DEMANDE_AJOUTE = "/demandes/" + COURRIEL_ORGANISATEUR + "/"
 			+ DEMANDE_ID.toString();
-	private final String MESSAGE_EMAIL_INVALIDE = "Le courriel " + COURRIEL_ORGANISATEUR + " n'est pas valide";
+	private final String MESSAGE_EMAIL_INVALIDE = "Le courriel \"" + COURRIEL_ORGANISATEUR + "\" n'est pas valide";
 
 	private ReservationDemandeDTO demandeDTO;
 	private ServiceReservationSalle service;
@@ -53,14 +53,14 @@ public class AjoutDemandeRessourceTest {
 
 	@Test
 	public void lorsqueAjouterUneDemandeAvecCourrielInvalideDevraitRetrouverStatusBAD_REQUEST() {
-		given(service.ajouterDemande(demandeDTO)).willThrow(new AdresseCourrielInvalideException());
+		given(service.ajouterDemande(demandeDTO)).willThrow(new AdresseCourrielInvalideException(COURRIEL_ORGANISATEUR));
 		Response reponse = ressource.ajouterDemande(demandeDTO);
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), reponse.getStatus());
 	}
 
 	@Test
 	public void lorsqueAjouterUneDemandeAvecCourrielInvalideDevraitRetrouverMessageAvecCourrielInvalide() {
-		given(service.ajouterDemande(demandeDTO)).willThrow(new AdresseCourrielInvalideException());
+		given(service.ajouterDemande(demandeDTO)).willThrow(new AdresseCourrielInvalideException(COURRIEL_ORGANISATEUR));
 		Response reponse = ressource.ajouterDemande(demandeDTO);
 		assertEquals(MESSAGE_EMAIL_INVALIDE, reponse.getEntity());
 	}
