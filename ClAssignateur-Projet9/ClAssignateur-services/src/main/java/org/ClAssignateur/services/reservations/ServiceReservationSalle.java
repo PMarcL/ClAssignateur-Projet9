@@ -13,7 +13,7 @@ import org.ClAssignateur.services.reservations.minuterie.MinuterieObservateur;
 
 public class ServiceReservationSalle implements MinuterieObservateur {
 
-	private final Minute DELAI_MINUTERIE_PAR_DEFAUT = new Minute(5);
+	private final Minute DELAI_MINUTERIE_PAR_DEFAUT = new Minute(1);
 	private final int LIMITE_DEMANDES_PAR_DEFAUT = 10;
 
 	private AssignateurSalle assignateurSalle;
