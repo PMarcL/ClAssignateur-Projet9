@@ -1,6 +1,7 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
 import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
@@ -15,7 +16,6 @@ import org.ClAssignateur.domaine.salles.SallesEntrepot;
 import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandesEntrepotFake;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationSilencieuse;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
@@ -55,7 +55,7 @@ public class OrdonnerDemandesEtapes {
 		demandePrioriteHaute = new Demande(ID_DEMANDE_HAUTE_PRIORITE, NB_PARTICIPANTS, GROUPE, TITRE_DEMANDE,
 				Priorite.haute());
 
-		assignateur = new AssignateurSalle(conteneurDemandes, salles, new Notificateur(new NotificationSilencieuse()),
+		assignateur = new AssignateurSalle(conteneurDemandes, salles, mock(Notificateur.class),
 				new SelectionSalleOptimaleStrategie());
 	}
 
