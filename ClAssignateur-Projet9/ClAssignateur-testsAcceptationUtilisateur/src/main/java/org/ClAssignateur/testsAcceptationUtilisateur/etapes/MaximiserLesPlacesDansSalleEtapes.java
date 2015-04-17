@@ -1,6 +1,7 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
-import java.util.ArrayList;
+import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.*;
 
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
@@ -14,12 +15,10 @@ import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
 import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationSilencieuse;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-
-import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 public class MaximiserLesPlacesDansSalleEtapes {
 
@@ -40,7 +39,7 @@ public class MaximiserLesPlacesDansSalleEtapes {
 		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
 		salles = new EnMemoireSallesEntrepot();
 
-		assignateur = new AssignateurSalle(conteneurDemandes, salles, new Notificateur(new NotificationSilencieuse()),
+		assignateur = new AssignateurSalle(conteneurDemandes, salles, mock(Notificateur.class),
 				new SelectionSalleOptimaleStrategie());
 
 		demandeAAssigner = creerDemandeAvecDeuxParticipant();
