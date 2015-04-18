@@ -18,10 +18,12 @@ import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+
 import java.util.ArrayList;
 
 public class MaximiserLesPlacesDansSalleEtapes {
 
+	private static final String COURRIEL_PARTICIPANT = "uncourriel@gmail.com";
 	private final int PLACES_50 = 50;
 	private final int PLACES_100 = 100;
 	private final String NOM_SALLE_50_PARTICIPANTS = "PLT2050";
@@ -78,8 +80,8 @@ public class MaximiserLesPlacesDansSalleEtapes {
 	private Demande creerDemandeAvecDeuxParticipant() {
 		final int NB_PARTICIPANTS = 2;
 
-		InformationsContact organisateur = new InformationsContact("uncourriel@gmail.com");
-		InformationsContact responsable = new InformationsContact("uncourriel2@gmail.com");
+		InformationsContact organisateur = new InformationsContact(COURRIEL_PARTICIPANT);
+		InformationsContact responsable = new InformationsContact(COURRIEL_PARTICIPANT);
 
 		ArrayList<InformationsContact> participants = new ArrayList<InformationsContact>();
 		participants.add(organisateur);
