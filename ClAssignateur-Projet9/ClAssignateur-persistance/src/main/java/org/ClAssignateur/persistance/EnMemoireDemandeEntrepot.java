@@ -36,13 +36,6 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 		return this.demandes.stream().filter(demandeCourante -> demandeCourante.getTitre().equals(titre)).findFirst();
 	}
 
-	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateurEtId(String courriel, UUID id) {
-		return this.demandes
-				.stream()
-				.filter(demandeCourante -> demandeCourante.getID().equals(id)
-						&& demandeCourante.getCourrielOrganisateur().equals(courriel)).findFirst();
-	}
-
 	public int taille() {
 		return this.demandes.size();
 	}
