@@ -7,7 +7,8 @@ import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleStrategie;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.demandes.priorite.Priorite;
+import org.ClAssignateur.domaine.contacts.ContactsReunion;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
@@ -17,12 +18,14 @@ import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+
 import java.util.Optional;
 
 public class AnnulerUneDemandeEtapes {
 
 	private final String TITRE_DEMANDE_EN_ATTENTE = "Demande en attente";
 	private final String TITRE_DEMANDE_ASSIGNEE = "Demande assignee";
+	private final int NB_PARTICIPANTS = 10;
 
 	private ServiceReservationSalle service;
 	private AssignateurSalle assignateur;
@@ -45,14 +48,16 @@ public class AnnulerUneDemandeEtapes {
 
 	@Given("une demande assignée")
 	public void givenUneDemandeAssignee() {
-		demandeAssignee = new Demande(mock(Groupe.class), TITRE_DEMANDE_ASSIGNEE);
+		demandeAssignee = new Demande(NB_PARTICIPANTS, mock(ContactsReunion.class), TITRE_DEMANDE_ASSIGNEE,
+				Priorite.moyenne());
 		demandeAssigneeOptional = Optional.of(demandeAssignee);
 		given(conteneur.trouverDemandeSelonTitreReunion(TITRE_DEMANDE_ASSIGNEE)).willReturn(demandeAssigneeOptional);
 	}
 
 	@Given("une demande en attente de traitement")
 	public void givenUneDemandeEnAttenteDeTraitement() {
-		demandeEnAttente = new Demande(mock(Groupe.class), TITRE_DEMANDE_EN_ATTENTE);
+		demandeEnAttente = new Demande(NB_PARTICIPANTS, mock(ContactsReunion.class), TITRE_DEMANDE_EN_ATTENTE,
+				Priorite.moyenne());
 		demandeEnAttenteOptional = Optional.of(demandeEnAttente);
 		given(conteneur.trouverDemandeSelonTitreReunion(TITRE_DEMANDE_EN_ATTENTE)).willReturn(demandeEnAttenteOptional);
 	}

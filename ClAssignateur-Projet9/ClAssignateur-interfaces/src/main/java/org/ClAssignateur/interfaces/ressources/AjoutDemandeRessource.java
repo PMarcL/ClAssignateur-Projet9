@@ -10,7 +10,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
-import org.ClAssignateur.domaine.groupe.AdresseCourrielInvalideException;
+
+import org.ClAssignateur.domaine.contacts.AdresseCourrielInvalideException;
+import org.ClAssignateur.services.localisateur.LocalisateurServices;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 
@@ -20,34 +22,26 @@ import java.util.UUID;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AjoutDemandeRessource {
 
-	private ServiceReservationSalle serviceDemande;
+	private ServiceReservationSalle serviceReservation;
 
 	public AjoutDemandeRessource() {
-		// TODO revoir ici une fois contexte établi pour aller chercher service
-		// à partir du service locator
-		// TODO enlever référence vers JBehave dans dans pom.xml
-		// DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
-		// new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		// this.reservationDemandeAssembleur = new
-		// ReservationDemandeDTOAssembleur();
-		// this.serviceDemande = new ServiceReservationSalle(demandeEntrepot);
+		this.serviceReservation = LocalisateurServices.getInstance().obtenir(ServiceReservationSalle.class);
 	}
 
 	public AjoutDemandeRessource(ServiceReservationSalle service) {
-		this.serviceDemande = service;
+		this.serviceReservation = service;
 	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ajouterDemande(ReservationDemandeDTO demandeDTO) {
 		try {
-			UUID idDemande = serviceDemande.ajouterDemande(demandeDTO);
+			UUID idDemande = serviceReservation.ajouterDemande(demandeDTO);
 			URI emplacement = new URI("/demandes/" + demandeDTO.courrielOrganisateur + "/" + idDemande.toString());
 
 			return Response.created(emplacement).build();
 		} catch (AdresseCourrielInvalideException ex) {
-			String message = "Le courriel " + demandeDTO.courrielOrganisateur + " n'est pas valide";
-			return Response.status(Status.BAD_REQUEST).entity(message).build();
+			return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
 		} catch (Exception ex) {
 			return Response.serverError().build();
 		}

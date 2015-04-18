@@ -18,27 +18,24 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 public class InformationsDemandeRessource {
 
-	private ServiceInformationsDemande serviceDemande;
+	private ServiceInformationsDemande serviceInfosDemande;
 
 	public InformationsDemandeRessource() {
-		// DemandesEntrepot demandeEntrepot = new EnMemoireDemandeEntrepot();
-		// new DemoDemandeEntrepotRemplisseur().remplir(demandeEntrepot);
-		// this.serviceDemande = new
-		// ServiceInformationsDemande(demandeEntrepot);
+		this.serviceInfosDemande = new ServiceInformationsDemande();
 	}
 
 	public InformationsDemandeRessource(ServiceInformationsDemande service) {
-		this.serviceDemande = service;
+		this.serviceInfosDemande = service;
 	}
 
 	@GET
-	@Path("/{courriel}/{numero_demande}")
+	@Path("/{courriel}/{numeroDemande}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response afficherDemande(@PathParam(value = "courriel") String courriel,
 			@PathParam(value = "numeroDemande") String numeroDemande) {
 		try {
 			UUID idDemande = UUID.fromString(numeroDemande);
-			InformationsDemandeDTO infosDemande = this.serviceDemande.getInformationsDemande(courriel, idDemande);
+			InformationsDemandeDTO infosDemande = this.serviceInfosDemande.getInformationsDemande(courriel, idDemande);
 			return Response.ok(infosDemande).build();
 		} catch (DemandeIntrouvableException ex) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -51,7 +48,7 @@ public class InformationsDemandeRessource {
 	@Path("/{courriel}")
 	public Response afficherDemandesOrganisateur(@PathParam(value = "courriel") String courrielOrganisateur) {
 		try {
-			OrganisateurDemandesDTO demandesOrganisateur = this.serviceDemande
+			OrganisateurDemandesDTO demandesOrganisateur = this.serviceInfosDemande
 					.getDemandesOrganisateur(courrielOrganisateur);
 			return Response.ok(demandesOrganisateur).build();
 		} catch (Exception ex) {

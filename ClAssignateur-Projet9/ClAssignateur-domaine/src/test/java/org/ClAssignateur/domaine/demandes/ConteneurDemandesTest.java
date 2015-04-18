@@ -3,10 +3,11 @@ package org.ClAssignateur.domaine.demandes;
 import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
 
+import java.util.UUID;
+
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.DemandesEntrepot;
-
 import java.util.Random;
 import java.util.Optional;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class ConteneurDemandesTest {
 
 	private final String TITRE_REUNION = "Titre";
 	private final int NB_DEMANDES_EN_ATTENTE = 5;
+	private final String COURRIEL_ORGANISATEUR = "courriel@domaine.com";
+	private final UUID ID_DEMANDE = UUID.randomUUID();
 
 	private Demande demandeFaiblePriorite;
 	private Demande demandeHautePriorite;
@@ -27,7 +30,7 @@ public class ConteneurDemandesTest {
 	private ConteneurDemandes conteneurDemandes;
 
 	@Before
-	public void creerConteneurDemandes() {
+	public void intialisation() {
 		demandeFaiblePriorite = mock(Demande.class);
 		demandeHautePriorite = mock(Demande.class);
 		demandesEnAttente = mock(DemandesEntrepot.class);
@@ -47,64 +50,54 @@ public class ConteneurDemandesTest {
 
 	@Test
 	public void quandObtenirDemandesEnAttenteDevraitObtenirDemandesEnAttenteEntrepot() {
-		conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+		conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire();
 		verify(demandesEnAttente).obtenirDemandes();
 	}
 
 	@Test
 	public void quandObtenirDemandesEnAttenteDevraitViderEntrepot() {
-		conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+		conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire();
 		verify(demandesEnAttente).vider();
 	}
 
 	@Test
-	public void quandObtenirDemandesAvecDeuxDemandesDejaOrdonneesDevraitTrierSelonOrdreDecroissantPriorite() {
+	public void quandObtenirDemandesEnOrdrePrioriteDevraitTrierSelonOrdreDecroissantPriorite() {
 		List<Demande> demandesAjoutees = new ArrayList<Demande>();
 		demandesAjoutees.add(demandeFaiblePriorite);
 		demandesAjoutees.add(demandeHautePriorite);
 		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
 
-		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire();
 
-		assertTrue(demandesObtenues.get(0).estPlusPrioritaire(demandesObtenues.get(1)));
+		assertEquals(demandeHautePriorite, demandesObtenues.get(0));
+		assertEquals(demandeFaiblePriorite, demandesObtenues.get(1));
 	}
 
 	@Test
-	public void quandObtenirDemandesAvecDeuxDemandesPasOrdonneesDevraitTrierSelonOrdreDecroissantPriorite() {
-		List<Demande> demandesAjoutees = new ArrayList<Demande>();
-		demandesAjoutees.add(demandeHautePriorite);
-		demandesAjoutees.add(demandeFaiblePriorite);
-		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
-
-		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
-
-		assertTrue(demandesObtenues.get(0).estPlusPrioritaire(demandesObtenues.get(1)));
-	}
-
-	@Test
-	public void quandObtenirDemandesEnAttenteDevraitPasChangerOrdreDemandesSiMemePrioriteEtPremiereDemandeCreerEnPremier() {
+	public void etantDonneDemandesMemePrioriteQuandObtenirDemandesEnAttenteDevraitOrdonnerEnOrdreCreation() {
 		List<Demande> demandesAjoutees = new ArrayList<Demande>();
 		Demande premiereDemandeHautePriorite = mock(Demande.class);
-		configurerDemandesPourQuilsAientLaMemePriorite(premiereDemandeHautePriorite, demandeHautePriorite);
+		configurerDemandesAnterieuresAvecMemePriorite(premiereDemandeHautePriorite, demandeHautePriorite);
 		demandesAjoutees.add(premiereDemandeHautePriorite);
 		demandesAjoutees.add(demandeHautePriorite);
 		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
 
-		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire();
 
 		assertEquals(premiereDemandeHautePriorite, demandesObtenues.get(0));
+		assertEquals(demandeHautePriorite, demandesObtenues.get(1));
 	}
 
 	@Test
 	public void quandObtenirDemandesEnAttenteDevraitChangerOrdreDemandesSiMemePrioriteEtPremiereDemandeCreerEnDeuxieme() {
 		List<Demande> demandesAjoutees = new ArrayList<Demande>();
 		Demande secondeDemandeHautePriorite = mock(Demande.class);
-		configurerDemandesPourQuilsAientLaMemePriorite(demandeHautePriorite, secondeDemandeHautePriorite);
+		configurerDemandesAnterieuresAvecMemePriorite(demandeHautePriorite, secondeDemandeHautePriorite);
 		demandesAjoutees.add(demandeHautePriorite);
 		demandesAjoutees.add(secondeDemandeHautePriorite);
 		given(demandesEnAttente.obtenirDemandes()).willReturn(demandesAjoutees);
 
-		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+		List<Demande> demandesObtenues = conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire();
 
 		assertEquals(secondeDemandeHautePriorite, demandesObtenues.get(1));
 	}
@@ -170,7 +163,89 @@ public class ConteneurDemandesTest {
 		assertEquals(NOMBRE_DEMANDES, nbDemandesEnAttente);
 	}
 
-	private void configurerDemandesPourQuilsAientLaMemePriorite(Demande premiereDemande, Demande secondeDemande) {
+	@Test
+	public void quandObtenirDemandesSelonCourrielOrganisateurDevraitRecupererDemandesDansDemandesEnAttente() {
+		conteneurDemandes.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
+		verify(demandesEnAttente).obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
+	}
+
+	@Test
+	public void quandObtenirDemandesSelonCourrielOrgansiateurDevraitRecupereremandesDansDemandesArchivees() {
+		conteneurDemandes.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
+		verify(demandesArchivees).obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
+	}
+
+	@Test
+	public void quandObtenirDemandesSelonCourrielOrganisateurDevraitRetournerEnsembleDemandesEnAttenteEtArchivees() {
+		List<Demande> demandesEnAttenteOrganisateur = creerListePlusieursDemandes();
+		ajouterDemandesEnAttenteAvecCourielOrganisateur(demandesEnAttenteOrganisateur);
+		List<Demande> demandesArchiveesOrganisateur = creerListePlusieursDemandes();
+		ajouterDemandesArchiveesAvecCourrielOrganisateur(demandesArchiveesOrganisateur);
+
+		List<Demande> demandesOrganisateur = conteneurDemandes
+				.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
+
+		assertTrue(demandesOrganisateur.containsAll(demandesEnAttenteOrganisateur));
+		assertTrue(demandesOrganisateur.containsAll(demandesArchiveesOrganisateur));
+	}
+
+	@Test
+	public void quandObtenirDemandeSelonIdDevraitChercherDansDemandesEnAttente() {
+		given(demandesEnAttente.obtenirDemandeSelonId(ID_DEMANDE)).willReturn(Optional.empty());
+		conteneurDemandes.obtenirDemandeSelonId(ID_DEMANDE);
+		verify(demandesEnAttente).obtenirDemandeSelonId(ID_DEMANDE);
+	}
+
+	@Test
+	public void quandObtenirDemandeSelonIdDevraitChercherDansDemandesArchivees() {
+		given(demandesEnAttente.obtenirDemandeSelonId(ID_DEMANDE)).willReturn(Optional.empty());
+		conteneurDemandes.obtenirDemandeSelonId(ID_DEMANDE);
+		verify(demandesArchivees).obtenirDemandeSelonId(ID_DEMANDE);
+	}
+
+	@Test
+	public void etantDonneDemandeAvecIdInexistanteQuandObtenirDemandeSelonIdDevraitRetournerOptionalVide() {
+		given(demandesEnAttente.obtenirDemandeSelonId(ID_DEMANDE)).willReturn(Optional.empty());
+		given(demandesArchivees.obtenirDemandeSelonId(ID_DEMANDE)).willReturn(Optional.empty());
+
+		Optional<Demande> resultat = conteneurDemandes.obtenirDemandeSelonId(ID_DEMANDE);
+
+		assertFalse(resultat.isPresent());
+	}
+
+	@Test
+	public void etantDonneDemandeAvecIdExistanteQuandObtenirDemandeSelonCourrielOrganisateurEtIdDevraitRetournerDemande() {
+		Demande demandeAvecId = ajouterDemandeAvecId();
+		Optional<Demande> resultat = conteneurDemandes.obtenirDemandeSelonId(ID_DEMANDE);
+		assertEquals(demandeAvecId, resultat.get());
+	}
+
+	private void ajouterDemandesArchiveesAvecCourrielOrganisateur(List<Demande> demandesArchiveesOrganisateur) {
+		given(demandesArchivees.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR)).willReturn(
+				demandesArchiveesOrganisateur);
+	}
+
+	private void ajouterDemandesEnAttenteAvecCourielOrganisateur(List<Demande> demandesEnAttenteOrganisateur) {
+		given(demandesEnAttente.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR)).willReturn(
+				demandesEnAttenteOrganisateur);
+	}
+
+	private Demande ajouterDemandeAvecId() {
+		Demande demandeAvecId = mock(Demande.class);
+		given(demandesEnAttente.obtenirDemandeSelonId(ID_DEMANDE)).willReturn(Optional.of(demandeAvecId));
+		return demandeAvecId;
+	}
+
+	private List<Demande> creerListePlusieursDemandes() {
+		final int NOMBRE_DEMANDES = 5;
+		List<Demande> demandes = new ArrayList<Demande>();
+		for (int i = 0; i < NOMBRE_DEMANDES; i++)
+			demandes.add(mock(Demande.class));
+
+		return demandes;
+	}
+
+	private void configurerDemandesAnterieuresAvecMemePriorite(Demande premiereDemande, Demande secondeDemande) {
 		given(premiereDemande.estAussiPrioritaire(secondeDemande)).willReturn(true);
 		given(premiereDemande.estAnterieureA(secondeDemande)).willReturn(true);
 		given(premiereDemande.estPlusPrioritaire(secondeDemande)).willReturn(false);

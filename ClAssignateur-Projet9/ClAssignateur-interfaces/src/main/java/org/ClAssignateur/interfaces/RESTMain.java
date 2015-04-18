@@ -1,5 +1,7 @@
 package org.ClAssignateur.interfaces;
 
+import org.ClAssignateur.contexte.ContexteProduction;
+import org.ClAssignateur.contexte.developpement.ContexteDeveloppement;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -10,13 +12,14 @@ import org.eclipse.jetty.server.Server;
 public class RESTMain {
 
 	public static void main(String[] args) throws Exception {
+		new ContexteProduction().appliquer();
 		new RESTMain().demarrerServeur();
 	}
 
 	private void demarrerServeur() throws Exception {
-		int httpPort = 8080;
+		final int PORT_SERVEUR = 8080;
 
-		Server server = new Server(httpPort);
+		Server server = new Server(PORT_SERVEUR);
 		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/");
 		configurerJersey(servletContextHandler);
 		server.start();

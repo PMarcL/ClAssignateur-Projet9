@@ -1,7 +1,8 @@
 package org.ClAssignateur.domaine.notification;
 
+import org.ClAssignateur.domaine.contacts.InformationsContact;
+
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.domaine.salles.Salle;
 
 public class Notificateur {
@@ -30,7 +31,7 @@ public class Notificateur {
 	}
 
 	private void notifierParticipants(String contenu, Demande demande) {
-		for (Employe participant : demande.getParticipants()) {
+		for (InformationsContact participant : demande.getParticipants()) {
 			this.notificationStrategie.notifier(contenu, participant);
 		}
 	}

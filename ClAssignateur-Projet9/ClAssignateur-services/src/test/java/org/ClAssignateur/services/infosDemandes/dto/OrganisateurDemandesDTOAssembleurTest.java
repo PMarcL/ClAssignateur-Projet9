@@ -9,9 +9,9 @@ import org.junit.Before;
 
 import java.util.List;
 
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
-import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTO;
@@ -29,7 +29,7 @@ public class OrganisateurDemandesDTOAssembleurTest {
 	private List<Demande> demandes;
 	private Demande demande;
 	private Salle salle;
-	private Employe organisateur;
+	private InformationsContact organisateur;
 	private InformationsDemandeDTOAssembleur infosDemandesAssembleur;
 
 	private OrganisateurDemandesDTOAssembleur assembleur;
@@ -39,7 +39,7 @@ public class OrganisateurDemandesDTOAssembleurTest {
 		demandes = new ArrayList<Demande>();
 		configurerDemande();
 		infosDemandesAssembleur = mock(InformationsDemandeDTOAssembleur.class);
-		organisateur = mock(Employe.class);
+		organisateur = mock(InformationsContact.class);
 
 		assembleur = new OrganisateurDemandesDTOAssembleur(infosDemandesAssembleur);
 	}

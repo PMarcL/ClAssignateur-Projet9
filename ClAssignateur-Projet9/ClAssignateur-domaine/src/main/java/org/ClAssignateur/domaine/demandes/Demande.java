@@ -1,12 +1,20 @@
 package org.ClAssignateur.domaine.demandes;
 
+import javax.persistence.Id;
+
+import javax.persistence.ManyToOne;
+import javax.persistence.Column;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToOne;
+import javax.persistence.Entity;
+import org.ClAssignateur.domaine.contacts.ContactsReunion;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.groupe.Employe;
-import org.ClAssignateur.domaine.groupe.Groupe;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
 import java.util.List;
 
+@Entity
 public class Demande {
 
 	public enum StatutDemande {
@@ -14,54 +22,45 @@ public class Demande {
 	}
 
 	private static int nombreDemandesCrees;
-
-	private Groupe groupe;
+	@Column
+	private int nbParticipants;
+	@OneToOne(cascade = CascadeType.ALL)
+	private ContactsReunion contacts;
+	@Column
 	private Priorite priorite;
+	@Column
 	private String titre;
+	@ManyToOne
 	private Salle salleAssignee;
+	@Id
 	private UUID id;
+	@Column
 	private StatutDemande etat;
+	@Column
 	private int estampille;
 
 	private static int genererEstampille() {
 		return ++nombreDemandesCrees;
 	}
 
-	public Demande(Groupe groupe, String titre, Priorite priorite) {
+	public Demande(int nombreParticipants, ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = UUID.randomUUID();
-		this.groupe = groupe;
+		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
 		this.etat = StatutDemande.EN_ATTENTE;
+		this.nbParticipants = nombreParticipants;
 		ajouterEstampille();
 	}
 
-	public Demande(Groupe groupe, String titre) {
-		this.id = UUID.randomUUID();
-		this.groupe = groupe;
-		this.titre = titre;
-		this.priorite = Priorite.basse();
-		this.salleAssignee = null;
-		this.etat = StatutDemande.EN_ATTENTE;
-		ajouterEstampille();
-	}
-
-	public Demande(UUID id, Groupe groupe, String titre, Priorite priorite) {
+	// TODO voir si encore utile
+	public Demande(UUID id, int nombreParticipants, ContactsReunion groupe, String titre, Priorite priorite) {
 		this.id = id;
-		this.groupe = groupe;
+		this.nbParticipants = nombreParticipants;
+		this.contacts = groupe;
 		this.titre = titre;
 		this.priorite = priorite;
-		this.salleAssignee = null;
-		this.etat = StatutDemande.EN_ATTENTE;
-		ajouterEstampille();
-	}
-
-	public Demande(UUID id, Groupe groupe, String titre) {
-		this.id = id;
-		this.groupe = groupe;
-		this.titre = titre;
-		this.priorite = Priorite.basse();
 		this.salleAssignee = null;
 		this.etat = StatutDemande.EN_ATTENTE;
 		ajouterEstampille();
@@ -69,10 +68,6 @@ public class Demande {
 
 	private void ajouterEstampille() {
 		this.estampille = Demande.genererEstampille();
-	}
-
-	public Groupe getGroupe() {
-		return this.groupe;
 	}
 
 	public UUID getID() {
@@ -106,20 +101,19 @@ public class Demande {
 	}
 
 	public int getNbParticipants() {
-		int nombreDeParticipants = this.groupe.getNbParticipants();
-		return nombreDeParticipants;
+		return this.nbParticipants;
 	}
 
-	public Employe getOrganisateur() {
-		return this.getGroupe().getOrganisateur();
+	public InformationsContact getOrganisateur() {
+		return this.contacts.organisateur;
 	}
 
-	public Employe getResponsable() {
-		return this.getGroupe().getResponsable();
+	public InformationsContact getResponsable() {
+		return this.contacts.responsable;
 	}
 
-	public List<Employe> getParticipants() {
-		return groupe.getParticipants();
+	public List<InformationsContact> getParticipants() {
+		return this.contacts.participants;
 	}
 
 	public Salle getSalleAssignee() {
@@ -139,7 +133,7 @@ public class Demande {
 			return false;
 		} else {
 			Demande autreDemande = (Demande) autreObjet;
-			return this.getID().equals(autreDemande.getID());
+			return this.id.equals(autreDemande.id);
 		}
 	}
 

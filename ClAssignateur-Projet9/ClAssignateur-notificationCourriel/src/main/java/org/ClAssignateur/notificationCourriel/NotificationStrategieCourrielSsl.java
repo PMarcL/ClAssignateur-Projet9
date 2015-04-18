@@ -12,7 +12,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.ClAssignateur.domaine.groupe.Employe;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.notification.NotificationException;
 import org.ClAssignateur.domaine.notification.NotificationStrategie;
 import org.ClAssignateur.notificationCourriel.configuration.ConfigurationSmtp;
@@ -33,7 +33,7 @@ public class NotificationStrategieCourrielSsl implements NotificationStrategie {
 		this.configSmtp = configSmtp;
 	}
 
-	public void notifier(String contenu, Employe destinataire) throws NotificationException {
+	public void notifier(String contenu, InformationsContact destinataire) throws NotificationException {
 		try {
 			envoyerCourriel(contenu, destinataire);
 		} catch (MessagingException e) {
@@ -41,7 +41,7 @@ public class NotificationStrategieCourrielSsl implements NotificationStrategie {
 		}
 	}
 
-	private void envoyerCourriel(String contenu, Employe destinataire) throws MessagingException {
+	private void envoyerCourriel(String contenu, InformationsContact destinataire) throws MessagingException {
 		Session sessionSmtp = configurerSessionSmtp();
 		Message message = creerMessage(sessionSmtp, destinataire.getAdresseCourriel(), contenu);
 		Transport.send(message);

@@ -12,7 +12,7 @@ import org.ClAssignateur.services.reservations.minuterie.MinuterieObservateur;
 
 public class ServiceReservationSalle implements MinuterieObservateur {
 
-	private final Minute DELAI_MINUTERIE_PAR_DEFAUT = new Minute(5);
+	private final Minute DELAI_MINUTERIE_PAR_DEFAUT = new Minute(1);
 	private final int LIMITE_DEMANDES_PAR_DEFAUT = 10;
 
 	private AssignateurSalle assignateurSalle;
@@ -20,16 +20,27 @@ public class ServiceReservationSalle implements MinuterieObservateur {
 	private int limiteDemandes;
 	private ReservationDemandeDTOAssembleur assembleur;
 
+	public ServiceReservationSalle(AssignateurSalle assignateurSalle, Minuterie minuterie) {
+		this.assignateurSalle = assignateurSalle;
+		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
+		this.assembleur = new ReservationDemandeDTOAssembleur();
+		this.minuterie = minuterie;
+		demarrerMinuterie();
+	}
+
+	private void demarrerMinuterie() {
+		this.minuterie.setDelai(DELAI_MINUTERIE_PAR_DEFAUT);
+		this.minuterie.souscrire(this);
+		this.minuterie.demarrer();
+	}
+
 	public ServiceReservationSalle(Minuterie minuterie, AssignateurSalle assignateurSalle,
 			ReservationDemandeDTOAssembleur assembleur) {
 		this.assignateurSalle = assignateurSalle;
 		this.assembleur = assembleur;
 		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
-
 		this.minuterie = minuterie;
-		this.minuterie.setDelai(DELAI_MINUTERIE_PAR_DEFAUT);
-		this.minuterie.souscrire(this);
-		this.minuterie.demarrer();
+		demarrerMinuterie();
 	}
 
 	public void setFrequence(Minute nbMinutes) {

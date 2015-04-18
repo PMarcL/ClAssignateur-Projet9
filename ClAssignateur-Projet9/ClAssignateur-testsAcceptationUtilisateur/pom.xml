@@ -20,11 +20,6 @@
       <version>4.0-beta-11</version>
     </dependency>
     <dependency>
-      <groupId>ca.ulaval.glo4002</groupId>
-      <artifactId>ClAssignateur-domaine</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
       <version>0.9.9</version>
@@ -36,7 +31,17 @@
     </dependency>
     <dependency>
       <groupId>ca.ulaval.glo4002</groupId>
+      <artifactId>ClAssignateur-domaine</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>ca.ulaval.glo4002</groupId>
       <artifactId>ClAssignateur-services</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>ca.ulaval.glo4002</groupId>
+      <artifactId>ClAssignateur-persistance</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>

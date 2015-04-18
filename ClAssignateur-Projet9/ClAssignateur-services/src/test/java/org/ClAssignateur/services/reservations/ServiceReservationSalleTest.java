@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class ServiceReservationSalleTest {
 
-	private final Minute FREQUENCE_PAR_DEFAUT = new Minute(5);
+	private final Minute FREQUENCE_PAR_DEFAUT = new Minute(1);
 	private final Minute FREQUENCE_MINUTES = new Minute(3);
 	private final int LIMITE_DEMANDES_PAR_DEFAUT = 10;
 	private final int LIMITE_DEMANDES_QUELCONQUE = 5;

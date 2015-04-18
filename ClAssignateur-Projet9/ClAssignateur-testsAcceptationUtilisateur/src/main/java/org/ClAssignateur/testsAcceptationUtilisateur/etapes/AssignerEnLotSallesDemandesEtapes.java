@@ -15,43 +15,40 @@ import org.jbehave.core.annotations.When;
 
 public class AssignerEnLotSallesDemandesEtapes {
 	private final int X_NOMBRE_DEMANDES = 10;
-	private final int Y_NOMBRE_DEMANDES = 5;
+	private final int Y_NOMBRE_DEMANDES = 1;
 
 	private ServiceReservationSalle serviceReservation;
 	private AssignateurSalle assignateurSalle;
 	private Minuterie minuterie;
 	private ReservationDemandeDTOAssembleur assembleur;
 	private ReservationDemandeDTO dto;
+	private Demande demande;
 
 	@BeforeScenario
 	public void initialisationScenario() {
 		minuterie = mock(Minuterie.class);
 		assignateurSalle = mock(AssignateurSalle.class);
+		demande = mock(Demande.class);
 		assembleur = mock(ReservationDemandeDTOAssembleur.class);
 
+		given(assembleur.assemblerDemande(dto)).willReturn(demande);
 		serviceReservation = new ServiceReservationSalle(minuterie, this.assignateurSalle, assembleur);
 	}
 
-	@Given("j'ai configuré le système pour tolérer X demandes")
-	public void givenJaiConfigueéLeSystemePourTolerer10Demandes() {
+	@Given("une limite de X demandes")
+	public void givenUneLimiteDeXDemandes() {
 		serviceReservation.setLimiteDemandesAvantAssignation(X_NOMBRE_DEMANDES);
 	}
 
-	@Given("il y a présentement Y demandes en attente")
-	public void givenIlYAPresentementYDemandesEnAttente() {
-		given(assignateurSalle.getNombreDemandesEnAttente()).willReturn(Y_NOMBRE_DEMANDES);
-	}
-
-	@When("le nombre de demandes en attente atteint X demandes")
-	public void whenLeNombreDeDemandesEnAttenteAtteint10Demandes() {
-		Demande demande = mock(Demande.class);
+	@When("la limite de X demandes est atteinte")
+	public void whenLaLimiteDeXDemandesEstAtteinte() {
 		given(assignateurSalle.getNombreDemandesEnAttente()).willReturn(X_NOMBRE_DEMANDES);
-		given(assembleur.assemblerDemande(dto)).willReturn(demande);
 		serviceReservation.ajouterDemande(dto);
 	}
 
 	@When("je configure le système pour tolérer Y demandes")
 	public void whenJeConfigureLeSystemePourTolererYDemandes() {
+		given(assignateurSalle.getNombreDemandesEnAttente()).willReturn(Y_NOMBRE_DEMANDES);
 		serviceReservation.setLimiteDemandesAvantAssignation(Y_NOMBRE_DEMANDES);
 	}
 
@@ -63,5 +60,10 @@ public class AssignerEnLotSallesDemandesEtapes {
 	@Then("la minuterie est réinitialisée")
 	public void thenLaMinuterieEstReinitialisee() {
 		verify(minuterie).reinitialiser();
+	}
+
+	@Then("la limite est modifiée")
+	public void thenLaLimiteEstModifiee() {
+		verify(this.assignateurSalle).lancerAssignation();
 	}
 }

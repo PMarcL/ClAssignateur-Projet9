@@ -1,32 +1,36 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
-import java.util.ArrayList;
+import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.*;
 
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
+import org.ClAssignateur.domaine.contacts.ContactsReunion;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.Employe;
-import org.ClAssignateur.domaine.groupe.Groupe;
+import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireSallesEntrepot;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationSilencieuse;
+import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
+import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 public class MaximiserLesPlacesDansSalleEtapes {
 
-	private static final int PLACES_50 = 50;
-	private static final int PLACES_100 = 100;
-	private static final String NOM_SALLE_50_PARTICIPANTS = "PLT2050";
-	private static final String NOM_SALLE_100_PARTICIPANTS = "PLT2100";
-	private static final String NOM_SALLE_100_PARTICIPANTS_SECONDE = "PLT2102";
+	private static final String COURRIEL_PARTICIPANT = "uncourriel@gmail.com";
+	private final int PLACES_50 = 50;
+	private final int PLACES_100 = 100;
+	private final String NOM_SALLE_50_PARTICIPANTS = "PLT2050";
+	private final String NOM_SALLE_100_PARTICIPANTS = "PLT2100";
+	private final String NOM_SALLE_100_PARTICIPANTS_SECONDE = "PLT2102";
+	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
+
 	private Demande demandeAAssigner;
 	private EnMemoireDemandeEntrepot demandesTraitees;
 	private SallesEntrepot salles;
@@ -38,7 +42,7 @@ public class MaximiserLesPlacesDansSalleEtapes {
 		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
 		salles = new EnMemoireSallesEntrepot();
 
-		assignateur = new AssignateurSalle(conteneurDemandes, salles, new Notificateur(new NotificationSilencieuse()),
+		assignateur = new AssignateurSalle(conteneurDemandes, salles, mock(Notificateur.class),
 				new SelectionSalleOptimaleStrategie());
 
 		demandeAAssigner = creerDemandeAvecDeuxParticipant();
@@ -74,14 +78,16 @@ public class MaximiserLesPlacesDansSalleEtapes {
 	}
 
 	private Demande creerDemandeAvecDeuxParticipant() {
-		Employe organisateur = new Employe("uncourriel@gmail.com");
-		Employe responsable = new Employe("uncourriel2@gmail.com");
+		final int NB_PARTICIPANTS = 2;
 
-		ArrayList<Employe> participants = new ArrayList<Employe>();
+		InformationsContact organisateur = new InformationsContact(COURRIEL_PARTICIPANT);
+		InformationsContact responsable = new InformationsContact(COURRIEL_PARTICIPANT);
+
+		ArrayList<InformationsContact> participants = new ArrayList<InformationsContact>();
 		participants.add(organisateur);
 		participants.add(responsable);
 
-		Groupe groupe = new Groupe(organisateur, responsable, participants);
-		return new Demande(groupe, "Demande avec deux participant");
+		ContactsReunion groupe = new ContactsReunion(organisateur, responsable, participants);
+		return new Demande(NB_PARTICIPANTS, groupe, "Demande avec deux participant", PRIORITE_MOYENNE);
 	}
 }

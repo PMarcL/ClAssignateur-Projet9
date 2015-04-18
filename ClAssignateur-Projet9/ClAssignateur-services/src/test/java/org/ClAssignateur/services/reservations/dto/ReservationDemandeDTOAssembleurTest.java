@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.groupe.Employe;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 
@@ -63,7 +63,7 @@ public class ReservationDemandeDTOAssembleurTest {
 
 	private void configurerDTO() {
 		demandeDTO = new ReservationDemandeDTO();
-		demandeDTO.nombrePersonnes = NB_PERSONNES;
+		demandeDTO.nombrePersonne = NB_PERSONNES;
 		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
 		demandeDTO.priorite = NIVEAU_PRIORITE;
 		demandeDTO.participantsCourriels = listeCourrielParticipants(NB_PERSONNES);
@@ -78,7 +78,7 @@ public class ReservationDemandeDTOAssembleurTest {
 	}
 
 	private List<Object> getListeCourrielParticipants(Demande demandeResultat) {
-		List<Employe> participants = demandeResultat.getParticipants();
+		List<InformationsContact> participants = demandeResultat.getParticipants();
 		Object[] courrielParticipants = participants.stream().map(p -> p.getAdresseCourriel()).toArray();
 		List<Object> listeCourrielParticipants = java.util.Arrays.asList(courrielParticipants);
 		return listeCourrielParticipants;

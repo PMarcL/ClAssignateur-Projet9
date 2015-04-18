@@ -46,11 +46,12 @@ public class AssignateurSalle {
 
 	public void lancerAssignation() {
 		Collection<Salle> salles = entrepotSalles.obtenirSalles();
-		List<Demande> demandesEnAttente = conteneurDemandes.obtenirDemandesEnAttenteEnOrdreDePriorite();
+		List<Demande> demandesEnAttente = conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire();
 
 		for (Demande demandeCourante : demandesEnAttente) {
 			Optional<Salle> salle = selectionSalleStrategie.selectionnerSalle(salles, demandeCourante);
 
+			// TODO gérer exceptions si erreur de notification
 			if (salle.isPresent()) {
 				reserverSalle(demandeCourante, salle.get());
 				this.notificateur.notifierSucces(demandeCourante, salle.get());

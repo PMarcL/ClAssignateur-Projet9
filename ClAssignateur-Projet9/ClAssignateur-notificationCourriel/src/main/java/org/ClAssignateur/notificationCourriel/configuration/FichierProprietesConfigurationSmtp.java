@@ -13,14 +13,18 @@ public class FichierProprietesConfigurationSmtp implements ConfigurationSmtp {
 
 	private Properties proprietes;
 
-	public FichierProprietesConfigurationSmtp() throws IOException {
+	public FichierProprietesConfigurationSmtp() {
 		proprietes = new Properties();
 		chargerProprietes();
 	}
 
-	private void chargerProprietes() throws IOException {
+	private void chargerProprietes() {
 		InputStream fluxEntree = getClass().getClassLoader().getResourceAsStream(CHEMIN_FICHIER_CONFIG);
-		proprietes.load(fluxEntree);
+		try {
+			proprietes.load(fluxEntree);
+		} catch (IOException e) {
+			throw new ChargementFichierConfigSmtpException();
+		}
 	}
 
 	public String getAdresseServeurSmtp() {

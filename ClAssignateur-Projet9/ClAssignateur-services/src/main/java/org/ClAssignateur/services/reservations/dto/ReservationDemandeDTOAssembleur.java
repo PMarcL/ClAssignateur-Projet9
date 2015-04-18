@@ -3,43 +3,43 @@ package org.ClAssignateur.services.reservations.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ClAssignateur.domaine.contacts.ContactsReunion;
+import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.groupe.Employe;
-import org.ClAssignateur.domaine.groupe.Groupe;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 
 public class ReservationDemandeDTOAssembleur {
 
 	public Demande assemblerDemande(ReservationDemandeDTO dto) {
 		String titre = creerTitreDemande(dto);
-		Groupe groupe = creerGroupe(dto);
+		ContactsReunion groupe = creerGroupe(dto);
 		Priorite priorite = new Priorite(dto.priorite);
-		return new Demande(groupe, titre, priorite);
+		return new Demande(dto.nombrePersonne, groupe, titre, priorite);
 	}
 
-	private List<Employe> creerListeParticipants(ReservationDemandeDTO dto) {
-		List<Employe> participants = new ArrayList<Employe>();
-		for (int indexParticipant = 0; indexParticipant < dto.nombrePersonnes; indexParticipant++) {
+	private List<InformationsContact> creerListeParticipants(ReservationDemandeDTO dto) {
+		List<InformationsContact> participants = new ArrayList<InformationsContact>();
+		for (int indexParticipant = 0; indexParticipant < dto.participantsCourriels.size(); indexParticipant++) {
 			String adresseCourriel = dto.participantsCourriels.get(indexParticipant);
 			participants.add(creerEmploye(adresseCourriel));
 		}
 		return participants;
 	}
 
-	private Employe creerEmploye(String adresseCourriel) {
-		return new Employe(adresseCourriel);
+	private InformationsContact creerEmploye(String adresseCourriel) {
+		return new InformationsContact(adresseCourriel);
 	}
 
-	private Groupe creerGroupe(ReservationDemandeDTO dto) {
-		List<Employe> participants = creerListeParticipants(dto);
-		Employe organisateur = creerEmploye(dto.courrielOrganisateur);
-		Groupe groupe = new Groupe(organisateur, organisateur, participants);
+	private ContactsReunion creerGroupe(ReservationDemandeDTO dto) {
+		List<InformationsContact> participants = creerListeParticipants(dto);
+		InformationsContact organisateur = creerEmploye(dto.courrielOrganisateur);
+		ContactsReunion groupe = new ContactsReunion(organisateur, organisateur, participants);
 		return groupe;
 	}
 
 	private String creerTitreDemande(ReservationDemandeDTO dto) {
-		return "Demande pour " + dto.nombrePersonnes + " personnes, par " + dto.courrielOrganisateur + ", priorité "
+		return "Demande pour " + dto.nombrePersonne + " personnes, par " + dto.courrielOrganisateur + ", priorité "
 				+ dto.priorite;
 	}
 

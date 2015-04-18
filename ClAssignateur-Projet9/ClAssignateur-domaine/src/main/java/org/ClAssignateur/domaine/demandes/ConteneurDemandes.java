@@ -1,8 +1,9 @@
 package org.ClAssignateur.domaine.demandes;
 
-import java.util.Optional;
+import java.util.UUID;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class ConteneurDemandes {
 
@@ -18,7 +19,7 @@ public class ConteneurDemandes {
 		this.demandesEnAttente.persisterDemande(demande);
 	}
 
-	public List<Demande> obtenirDemandesEnAttenteEnOrdreDePriorite() {
+	public List<Demande> obtenirDemandesEnAttenteOrdrePrioritaire() {
 		List<Demande> demandesTriees = trierDemandesParPriorite(this.demandesEnAttente.obtenirDemandes());
 		demandesEnAttente.vider();
 		return demandesTriees;
@@ -58,5 +59,27 @@ public class ConteneurDemandes {
 
 	public int getNombreDemandesEnAttente() {
 		return this.demandesEnAttente.taille();
+	}
+
+	public List<Demande> obtenirDemandesSelonCourrielOrganisateur(String courrielOrganisateur) {
+		List<Demande> demandesOrganisateur = obtenirDemandesEnAttenteOrganisateur(courrielOrganisateur);
+		demandesOrganisateur.addAll(obtenirDemandesArchiveesOrganisateur(courrielOrganisateur));
+		return demandesOrganisateur;
+	}
+
+	private List<Demande> obtenirDemandesEnAttenteOrganisateur(String courrielOrganisateur) {
+		return demandesEnAttente.obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
+	}
+
+	private List<Demande> obtenirDemandesArchiveesOrganisateur(String courrielOrganisateur) {
+		return demandesArchivees.obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
+	}
+
+	public Optional<Demande> obtenirDemandeSelonId(UUID idDemande) {
+		Optional<Demande> demandeObtenue = demandesEnAttente.obtenirDemandeSelonId(idDemande);
+		if (!demandeObtenue.isPresent())
+			demandeObtenue = demandesArchivees.obtenirDemandeSelonId(idDemande);
+
+		return demandeObtenue;
 	}
 }
