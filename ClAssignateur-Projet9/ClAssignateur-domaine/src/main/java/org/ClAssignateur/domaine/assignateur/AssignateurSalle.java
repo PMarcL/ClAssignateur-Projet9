@@ -51,6 +51,7 @@ public class AssignateurSalle {
 		for (Demande demandeCourante : demandesEnAttente) {
 			Optional<Salle> salle = selectionSalleStrategie.selectionnerSalle(salles, demandeCourante);
 
+			// TODO gérer exceptions si erreur de notification
 			if (salle.isPresent()) {
 				reserverSalle(demandeCourante, salle.get());
 				this.notificateur.notifierSucces(demandeCourante, salle.get());
