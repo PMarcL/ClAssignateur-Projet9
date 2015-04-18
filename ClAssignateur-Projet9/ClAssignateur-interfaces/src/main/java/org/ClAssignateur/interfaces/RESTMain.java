@@ -16,9 +16,9 @@ public class RESTMain {
 	}
 
 	private void demarrerServeur() throws Exception {
-		int httpPort = 8080;
+		final int PORT_SERVEUR = 8080;
 
-		Server server = new Server(httpPort);
+		Server server = new Server(PORT_SERVEUR);
 		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/");
 		configurerJersey(servletContextHandler);
 		server.start();
