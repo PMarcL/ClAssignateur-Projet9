@@ -29,7 +29,7 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
-public class AssignerPeriodiquementDeSallesAuxDemandesSteps    {
+public class AssignerPeriodiquementDesSallesAuxDemandesEtapes    {
 
 	private final int NB_DEMANDES = 5;
 	private final String TITRE_DEMANDE = "Réunion de 15 minutes";
