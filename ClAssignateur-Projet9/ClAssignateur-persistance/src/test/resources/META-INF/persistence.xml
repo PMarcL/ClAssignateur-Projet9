@@ -5,11 +5,11 @@
   <persistence-unit name="ClAssignateur-Projet9" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     
-    <class>org.ClAssignateur.domain.demandes.Demande</class>
-    <class>org.ClAssignateur.domain.demandes.Priorite</class>
-    <class>org.ClAssignateur.domain.groupe.Groupe</class>
-    <class>org.ClAssignateur.domain.groupe.Employe</class>
-    <class>org.ClAssignateur.domain.salles.Salle</class>
+    <class>org.ClAssignateur.domaine.demandes.Demande</class>
+    <class>org.ClAssignateur.domaine.demandes.Priorite</class>
+    <class>org.ClAssignateur.domaine.contacts.ContactsReunion</class>
+    <class>org.ClAssignateur.domaine.contacts.InformationsContact</class>
+    <class>org.ClAssignateur.domaine.salles.Salle</class>
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
  

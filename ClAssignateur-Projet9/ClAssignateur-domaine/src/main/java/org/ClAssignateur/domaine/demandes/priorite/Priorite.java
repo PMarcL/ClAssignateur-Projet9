@@ -1,5 +1,10 @@
 package org.ClAssignateur.domaine.demandes.priorite;
 
+import javax.persistence.Column;
+
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Priorite {
 	private final int NIVEAU_PRIORITE_MINIMUM = 1;
 
@@ -9,7 +14,12 @@ public class Priorite {
 	private static final int PRIORITE_HAUTE = 2;
 	private static final int PRIORITE_TRES_HAUTE = 1;
 
+	@Column
 	private int niveauPriorite;
+
+	public Priorite() {
+		this.niveauPriorite = PRIORITE_BASSE;
+	}
 
 	public Priorite(int niveauPriorite) {
 		this.niveauPriorite = niveauPriorite;

@@ -75,11 +75,6 @@ public class HibernateDemandeEntrepot implements DemandesEntrepot {
 	}
 
 	@Override
-	public Optional<Demande> obtenirDemandeSelonCourrielOrganisateurEtId(String courriel, UUID id) {
-		return null;
-	}
-
-	@Override
 	public int taille() {
 		EntityManager em = entityManagerProvider.getEntityManager();
 		String requeteCompte = "Select Count(*) from Demande";
