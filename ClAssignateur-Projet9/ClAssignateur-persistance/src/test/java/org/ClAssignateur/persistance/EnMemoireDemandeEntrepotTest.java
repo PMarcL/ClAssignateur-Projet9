@@ -167,46 +167,6 @@ public class EnMemoireDemandeEntrepotTest {
 		assertTrue(demandesRecus.isEmpty());
 	}
 
-	@Test
-	public void etantDonneUnEntrepotAvecUneDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdRetourneLaDemande() {
-		faireEnSorteQuEntrepotPossedeUneDemande();
-		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR,
-				UN_UUID);
-		assertTrue(demandeRecu.isPresent());
-	}
-
-	@Test
-	public void etantDonneUnEntrepotAvecUneDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdAvecMauvaisCourrielRetourneOptionalVide() {
-		faireEnSorteQuEntrepotPossedeUneDemande();
-
-		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(
-				COURRIEL_NON_CORRESPONDANT, UN_UUID);
-
-		assertFalse(demandeRecu.isPresent());
-	}
-
-	@Test
-	public void etantDonneUnEntrepotAvecPlusieursDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdRetourneLaBonneDemande() {
-		faireEnSorteQuEntrepotPossedeUneDemande();
-		ajouterPlusieursDemandesALEntrepot();
-
-		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(COURRIEL_ORGANISATEUR,
-				UN_UUID);
-
-		assertEquals(demande, demandeRecu.get());
-	}
-
-	@Test
-	public void etantDonneUnEntrepotAvecPlusieursDemandeLorsqueObtenirDemandeSelonOrganisateurEtIdAvecMauvaisCourrielRetourneOptionalVide() {
-		faireEnSorteQuEntrepotPossedeUneDemande();
-		ajouterPlusieursDemandesALEntrepot();
-
-		Optional<Demande> demandeRecu = entrepot.obtenirDemandeSelonCourrielOrganisateurEtId(
-				COURRIEL_NON_CORRESPONDANT, UN_UUID);
-
-		assertFalse(demandeRecu.isPresent());
-	}
-
 	private void faireEnSorteQuEntrepotPossedeUneDemande() {
 		given(demande.getID()).willReturn(UN_UUID);
 		given(demande.getTitre()).willReturn(UN_TITRE_DISTINCT);
