@@ -6,7 +6,6 @@ import static org.mockito.BDDMockito.*;
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
 import org.ClAssignateur.domaine.contacts.ContactsReunion;
-import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
@@ -21,7 +20,6 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,14 +27,12 @@ import java.util.UUID;
 public class OrdonnerDemandesEtapes {
 
 	private final int NB_PARTICIPANTS = 5;
-	// TODO revoir déclaration du groupe
-	private final ContactsReunion GROUPE = new ContactsReunion(new InformationsContact("organisateur@hotmail.com"),
-			new InformationsContact("responsable@hotmail.com"), new ArrayList<InformationsContact>());
 	private final String TITRE_DEMANDE = "Réunion de 15 minutes";
 	private final int NB_DEMANDES_DE_MEME_PRIORITE = 5;
 	private final UUID ID_DEMANDE_FAIBLE_PRIORITE = UUID.randomUUID();
 	private final UUID ID_DEMANDE_HAUTE_PRIORITE = UUID.randomUUID();
 
+	private ContactsReunion contactsReunion;
 	private EnMemoireDemandesEntrepotFake demandesTraitees;
 	private SallesEntrepot salles;
 	private ConteneurDemandes conteneurDemandes;
@@ -46,15 +42,16 @@ public class OrdonnerDemandesEtapes {
 
 	@BeforeScenario
 	public void initialisation() {
+		contactsReunion = mock(ContactsReunion.class);
 		demandesTraitees = new EnMemoireDemandesEntrepotFake();
 		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
 		salles = new EnMemoireSallesEntrepot();
 		salles.persister(new Salle(100, "PLT2770"));
-		demandePrioriteBasse = new Demande(ID_DEMANDE_FAIBLE_PRIORITE, NB_PARTICIPANTS, GROUPE, TITRE_DEMANDE,
-				Priorite.basse());
-		demandePrioriteHaute = new Demande(ID_DEMANDE_HAUTE_PRIORITE, NB_PARTICIPANTS, GROUPE, TITRE_DEMANDE,
-				Priorite.haute());
 
+		demandePrioriteBasse = new Demande(ID_DEMANDE_FAIBLE_PRIORITE, NB_PARTICIPANTS, contactsReunion, TITRE_DEMANDE,
+				Priorite.basse());
+		demandePrioriteHaute = new Demande(ID_DEMANDE_HAUTE_PRIORITE, NB_PARTICIPANTS, contactsReunion, TITRE_DEMANDE,
+				Priorite.haute());
 		assignateur = new AssignateurSalle(conteneurDemandes, salles, mock(Notificateur.class),
 				new SelectionSalleOptimaleStrategie());
 	}
@@ -72,7 +69,8 @@ public class OrdonnerDemandesEtapes {
 	@Given("plusieurs demandes de même priorité en attente de traitement")
 	public void givenPlusieursDemandesDeMemePriorite() {
 		for (int i = 0; i < NB_DEMANDES_DE_MEME_PRIORITE; i++) {
-			Demande demandePrioriteBasse = creerDemande(Priorite.basse());
+			Demande demandePrioriteBasse = new Demande(NB_PARTICIPANTS, contactsReunion, TITRE_DEMANDE,
+					Priorite.basse());
 			assignateur.ajouterDemande(demandePrioriteBasse);
 		}
 	}
@@ -100,10 +98,6 @@ public class OrdonnerDemandesEtapes {
 			Demande demandeSuivante = demandes.get(i + 1);
 			assertTrue(demandeCourante.estAnterieureA(demandeSuivante));
 		}
-	}
-
-	private Demande creerDemande(Priorite prioriteDemande) {
-		return new Demande(NB_PARTICIPANTS, GROUPE, TITRE_DEMANDE, prioriteDemande);
 	}
 
 }
