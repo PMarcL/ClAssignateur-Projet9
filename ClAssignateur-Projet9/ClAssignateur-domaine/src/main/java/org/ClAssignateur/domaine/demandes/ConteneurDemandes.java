@@ -1,10 +1,9 @@
 package org.ClAssignateur.domaine.demandes;
 
 import java.util.UUID;
-
-import java.util.Optional;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class ConteneurDemandes {
 
