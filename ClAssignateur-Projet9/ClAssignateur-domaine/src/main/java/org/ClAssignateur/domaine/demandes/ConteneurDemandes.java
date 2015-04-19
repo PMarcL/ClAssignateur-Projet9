@@ -26,11 +26,28 @@ public class ConteneurDemandes {
 	}
 
 	private List<Demande> trierDemandesParPriorite(List<Demande> demandesATrier) {
-		Comparator<Demande> parPriorite = ((demande1, demande2) -> (demande2.estPlusPrioritaire(demande1) ? 1
-				: (demande1.estAussiPrioritaire(demande2) ? (demande1.estAnterieureA(demande2) ? -1 : 1) : -1)));
+		Comparator<Demande> parPriorite = ((demande1, demande2) -> comparerPrioriteDemande(demande1, demande2));
 
 		demandesATrier.sort(parPriorite);
 		return demandesATrier;
+	}
+
+	private int comparerPrioriteDemande(Demande demande1, Demande demande2) {
+		if (demande1.estPlusPrioritaire(demande2)) {
+			return -1;
+		} else if (demande2.estAussiPrioritaire(demande1)) {
+			return 1;
+		} else {
+			return comparerOrdreCreationDemande(demande1, demande2);
+		}
+	}
+
+	private int comparerOrdreCreationDemande(Demande demande1, Demande demande2) {
+		if (demande1.estAnterieureA(demande2)) {
+			return -1;
+		} else {
+			return 1;
+		}
 	}
 
 	public Optional<Demande> trouverDemandeSelonTitreReunion(String titreReunion) {
