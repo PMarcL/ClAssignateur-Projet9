@@ -26,13 +26,13 @@ public class ConteneurDemandes {
 	}
 
 	private List<Demande> trierDemandesParPriorite(List<Demande> demandesATrier) {
-		Comparator<Demande> parPriorite = ((demande1, demande2) -> comparerPrioriteDemande(demande1, demande2));
+		Comparator<Demande> parPriorite = ((demande1, demande2) -> ordonnerDeuxDemandes(demande1, demande2));
 
 		demandesATrier.sort(parPriorite);
 		return demandesATrier;
 	}
 
-	private int comparerPrioriteDemande(Demande demande1, Demande demande2) {
+	private int ordonnerDeuxDemandes(Demande demande1, Demande demande2) {
 		if (demande1.estPlusPrioritaire(demande2)) {
 			return -1;
 		} else if (demande2.estAussiPrioritaire(demande1)) {
