@@ -35,12 +35,7 @@ public class ContexteDeveloppement extends Contexte {
 	}
 
 	private void initialiserAssignateurSalle() {
-		this.assignateurSalle = new AssignateurSalle(this.conteneurDemandes, this.sallesEntrepot, creerNotificateur(),
-				new SelectionSalleOptimaleStrategie());
-	}
-
-	private Notificateur creerNotificateur() {
-		return new Notificateur(new NotificationStrategieConsole());
+		this.assignateurSalle = new AssignateurSalle(this.sallesEntrepot, new SelectionSalleOptimaleStrategie());
 	}
 
 	@Override
@@ -50,7 +45,9 @@ public class ContexteDeveloppement extends Contexte {
 	}
 
 	private ServiceReservationSalle creerServiceReservationSalle() {
-		return new ServiceReservationSalle(assignateurSalle, new MinuterieTimerJavaStandard());
+		Notificateur notificateur = new Notificateur(new NotificationStrategieConsole());
+		return new ServiceReservationSalle(new MinuterieTimerJavaStandard(), this.conteneurDemandes,
+				this.assignateurSalle, notificateur);
 	}
 
 	@Override

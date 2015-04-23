@@ -43,8 +43,19 @@ public class ContexteProduction extends Contexte {
 	}
 
 	private void initialiserAssignateurSalle() {
-		this.assignateurSalle = new AssignateurSalle(this.conteneurDemandes, this.sallesEntrepot, creerNotificateur(),
-				new SelectionSalleOptimaleStrategie());
+		this.assignateurSalle = new AssignateurSalle(this.sallesEntrepot, new SelectionSalleOptimaleStrategie());
+	}
+
+	@Override
+	protected void enregistrerServices() {
+		LocalisateurServices.getInstance().enregistrer(ConteneurDemandes.class, this.conteneurDemandes);
+		LocalisateurServices.getInstance().enregistrer(ServiceReservationSalle.class, creerServiceReservationSalle());
+	}
+
+	private ServiceReservationSalle creerServiceReservationSalle() {
+		Notificateur notificateur = creerNotificateur();
+		return new ServiceReservationSalle(new MinuterieTimerJavaStandard(), this.conteneurDemandes,
+				this.assignateurSalle, notificateur);
 	}
 
 	private Notificateur creerNotificateur() {
@@ -62,16 +73,6 @@ public class ContexteProduction extends Contexte {
 		}
 
 		return configSmtp;
-	}
-
-	@Override
-	protected void enregistrerServices() {
-		LocalisateurServices.getInstance().enregistrer(ConteneurDemandes.class, this.conteneurDemandes);
-		LocalisateurServices.getInstance().enregistrer(ServiceReservationSalle.class, creerServiceReservationSalle());
-	}
-
-	private ServiceReservationSalle creerServiceReservationSalle() {
-		return new ServiceReservationSalle(assignateurSalle, new MinuterieTimerJavaStandard());
 	}
 
 	@Override
