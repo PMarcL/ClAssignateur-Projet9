@@ -1,13 +1,20 @@
 package org.ClAssignateur.domaine.demandes;
 
+import javax.persistence.Id;
+
+import javax.persistence.ManyToOne;
+import javax.persistence.Column;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToOne;
+import javax.persistence.Entity;
 import org.ClAssignateur.domaine.contacts.ContactsReunion;
 import org.ClAssignateur.domaine.contacts.InformationsContact;
-
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
 import java.util.List;
 
+@Entity
 public class Demande {
 
 	public enum StatutDemande {
@@ -15,14 +22,21 @@ public class Demande {
 	}
 
 	private static int nombreDemandesCrees;
-
+	@Column
 	private int nbParticipants;
+	@OneToOne(cascade = CascadeType.ALL)
 	private ContactsReunion contacts;
+	@Column
 	private Priorite priorite;
+	@Column
 	private String titre;
+	@ManyToOne
 	private Salle salleAssignee;
+	@Id
 	private UUID id;
+	@Column
 	private StatutDemande etat;
+	@Column
 	private int estampille;
 
 	private static int genererEstampille() {
