@@ -1,9 +1,12 @@
 package org.ClAssignateur.services.reservations;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
+import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.services.reservations.minuterie.Minute;
@@ -19,13 +22,23 @@ public class ServiceReservationSalle implements MinuterieObservateur {
 	private Minuterie minuterie;
 	private int limiteDemandes;
 	private ReservationDemandeDTOAssembleur assembleur;
+	private ConteneurDemandes demandes;
+	private Notificateur notificateur;
 
-	public ServiceReservationSalle(AssignateurSalle assignateurSalle, Minuterie minuterie) {
-		this.assignateurSalle = assignateurSalle;
-		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
+	public ServiceReservationSalle(Minuterie minuterie, ConteneurDemandes demandes, AssignateurSalle assignateurSalle,
+			Notificateur notificateur) {
 		this.assembleur = new ReservationDemandeDTOAssembleur();
-		this.minuterie = minuterie;
+		initialiser(minuterie, demandes, assignateurSalle, notificateur);
 		demarrerMinuterie();
+	}
+
+	private void initialiser(Minuterie minuterie, ConteneurDemandes demandes, AssignateurSalle assignateurSalle,
+			Notificateur notificateur) {
+		this.assignateurSalle = assignateurSalle;
+		this.demandes = demandes;
+		this.notificateur = notificateur;
+		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
+		this.minuterie = minuterie;
 	}
 
 	private void demarrerMinuterie() {
@@ -34,45 +47,53 @@ public class ServiceReservationSalle implements MinuterieObservateur {
 		this.minuterie.demarrer();
 	}
 
-	public ServiceReservationSalle(Minuterie minuterie, AssignateurSalle assignateurSalle,
-			ReservationDemandeDTOAssembleur assembleur) {
-		this.assignateurSalle = assignateurSalle;
+	public ServiceReservationSalle(Minuterie minuterie, ConteneurDemandes demandes, AssignateurSalle assignateurSalle,
+			Notificateur notificateur, ReservationDemandeDTOAssembleur assembleur) {
 		this.assembleur = assembleur;
-		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
-		this.minuterie = minuterie;
+		initialiser(minuterie, demandes, assignateurSalle, notificateur);
 		demarrerMinuterie();
 	}
 
 	public void setFrequence(Minute nbMinutes) {
-		minuterie.setDelai(nbMinutes);
-		minuterie.reinitialiser();
+		this.minuterie.setDelai(nbMinutes);
+		this.minuterie.reinitialiser();
 	}
 
 	public void setLimiteDemandesAvantAssignation(int limite) {
-		limiteDemandes = limite;
+		this.limiteDemandes = limite;
 		assignerSiNecessaire();
 	}
 
 	public void annulerDemande(String titreDemandeAnnulee) {
-		assignateurSalle.annulerDemande(titreDemandeAnnulee);
+		Optional<Demande> demandeAAnnuler = this.demandes.trouverDemandeSelonTitreReunion(titreDemandeAnnulee);
+
+		if (demandeAAnnuler.isPresent()) {
+			annulerReservation(demandeAAnnuler.get());
+		}
+	}
+
+	private void annulerReservation(Demande demandeAAnnuler) {
+		demandeAAnnuler.annulerReservation();
+		this.demandes.archiverDemande(demandeAAnnuler);
+		this.notificateur.notifierAnnulation(demandeAAnnuler);
 	}
 
 	public UUID ajouterDemande(ReservationDemandeDTO dto) {
-		Demande demande = assembleur.assemblerDemande(dto);
-		assignateurSalle.ajouterDemande(demande);
+		Demande demande = this.assembleur.assemblerDemande(dto);
+		this.demandes.mettreDemandeEnAttente(demande);
 		assignerSiNecessaire();
 		return demande.getID();
 	}
 
 	private void assignerSiNecessaire() {
-		if (assignateurSalle.getNombreDemandesEnAttente() >= limiteDemandes) {
-			assignateurSalle.lancerAssignation();
-			minuterie.reinitialiser();
+		if (this.demandes.getNombreDemandesEnAttente() >= this.limiteDemandes) {
+			this.assignateurSalle.lancerAssignation(this.demandes, this.notificateur);
+			this.minuterie.reinitialiser();
 		}
 	}
 
 	public void notifierDelaiEcoule() {
-		assignateurSalle.lancerAssignation();
+		this.assignateurSalle.lancerAssignation(this.demandes, this.notificateur);
 	}
 
 }

@@ -2,9 +2,10 @@ package org.ClAssignateur.services.reservations;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
+import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
@@ -13,6 +14,8 @@ import org.ClAssignateur.services.reservations.minuterie.Minuterie;
 import org.mockito.InOrder;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Optional;
 import java.util.UUID;
 
 public class ServiceReservationSalleTest {
@@ -28,7 +31,10 @@ public class ServiceReservationSalleTest {
 	private Minuterie minuterie;
 	private AssignateurSalle assignateur;
 	private Demande demande;
+	private Demande demandeAAnnuler;
 	private ReservationDemandeDTOAssembleur assembleur;
+	private ConteneurDemandes conteneurDemandes;
+	private Notificateur notificateur;
 
 	private ServiceReservationSalle serviceReservation;
 
@@ -37,10 +43,15 @@ public class ServiceReservationSalleTest {
 		minuterie = mock(Minuterie.class);
 		assignateur = mock(AssignateurSalle.class);
 		demande = mock(Demande.class);
+		demandeAAnnuler = mock(Demande.class);
 		assembleur = mock(ReservationDemandeDTOAssembleur.class);
+		conteneurDemandes = mock(ConteneurDemandes.class);
+		notificateur = mock(Notificateur.class);
 
 		given(assembleur.assemblerDemande(dto)).willReturn(demande);
-		serviceReservation = new ServiceReservationSalle(minuterie, assignateur, assembleur);
+
+		serviceReservation = new ServiceReservationSalle(minuterie, conteneurDemandes, assignateur, notificateur,
+				assembleur);
 	}
 
 	@Test
@@ -73,9 +84,9 @@ public class ServiceReservationSalleTest {
 	}
 
 	@Test
-	public void quandAjouterDemandeDevraitAjouterDansAssignateur() {
+	public void quandAjouterDemandeDevraitMettreDemandeEnAttente() {
 		serviceReservation.ajouterDemande(dto);
-		verify(assignateur).ajouterDemande(demande);
+		verify(conteneurDemandes).mettreDemandeEnAttente(demande);
 	}
 
 	@Test
@@ -87,28 +98,55 @@ public class ServiceReservationSalleTest {
 
 	@Test
 	public void etantDonneLimiteDemandeEnAttenteAtteinteQuandAjouterDemandeDevraitLancerAssignation() {
-		given(assignateur.getNombreDemandesEnAttente()).willReturn(LIMITE_DEMANDES_PAR_DEFAUT);
+		given(conteneurDemandes.getNombreDemandesEnAttente()).willReturn(LIMITE_DEMANDES_PAR_DEFAUT);
 		serviceReservation.ajouterDemande(dto);
-		verify(assignateur).lancerAssignation();
+		verify(assignateur).lancerAssignation(conteneurDemandes, notificateur);
 	}
 
 	@Test
-	public void quandAnnulerDemandeDevraitAnnulerDansAssignateur() {
+	public void etantDonneDemandeAAnnulerExistanteQuandAnnulerDemandeDevraitAnnulerReservation() {
+		permettreTrouverDemandeAAnnuler();
 		serviceReservation.annulerDemande(TITRE_DEMANDE_A_ANNULER);
-		verify(assignateur).annulerDemande(TITRE_DEMANDE_A_ANNULER);
+		verify(demandeAAnnuler).annulerReservation();
+	}
+
+	@Test
+	public void etantDonneDemandeAAnnulerExistanteQuandAnnulerDemandeDevraitArchiver() {
+		permettreTrouverDemandeAAnnuler();
+		serviceReservation.annulerDemande(TITRE_DEMANDE_A_ANNULER);
+		verify(conteneurDemandes).archiverDemande(demandeAAnnuler);
+	}
+
+	@Test
+	public void etantDonneDemandeAAnnulerExistanteQuandAnnulerDemandeDevraitNotifierAnnulation() {
+		permettreTrouverDemandeAAnnuler();
+		serviceReservation.annulerDemande(TITRE_DEMANDE_A_ANNULER);
+		verify(notificateur).notifierAnnulation(demandeAAnnuler);
+	}
+
+	@Test
+	public void etantDonneDemandeAAnnulerInexistanteQuandAnnulerDemandeDevraitNeRienFaire() {
+		given(conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_DEMANDE_A_ANNULER)).willReturn(Optional.empty());
+		serviceReservation.annulerDemande(TITRE_DEMANDE_A_ANNULER);
+		verify(conteneurDemandes, never()).archiverDemande(any(Demande.class));
 	}
 
 	@Test
 	public void etantDonneNouvelleLimiteDemandeEnAttenteAtteinteQuandSetLimiteDemandesAvantAssignationDevraitDemanderAssignationDemandes() {
-		given(assignateur.getNombreDemandesEnAttente()).willReturn(LIMITE_DEMANDES_QUELCONQUE);
+		given(conteneurDemandes.getNombreDemandesEnAttente()).willReturn(LIMITE_DEMANDES_QUELCONQUE);
 		serviceReservation.setLimiteDemandesAvantAssignation(LIMITE_DEMANDES_QUELCONQUE);
-		verify(assignateur).lancerAssignation();
+		verify(assignateur).lancerAssignation(conteneurDemandes, notificateur);
 	}
 
 	@Test
 	public void quandNotifierDelaiEcouleDevraitLancerAssignation() {
 		serviceReservation.notifierDelaiEcoule();
-		verify(assignateur).lancerAssignation();
+		verify(assignateur).lancerAssignation(conteneurDemandes, notificateur);
+	}
+
+	private void permettreTrouverDemandeAAnnuler() {
+		given(conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_DEMANDE_A_ANNULER)).willReturn(
+				Optional.of(demandeAAnnuler));
 	}
 
 }
