@@ -19,7 +19,6 @@ import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
 import org.ClAssignateur.services.reservations.minuterie.Minute;
 import org.ClAssignateur.services.reservations.minuterie.Minuterie;
-import org.ClAssignateur.testsAcceptationUtilisateur.fakes.EnMemoireDemandesEntrepotFake;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.MinuterieFake;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
@@ -29,7 +28,6 @@ import org.jbehave.core.annotations.When;
 public class AssignerPeriodiquementDesSallesAuxDemandesEtapes {
 
 	private final int NB_PARTICIPANTS = 10;
-	private final int NB_DEMANDES = 5;
 	private final String TITRE_DEMANDE = "Réunion de 15 minutes";
 	private final InformationsContact ORGANISATEUR = new InformationsContact("organisateur@gmail.com");
 	private final InformationsContact RESPONSABLE = new InformationsContact("responsable@gmail.com");
