@@ -22,7 +22,7 @@ public class ServiceReservationSalleTest {
 
 	private final Minute FREQUENCE_PAR_DEFAUT = new Minute(1);
 	private final Minute FREQUENCE_MINUTES = new Minute(3);
-	private final int LIMITE_DEMANDES_PAR_DEFAUT = 10;
+	private final int LIMITE_DEMANDES_PAR_DEFAUT = 100;
 	private final int LIMITE_DEMANDES_QUELCONQUE = 5;
 	private final String TITRE_DEMANDE_A_ANNULER = "DemandeAnnulee";
 	private final UUID ID_DEMANDE = UUID.randomUUID();

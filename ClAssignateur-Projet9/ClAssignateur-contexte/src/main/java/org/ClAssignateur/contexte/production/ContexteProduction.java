@@ -1,5 +1,6 @@
-package org.ClAssignateur.contexte;
+package org.ClAssignateur.contexte.production;
 
+import org.ClAssignateur.contexte.Contexte;
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
