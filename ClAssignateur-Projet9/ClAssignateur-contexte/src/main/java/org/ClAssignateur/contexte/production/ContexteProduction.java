@@ -16,7 +16,7 @@ import org.ClAssignateur.notificationCourriel.configuration.FichierProprietesCon
 import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.ClAssignateur.services.localisateur.LocalisateurServices;
-import org.ClAssignateur.services.reservations.ServiceReservationSalle;
+import org.ClAssignateur.services.reservations.DeclencheurAssignateurSalle;
 import org.ClAssignateur.services.reservations.minuterie.MinuterieTimerJavaStandard;
 
 public class ContexteProduction extends Contexte {
@@ -50,12 +50,13 @@ public class ContexteProduction extends Contexte {
 	@Override
 	protected void enregistrerServices() {
 		LocalisateurServices.getInstance().enregistrer(ConteneurDemandes.class, this.conteneurDemandes);
-		LocalisateurServices.getInstance().enregistrer(ServiceReservationSalle.class, creerServiceReservationSalle());
+		LocalisateurServices.getInstance().enregistrer(DeclencheurAssignateurSalle.class,
+				creerDeclencheurAssignateurSalle());
 	}
 
-	private ServiceReservationSalle creerServiceReservationSalle() {
+	private DeclencheurAssignateurSalle creerDeclencheurAssignateurSalle() {
 		Notificateur notificateur = creerNotificateur();
-		return new ServiceReservationSalle(new MinuterieTimerJavaStandard(), this.conteneurDemandes,
+		return new DeclencheurAssignateurSalle(new MinuterieTimerJavaStandard(), this.conteneurDemandes,
 				this.assignateurSalle, notificateur);
 	}
 
