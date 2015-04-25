@@ -10,13 +10,14 @@ import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.ClAssignateur.services.localisateur.LocalisateurServices;
 import org.ClAssignateur.services.reservations.DeclencheurAssignateurSalle;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.ConteneurDemandesFake;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.MinuterieFake;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationStrategieSilencieuse;
 
 public class ContexteTestAcceptation extends Contexte {
 
 	private SallesEntrepot sallesEntrepot;
-	private ConteneurDemandes conteneurDemandes;
+	private ConteneurDemandesFake conteneurDemandes;
 
 	public ContexteTestAcceptation() {
 		initialisation();
@@ -24,7 +25,8 @@ public class ContexteTestAcceptation extends Contexte {
 
 	private void initialisation() {
 		this.sallesEntrepot = new EnMemoireSallesEntrepot();
-		this.conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), new EnMemoireDemandeEntrepot());
+		this.conteneurDemandes = new ConteneurDemandesFake(new EnMemoireDemandeEntrepot(),
+				new EnMemoireDemandeEntrepot());
 	}
 
 	@Override
