@@ -46,26 +46,38 @@ public class DeclencheurAssignateurSalle implements MinuterieObservateur {
 	}
 
 	public void ajouterDemande(Demande demandeAjoutee) {
-		this.demandes.mettreDemandeEnAttente(demandeAjoutee);
+		synchronized (this.demandes) {
+			this.demandes.mettreDemandeEnAttente(demandeAjoutee);
+		}
 		assignerSiNecessaire();
 	}
 
 	private void assignerSiNecessaire() {
-		if (this.demandes.getNombreDemandesEnAttente() >= this.limiteDemandes) {
+		if (nombreDemandesEnAttente() >= this.limiteDemandes) {
 			assigner();
 			this.minuterie.reinitialiser();
 		}
 	}
 
+	private int nombreDemandesEnAttente() {
+		synchronized (this.demandes) {
+			return this.demandes.getNombreDemandesEnAttente();
+		}
+	}
+
 	private void assigner() {
-		this.assignateur.lancerAssignation(this.demandes, this.notificateur);
+		synchronized (this.demandes) {
+			this.assignateur.lancerAssignation(this.demandes, this.notificateur);
+		}
 	}
 
 	public void annulerDemande(String titreDemandeAnnulee) {
-		Optional<Demande> demandeAnnulee = this.demandes.trouverDemandeSelonTitreReunion(titreDemandeAnnulee);
+		synchronized (this.demandes) {
+			Optional<Demande> demandeAnnulee = this.demandes.trouverDemandeSelonTitreReunion(titreDemandeAnnulee);
 
-		if (demandeAnnulee.isPresent()) {
-			annulerReservation(demandeAnnulee.get());
+			if (demandeAnnulee.isPresent()) {
+				annulerReservation(demandeAnnulee.get());
+			}
 		}
 	}
 
