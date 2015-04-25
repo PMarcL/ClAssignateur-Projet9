@@ -15,7 +15,7 @@ public class ReservationDemandeDTOAssembleur {
 		String titre = creerTitreDemande(dto);
 		ContactsReunion groupe = creerGroupe(dto);
 		Priorite priorite = new Priorite(dto.priorite);
-		return new Demande(dto.nombrePersonne, groupe, titre, priorite);
+		return new Demande(dto.nombreParticipants, groupe, titre, priorite);
 	}
 
 	private List<InformationsContact> creerListeParticipants(ReservationDemandeDTO dto) {
@@ -39,7 +39,7 @@ public class ReservationDemandeDTOAssembleur {
 	}
 
 	private String creerTitreDemande(ReservationDemandeDTO dto) {
-		return "Demande pour " + dto.nombrePersonne + " personnes, par " + dto.courrielOrganisateur + ", priorité "
+		return "Demande pour " + dto.nombreParticipants + " personnes, par " + dto.courrielOrganisateur + ", priorité "
 				+ dto.priorite;
 	}
 
