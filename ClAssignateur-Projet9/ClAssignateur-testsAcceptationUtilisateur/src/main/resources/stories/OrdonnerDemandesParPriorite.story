@@ -1,9 +1,9 @@
 Ordonner les demandes par priorité
 
 Narrative:
-In order to : Afin de pouvoir prioriser les réunions plus importantes
-As a : En tant qu'entreprise
-I want to : Je veux traiter les demandes selon leur priorité
+In order to prioriser les réunions plus importantes
+As a entreprise
+I want to traiter les demandes selon leur priorité
 					 
 Scenario: Les demandes sont traitées selon leur priorité
 Given une demande à priorité basse en attente
