@@ -42,17 +42,17 @@ public class DeclencheurAssignateurSalleTest {
 	}
 
 	@Test
-	public void configureMinuteriePendantDemarrageService() {
+	public void configureMinuteriePendantInitialisation() {
 		verify(minuterie).setDelai(FREQUENCE_PAR_DEFAUT);
 	}
 
 	@Test
-	public void serviceSouscritNotificationMinuteriePendantDemarrageService() {
+	public void souscritNotificationMinuteriePendantInitialisation() {
 		verify(minuterie).souscrire(declencheur);
 	}
 
 	@Test
-	public void demarreMinuteriePendantDemarrageService() {
+	public void demarreMinuteriePendantInitialisation() {
 		verify(minuterie).demarrer();
 	}
 
