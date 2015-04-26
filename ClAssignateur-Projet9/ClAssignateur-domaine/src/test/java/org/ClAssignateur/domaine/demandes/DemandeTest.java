@@ -117,10 +117,10 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void quandAnnulerReservationDemandeEstPasAssignee() {
+	public void quandAnnulerReservationDevraitAvoirStatutAnnulee() {
 		demande.annulerReservation();
 		assertFalse(demande.estAssignee());
-		assertEquals(StatutDemande.REFUSEE, demande.getEtat());
+		assertEquals(StatutDemande.ANNULEE, demande.getEtat());
 	}
 
 	@Test

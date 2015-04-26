@@ -18,24 +18,32 @@ import java.util.List;
 public class Demande {
 
 	public enum StatutDemande {
-		EN_ATTENTE, ACCEPTEE, REFUSEE
+		EN_ATTENTE, ACCEPTEE, REFUSEE, ANNULEE
 	}
 
 	private static int nombreDemandesCrees;
+
 	@Column
 	private int nbParticipants;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private ContactsReunion contacts;
+
 	@Column
 	private Priorite priorite;
+
 	@Column
 	private String titre;
+
 	@ManyToOne
 	private Salle salleAssignee;
+
 	@Id
 	private UUID id;
+
 	@Column
 	private StatutDemande etat;
+
 	@Column
 	private int estampille;
 
@@ -88,7 +96,7 @@ public class Demande {
 	}
 
 	public void annulerReservation() {
-		this.etat = StatutDemande.REFUSEE;
+		this.etat = StatutDemande.ANNULEE;
 		this.salleAssignee = null;
 	}
 
