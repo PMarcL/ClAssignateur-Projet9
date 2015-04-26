@@ -78,6 +78,13 @@ public class DeclencheurAssignateurSalleTest {
 	}
 
 	@Test
+	public void etantDonneLimiteDemandeEnAttenteAtteinteQuandAjouterDeamndeDevraitReinitiliserMinuterie() {
+		given(conteneurDemandes.getNombreDemandesEnAttente()).willReturn(LIMITE_DEMANDES_PAR_DEFAUT);
+		declencheur.ajouterDemande(demandeAjoutee);
+		verify(minuterie).reinitialiser();
+	}
+
+	@Test
 	public void etantDonneDemandeAAnnulerExistanteQuandAnnulerDemandeDevraitAnnulerReservation() {
 		permettreTrouverDemandeAAnnuler();
 		declencheur.annulerDemande(TITRE_DEMANDE_ANNULEE);
