@@ -2,7 +2,7 @@ Assigner en lot des salles aux demandes
 
 Narrative:
 In order to être informé plus rapidement du résultat de ma demande lorsqu'il y a une forte demande
-As a un organisateur
+As a organisateur
 I want to traiter les demandes plus rapidement en période de haute affluence
 					 
 Scenario:  Les demandes sont traitées lorsqu'il y en a X d'accumulées
