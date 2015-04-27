@@ -7,7 +7,7 @@ import org.ClAssignateur.domaine.contacts.ContactsReunion;
 import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
+import org.ClAssignateur.domaine.demandes.Demande.EtatDemande;
 import org.ClAssignateur.domaine.salles.Salle;
 import java.util.UUID;
 import java.util.ArrayList;
@@ -60,8 +60,8 @@ public class DemandeTest {
 
 	@Test
 	public void demandeEstInitialementEnAttente() {
-		StatutDemande resultat = demande.getEtat();
-		assertEquals(StatutDemande.EN_ATTENTE, resultat);
+		EtatDemande resultat = demande.getEtat();
+		assertEquals(EtatDemande.EN_ATTENTE, resultat);
 	}
 
 	@Test
@@ -113,14 +113,14 @@ public class DemandeTest {
 		Salle salle = new Salle(CAPACITE_SALLE, NOM_SALLE);
 		demande.placerReservation(salle);
 		assertTrue(demande.estAssignee());
-		assertEquals(StatutDemande.ACCEPTEE, demande.getEtat());
+		assertEquals(EtatDemande.ACCEPTEE, demande.getEtat());
 	}
 
 	@Test
-	public void quandAnnulerReservationDemandeEstPasAssignee() {
+	public void quandAnnulerReservationDevraitAvoirStatutAnnulee() {
 		demande.annulerReservation();
 		assertFalse(demande.estAssignee());
-		assertEquals(StatutDemande.REFUSEE, demande.getEtat());
+		assertEquals(EtatDemande.ANNULEE, demande.getEtat());
 	}
 
 	@Test
@@ -199,6 +199,12 @@ public class DemandeTest {
 	public void etantDonneDeuxDemandesAvecPrioriteIdentitqueLorsqueEstPlusPrioritaireRetourneFaux() {
 		Demande demandeMemePriorite = creerDemande();
 		assertFalse(demande.estPlusPrioritaire(demandeMemePriorite));
+	}
+
+	@Test
+	public void quandRefuserDevraitIndiquerStatutResusee() {
+		demande.refuser();
+		assertEquals(Demande.EtatDemande.REFUSEE, demande.getEtat());
 	}
 
 	private Demande faireUneDemandeDifferenteAvecId(UUID id) {

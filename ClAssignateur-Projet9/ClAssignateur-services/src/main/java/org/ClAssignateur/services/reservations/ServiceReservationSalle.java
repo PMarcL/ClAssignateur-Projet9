@@ -2,77 +2,43 @@ package org.ClAssignateur.services.reservations;
 
 import java.util.UUID;
 
-import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.demandes.Demande;
+import org.ClAssignateur.services.localisateur.LocalisateurServices;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
 import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
 import org.ClAssignateur.services.reservations.minuterie.Minute;
-import org.ClAssignateur.services.reservations.minuterie.Minuterie;
-import org.ClAssignateur.services.reservations.minuterie.MinuterieObservateur;
 
-public class ServiceReservationSalle implements MinuterieObservateur {
+public class ServiceReservationSalle {
 
-	private final Minute DELAI_MINUTERIE_PAR_DEFAUT = new Minute(1);
-	private final int LIMITE_DEMANDES_PAR_DEFAUT = 10;
-
-	private AssignateurSalle assignateurSalle;
-	private Minuterie minuterie;
-	private int limiteDemandes;
+	private DeclencheurAssignateurSalle declencheur;
 	private ReservationDemandeDTOAssembleur assembleur;
 
-	public ServiceReservationSalle(AssignateurSalle assignateurSalle, Minuterie minuterie) {
-		this.assignateurSalle = assignateurSalle;
-		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
+	public ServiceReservationSalle() {
 		this.assembleur = new ReservationDemandeDTOAssembleur();
-		this.minuterie = minuterie;
-		demarrerMinuterie();
+		this.declencheur = LocalisateurServices.getInstance().obtenir(DeclencheurAssignateurSalle.class);
 	}
 
-	private void demarrerMinuterie() {
-		this.minuterie.setDelai(DELAI_MINUTERIE_PAR_DEFAUT);
-		this.minuterie.souscrire(this);
-		this.minuterie.demarrer();
-	}
-
-	public ServiceReservationSalle(Minuterie minuterie, AssignateurSalle assignateurSalle,
-			ReservationDemandeDTOAssembleur assembleur) {
-		this.assignateurSalle = assignateurSalle;
+	public ServiceReservationSalle(DeclencheurAssignateurSalle declencheur, ReservationDemandeDTOAssembleur assembleur) {
 		this.assembleur = assembleur;
-		this.limiteDemandes = LIMITE_DEMANDES_PAR_DEFAUT;
-		this.minuterie = minuterie;
-		demarrerMinuterie();
+		this.declencheur = declencheur;
 	}
 
 	public void setFrequence(Minute nbMinutes) {
-		minuterie.setDelai(nbMinutes);
-		minuterie.reinitialiser();
+		this.declencheur.setFrequence(nbMinutes);
 	}
 
 	public void setLimiteDemandesAvantAssignation(int limite) {
-		limiteDemandes = limite;
-		assignerSiNecessaire();
+		this.declencheur.setLimiteDemandesAvantAssignation(limite);
 	}
 
 	public void annulerDemande(String titreDemandeAnnulee) {
-		assignateurSalle.annulerDemande(titreDemandeAnnulee);
+		this.declencheur.annulerDemande(titreDemandeAnnulee);
 	}
 
 	public UUID ajouterDemande(ReservationDemandeDTO dto) {
-		Demande demande = assembleur.assemblerDemande(dto);
-		assignateurSalle.ajouterDemande(demande);
-		assignerSiNecessaire();
+		Demande demande = this.assembleur.assemblerDemande(dto);
+		this.declencheur.ajouterDemande(demande);
 		return demande.getID();
-	}
-
-	private void assignerSiNecessaire() {
-		if (assignateurSalle.getNombreDemandesEnAttente() >= limiteDemandes) {
-			assignateurSalle.lancerAssignation();
-			minuterie.reinitialiser();
-		}
-	}
-
-	public void notifierDelaiEcoule() {
-		assignateurSalle.lancerAssignation();
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ReservationDemandeDTO {
 
-	public int nombrePersonne;
+	public int nombreParticipants;
 	public String courrielOrganisateur;
 	public List<String> participantsCourriels;
 	public int priorite;

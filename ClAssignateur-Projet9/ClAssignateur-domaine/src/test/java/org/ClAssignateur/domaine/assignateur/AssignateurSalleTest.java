@@ -1,6 +1,5 @@
 package org.ClAssignateur.domaine.assignateur;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
 import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleStrategie;
@@ -39,90 +38,63 @@ public class AssignateurSalleTest {
 	public void creerAssignateur() {
 		configurerMocks();
 
-		assignateur = new AssignateurSalle(conteneurDemandes, entrepotSalles, notificateur, strategieSelectionSalle);
-	}
-
-	@Test
-	public void quandAjouterDemandeDevraitMettreDemandeEnAttente() {
-		assignateur.ajouterDemande(demandeSalleDisponible);
-		verify(conteneurDemandes).mettreDemandeEnAttente(demandeSalleDisponible);
-	}
-
-	@Test
-	public void etantDonneDemandeAAnnulerExistanteQuandAnnulerDemandeDevraitAnnulerReservation() {
-		permettreTrouverDemandeAAnnuler();
-		assignateur.annulerDemande(TITRE_REUNION);
-		verify(demandeAAnnuler).annulerReservation();
-	}
-
-	@Test
-	public void etantDonneDemandeAAnnulerExistanteQuandAnnulerDemandeDevraitArchiver() {
-		permettreTrouverDemandeAAnnuler();
-		assignateur.annulerDemande(TITRE_REUNION);
-		verify(conteneurDemandes).archiverDemande(demandeAAnnuler);
-	}
-
-	@Test
-	public void etantDonneDemandeAAnnulerExistanteQuandAnnulerDemandeDevraitNotifierAnnulation() {
-		permettreTrouverDemandeAAnnuler();
-		assignateur.annulerDemande(TITRE_REUNION);
-		verify(notificateur).notifierAnnulation(demandeAAnnuler);
-	}
-
-	@Test
-	public void etantDonneDemandeAAnnulerInexistanteQuandAnnulerDemandeDevraitNeRienFaire() {
-		given(conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION)).willReturn(Optional.empty());
-		assignateur.annulerDemande(TITRE_REUNION);
-		verify(conteneurDemandes, never()).archiverDemande(any(Demande.class));
+		assignateur = new AssignateurSalle(entrepotSalles, strategieSelectionSalle);
 	}
 
 	@Test
 	public void quandLancerAssignationDevraitTenterAssignerChaqueDemande() {
 		ajouterDemandesEnAttente(NOMBRE_DEMANDES, demandeSalleDisponible);
-		assignateur.lancerAssignation();
+		assignateur.lancerAssignation(conteneurDemandes, notificateur);
 		verify(strategieSelectionSalle, times(NOMBRE_DEMANDES)).selectionnerSalle(eq(SALLES), any(Demande.class));
 	}
 
 	@Test
 	public void etantDonneSalleRepondantDemandeTrouveeQuandLancerAssignationDevraitReserverSalle() {
 		configurerSalleRepondantADemande();
-		assignateur.lancerAssignation();
+		assignateur.lancerAssignation(conteneurDemandes, notificateur);
 		verify(demandeSalleDisponible).placerReservation(salleDisponible);
 	}
 
 	@Test
-	public void etantDonneeReservationPlaceeAvecSuccesQuandLancerAssignationNotifierSucces() {
+	public void etantDonneReservationPlaceeAvecSuccesQuandLancerAssignationNotifierSucces() {
 		configurerSalleRepondantADemande();
-		assignateur.lancerAssignation();
+		assignateur.lancerAssignation(conteneurDemandes, notificateur);
 		verify(notificateur).notifierSucces(demandeSalleDisponible, salleDisponible);
 	}
 
 	@Test
-	public void etantDonneeReservationPlaceeAvecSuccesQuandLancerAssignationDevraitArchiverReservation() {
+	public void etantDonneReservationPlaceeAvecSuccesQuandLancerAssignationDevraitArchiverReservation() {
 		configurerSalleRepondantADemande();
-		assignateur.lancerAssignation();
+		assignateur.lancerAssignation(conteneurDemandes, notificateur);
 		verify(conteneurDemandes).archiverDemande(demandeSalleDisponible);
 	}
 
 	@Test
-	public void etantDonneeImpossibiliteDePlacerReservationQuandLancerAssignationDevraitNotifierEchec() {
+	public void etantDonneImpossibliteDePlacerReservationQuandLancerAssignationDevraitRefuserDemande() {
 		configurerSalleNeRepondantPasADemande();
-		assignateur.lancerAssignation();
+		assignateur.lancerAssignation(conteneurDemandes, notificateur);
+		verify(demandeAucuneSalleDisponible).refuser();
+	}
+
+	@Test
+	public void etantDonneImpossibiliteDePlacerReservationQuandLancerAssignationDevraitNotifierEchec() {
+		configurerSalleNeRepondantPasADemande();
+		assignateur.lancerAssignation(conteneurDemandes, notificateur);
 		verify(notificateur).notifierEchec(demandeAucuneSalleDisponible);
+	}
+
+	@Test
+	public void etantDonneImpossibliteDePlacerReservationQuandLancerAssignationDevraitArchiverReservation() {
+		configurerSalleNeRepondantPasADemande();
+		assignateur.lancerAssignation(conteneurDemandes, notificateur);
+		verify(conteneurDemandes).archiverDemande(demandeAucuneSalleDisponible);
 	}
 
 	@Test
 	public void etantDonneAucuneSalleRepondantDemandeTrouveeQuandLancerAssignationDevraitNePasReserverSalle() {
 		configurerSalleNeRepondantPasADemande();
-		assignateur.lancerAssignation();
+		assignateur.lancerAssignation(conteneurDemandes, notificateur);
 		verify(demandeAucuneSalleDisponible, never()).placerReservation(salleDisponible);
-	}
-
-	@Test
-	public void quandGetNombreDemandesEnAttenteDevraitDemanderAConteneurDemandes() {
-		given(conteneurDemandes.getNombreDemandesEnAttente()).willReturn(NOMBRE_DEMANDES);
-		int nbDemandesEnAttente = assignateur.getNombreDemandesEnAttente();
-		assertEquals(NOMBRE_DEMANDES, nbDemandesEnAttente);
 	}
 
 	private void configurerSalleRepondantADemande() {
@@ -170,10 +142,5 @@ public class AssignateurSalleTest {
 		given(demandeAAnnuler.estAssignee()).willReturn(true);
 		given(demandeAAnnuler.getTitre()).willReturn(TITRE_REUNION);
 		given(conteneurDemandes.obtenirDemandesEnAttenteOrdrePrioritaire()).willReturn(new ArrayList<Demande>());
-	}
-
-	private void permettreTrouverDemandeAAnnuler() {
-		given(conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_REUNION))
-				.willReturn(Optional.of(demandeAAnnuler));
 	}
 }

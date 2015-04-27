@@ -15,8 +15,10 @@ import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class HibernateDemandeEntrepotTest {
 
 	private static final int NB_PARTICIPANTS = 10;
@@ -149,38 +151,29 @@ public class HibernateDemandeEntrepotTest {
 		assertFalse(demandeEstPresenteApres);
 	}
 
-	// @Test
-	// public void
-	// etantDonneUnEntrepotAvecUneDemandeDunOrganisateurLorsqueObtenirDemandeSelonCourrielDonneUneSeulDemande()
-	// {
-	// faireEnSorteQuEntrepotPossedeUneDemande();
-	//
-	// List<Demande> demandesRecus =
-	// entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
-	// int taille_actuelle = demandesRecus.size();
-	//
-	// assertEquals(UNE_SEULE_DEMANDE, taille_actuelle);
-	// }
-	//
-	// @Test
-	// public void
-	// etantDonneUnEntrepotAvecUneDemandeDunOrganisateurLorsqueObtenirDemandeSelonOrganisateurRetourneLaDemande()
-	// {
-	// faireEnSorteQuEntrepotPossedeUneDemande();
-	// List<Demande> demandesRecus =
-	// entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
-	// assertTrue(demandesRecus.contains(demande));
-	// }
-	//
-	// @Test
-	// public void
-	// etantDonneUnEntrepotAvecPlusieursDemandeQuiNAppartiennePasALorganisateurAlorsDonneUneListVide()
-	// {
-	// ajouterPlusieursDemandesALEntrepot();
-	// List<Demande> demandesRecus =
-	// entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
-	// assertTrue(demandesRecus.isEmpty());
-	// }
+	@Test
+	public void etantDonneUnEntrepotAvecUneDemandeDunOrganisateurLorsqueObtenirDemandeSelonCourrielDonneUneSeulDemande() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
+		int taille_actuelle = demandesRecus.size();
+
+		assertEquals(UNE_SEULE_DEMANDE, taille_actuelle);
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecUneDemandeDunOrganisateurLorsqueObtenirDemandeSelonOrganisateurRetourneLaDemande() {
+		faireEnSorteQuEntrepotPossedeUneDemande();
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
+		assertTrue(demandesRecus.contains(demande));
+	}
+
+	@Test
+	public void etantDonneUnEntrepotAvecPlusieursDemandeQuiNAppartiennePasALorganisateurAlorsDonneUneListVide() {
+		ajouterPlusieursDemandesALEntrepot();
+		List<Demande> demandesRecus = entrepot.obtenirDemandesSelonCourrielOrganisateur(COURRIEL_ORGANISATEUR);
+		assertTrue(demandesRecus.isEmpty());
+	}
 
 	private void faireEnSorteQuEntrepotPossedeUneDemande() {
 		demande = new Demande(NB_PARTICIPANTS, contactsReunion, UN_TITRE_DISTINCT, Priorite.basse());

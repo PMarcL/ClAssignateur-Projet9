@@ -17,25 +17,33 @@ import java.util.List;
 @Entity
 public class Demande {
 
-	public enum StatutDemande {
-		EN_ATTENTE, ACCEPTEE, REFUSEE
+	public enum EtatDemande {
+		EN_ATTENTE, ACCEPTEE, REFUSEE, ANNULEE
 	}
 
 	private static int nombreDemandesCrees;
+
 	@Column
 	private int nbParticipants;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private ContactsReunion contacts;
+
 	@Column
 	private Priorite priorite;
+
 	@Column
 	private String titre;
+
 	@ManyToOne
 	private Salle salleAssignee;
+
 	@Id
 	private UUID id;
+
 	@Column
-	private StatutDemande etat;
+	private EtatDemande etat;
+
 	@Column
 	private int estampille;
 
@@ -49,7 +57,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
-		this.etat = StatutDemande.EN_ATTENTE;
+		this.etat = EtatDemande.EN_ATTENTE;
 		this.nbParticipants = nombreParticipants;
 		ajouterEstampille();
 	}
@@ -62,7 +70,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
-		this.etat = StatutDemande.EN_ATTENTE;
+		this.etat = EtatDemande.EN_ATTENTE;
 		ajouterEstampille();
 	}
 
@@ -83,12 +91,12 @@ public class Demande {
 	}
 
 	public void placerReservation(Salle salleAssignee) {
-		this.etat = StatutDemande.ACCEPTEE;
+		this.etat = EtatDemande.ACCEPTEE;
 		this.salleAssignee = salleAssignee;
 	}
 
 	public void annulerReservation() {
-		this.etat = StatutDemande.REFUSEE;
+		this.etat = EtatDemande.ANNULEE;
 		this.salleAssignee = null;
 	}
 
@@ -137,7 +145,7 @@ public class Demande {
 		}
 	}
 
-	public StatutDemande getEtat() {
+	public EtatDemande getEtat() {
 		return this.etat;
 	}
 
@@ -147,6 +155,10 @@ public class Demande {
 
 	public boolean estAnterieureA(Demande demande) {
 		return this.estampille < demande.estampille;
+	}
+
+	public void refuser() {
+		this.etat = EtatDemande.REFUSEE;
 	}
 
 }

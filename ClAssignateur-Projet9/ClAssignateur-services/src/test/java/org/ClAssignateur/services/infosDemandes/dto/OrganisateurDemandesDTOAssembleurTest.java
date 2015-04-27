@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
+import org.ClAssignateur.domaine.demandes.Demande.EtatDemande;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
 import org.ClAssignateur.services.infosDemandes.dto.OrganisateurDemandesDTO;
@@ -22,7 +22,7 @@ public class OrganisateurDemandesDTOAssembleurTest {
 	private final int NOMBRE_DE_DEMANDE_VOULU_QUAND_UNE_SEULE_DEMANDE_DANS_LISTE = 1;
 	private final int NB_DE_DEMANDE_ASSIGNEE = 5;
 	private final int NB_DE_DEMANDE_AUTRES = 10;
-	private final StatutDemande STATUT_DEMANDE_EN_ATTENTE = StatutDemande.EN_ATTENTE;
+	private final EtatDemande STATUT_DEMANDE_EN_ATTENTE = EtatDemande.EN_ATTENTE;
 	private final int NB_PARTICIPANT = 12;
 	private final String NOM_SALLE = "NomDeSalle";
 

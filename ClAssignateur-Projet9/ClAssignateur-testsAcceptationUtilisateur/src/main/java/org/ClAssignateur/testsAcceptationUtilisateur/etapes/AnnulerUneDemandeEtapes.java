@@ -1,95 +1,71 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
-import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
 
-import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
-import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleStrategie;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.contacts.ContactsReunion;
-import org.ClAssignateur.domaine.notification.Notificateur;
-import org.ClAssignateur.domaine.salles.SallesEntrepot;
+import org.ClAssignateur.domaine.salles.Salle;
+import org.ClAssignateur.services.localisateur.LocalisateurServices;
+import org.ClAssignateur.services.reservations.DeclencheurAssignateurSalle;
 import org.ClAssignateur.services.reservations.ServiceReservationSalle;
-import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
-import org.ClAssignateur.services.reservations.minuterie.Minuterie;
-import org.jbehave.core.annotations.BeforeScenario;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.ConteneurDemandesFake;
+import org.ClAssignateur.testsAcceptationUtilisateur.fixtures.DemandeConstructeur;
+import org.ClAssignateur.testsAcceptationUtilisateur.fixtures.SalleConstructeur;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-
-import java.util.Optional;
 
 public class AnnulerUneDemandeEtapes {
 
 	private final String TITRE_DEMANDE_EN_ATTENTE = "Demande en attente";
 	private final String TITRE_DEMANDE_ASSIGNEE = "Demande assignee";
-	private final int NB_PARTICIPANTS = 10;
 
-	private ServiceReservationSalle service;
-	private AssignateurSalle assignateur;
-	private ConteneurDemandes conteneur;
-	private Demande demandeEnAttente;
-	private Optional<Demande> demandeEnAttenteOptional;
-	private Optional<Demande> demandeAssigneeOptional;
 	private Demande demandeAssignee;
-
-	@BeforeScenario
-	public void initialisationScenario() {
-		conteneur = mock(ConteneurDemandes.class);
-
-		assignateur = new AssignateurSalle(conteneur, mock(SallesEntrepot.class), mock(Notificateur.class),
-				mock(SelectionSalleStrategie.class));
-		service = new ServiceReservationSalle(mock(Minuterie.class), assignateur,
-				mock(ReservationDemandeDTOAssembleur.class));
-
-	}
+	private Demande demandeEnAttente;
 
 	@Given("une demande assignée")
 	public void givenUneDemandeAssignee() {
-		demandeAssignee = new Demande(NB_PARTICIPANTS, mock(ContactsReunion.class), TITRE_DEMANDE_ASSIGNEE,
-				Priorite.moyenne());
-		demandeAssigneeOptional = Optional.of(demandeAssignee);
-		given(conteneur.trouverDemandeSelonTitreReunion(TITRE_DEMANDE_ASSIGNEE)).willReturn(demandeAssigneeOptional);
+		this.demandeAssignee = new DemandeConstructeur().titre(TITRE_DEMANDE_ASSIGNEE).construireDemande();
+		Salle salle = new SalleConstructeur().construireSalle();
+		assignerDemandeA(salle);
 	}
 
 	@Given("une demande en attente de traitement")
 	public void givenUneDemandeEnAttenteDeTraitement() {
-		demandeEnAttente = new Demande(NB_PARTICIPANTS, mock(ContactsReunion.class), TITRE_DEMANDE_EN_ATTENTE,
-				Priorite.moyenne());
-		demandeEnAttenteOptional = Optional.of(demandeEnAttente);
-		given(conteneur.trouverDemandeSelonTitreReunion(TITRE_DEMANDE_EN_ATTENTE)).willReturn(demandeEnAttenteOptional);
+		this.demandeEnAttente = new DemandeConstructeur().titre(TITRE_DEMANDE_EN_ATTENTE).construireDemande();
+		mettreDemandeEnAttente();
 	}
 
 	@When("on annule la demande assignée")
 	public void whenOnAnnuleLaDemandeAssignee() {
-		service.annulerDemande(TITRE_DEMANDE_ASSIGNEE);
+		new ServiceReservationSalle().annulerDemande(TITRE_DEMANDE_ASSIGNEE);
 	}
 
 	@When("on annule la demande en attente")
 	public void whenOnAnnuleLaDemandeEnAttente() {
-		service.annulerDemande(TITRE_DEMANDE_EN_ATTENTE);
+		new ServiceReservationSalle().annulerDemande(TITRE_DEMANDE_EN_ATTENTE);
 	}
 
 	@Then("la demande assignée est annulée")
 	public void thenLaDemandeAssigneeEstAnnulee() {
-		assertTrue(demandeAssignee.getEtat().equals(Demande.StatutDemande.REFUSEE));
+		assertTrue(demandeEstAnnulee(this.demandeAssignee));
 	}
 
 	@Then("la demande en attente est annulée")
 	public void thenLaDemandeEnAttenteEstAnnulee() {
-		assertTrue(demandeEnAttente.getEtat().equals(Demande.StatutDemande.REFUSEE));
+		assertTrue(demandeEstAnnulee(this.demandeEnAttente));
 	}
 
 	@Then("la demande en attente est archivée")
 	public void thenLaDemandeEnAttenteEstArchivee() {
-		verify(conteneur).archiverDemande(demandeEnAttente);
+		ConteneurDemandesFake conteneur = obtenirConteneurDemandes();
+		assertTrue(conteneur.demandesEstArchivee(this.demandeEnAttente));
 	}
 
 	@Then("la demande assignée est archivée")
 	public void thenLaDemandeAssigneeEstArchivee() {
-		verify(conteneur).archiverDemande(demandeAssignee);
+		ConteneurDemandesFake conteneur = obtenirConteneurDemandes();
+		assertTrue(conteneur.demandesEstArchivee(this.demandeAssignee));
 	}
 
 	@Then("la salle assignée à cette demande lui est retirée")
@@ -99,6 +75,24 @@ public class AnnulerUneDemandeEtapes {
 
 	@Then("le satut de la demande est changer pour un statut d'annulation")
 	public void thenLeStatutDeLaDemandeEstChanger() {
-		assertTrue(demandeAssignee.getEtat().equals(Demande.StatutDemande.REFUSEE));
+		assertTrue(demandeEstAnnulee(this.demandeAssignee));
+	}
+
+	private void assignerDemandeA(Salle salleAssignee) {
+		this.demandeAssignee.placerReservation(salleAssignee);
+		obtenirConteneurDemandes().archiverDemande(this.demandeAssignee);
+	}
+
+	private ConteneurDemandesFake obtenirConteneurDemandes() {
+		return (ConteneurDemandesFake) LocalisateurServices.getInstance().obtenir(ConteneurDemandes.class);
+	}
+
+	private boolean demandeEstAnnulee(Demande demande) {
+		return demande.getEtat().equals(Demande.EtatDemande.ANNULEE);
+	}
+
+	private void mettreDemandeEnAttente() {
+		LocalisateurServices.getInstance().obtenir(DeclencheurAssignateurSalle.class)
+				.ajouterDemande(this.demandeEnAttente);
 	}
 }

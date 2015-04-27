@@ -33,9 +33,12 @@ public class ServiceInformationsDemande {
 	}
 
 	public InformationsDemandeDTO getInformationsDemande(String courrielOrganisateur, UUID idDemande) {
-		Optional<Demande> demande = conteneurDemandes.obtenirDemandeSelonId(idDemande);
-		if (demandeAppartienOrganisateur(courrielOrganisateur, demande)) {
-			return this.infosDemandeAssembleur.assemblerInformationsDemandeDTO(demande.get());
+		synchronized (this.conteneurDemandes) {
+			Optional<Demande> demande = this.conteneurDemandes.obtenirDemandeSelonId(idDemande);
+
+			if (demandeAppartienOrganisateur(courrielOrganisateur, demande)) {
+				return this.infosDemandeAssembleur.assemblerInformationsDemandeDTO(demande.get());
+			}
 		}
 
 		throw new DemandeIntrouvableException(
@@ -51,7 +54,10 @@ public class ServiceInformationsDemande {
 	}
 
 	public OrganisateurDemandesDTO getDemandesOrganisateur(String courrielOrganisateur) {
-		List<Demande> demandes = conteneurDemandes.obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
-		return this.organisateurDemandesAssembleur.assemblerOrganisateurDemandesDTO(demandes);
+		synchronized (this.conteneurDemandes) {
+			List<Demande> demandes = this.conteneurDemandes
+					.obtenirDemandesSelonCourrielOrganisateur(courrielOrganisateur);
+			return this.organisateurDemandesAssembleur.assemblerOrganisateurDemandesDTO(demandes);
+		}
 	}
 }

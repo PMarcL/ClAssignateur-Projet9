@@ -1,7 +1,8 @@
-package org.ClAssignateur.contexte;
+package org.ClAssignateur.contexte.production;
 
 import static org.mockito.Mockito.*;
 
+import org.ClAssignateur.contexte.production.ContexteProduction;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
 import org.junit.Before;

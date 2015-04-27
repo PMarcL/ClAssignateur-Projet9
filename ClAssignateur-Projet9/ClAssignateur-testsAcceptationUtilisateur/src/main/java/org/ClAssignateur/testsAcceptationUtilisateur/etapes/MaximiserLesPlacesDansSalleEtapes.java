@@ -1,93 +1,79 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
-import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
 
-import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
-import org.ClAssignateur.domaine.assignateur.strategies.SelectionSalleOptimaleStrategie;
-import org.ClAssignateur.domaine.contacts.ContactsReunion;
-import org.ClAssignateur.domaine.contacts.InformationsContact;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.demandes.priorite.Priorite;
-import org.ClAssignateur.domaine.notification.Notificateur;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.domaine.salles.SallesEntrepot;
-import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
-import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
+import org.ClAssignateur.services.localisateur.LocalisateurServices;
+import org.ClAssignateur.services.reservations.ServiceReservationSalle;
+import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
+import org.ClAssignateur.testsAcceptationUtilisateur.fixtures.ReservationDemandeDTOConstructeur;
+import org.ClAssignateur.testsAcceptationUtilisateur.fixtures.SalleConstructeur;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.When;
-
-import java.util.ArrayList;
+import java.util.Optional;
+import java.util.UUID;
 
 public class MaximiserLesPlacesDansSalleEtapes {
 
-	private static final String COURRIEL_PARTICIPANT = "uncourriel@gmail.com";
-	private final int PLACES_50 = 50;
-	private final int PLACES_100 = 100;
-	private final String NOM_SALLE_50_PARTICIPANTS = "PLT2050";
-	private final String NOM_SALLE_100_PARTICIPANTS = "PLT2100";
-	private final String NOM_SALLE_100_PARTICIPANTS_SECONDE = "PLT2102";
-	private final Priorite PRIORITE_MOYENNE = Priorite.moyenne();
+	private Salle salleX;
+	private Salle salleY;
+	private Salle salleZ;
+	private UUID idDemande;
 
-	private Demande demandeAAssigner;
-	private EnMemoireDemandeEntrepot demandesTraitees;
-	private SallesEntrepot salles;
-	private ConteneurDemandes conteneurDemandes;
-	private AssignateurSalle assignateur;
-
-	public MaximiserLesPlacesDansSalleEtapes() {
-		demandesTraitees = new EnMemoireDemandeEntrepot();
-		conteneurDemandes = new ConteneurDemandes(new EnMemoireDemandeEntrepot(), demandesTraitees);
-		salles = new EnMemoireSallesEntrepot();
-
-		assignateur = new AssignateurSalle(conteneurDemandes, salles, mock(Notificateur.class),
-				new SelectionSalleOptimaleStrategie());
-
-		demandeAAssigner = creerDemandeAvecDeuxParticipant();
+	@Given("une salle X avec une capacité de 25 participants")
+	public void givenUneSalleXAvecUneCapaciteDe25Participants() {
+		this.salleX = new SalleConstructeur().capacite(25).construireSalle();
+		persisterSalle(this.salleX);
 	}
 
-	@Given("plusieurs salle disponible")
-	public void givenPlusieursSallesDisponible() {
-		salles.persister(new Salle(PLACES_100, NOM_SALLE_100_PARTICIPANTS));
-		salles.persister(new Salle(PLACES_50, NOM_SALLE_50_PARTICIPANTS));
+	@Given("une salle Y avec une capacité de 15 participants")
+	public void givenUneSalleYAvecUneCapaciteDe15Participants() {
+		this.salleY = new SalleConstructeur().capacite(15).construireSalle();
+		persisterSalle(this.salleY);
 	}
 
-	@Given("deux salles optimales avec meme nombre de place")
-	public void givenDeuxSallesOptimalesAvecMemeNombreDePlace() {
-		salles.persister(new Salle(PLACES_100, NOM_SALLE_100_PARTICIPANTS));
-		salles.persister(new Salle(PLACES_100, NOM_SALLE_100_PARTICIPANTS_SECONDE));
+	@Given("une salle Z avec une capacité de 10 participants")
+	public void givenUneSalleZAvecUneCapaciteDe10Participants() {
+		this.salleZ = new SalleConstructeur().capacite(10).construireSalle();
+		persisterSalle(this.salleZ);
 	}
 
-	@When("assigner salle")
-	public void whenAssignerSalle() {
-		conteneurDemandes.mettreDemandeEnAttente(demandeAAssigner);
-		assignateur.lancerAssignation();
+	@Given("une salle X avec une capacité de 15 participants")
+	public void givenUneSalleXAvecUneCapaciteDe15Participants() {
+		this.salleX = new SalleConstructeur().capacite(15).construireSalle();
+		persisterSalle(this.salleX);
 	}
 
-	@Then("la salle assigne est celle avec le minimum de place pour la reunion")
-	public void thenLaSalleAssigneEstCelleAvecLeMinimumDePlacePourLaReunion() {
-		Salle salleAssignee = demandeAAssigner.getSalleAssignee();
-		assertEquals(NOM_SALLE_50_PARTICIPANTS, salleAssignee.getNom());
+	@Given("une demande pour 13 participants")
+	public void givenUneDemandePour13Participants() {
+		ReservationDemandeDTO demande = new ReservationDemandeDTOConstructeur().nombreParticipants(13)
+				.construireReservationDemandeDTO();
+		this.idDemande = new ServiceReservationSalle().ajouterDemande(demande);
 	}
 
-	@Then("une des deux salle est assignee")
-	public void thenUneDesDeuxSalleEstAssignee() {
-		assertTrue(demandeAAssigner.estAssignee());
+	@Then("la salle Y est assignée à la demande")
+	public void thenLaSalleYEstAssigneeALaDemande() {
+		Demande demande = retrouverDemande();
+		assertEquals(this.salleY, demande.getSalleAssignee());
 	}
 
-	private Demande creerDemandeAvecDeuxParticipant() {
-		final int NB_PARTICIPANTS = 2;
+	@Then("la salle X ou la salle Y est assignée à la demande")
+	public void thenLaSalleXOuLaSalleYEstAssigneeALaDemande() {
+		Demande demande = retrouverDemande();
+		Salle salleAssignee = demande.getSalleAssignee();
+		assertTrue(salleAssignee.equals(this.salleX) || salleAssignee.equals(this.salleY));
+	}
 
-		InformationsContact organisateur = new InformationsContact(COURRIEL_PARTICIPANT);
-		InformationsContact responsable = new InformationsContact(COURRIEL_PARTICIPANT);
+	private void persisterSalle(Salle salle) {
+		LocalisateurServices.getInstance().obtenir(SallesEntrepot.class).persister(salle);
+	}
 
-		ArrayList<InformationsContact> participants = new ArrayList<InformationsContact>();
-		participants.add(organisateur);
-		participants.add(responsable);
-
-		ContactsReunion groupe = new ContactsReunion(organisateur, responsable, participants);
-		return new Demande(NB_PARTICIPANTS, groupe, "Demande avec deux participant", PRIORITE_MOYENNE);
+	private Demande retrouverDemande() {
+		ConteneurDemandes conteneurDemande = LocalisateurServices.getInstance().obtenir(ConteneurDemandes.class);
+		Optional<Demande> demande = conteneurDemande.obtenirDemandeSelonId(this.idDemande);
+		return demande.get();
 	}
 }

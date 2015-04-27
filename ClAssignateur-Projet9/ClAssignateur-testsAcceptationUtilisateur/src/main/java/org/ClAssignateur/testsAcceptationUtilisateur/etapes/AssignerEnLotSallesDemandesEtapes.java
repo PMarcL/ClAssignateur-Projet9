@@ -1,69 +1,87 @@
 package org.ClAssignateur.testsAcceptationUtilisateur.etapes;
 
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.*;
 
-import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
+import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.services.reservations.ServiceReservationSalle;
-import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTO;
-import org.ClAssignateur.services.reservations.dto.ReservationDemandeDTOAssembleur;
+import org.ClAssignateur.services.localisateur.LocalisateurServices;
+import org.ClAssignateur.services.reservations.DeclencheurAssignateurSalle;
 import org.ClAssignateur.services.reservations.minuterie.Minuterie;
-import org.jbehave.core.annotations.BeforeScenario;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.ConteneurDemandesFake;
+import org.ClAssignateur.testsAcceptationUtilisateur.fakes.MinuterieFake;
+import org.ClAssignateur.testsAcceptationUtilisateur.fixtures.DemandeConstructeur;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 public class AssignerEnLotSallesDemandesEtapes {
-	private final int X_NOMBRE_DEMANDES = 10;
-	private final int Y_NOMBRE_DEMANDES = 1;
+	private final int LIMITE_2_DEMANDES = 2;
+	private final int LIMITE_1_DEMANDE = 1;
 
-	private ServiceReservationSalle serviceReservation;
-	private AssignateurSalle assignateurSalle;
-	private Minuterie minuterie;
-	private ReservationDemandeDTOAssembleur assembleur;
-	private ReservationDemandeDTO dto;
-	private Demande demande;
+	private Demande demande1;
+	private Demande demande2;
 
-	@BeforeScenario
-	public void initialisationScenario() {
-		minuterie = mock(Minuterie.class);
-		assignateurSalle = mock(AssignateurSalle.class);
-		demande = mock(Demande.class);
-		assembleur = mock(ReservationDemandeDTOAssembleur.class);
-
-		given(assembleur.assemblerDemande(dto)).willReturn(demande);
-		serviceReservation = new ServiceReservationSalle(minuterie, this.assignateurSalle, assembleur);
-	}
-
-	@Given("une limite de X demandes")
+	@Given("une limite de 2 demandes")
 	public void givenUneLimiteDeXDemandes() {
-		serviceReservation.setLimiteDemandesAvantAssignation(X_NOMBRE_DEMANDES);
+		configurerLimiteDemandesEnAttente(LIMITE_2_DEMANDES);
 	}
 
-	@When("la limite de X demandes est atteinte")
+	@When("j'ajoute une demande en attente")
+	public void whenJAjouteUneDemandeEnAttente() {
+		this.demande1 = construireDemande();
+		ajouterDemande(this.demande1);
+	}
+
+	@When("la limite de demandes en attente est atteinte")
 	public void whenLaLimiteDeXDemandesEstAtteinte() {
-		given(assignateurSalle.getNombreDemandesEnAttente()).willReturn(X_NOMBRE_DEMANDES);
-		serviceReservation.ajouterDemande(dto);
+		this.demande1 = construireDemande();
+		ajouterDemande(this.demande1);
+
+		this.demande2 = construireDemande();
+		ajouterDemande(this.demande2);
 	}
 
-	@When("je configure le système pour tolérer Y demandes")
+	@When("je configure le système pour tolérer 1 demandes")
 	public void whenJeConfigureLeSystemePourTolererYDemandes() {
-		given(assignateurSalle.getNombreDemandesEnAttente()).willReturn(Y_NOMBRE_DEMANDES);
-		serviceReservation.setLimiteDemandesAvantAssignation(Y_NOMBRE_DEMANDES);
+		configurerLimiteDemandesEnAttente(LIMITE_1_DEMANDE);
 	}
 
 	@Then("l'assignation des demandes en attente est déclenchée")
 	public void thenLassignationDesDemandesEnAttenteEstDeclenchee() {
-		verify(this.assignateurSalle).lancerAssignation();
+		assertTrue(demandeEstTraitee(this.demande1));
+		assertTrue(demandeEstTraitee(this.demande2));
 	}
 
 	@Then("la minuterie est réinitialisée")
 	public void thenLaMinuterieEstReinitialisee() {
-		verify(minuterie).reinitialiser();
+		MinuterieFake minuterie = (MinuterieFake) LocalisateurServices.getInstance().obtenir(Minuterie.class);
+		assertTrue(minuterie.aEteReinitialisee());
 	}
 
-	@Then("la limite est modifiée")
-	public void thenLaLimiteEstModifiee() {
-		verify(this.assignateurSalle).lancerAssignation();
+	@Then("le traitement des demandes est lancé")
+	public void thenLeTraitementDesDemandesEstLance() {
+		assertTrue(demandeEstTraitee(this.demande1));
+	}
+
+	private void configurerLimiteDemandesEnAttente(int limite) {
+		obtenirDeclencheur().setLimiteDemandesAvantAssignation(limite);
+	}
+
+	private DeclencheurAssignateurSalle obtenirDeclencheur() {
+		return LocalisateurServices.getInstance().obtenir(DeclencheurAssignateurSalle.class);
+	}
+
+	private Demande construireDemande() {
+		return new DemandeConstructeur().construireDemande();
+	}
+
+	private void ajouterDemande(Demande demande) {
+		obtenirDeclencheur().ajouterDemande(demande);
+	}
+
+	private boolean demandeEstTraitee(Demande demande) {
+		ConteneurDemandesFake conteneurDemandes = (ConteneurDemandesFake) LocalisateurServices.getInstance().obtenir(
+				ConteneurDemandes.class);
+		return conteneurDemandes.demandesEstArchivee(demande);
 	}
 }

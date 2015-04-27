@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.ClAssignateur.domaine.demandes.Demande;
-import org.ClAssignateur.domaine.demandes.Demande.StatutDemande;
+import org.ClAssignateur.domaine.demandes.Demande.EtatDemande;
 import org.ClAssignateur.domaine.salles.Salle;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTO;
 import org.ClAssignateur.services.infosDemandes.dto.InformationsDemandeDTOAssembleur;
@@ -16,7 +16,7 @@ public class InformationsDemandeDTOAssembleurTest {
 	private final String NOM_SALLE = "NomDeSalle";
 	private final String COURRIEL_ORGANISATEUR = "courriel@example.com";
 	private final int NB_PARTICIPANT = 12;
-	private final StatutDemande STATUT_DEMANDE_EN_ATTENTE = StatutDemande.EN_ATTENTE;
+	private final EtatDemande STATUT_DEMANDE_EN_ATTENTE = EtatDemande.EN_ATTENTE;
 
 	private Demande demande;
 	private Salle salle;
