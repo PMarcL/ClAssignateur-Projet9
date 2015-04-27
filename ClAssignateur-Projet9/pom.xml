@@ -30,5 +30,6 @@
     <module>ClAssignateur-services</module>
     <module>ClAssignateur-contexte</module>
     <module>ClAssignateur-persistance</module>
+    <module>ClAssignateur-TestDeFlot</module>
   </modules>
 </project>

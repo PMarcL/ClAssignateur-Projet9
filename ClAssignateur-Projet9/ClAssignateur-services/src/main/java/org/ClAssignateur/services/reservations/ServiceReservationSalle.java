@@ -35,10 +35,13 @@ public class ServiceReservationSalle {
 		this.declencheur.annulerDemande(titreDemandeAnnulee);
 	}
 
+	public void annulerDemande(UUID demandeID) {
+		this.declencheur.annulerDemande(demandeID);
+	}
+
 	public UUID ajouterDemande(ReservationDemandeDTO dto) {
 		Demande demande = this.assembleur.assemblerDemande(dto);
 		this.declencheur.ajouterDemande(demande);
 		return demande.getID();
 	}
-
 }

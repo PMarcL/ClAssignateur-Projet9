@@ -1,7 +1,10 @@
 package org.ClAssignateur.services.reservations;
 
 import static org.mockito.BDDMockito.*;
+
 import java.util.Optional;
+import java.util.UUID;
+
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
@@ -19,6 +22,7 @@ public class DeclencheurAssignateurSalleTest {
 	private final int LIMITE_DEMANDES_5 = 5;
 	private final int LIMITE_DEMANDES_7 = 7;
 	private final String TITRE_DEMANDE_ANNULEE = "Demande annulée";
+	private final UUID ID_DEMANDE = UUID.randomUUID();
 
 	private Minuterie minuterie;
 	private Demande demandeAjoutee;
@@ -106,6 +110,27 @@ public class DeclencheurAssignateurSalleTest {
 	}
 
 	@Test
+	public void etantDonneDemandeAAnnulerAvecIDExistanteQuandAnnulerDemandeDevraitAnnulerReservation() {
+		permettreTrouverDemandeAAnnulerAvecID();
+		declencheur.annulerDemande(ID_DEMANDE);
+		verify(demandeAnnulee).annulerReservation();
+	}
+
+	@Test
+	public void etantDonneDemandeAAnnulerAvecIDExistanteQuandAnnulerDemandeDevraitNotifierAnnulation() {
+		permettreTrouverDemandeAAnnulerAvecID();
+		declencheur.annulerDemande(ID_DEMANDE);
+		verify(notificateur).notifierAnnulation(demandeAnnulee);
+	}
+
+	@Test
+	public void etantDonneDemandeAAnnulerAvecIDInexistanteQuandAnnulerDemandeDevraitNeRienFaire() {
+		given(conteneurDemandes.obtenirDemandeSelonId(ID_DEMANDE)).willReturn(Optional.empty());
+		declencheur.annulerDemande(ID_DEMANDE);
+		verify(conteneurDemandes, never()).archiverDemande(any(Demande.class));
+	}
+
+	@Test
 	public void etantDonneNouvelleLimiteDemandeEnAttenteAtteinteQuandSetLimiteDemandesAvantAssignationDevraitDemanderAssignationDemandes() {
 		given(conteneurDemandes.getNombreDemandesEnAttente()).willReturn(LIMITE_DEMANDES_5);
 		declencheur.setLimiteDemandesAvantAssignation(LIMITE_DEMANDES_5);
@@ -128,5 +153,9 @@ public class DeclencheurAssignateurSalleTest {
 	private void permettreTrouverDemandeAAnnuler() {
 		given(conteneurDemandes.trouverDemandeSelonTitreReunion(TITRE_DEMANDE_ANNULEE)).willReturn(
 				Optional.of(demandeAnnulee));
+	}
+
+	private void permettreTrouverDemandeAAnnulerAvecID() {
+		given(conteneurDemandes.obtenirDemandeSelonId(ID_DEMANDE)).willReturn(Optional.of(demandeAnnulee));
 	}
 }

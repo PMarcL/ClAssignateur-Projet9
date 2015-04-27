@@ -1,6 +1,8 @@
 package org.ClAssignateur.services.reservations;
 
 import java.util.Optional;
+import java.util.UUID;
+
 import org.ClAssignateur.domaine.assignateur.AssignateurSalle;
 import org.ClAssignateur.domaine.demandes.ConteneurDemandes;
 import org.ClAssignateur.domaine.demandes.Demande;
@@ -74,21 +76,28 @@ public class DeclencheurAssignateurSalle implements MinuterieObservateur {
 	public void annulerDemande(String titreDemandeAnnulee) {
 		synchronized (this.demandes) {
 			Optional<Demande> demandeAnnulee = this.demandes.trouverDemandeSelonTitreReunion(titreDemandeAnnulee);
-
-			if (demandeAnnulee.isPresent()) {
-				annulerReservation(demandeAnnulee.get());
-			}
+			annulerReservation(demandeAnnulee);
 		}
 	}
 
-	private void annulerReservation(Demande demandeAnnulee) {
-		demandeAnnulee.annulerReservation();
-		this.demandes.archiverDemande(demandeAnnulee);
-		this.notificateur.notifierAnnulation(demandeAnnulee);
+	public void annulerDemande(UUID demandeID) {
+		synchronized (this.demandes) {
+			Optional<Demande> demandeAnnulee = this.demandes.obtenirDemandeSelonId(demandeID);
+			annulerReservation(demandeAnnulee);
+		}
+	}
+
+	private void annulerReservation(Optional<Demande> demandeAnnulee) {
+		if (demandeAnnulee.isPresent()) {
+			demandeAnnulee.get().annulerReservation();
+			this.demandes.archiverDemande(demandeAnnulee.get());
+			this.notificateur.notifierAnnulation(demandeAnnulee.get());
+		}
 	}
 
 	public void setLimiteDemandesAvantAssignation(int limiteDemandes) {
 		this.limiteDemandes = limiteDemandes;
 		assignerSiNecessaire();
 	}
+
 }

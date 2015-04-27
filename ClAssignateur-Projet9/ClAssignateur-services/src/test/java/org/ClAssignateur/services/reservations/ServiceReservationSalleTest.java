@@ -69,6 +69,12 @@ public class ServiceReservationSalleTest {
 	}
 
 	@Test
+	public void quandAnnulerDemandeAvecIDDevraitDeleguerAuDeclencheur() {
+		serviceReservation.annulerDemande(ID_DEMANDE);
+		verify(declencheur).annulerDemande(ID_DEMANDE);
+	}
+
+	@Test
 	public void quandSetLimiteDemandesAvantAssignationDevraitDeleguerAuDeclencheur() {
 		serviceReservation.setLimiteDemandesAvantAssignation(LIMITE_5_DEMANDES);
 		verify(declencheur).setLimiteDemandesAvantAssignation(LIMITE_5_DEMANDES);
