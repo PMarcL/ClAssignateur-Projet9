@@ -11,24 +11,41 @@ Fait par:
 * Pier-Alex Côté-Sarrazin (111 045 255)
 * Margot Beugniot (111 110 352)
 
-Statut des scénarios:
+Statut des user stories:
 
-* Scénario 1: terminé
-* Scénario 2: terminé
-* Scénario 3: terminé
-* Scénario 4: terminé
-* Scénario 5: Partiellement complété (implémentation de la stratégie de notification par courriel à terminer)
-* Scénario 6: terminé
-* Scénario 7: Partiellement complété (implémentation de la stratégie de notification par courriel à terminer)
-* Scénario 8-9-10: à faire
+* User story 1: terminée
+* User story 2: terminée
+* User story 3: terminée
+* User story 4: terminée
+* User story 5: terminée
+* User story 6: terminée
+* User story 7: terminée
+* User story 8: terminée
+* User story 9: terminée
+* User story 10: terminée
+* User story 11: implémentation de la classe HibernateDemandeEntrepot incomplète.
 
-Utilisation de la bibliothèque:
- 1. Il faut tout d'abord créer une SallesEntrepot pour y ajouter les salles disponible pour la réservation et une SalleSelectionStrategie pour choisir comment les salles seront sélectionnées.
- 2. Il faut ensuite créer un ConteneurDemandes pour les demandes en attente et un DemandesEntrepotSansDoublon pour les demandes archivées.
- 3. Il faut créer un notificateur avec une stratégie de notification pour l'envoie des courriels lors du traitement des demandes.
- 4. Il faut ensuite créer un AssignateurSalle qui fera le traitement des demandes.
- 5. Il faut enfin créer un ServiceReservationSalle avec l'assignateur et un Timer qui servira de minuterie.
- 6. Il sera finalement possible d'ajouter des demandes et elles seront traitées selon la fréquence de la minuterie ou la quantité de demandes.
+Test d'acceptation:
+* Les tests d'acceptation sont dans le module testsAcceptationUtilisateur.
+* Tous les tests d'acceptation demandés ont été fait.
+ 
+Test de performance et de concurrence:
+* Les tests de performances ont été fait dans jMeter. Le fichier .jmx que nous avons utilisé est dans le dossier ClAssignateur-Projet9/doc.
+* Les résultats de ces tests nous démontrent que notre système peut supporter un grand nombre de requêtes concurentes (20 threads qui font 2 requêtes par seconde) avec un taux d'erreur négligeable après la première requête.
+* En expérimentant, nous avons découvert que le taux d'erreurs est initialement élevé (+-15%) lors des premières vagues de requêtes, mais il descend rapidement vers un taux d'erreur presque nul après quelques secondes.
+* Pour arriver à ce résultat, nous avons dû synchroniser l'accès aux demandes (la classe ConteneurDemandes) avec le mot clé synchronized de java.
+* Ces tests nous démontrent aussi que notre système est capable de supporter 40 requêtes par séconde avec un temps de réponse < 100 ms.
+
+Test de flot:
+* Les tests de flot sont dans le module ClAssignateur-TestDeFlot.
+* Puisque l'annulation n'était pas dans l'interface REST, nous avons fait ces tests à travers nos services dans un fichier de test qui utilise jUnit avec le contexte de développement.
+* Nous avons testé les deux scénarios suivants:
+  1. Faire une réservation, vérifier le statut et la salle pendant que la réservation est en attente, annuler la réservation.
+  2. Faire une réservation, vérifier le statut et la salle après le traitement de la réservation, annuler la réservation.
+
+Test de la base de données:
+* Nous avons plusieurs tests pour tester l'implémentation de Hibernate, mais nous n'avons pas réussie à la compléter et à la faire fonctionner.
+* Donc, nous n'utilisons pas cette implémentation dans nos contextes de développement et de production.
 
 Définition de terminé
 
