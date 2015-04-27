@@ -9,6 +9,7 @@ import org.ClAssignateur.domaine.demandes.priorite.Priorite;
 import org.ClAssignateur.domaine.demandes.Demande;
 import org.ClAssignateur.domaine.demandes.Demande.EtatDemande;
 import org.ClAssignateur.domaine.salles.Salle;
+import java.util.List;
 import java.util.UUID;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -19,6 +20,7 @@ public class DemandeTest {
 	private final String TITRE_REUNION = "Titre de ma réunion";
 	private final String NOM_SALLE = "salle";
 	private final String COURRIEL_ORGANISATEUR = "organisateur@hotmail.com";
+	private final String COURRIEL_RESPONSABLE = "responsable@hotmail.com";
 	private final int NOMBRE_PARTICIPANTS = 10;
 	private final int CAPACITE_SALLE = 15;
 	private final Priorite PRIORITE_BASSE = Priorite.basse();
@@ -33,7 +35,7 @@ public class DemandeTest {
 	@Before
 	public void intialisation() {
 		organisateur = new InformationsContact(COURRIEL_ORGANISATEUR);
-		responsable = mock(InformationsContact.class);
+		responsable = new InformationsContact(COURRIEL_RESPONSABLE);
 		contacts = new ContactsReunion(organisateur, responsable, new ArrayList<InformationsContact>());
 
 		demande = new Demande(ID, NOMBRE_PARTICIPANTS, contacts, TITRE_REUNION, PRIORITE_MOYENNE);
@@ -76,9 +78,21 @@ public class DemandeTest {
 	}
 
 	@Test
-	public void demandePossedeIntialementLeChampsResponsableCommeDefiniDansGroupe() {
+	public void demandePossedeInitialementLeChampResponsableCommeDefiniDansContactReunion() {
 		InformationsContact responsableResultat = demande.getResponsable();
 		assertEquals(responsable, responsableResultat);
+	}
+
+	@Test
+	public void demandePossedeInitialementLeChampParticipantsCommeDefiniDansContactReunion() {
+		List<InformationsContact> contactsDemande = demande.getParticipants();
+		assertEquals(contacts.participants, contactsDemande);
+	}
+
+	@Test
+	public void demandePossedeInitialementOrganisateurTelQueDefiniDansContactReunionAvecLeBonCourriel() {
+		String courrielOrganisateur = demande.getCourrielOrganisateur();
+		assertEquals(COURRIEL_ORGANISATEUR, courrielOrganisateur);
 	}
 
 	@Test
@@ -112,6 +126,7 @@ public class DemandeTest {
 	public void quandPlacerReservationDemandeEstAssignee() {
 		Salle salle = new Salle(CAPACITE_SALLE, NOM_SALLE);
 		demande.placerReservation(salle);
+
 		assertTrue(demande.estAssignee());
 		assertEquals(EtatDemande.ACCEPTEE, demande.getEtat());
 	}
@@ -128,6 +143,16 @@ public class DemandeTest {
 		Demande demandeDifferenteAvecLeMemeId = faireUneDemandeDifferenteAvecId(ID);
 		Boolean demandesSontEgales = demandeDifferenteAvecLeMemeId.equals(demande);
 		assertTrue(demandesSontEgales);
+	}
+
+	@Test
+	public void uneDemandeNEstPasEgalANull() {
+		assertFalse(demande.equals(null));
+	}
+
+	@Test
+	public void uneDemandeNEstPasEgalAUnAutreTypeObjet() {
+		assertFalse(demande.equals(contacts));
 	}
 
 	@Test

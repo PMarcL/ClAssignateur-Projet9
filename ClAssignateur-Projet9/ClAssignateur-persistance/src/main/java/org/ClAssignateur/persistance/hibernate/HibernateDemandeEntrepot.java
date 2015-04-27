@@ -103,7 +103,6 @@ public class HibernateDemandeEntrepot implements DemandesEntrepot {
 
 	@Override
 	public List<Demande> obtenirDemandesSelonCourrielOrganisateur(String courrielOrganisateur) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -27,7 +27,6 @@ public class EnMemoireDemandeEntrepot implements DemandesEntrepot {
 		return this.demandes;
 	}
 
-	// TODO refactorer les fonction ci-bas
 	public Optional<Demande> obtenirDemandeSelonId(UUID id) {
 		return this.demandes.stream().filter(demandeCourante -> demandeCourante.getID().equals(id)).findFirst();
 	}
