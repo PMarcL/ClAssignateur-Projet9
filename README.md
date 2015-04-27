@@ -25,25 +25,27 @@ Statut des user stories:
 * User story 10: terminée
 * User story 11: implémentation de la classe HibernateDemandeEntrepot incomplète.
 
-Test d'acceptation:
+Tests d'acceptation:
 * Les tests d'acceptation sont dans le module testsAcceptationUtilisateur.
 * Tous les tests d'acceptation demandés ont été fait.
+* Les scénarios pour la fonctionnalité Notifier les utilisateurs sont dans le fichier ScenariosBDD-Notification.md.
+* Puisque nous n'avons pas réussi à configurer maven pour qu'il nous permette d'appeler les tests unitaires, certains tests d'acceptation sont semblables à des tests unitaires que nous avons déjà écrit.
  
-Test de performance et de concurrence:
+Tests de performance et de concurrence:
 * Les tests de performances ont été fait dans jMeter. Le fichier .jmx que nous avons utilisé est dans le dossier ClAssignateur-Projet9/doc.
 * Les résultats de ces tests nous démontrent que notre système peut supporter un grand nombre de requêtes concurentes (20 threads qui font 2 requêtes par seconde) avec un taux d'erreur négligeable après la première requête.
 * En expérimentant, nous avons découvert que le taux d'erreurs est initialement élevé (+-15%) lors des premières vagues de requêtes, mais il descend rapidement vers un taux d'erreur presque nul après quelques secondes.
 * Pour arriver à ce résultat, nous avons dû synchroniser l'accès aux demandes (la classe ConteneurDemandes) avec le mot clé synchronized de java.
 * Ces tests nous démontrent aussi que notre système est capable de supporter 40 requêtes par séconde avec un temps de réponse < 100 ms.
 
-Test de flot:
+Tests de flot:
 * Les tests de flot sont dans le module ClAssignateur-TestDeFlot.
 * Puisque l'annulation n'était pas dans l'interface REST, nous avons fait ces tests à travers nos services dans un fichier de test qui utilise jUnit avec le contexte de développement.
 * Nous avons testé les deux scénarios suivants:
   1. Faire une réservation, vérifier le statut et la salle pendant que la réservation est en attente, annuler la réservation.
   2. Faire une réservation, vérifier le statut et la salle après le traitement de la réservation, annuler la réservation.
 
-Test de la base de données:
+Tests de la base de données:
 * Nous avons plusieurs tests pour tester l'implémentation de Hibernate, mais nous n'avons pas réussie à la compléter et à la faire fonctionner.
 * Donc, nous n'utilisons pas cette implémentation dans nos contextes de développement et de production.
 
