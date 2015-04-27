@@ -23,13 +23,13 @@ public class OrdonnerDemandesParPrioriteEtapes {
 	@Given("une demande à priorité basse en attente")
 	public void givenUneDemandeAPrioriteBasseEnAttente() {
 		ReservationDemandeDTO demandePrioriteBasse = creerDemandeAvecPriorite(Priorite.basse());
-		this.idDemandePrioriteBasse = envoyerDemande(demandePrioriteBasse);
+		this.idDemandePrioriteBasse = ajouterDemande(demandePrioriteBasse);
 	}
 
 	@Given("une demande à priorité haute en attente")
 	public void givenUneDemandeAPrioriteHauteEnAttente() {
 		ReservationDemandeDTO demandePrioriteHaute = creerDemandeAvecPriorite(Priorite.haute());
-		this.idDemandePrioriteHaute = envoyerDemande(demandePrioriteHaute);
+		this.idDemandePrioriteHaute = ajouterDemande(demandePrioriteHaute);
 	}
 
 	@Given("deux demandes de même priorité en attente")
@@ -37,10 +37,10 @@ public class OrdonnerDemandesParPrioriteEtapes {
 		final Priorite PRIORITE = Priorite.basse();
 
 		ReservationDemandeDTO premiereDemande = creerDemandeAvecPriorite(PRIORITE);
-		this.idPremiereDemandeMemePriorite = envoyerDemande(premiereDemande);
+		this.idPremiereDemandeMemePriorite = ajouterDemande(premiereDemande);
 
 		ReservationDemandeDTO deuxiemeDemande = creerDemandeAvecPriorite(PRIORITE);
-		this.idDeuxiemeDemandeMemePriorite = envoyerDemande(deuxiemeDemande);
+		this.idDeuxiemeDemandeMemePriorite = ajouterDemande(deuxiemeDemande);
 	}
 
 	@Then("la demande à priorité haute est traitée avant celle à priorité basse")
@@ -65,7 +65,7 @@ public class OrdonnerDemandesParPrioriteEtapes {
 		return new ReservationDemandeDTOConstructeur().priorite(prioriteDemande).construireReservationDemandeDTO();
 	}
 
-	private UUID envoyerDemande(ReservationDemandeDTO demande) {
+	private UUID ajouterDemande(ReservationDemandeDTO demande) {
 		return new ServiceReservationSalle().ajouterDemande(demande);
 	}
 
