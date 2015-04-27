@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 public class Demande {
 
-	public enum StatutDemande {
+	public enum EtatDemande {
 		EN_ATTENTE, ACCEPTEE, REFUSEE, ANNULEE
 	}
 
@@ -42,7 +42,7 @@ public class Demande {
 	private UUID id;
 
 	@Column
-	private StatutDemande etat;
+	private EtatDemande etat;
 
 	@Column
 	private int estampille;
@@ -57,7 +57,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
-		this.etat = StatutDemande.EN_ATTENTE;
+		this.etat = EtatDemande.EN_ATTENTE;
 		this.nbParticipants = nombreParticipants;
 		ajouterEstampille();
 	}
@@ -70,7 +70,7 @@ public class Demande {
 		this.titre = titre;
 		this.priorite = priorite;
 		this.salleAssignee = null;
-		this.etat = StatutDemande.EN_ATTENTE;
+		this.etat = EtatDemande.EN_ATTENTE;
 		ajouterEstampille();
 	}
 
@@ -91,12 +91,12 @@ public class Demande {
 	}
 
 	public void placerReservation(Salle salleAssignee) {
-		this.etat = StatutDemande.ACCEPTEE;
+		this.etat = EtatDemande.ACCEPTEE;
 		this.salleAssignee = salleAssignee;
 	}
 
 	public void annulerReservation() {
-		this.etat = StatutDemande.ANNULEE;
+		this.etat = EtatDemande.ANNULEE;
 		this.salleAssignee = null;
 	}
 
@@ -145,7 +145,7 @@ public class Demande {
 		}
 	}
 
-	public StatutDemande getEtat() {
+	public EtatDemande getEtat() {
 		return this.etat;
 	}
 
@@ -155,6 +155,10 @@ public class Demande {
 
 	public boolean estAnterieureA(Demande demande) {
 		return this.estampille < demande.estampille;
+	}
+
+	public void refuser() {
+		this.etat = EtatDemande.REFUSEE;
 	}
 
 }

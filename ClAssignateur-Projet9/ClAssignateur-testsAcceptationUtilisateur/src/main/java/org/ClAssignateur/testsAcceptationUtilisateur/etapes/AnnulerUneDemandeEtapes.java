@@ -88,7 +88,7 @@ public class AnnulerUneDemandeEtapes {
 	}
 
 	private boolean demandeEstAnnulee(Demande demande) {
-		return demande.getEtat().equals(Demande.StatutDemande.ANNULEE);
+		return demande.getEtat().equals(Demande.EtatDemande.ANNULEE);
 	}
 
 	private void mettreDemandeEnAttente() {

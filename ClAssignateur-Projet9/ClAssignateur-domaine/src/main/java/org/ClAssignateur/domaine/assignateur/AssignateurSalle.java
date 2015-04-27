@@ -30,16 +30,22 @@ public class AssignateurSalle {
 
 			if (salle.isPresent()) {
 				reserverSalle(notificateur, demandeCourante, salle.get());
-				demandes.archiverDemande(demandeCourante);
 			} else {
-				notificateur.notifierEchec(demandeCourante);
+				refuserDemande(notificateur, demandeCourante);
 			}
+
+			demandes.archiverDemande(demandeCourante);
 		}
 	}
 
 	private void reserverSalle(Notificateur notificateur, Demande demandeCourante, Salle salle) {
 		demandeCourante.placerReservation(salle);
 		notificateur.notifierSucces(demandeCourante, salle);
+	}
+
+	private void refuserDemande(Notificateur notificateur, Demande demandeCourante) {
+		demandeCourante.refuser();
+		notificateur.notifierEchec(demandeCourante);
 	}
 
 }
