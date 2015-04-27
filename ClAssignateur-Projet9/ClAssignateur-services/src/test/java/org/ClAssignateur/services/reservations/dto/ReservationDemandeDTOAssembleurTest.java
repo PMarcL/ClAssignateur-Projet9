@@ -63,7 +63,7 @@ public class ReservationDemandeDTOAssembleurTest {
 
 	private void configurerDTO() {
 		demandeDTO = new ReservationDemandeDTO();
-		demandeDTO.nombreParticipants = NB_PERSONNES;
+		demandeDTO.nombrePersonne = NB_PERSONNES;
 		demandeDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
 		demandeDTO.priorite = NIVEAU_PRIORITE;
 		demandeDTO.participantsCourriels = listeCourrielParticipants(NB_PERSONNES);

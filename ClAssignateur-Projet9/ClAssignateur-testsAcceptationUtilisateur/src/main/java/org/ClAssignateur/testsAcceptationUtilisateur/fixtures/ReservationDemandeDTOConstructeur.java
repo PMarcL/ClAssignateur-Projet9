@@ -18,13 +18,13 @@ public class ReservationDemandeDTOConstructeur {
 
 	private void initialiserDemande() {
 		this.demande.courrielOrganisateur = COURRIEL_ORGANISATEUR_PAR_DEFAUT;
-		this.demande.nombreParticipants = NOMBRE_PARTICIPANTS;
+		this.demande.nombrePersonne = NOMBRE_PARTICIPANTS;
 		this.demande.priorite = Priorite.moyenne().getNiveauPriorite();
 		this.demande.participantsCourriels = new ArrayList<>();
 	}
 
 	public ReservationDemandeDTOConstructeur nombreParticipants(int nbParticipants) {
-		this.demande.nombreParticipants = nbParticipants;
+		this.demande.nombrePersonne = nbParticipants;
 		return this;
 	}
 

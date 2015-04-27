@@ -70,7 +70,7 @@ public class FlotNormalTest {
 
 	private void initialiserDemandeDTO() {
 		demandeReservationDTO.courrielOrganisateur = COURRIEL_ORGANISATEUR;
-		demandeReservationDTO.nombreParticipants = NB_DE_PARTICIPANTS;
+		demandeReservationDTO.nombrePersonne = NB_DE_PARTICIPANTS;
 		demandeReservationDTO.priorite = PRIORITE;
 		demandeReservationDTO.participantsCourriels = LISTE_PARTICIPANTS;
 	}
