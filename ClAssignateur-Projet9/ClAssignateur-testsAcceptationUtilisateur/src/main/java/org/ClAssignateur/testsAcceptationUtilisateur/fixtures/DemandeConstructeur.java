@@ -37,6 +37,11 @@ public class DemandeConstructeur {
 		return this;
 	}
 
+	public DemandeConstructeur priorite(Priorite priorite) {
+		this.priorite = priorite;
+		return this;
+	}
+
 	public Demande construireDemande() {
 		ContactsReunion contacts = creerContactsReunion();
 		return new Demande(this.nbParticipants, contacts, this.titre, this.priorite);

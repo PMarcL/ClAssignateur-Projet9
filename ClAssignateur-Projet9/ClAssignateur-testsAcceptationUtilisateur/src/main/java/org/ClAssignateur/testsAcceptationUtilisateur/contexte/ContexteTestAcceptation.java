@@ -10,6 +10,7 @@ import org.ClAssignateur.persistance.EnMemoireDemandeEntrepot;
 import org.ClAssignateur.persistance.EnMemoireSallesEntrepot;
 import org.ClAssignateur.services.localisateur.LocalisateurServices;
 import org.ClAssignateur.services.reservations.DeclencheurAssignateurSalle;
+import org.ClAssignateur.services.reservations.minuterie.Minuterie;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.ConteneurDemandesFake;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.MinuterieFake;
 import org.ClAssignateur.testsAcceptationUtilisateur.fakes.NotificationStrategieSilencieuse;
@@ -18,6 +19,7 @@ public class ContexteTestAcceptation extends Contexte {
 
 	private SallesEntrepot sallesEntrepot;
 	private ConteneurDemandesFake conteneurDemandes;
+	private Minuterie minuterie;
 
 	public ContexteTestAcceptation() {
 		initialisation();
@@ -27,12 +29,14 @@ public class ContexteTestAcceptation extends Contexte {
 		this.sallesEntrepot = new EnMemoireSallesEntrepot();
 		this.conteneurDemandes = new ConteneurDemandesFake(new EnMemoireDemandeEntrepot(),
 				new EnMemoireDemandeEntrepot());
+		this.minuterie = new MinuterieFake();
 	}
 
 	@Override
 	protected void enregistrerServices() {
 		LocalisateurServices.getInstance().enregistrer(SallesEntrepot.class, this.sallesEntrepot);
 		LocalisateurServices.getInstance().enregistrer(ConteneurDemandes.class, this.conteneurDemandes);
+		LocalisateurServices.getInstance().enregistrer(Minuterie.class, this.minuterie);
 		LocalisateurServices.getInstance().enregistrer(DeclencheurAssignateurSalle.class,
 				creerDeclencheurAssignateurSalle());
 	}
@@ -41,7 +45,7 @@ public class ContexteTestAcceptation extends Contexte {
 		Notificateur notificateur = new Notificateur(new NotificationStrategieSilencieuse());
 
 		AssignateurSalle assignateur = new AssignateurSalle(this.sallesEntrepot, new SelectionSalleOptimaleStrategie());
-		return new DeclencheurAssignateurSalle(new MinuterieFake(), this.conteneurDemandes, assignateur, notificateur);
+		return new DeclencheurAssignateurSalle(this.minuterie, this.conteneurDemandes, assignateur, notificateur);
 	}
 
 	@Override

@@ -57,8 +57,8 @@ public class OrdonnerDemandesParPrioriteEtapes {
 		Demande premiereDemandeTraitee = retirerDemandeTraitee();
 		Demande deuxiemeDemandeTraitee = retirerDemandeTraitee();
 
-		assertEquals(this.idPremiereDemandeMemePriorite, premiereDemandeTraitee);
-		assertEquals(this.idDeuxiemeDemandeMemePriorite, deuxiemeDemandeTraitee);
+		assertEquals(this.idPremiereDemandeMemePriorite, premiereDemandeTraitee.getID());
+		assertEquals(this.idDeuxiemeDemandeMemePriorite, deuxiemeDemandeTraitee.getID());
 	}
 
 	private ReservationDemandeDTO creerDemandeAvecPriorite(Priorite prioriteDemande) {

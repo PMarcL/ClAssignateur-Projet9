@@ -6,27 +6,29 @@ As a organisateur
 I want to obtenir une salle réservée pour ma réunion
 
 Scenario:  La demande est assignée à la première salle disponible (sans autre critère)
-Given une liste de salle dont la première salle disponible est X
-And une nouvelle demande
-When les demandes sont toutes traitées
+Given une salle disponible X
+And une demande en attente
+When les demandes en attente sont traitées
 Then la demande est assignée à la salle X
 
 Scenario:  Les demandes sont traitées séquentiellement
-Given plusieurs demandes de même priorité en attente de traitement
+Given une demande X en attente
+And une demande Y en attente
 When les demandes sont traitées
-Then les demandes sont traitées selon leur ordre d'arrivée
+Then la demande X est traitée avant la demande Y
 
 Scenario:  La fréquence est configurable
-Given une fréquence par défaut
-When la fréquence est modifiée
-Then la fréquence est changée
+Given une fréquence de 3 minutes
+When je change la fréquence de traitement
+Then les demandes en attente sont traitées aux 3 minutes
 
 Scenario:  Les demandes sont traitées aux X minutes
-Given une fréquence de traitement X
-When la fréquence est atteinte
-Then le traitement des demandes est lancé
+Given une fréquence quelconque
+And une demande en attente
+When la fréquence de traitement est atteinte
+Then la demande en attente est traitée
 
 Scenario:  Les demandes sont accumulées
 Given une nouvelle demande
-When la demande est ajoutée
+When la demande est mise en attente
 Then la liste de demandes en attente contient la demande
